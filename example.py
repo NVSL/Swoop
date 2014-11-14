@@ -12,7 +12,7 @@ battery.pins["V-"].rename("GND") # parts have pins and those pins have default n
 
 LED_circuit += battery # add part to circuit
 
-for pin in LED_circuit.parts["D1"].pins: # iterator is not the best way to do this but it's cool to be able to do this
+for pin in LED_circuit.parts["D1"].pins.values(): # iterator is not the best way to do this but it's cool to be able to do this
     if pin == "C": # equality overload to test pin name with string
         R1 = Circuits.Resistor(name="R1", resistance=470) # make a resistor
         LED_circuit += R1 # and add it to the circuit 
@@ -38,7 +38,7 @@ for pin in LED_circuit.parts["D1"].pins: # iterator is not the best way to do th
         
 LED_circuit.export(style="EAGLE", filename="led_test_circuit.sch") # write out as a file
 LED_circuit.boardify() # creates a suitable board outline, places the parts, and routes the board 
-LED_circuit.order(provider="4pcb.com", shipping="UPS Ground", ship_to="home") # some day
+#LED_circuit.order(provider="4pcb.com", shipping="UPS Ground", ship_to="home") # some day
 
 
 

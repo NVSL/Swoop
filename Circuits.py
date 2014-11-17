@@ -1,5 +1,7 @@
 import copy
 
+import EagleUtil
+
 class CircuitPlan (object):
     def __init__ (self):
         self.parts = {}
@@ -33,7 +35,10 @@ class CircuitPlan (object):
         b.net = a.net
         
     def export (self, style="EAGLE", filename="default.sch"):
-        pass
+        if style == "EAGLE":
+            sch = EagleUtil.export_to_eagle(self, filename)
+        else:
+            raise ValueError("Style not supported: "+style)
         
     def boardify (self):
         pass
@@ -98,6 +103,10 @@ class Pin (object):
             return self.name == other
         else:
             return object.__eq__(self, other)
+            
+            
+    def __ne__ (self, other):
+        return not (self == other)
         
     def rename (self, name):
         self.name = name

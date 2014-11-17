@@ -53,7 +53,7 @@ class Schematic (object):
         
         Not implemented yet.
         """
-        ET.ElementTree(self.get_et).write(filename)
+        ET.ElementTree(self.get_et()).write(filename)
         
     def add_part (part, sheet_index=0):
         """
@@ -70,14 +70,14 @@ class Schematic (object):
         Returns the ElementTree.Element xml representation.
         """
         eagle = EagleUtil.empty_schematic()
-        EagleUtil.set_settings(self.settings)
-        EagleUtil.set_grid(self.grid)
+        EagleUtil.set_settings(eagle, self.settings)
+        EagleUtil.set_grid(eagle)
         
         for layer in self.layers:
-            EagleUtil.add_layer(layer.get_et())
+            EagleUtil.add_layer(eagle, layer.get_et())
             
         for library in self.libraries:
-            EagleUtil.add_library(library.get_et())
+            EagleUtil.add_library(eagle, library.get_et())
             
         for attribute in self.attributes:
             pass
@@ -86,13 +86,19 @@ class Schematic (object):
             pass
             
         for _class in self.classes:
-            EagleUtil.add_class(_class.get_et())
+            EagleUtil.add_class(eagle, _class.get_et())
             
         for part in self.parts:
-            EagleUtil.add_part(part.get_et())
+            EagleUtil.add_part(eagle, part.get_et())
             
         for sheet in self.sheets:
-            EagleUtil.add_sheet(sheet.get_et())
+            EagleUtil.add_sheet(eagle, sheet.get_et())
+        else:
+            EagleUtil.add_sheet(eagle, EagleUtil.get_empty_sheet())
+            
+        ET.dump(eagle)    
+            
+        return eagle
         
 class Library (object):
     def __init__ (self, name=None, description="", packages={}, symbols={}, devicesets={}):
@@ -185,13 +191,25 @@ class Layer (object):
     """
     Eagle layer structure.
     """
-    def __init__ (self, number=None name=None color=None fill=None visible=None active=None):
+    def __init__ (self, number=None, name=None, color=None, fill=None, visible=None, active=None):
         self.number = number
         self.name = name
         self.color = color
         self.fill = fill
         self.visible = visible
         self.active = active
+        
+    @staticmethod    
+    def from_et (et):
+        assert et.tag() == "layer"
+        layer = Layer(
+            number=et.get("number"),
+            name=et.get("name"),
+            color=et.get("color"),
+            fill=et.get("fill"),
+            visible=et.get("visible"),
+            active=et.get("active")
+        )
         
     def get_et (self):
         """
@@ -205,8 +223,6 @@ class Layer (object):
             visible=self.visible,
             active=self.active
         )
-        
-        
     
     
     

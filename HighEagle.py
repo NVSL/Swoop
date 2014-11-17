@@ -11,13 +11,16 @@ import xml.etree.ElementTree as ET
 
 import EagleUtil
 
+class EagleFormatError (Exception):
+    pass
+
 class Schematic (object):
     """
     This is the top level for a circuit file.
     
     It contains libraries, parts, sheets, and some other information required by the EAGLE file format.
     """
-    def __init__ (self, filename=None):
+    def __init__ (self):
         """
         Initialized an empty schematic or loads a schematic from a .sch file if a file name is specified.
         The empty schematic should be compatible with EAGLE and should open and close with no warnings or errors.
@@ -28,24 +31,83 @@ class Schematic (object):
         self.settings = {}
         self.grid = {}
         self.layers = {}
+        
+        for layer in Layer.default_layers():
+            self.add_layer(layer)
+        
         self.libraries = {}
         self.attributes = {}
         self.variantdefs = {}
         self.classes = {}
         self.parts = {}
         self.sheets = []
-    
-        if filename is not None:
-            self.load_from_file (filename)
             
-    def load_from_file (self, filename):
+    @staticmethod
+    def from_file (filename):
         """
-        Overwrites the current Schematic with a new one loaded from the specified file name.
-        Assumes that the current Schematic has been properly initialized.
+        Loads a Schematic from an EAGLE .sch file.
         """
+        tree = ET.parse(filename)
+        root = tree.getroot()
+        return Schematic.from_et(root)
         
-        self.tree = ET.parse(filename)
-        self.root = self.tree.getroot()
+    @staticmethod
+    def from_et (et):
+        """
+        Loads a Schematic from an ElementTree.Element representation.
+        """
+        sch = Schematic()
+        sch.tree = ET.ElementTree(et)
+        
+        # get sections
+        settings = EagleUtil.get_settings(et)
+        grid = EagleUtil.get_grid(et)
+        layers = EagleUtil.get_layers(et)
+        libraries = EagleUtil.get_libraries(et)
+        attributes = EagleUtil.get_attributes(et)
+        variantdefs = EagleUtil.get_variantdefs(et)
+        classes = EagleUtil.get_classes(et)
+        parts = EagleUtil.get_parts(et)
+        sheets = EagleUtil.get_sheets(et)
+        
+        #transform
+        for setting in settings:
+            for key in setting.attrib:
+                self.settings[key] = setting.attrib[key]
+        else:
+            raise EagleFormatError("No settings found in EAGLE file.")
+                
+        for key in grid.attrib:
+            self.grid[key] = grid.attrib[key]
+            
+        for layer in layers:
+            new_layer = Layer.from_et(layer)
+            self.layers[new_layer.number] = new_layer
+        else:
+            raise EagleFormatError("No layers found in EAGLE file.")
+        
+        for library in libraries:
+            new_lib = Library.from_et(library)
+            self.libraries[new_lib.name] = new_lib
+            
+        for attribute in attributes:
+            pass
+            
+        for variantdef in variantdefs:
+            pass
+            
+        for _class in classes:
+            new_class = NetClass.from_et(_class)
+            self.classes[new_class.name] = new_class
+            
+        for part in parts:
+            new_part = Part.from_et(part)
+            self.parts[new_part.name] = new_part
+            
+        for sheet in sheets:
+            new_sheet = Sheet.from_et(sheet)
+            self.sheets.append(new_sheet)
+        
         
     def write (self, filename):
         """
@@ -65,6 +127,11 @@ class Schematic (object):
         # add part to sheet_index
         # make sure part is in library
         
+    def add_layer (self, layer):
+        #print "Schematic add_layer()"
+        assert isinstance(layer, Layer)
+        self.layers[layer.number] = layer
+        
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.
@@ -73,7 +140,7 @@ class Schematic (object):
         EagleUtil.set_settings(eagle, self.settings)
         EagleUtil.set_grid(eagle)
         
-        for layer in self.layers:
+        for layer in self.layers.values():
             EagleUtil.add_layer(eagle, layer.get_et())
             
         for library in self.libraries:
@@ -108,11 +175,31 @@ class Library (object):
         self.symbols = symbols
         self.devicesets = devicesets
         
+    def load_from_file (self, filename):
+        """
+        Overwrites the current Library with a new one loaded from the specified file name.
+        """
+        
+    def load_from_et (self, root):
+        """
+        Loads a Library from an EAGLE .lbr file.
+        """
+        pass
+        
+    @staticmethod
+    def from_et (root):
+        
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.
         """
         pass
+        
+    def get_part (self, name=None, deviceset=None, device=None, package=None):
+        """
+        Searches the library for a device that fits the specified parameters.
+        """
+        
         
 class Part (object):
     def __init__ (self, name=None, library=None, deviceset=None, device=None, package=None):
@@ -120,6 +207,9 @@ class Part (object):
         self.library = library
         self.deviceset = deviceset
         self.device = device
+        
+    @staticmethod
+    def from_et (root):
         
     def get_et (self):
         """
@@ -134,6 +224,9 @@ class DeviceSet (object):
         self.description = description
         self.gates = gates
         
+    @staticmethod
+    def from_et (root):
+        
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.
@@ -144,6 +237,9 @@ class Device (object):
     def __init__ (self, name=None, technologies=[]):
         self.name = name
         self.technologies = technologies
+        
+    @staticmethod
+    def from_et (root):
         
     def get_et (self):
         """
@@ -158,6 +254,9 @@ class Sheet (object):
         self.busses = busses
         self.nets = nets
         
+    @staticmethod
+    def from_et (root):
+        
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.
@@ -170,6 +269,9 @@ class Net (object):
         self._class = _class
         self.segments = segments
         
+    @staticmethod
+    def from_et (root):
+        
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.
@@ -181,11 +283,35 @@ class Segment (object):
         self.pinrefs = pinrefs
         self.wires = wires
         
+    @staticmethod
+    def from_et (root):
+        
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.
         """
         pass
+        
+class NetClass (object):
+    """
+    Eagle net class structure.
+    This is called "class" in the EAGLE file but we can't use that in Python :package
+    """
+    
+    def __init__ (self, number=None, name=None, width=None, drill=None):
+        self.number = number
+        self.name = name
+        self.width = width
+        self.drill = drill
+        
+    @staticmethod
+    def from_et (root):
+        number = root.get("number")
+        name = root.get("name")
+        width = root.get("width")
+        drill = root.get("drill")
+        
+        return NetClass(number=number, name=name, width=width, drill=drill)
     
 class Layer (object):
     """
@@ -201,7 +327,8 @@ class Layer (object):
         
     @staticmethod    
     def from_et (et):
-        assert et.tag() == "layer"
+        #print "Layer from_et()"
+        assert et.tag == "layer"
         layer = Layer(
             number=et.get("number"),
             name=et.get("name"),
@@ -210,6 +337,16 @@ class Layer (object):
             visible=et.get("visible"),
             active=et.get("active")
         )
+        return layer
+        
+    @staticmethod
+    def default_layers ():
+        #print "Layer default_layers()"
+        et_layers = EagleUtil.get_default_layers()
+        et_layers = et_layers.findall("./layer")
+        layers = [Layer.from_et(layer) for layer in et_layers]
+        return layers
+        
         
     def get_et (self):
         """

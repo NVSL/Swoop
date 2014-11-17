@@ -75,10 +75,11 @@ def make_layer (number=None, name=None, color="7", fill="1", visible="yes", acti
 def add_layer (root, layer_root):
     assert(isinstance(root, ET.Element))
     assert(isinstance(layer_root, ET.Element))
-    root.find("./drawing/layers").extend(layer_root)
+    assert(layer_root.tag == "layer")
+    root.find("./drawing/layers").append(layer_root)
     
 def get_default_layers ():
-    return ET.ElementTree.fromstring(
+    return ET.fromstring(
         """
         <layers>
         <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
@@ -200,6 +201,39 @@ def get_default_layers ():
         """
     )
     
+def get_layers (root):
+    layers = root.findall("./drawing/layers/layer")
+    return layers
+    
+def get_grid (root):
+    grid_root = root.find("./drawing/grid")
+    return grid_root
+    
+def get_sheets (root):
+    sheets = root.findall("./drawing/schematic/sheets/sheet")
+    return sheets
+    
+def get_settings (root):
+    settings = root.findall("./drawing/settings")
+    return settings
+    
+def get_libraries (root):
+    libraries = root.findall("./drawing/schematic/libraries/library")
+    return libraries
+    
+def get_attributes (root):
+    return []
+    
+def get_variantdefs (root):
+    return []
+    
+def get_classes (root):
+    classes = root.findall("./drawing/schematic/classes")
+    return classes
+    
+def get_parts (root):
+    parts = root.findall("./drawing/schematic/parts/part")
+    return parts
     
 def set_settings (root, settings):
     settings_root = root.find("./drawing/settings")
@@ -231,7 +265,6 @@ def set_grid (
     altunitdist="inch",
     altunit="inch"
 ):
-    assert(isinstance(root, ET.Element))
     grid_root = root.find("./drawing/grid")
     grid_root.set("distance", distance)
     grid_root.set("unitdist", unitdist)

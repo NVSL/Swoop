@@ -71,24 +71,26 @@ class Schematic (object):
         sheets = EagleUtil.get_sheets(et)
         
         #transform
+        #print "Working on settings.", "Found", len(settings)
         for setting in settings:
             for key in setting.attrib:
-                self.settings[key] = setting.attrib[key]
-        else:
-            raise EagleFormatError("No settings found in EAGLE file.")
+                sch.settings[key] = setting.attrib[key]
+                #print "Got:", key, setting.attrib[key]
+                
+        #print sch.settings
                 
         for key in grid.attrib:
-            self.grid[key] = grid.attrib[key]
+            sch.grid[key] = grid.attrib[key]
             
         for layer in layers:
             new_layer = Layer.from_et(layer)
-            self.layers[new_layer.number] = new_layer
-        else:
-            raise EagleFormatError("No layers found in EAGLE file.")
+            sch.layers[new_layer.number] = new_layer
+            
+        assert len(sch.layers) > 0, "No layers in schematic."
         
         for library in libraries:
             new_lib = Library.from_et(library)
-            self.libraries[new_lib.name] = new_lib
+            sch.libraries[new_lib.name] = new_lib
             
         for attribute in attributes:
             pass
@@ -96,17 +98,17 @@ class Schematic (object):
         for variantdef in variantdefs:
             pass
             
-        for _class in classes:
-            new_class = NetClass.from_et(_class)
-            self.classes[new_class.name] = new_class
+        for net_class in classes:
+            new_class = NetClass.from_et(net_class)
+            sch.classes[new_class.name] = new_class
             
         for part in parts:
             new_part = Part.from_et(part)
-            self.parts[new_part.name] = new_part
+            sch.parts[new_part.name] = new_part
             
         for sheet in sheets:
             new_sheet = Sheet.from_et(sheet)
-            self.sheets.append(new_sheet)
+            sch.sheets.append(new_sheet)
         
         
     def write (self, filename):
@@ -167,9 +169,41 @@ class Schematic (object):
             
         return eagle
         
-class Library (object):
-    def __init__ (self, name=None, description="", packages={}, symbols={}, devicesets={}):
+class Pin (object):
+    """
+    EAGLE pin tag.
+    This is a connectible pin on a circuit Symbol. It maps to a Pad or SMD on a Package.
+    """
+    
+    def __init__ (self, name=None, x=None, y=None, visible=None, length=None, direction=None, swaplevel=None, rot=None):
         self.name = name
+        self.x = x
+        self.y = y
+        self.visible = visible
+        self.length = length
+        self.direction = direction
+        self.swaplevel = swaplevel
+        self.rot = rot
+        
+    @classmethod
+    def from_et (cls, pin_root):
+        return cls(
+            x=pin_root.get("x"),
+            y=pin_root.get("y"),
+            visible=pin_root.get("visible"),
+            length=pin_root.get("length"),
+            direction=pin_root.get("direction"),
+            swaplevel=pin_root.get("swaplevel"),
+            rot=pin_root.get("rot")
+        )
+        
+class Library (object):
+    def __init__ (self, name=None, description="", packages=None, symbols=None, devicesets=None):
+        self.name = name
+        if packages is None: packages = {}
+        if symbols is None: symbols = {}
+        if devicesets is None: devicesets = {}
+        
         self.description = description
         self.packages = packages
         self.symbols = symbols
@@ -180,14 +214,44 @@ class Library (object):
         Overwrites the current Library with a new one loaded from the specified file name.
         """
         
-    def load_from_et (self, root):
+    def load_from_file (self, filename):
         """
         Loads a Library from an EAGLE .lbr file.
         """
         pass
         
-    @staticmethod
-    def from_et (root):
+    @classmethod
+    def from_et (cls, library_root):
+        assert library_root.tag == "library"
+        
+        lib = cls(name=library_root.get("name"))
+        print "Loading library:", lib.name
+        lib.description = EagleUtil.get_description(library_root)
+        
+        packages = EagleUtil.get_packages(library_root)
+        symbols = EagleUtil.get_symbols(library_root)
+        devicesets = EagleUtil.get_devicesets(library_root)
+        
+        lib.packages = {}
+        for package in packages:
+            new_package = Package.from_et(package)
+            assert new_package.name not in lib.packages, "Cannot have duplicate package names: "+new_package.name
+
+            lib.packages[new_package.name] = new_package
+            
+        lib.symbols = {}
+        for symbol in symbols:
+            new_symbol = Symbol.from_et(symbol)
+            assert new_symbol.name not in lib.symbols, "Cannot have duplicate symbol names: "+new_symbol.name
+            lib.symbols[new_symbol.name] = new_symbol
+            
+        lib.devicesets = {}
+        for deviceset in devicesets:
+            new_deviceset = DeviceSet.from_et(deviceset)
+            assert new_deviceset.name not in lib.devicesets, "Cannot have duplicate devicesets names: "+new_deviceset.name
+            lib.devicesets[new_deviceset.name] = new_deviceset
+            
+        return lib
         
     def get_et (self):
         """
@@ -200,46 +264,373 @@ class Library (object):
         Searches the library for a device that fits the specified parameters.
         """
         
+class Package (object):
+    def __init__ (self, name=None, contacts=None, drawing=None):
+        self.name = name
+        
+        if contacts is None: contacts = {}
+        if drawing is None: drawing = []
+        
+        self.drawing = drawing
+        self.contacts = contacts
+        
+    def __str__ (self):
+        string = ""
+        for key in self.__dict__:
+            string += key+": "+(self.__dict__[key].__str__())+"\n"
+        return string
+        
+    @staticmethod
+    def from_et (package_root):
+        new_package = Package()
+        new_package.name = None
+        new_package.contacts = {}
+        new_package.drawing = []
+        
+        new_package.name = package_root.get("name")
+        pads = EagleUtil.get_pads(package_root)
+        smds = EagleUtil.get_smds(package_root)
+        drawings = EagleUtil.get_drawing(package_root)
+        
+        for pad in pads:
+            new_pad = Pad.from_et(pad)
+            assert new_pad.name not in new_package.contacts, "Cannot add pad with duplicate name: "+new_pad.name
+            new_package.contacts[new_pad.name] = new_pad
+        
+        for smd in smds:
+            new_smd = SMD.from_et(smd)
+            assert new_smd.name not in new_package.contacts, "Cannot add smd with duplicate name: "+new_smd.name
+            new_package.contacts[new_smd.name] = new_smd
+            
+        for drawing in drawings:
+            new_drawing = Drawing.from_et(drawing)
+            new_package.drawing.append(new_drawing)
+        
+        return new_package
+        
+class Pad (object):
+    """
+    EAGLE pad tag.
+    This is a through-hole contact in a Package that gets mapped to a Pin on a Gate.
+    """
+  
+    def __init__ (self, name=None, x=None, y=None, drill=None, diameter=None, shape=None, rot=None):
+        self.name = name
+        self.x = x
+        self.y = y
+        self.drill = drill
+        self.diameter = diameter
+        self.shape = shape
+        self.rot = rot
+    
+    @staticmethod
+    def from_et (pad_root):
+        assert pad_root.tag == "pad"
+        return Pad(
+            name=pad_root.get("name"),
+            x=pad_root.get("x"),
+            y=pad_root.get("y"),
+            drill=pad_root.get("drill"),
+            diameter=pad_root.get("diameter"),
+            shape=pad_root.get("shape"),
+            rot=pad_root.get("rot")
+        )
+        
+class Rectangle (object):
+    """
+    EAGLE rectangle tag.
+    This is used to draw text on the schematic or board.
+    """
+    def __init__ (
+        self, 
+        x1=None, 
+        y1=None, 
+        x2=None, 
+        y2=None,
+        layer=None, 
+    ):
+        self.x1 = x1
+        self.y1 = y1
+        self.x2 = x2
+        self.y2 = y2
+        self.layer = layer
+        
+    @staticmethod
+    def from_et (rectangle_root):
+        assert rectangle_root.tag == "rectangle"
+        return Rectangle(
+            x1=rectangle_root.get("x1"),
+            y1=rectangle_root.get("y1"),
+            x2=rectangle_root.get("x2"),
+            y2=rectangle_root.get("y2"),
+            layer=rectangle_root.get("layer")
+        )
+        
+class Text (object):
+    """
+    EAGLE text tag.
+    This is used to draw text on the schematic or board.
+    """
+    def __init__ (self, x=None, y=None, size=None, layer=None, text=None):
+        self.x = x
+        self.y = y
+        self.size = size
+        self.layer = layer
+        self.text = text
+        
+    @staticmethod
+    def from_et (text_root):
+        assert text_root.tag == "text"
+        return Text(
+            x=text_root.get("x"),
+            y=text_root.get("y"),
+            size=text_root.get("size"),
+            layer=text_root.get("layer"),
+            text=text_root.text
+        )
+        
+class Circle (object):
+    """
+    EAGLE circle tag.
+    This is used to draw a circle on the schematic or board.
+    """
+    def __init__ (self, x=None, y=None, radius=None, width=None, layer=None):
+        self.x = x
+        self.y = y
+        self.radius = radius
+        self.width = width
+        self.layer = layer
+
+        
+    @staticmethod
+    def from_et (circle_root):
+        assert circle_root.tag == "circle"
+        return Circle(
+            x=circle_root.get("x"),
+            y=circle_root.get("y"),
+            radius=circle_root.get("radius"),
+            width=circle_root.get("width"),
+            layer=circle_root.get("layer")
+        )
+        
+class Drawing (object):
+    """
+    EAGLE drawing tag.
+    This is an abstract tag that is used for wire, rectangle, circle, etc.
+    """
+    
+    @staticmethod
+    def from_et (drawing_root):
+        if drawing_root.tag == "wire":
+            return Wire.from_et(drawing_root)
+        elif drawing_root.tag == "circle":
+            return Circle.from_et(drawing_root)
+        elif drawing_root.tag == "rectangle":
+            return Rectangle.from_et(drawing_root)
+        elif drawing_root.tag == "text":
+            return Text.from_et(drawing_root)
+        else:
+            raise Exception("Don't know how to parse "+drawing_root.tag+" tag as a drawing tag.")
+        
+class SMD (object):
+    """
+    EAGLE smd tag.
+    This is a smd contact in a Package that gets mapped to a Pin on a Gate.
+    """
+  
+    def __init__ (self, name=None, x=None, y=None, dx=None, dy=None, layer=None, rot=None):
+        self.name = name
+        self.x = x
+        self.y = y
+        self.x = dx
+        self.y = dy
+        self.layer = layer
+        self.rot = rot
+    
+    @staticmethod
+    def from_et (smd_root):
+        assert smd_root.tag == "smd"
+        return SMD(
+            name=smd_root.get("name"),
+            x=smd_root.get("x"),
+            y=smd_root.get("y"),
+            dx=smd_root.get("dx"),
+            dy=smd_root.get("dy"),
+            layer=smd_root.get("layer"),
+            rot=smd_root.get("rot")
+        )        
+               
+class Symbol (object):
+    """
+    EAGLE symbol section.
+    This section holds circuit diagram symbols that can be used as gates for Devices and Parts.
+    """
+    
+    def __init__ (self, name=None, drawing=None, pins=None):
+        self.name = name
+        
+        if drawing is None: drawing = []
+        if pins is None: pins = {}
+        
+        self.drawing = drawing
+        self.pins = pins
+    
+    @classmethod
+    def from_et (cls, symbol_root):
+        assert symbol_root.tag == "symbol"
+        
+        symbol = cls()
+        symbol.name = symbol_root.get("name")
+        
+        drawings = EagleUtil.get_drawing(symbol_root)
+        for drawing in drawings:
+            new_drawing = Drawing.from_et(drawing)
+            symbol.drawing.append(new_drawing)
+            
+        pins = EagleUtil.get_pins(symbol_root)
+        for pin in pins:
+            new_pin = Pin.from_et(pin)
+            symbol.pins[new_pin.name] = new_pin   
+
+        return symbol
         
 class Part (object):
-    def __init__ (self, name=None, library=None, deviceset=None, device=None, package=None):
+    def __init__ (self, name=None, library=None, deviceset=None, device=None, package=None, value=None):
         self.name = name
         self.library = library
         self.deviceset = deviceset
         self.device = device
+        self.package = package
+        self.value = value
         
     @staticmethod
     def from_et (root):
+        name = root.get("name")
+        library = root.get("library")
+        deviceset = root.get("deviceset")
+        device = root.get("device")
+        package = root.get("package")
+        value = root.get("value")
+        
+        return Part(name=name, library=library, deviceset=deviceset, device=device, package=package, value=value)
         
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.
         """
         pass
+       
         
 class DeviceSet (object):
-    def __init__ (self, name=None, prefix=None, devices={}, description="", gates={}):
+    def __init__ (self, name=None, prefix=None, devices=None, description="", gates=None):
+    
+        if devices is None: devices = {}
+        if gates is None: gates = {}
+    
         self.name = name
         self.prefix = prefix
         self.description = description
         self.gates = gates
+        self.devices = devices
         
-    @staticmethod
-    def from_et (root):
+    @classmethod
+    def from_et (cls, deviceset_root):
+        deviceset = cls(name=deviceset_root.get("name"))
+        deviceset.description = EagleUtil.get_description(deviceset_root)
+        
+        gates = EagleUtil.get_gates(deviceset_root)
+        devices = EagleUtil.get_devices(deviceset_root)
+        
+        for gate in gates:
+            new_gate = Gate.from_et(gate)
+            name = new_gate.name
+            deviceset.gates[name] = new_gate
+            
+        for device in devices:
+            new_device = Device.from_et(device)
+            name = new_device.name
+            deviceset.devices[name] = new_device
+        
+        return deviceset
         
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.
         """
         pass
+        
+class Gate (object):
+    """
+    EAGLE Gate.    
+    This is a subsection of DeviceSet that specifies the schematic symbol for all Devices in the DeviceSet.
+    """
+    
+    def __init__ (self, name=None, symbol=None, x=0, y=0):
+        self.name = name
+        self.symbol = symbol
+        self.x = x
+        self.y = y
+        
+    @staticmethod
+    def from_et (gate_root):
+        gate = Gate(
+            name=gate_root.get("name"),
+            symbol=gate_root.get("symbol"),
+            x=gate_root.get("x"),
+            y=gate_root.get("y")
+        )
+        return gate
+        
+class Connect (object):
+    """
+    EAGLE connect tag.
+    This maps a Gate's Pin to a Package's Pad or SMD. Subsection of Device.
+    """
+    
+    def __init__ (self, gate=None, pin=None, pad=None):
+        self.gate = gate
+        self.pin = pin
+        self.pad = pad
+        
+    @classmethod
+    def from_et (cls, connect_root):
+        assert connect_root.tag == "connect"
+        return cls(
+            gate=connect_root.get("gate"),
+            pin=connect_root.get("pin"),
+            pad=connect_root.get("pad")
+        )
         
 class Device (object):
-    def __init__ (self, name=None, technologies=[]):
+    def __init__ (self, name=None, package=None, connects=None, technologies=None):
+    
+        if connects is None: connects = []
+        if technologies is None: technologies = {}
         self.name = name
+        self.package = package
+        self.connects = connects
         self.technologies = technologies
         
-    @staticmethod
-    def from_et (root):
+    @classmethod
+    def from_et (cls, device_root):
+        assert device_root.tag == "device"
+        device = cls()
+        
+        device.name = device_root.get("name")
+        device.package = device_root.get("package")
+        
+        connects = EagleUtil.get_connects(device_root)
+        for connect in connects:
+            new_connect = Connect.from_et(connect)
+            device.connects.append(new_connect)
+            
+        technologies = EagleUtil.get_technologies(device_root)
+        for technology in technologies:
+            new_technology = Technology.from_et(technology)
+            name = new_technology.name
+            device.technologies[name] = new_technology
+                
+        return device
         
     def get_et (self):
         """
@@ -247,15 +638,62 @@ class Device (object):
         """
         pass
         
+class Technology (object):
+    """
+    EAGLE Technology section.
+    This is a subsection of Device.
+    """
+    
+    def __init__ (self, name=None, attributes=None):
+        if attributes is None: attributes = {}
+        self.attributes = attributes
+        self.name = name
+        
+    @classmethod
+    def from_et (cls, technology_root):
+        tech = cls()
+        tech.name = technology_root.get("name")
+        attributes = EagleUtil.get_attributes(technology_root)
+        
+        for attribute in attributes:
+            tech.attributes[attribute.get("name")] = attribute.get("value")
+ 
+        return tech
+        
 class Sheet (object):
-    def __init__ (self, plain=[], instances={}, busses=[], nets={}):
+    def __init__ (self, plain=None, instances=None, busses=None, nets=None):
+        if plain is None: plain = []
+        if instances is None: instances = []
+        if busses is None: busses = {}
+        if nets is None: nets = {}
+    
         self.plain = plain
         self.instances = instances
         self.busses = busses
         self.nets = nets
         
-    @staticmethod
-    def from_et (root):
+    @classmethod
+    def from_et (cls, sheet_root):
+        assert sheet_root.tag == "sheet"
+        sheet = cls()
+        
+        plain = EagleUtil.get_plain(sheet_root)
+        sheet.plain = plain
+        
+        instances = EagleUtil.get_instances(sheet_root)
+        for instance in instances:
+            new_instance = Instance.from_et(instance)
+            sheet.instances.append(new_instance)
+            
+        busses = EagleUtil.get_buses(sheet_root)
+        sheet.busses = busses
+        
+        nets = EagleUtil.get_nets(sheet_root)
+        for net in nets:
+            new_net = Net.from_et(net)
+            sheet.nets[new_net.name] = new_net
+            
+        return sheet
         
     def get_et (self):
         """
@@ -264,13 +702,25 @@ class Sheet (object):
         pass
         
 class Net (object):
-    def __init__ (self, name=None, _class="0", segments=[]):
+    def __init__ (self, name=None, net_class="0", segments=None):
+        if segments is None: segments = []
+        
         self.name = name
-        self._class = _class
+        self.net_class = net_class
         self.segments = segments
         
     @staticmethod
-    def from_et (root):
+    def from_et (net_root):
+        assert net_root.tag == "net"
+        net = Net()
+        net.net_class = net_root.get("class")
+        net.name = net_root.get("name")
+        
+        segments = EagleUtil.get_segments(net_root)
+        
+        for segment in segments:
+            new_segment = Segment.from_et(segment)
+            self.segments.append(new_segment)
         
     def get_et (self):
         """
@@ -279,18 +729,96 @@ class Net (object):
         pass
         
 class Segment (object):
-    def __init__ (self, pinrefs=[], wires=[]):
+    def __init__ (self, pinrefs=None, wires=None, labels=None):
+        if pinrefs is None: pinrefs = []
+        if wires is None: wires = []
+        if labels is None: labels = []
+    
         self.pinrefs = pinrefs
         self.wires = wires
+        self.labels = labels
         
     @staticmethod
-    def from_et (root):
+    def from_et (segment_root):
+        assert segment_root.tag == "segment"
+        segment = Segment()
+        wires = EagleUtil.get_wires(segment_root)
+        pinrefs = EagleUtil.get_pinrefs(segment_root)
+        labels = EagleUtil.get_labels(segment_root)
+        
+        for wire in wires:
+            new_wire = Wire.from_et(wire)
+            segment.wires.append(new_wire)
+            
+        for pinref in pinrefs:
+            new_pinref = PinRef.from_et(pinref)
+            segment.pinregs.append(new_pinref)
+            
+        for label in labels:
+            new_label = Label.from_et(label)
+            segment.labels.append(new_label)
+            
+        return segement
         
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.
         """
         pass
+        
+class Wire (object):
+    """
+    EAGLE Wire.
+    This class is used by EAGLE to draw straight lines. Nothing to do with electrical connections.
+    """
+    
+    def __init__ (
+        self, 
+        x1=None, 
+        x2=None, 
+        y1=None, 
+        y2=None, 
+        width=None, 
+        layer=None
+    ):
+        self.x1 = x1
+        self.x2 = x2
+        self.y1 = y1
+        self.y2 = y2
+        self.width = width
+        self.layer = layer
+        
+    @staticmethod
+    def from_et (wire_root):
+        assert wire_root.tag == "wire"
+        return Wire(
+            x1=wire_root.get("x1"),
+            x2=wire_root.get("x2"),
+            y1=wire_root.get("y1"),
+            y2=wire_root.get("y2"),
+            width=wire_root.get("width"),
+            layer=wire_root.get("layer")
+        )
+        
+class PinRef (object):
+    """
+    EAGLE pinref tag.
+    This is used in Net Segment to show that a Part's pin is connected to the Net."
+    """
+    
+    def __init__ (self, part=None, gate=None, pin=None):
+        self.part = part
+        self.gate = gate
+        self.pin = pin
+        
+    @staticmethod
+    def from_et (pinref_root):
+        assert pinref_root.tag == "pinref"
+        return PinRef(
+            part=pinref_root.get("part"),
+            gate=pinref_root.get("gate"),
+            pin=pinref_root.get("part")
+        )
         
 class NetClass (object):
     """
@@ -361,7 +889,23 @@ class Layer (object):
             active=self.active
         )
     
-    
+class Instance (object):
+    def __init__ (self, gate=None, part=None, x=None, y=None, rot=None):
+        self.gate = gate
+        self.part = part
+        self.x = x
+        self.y = y
+        
+    @staticmethod
+    def from_et (instance_root):
+        assert instance_root.tag == "instance"
+        return Instance(
+            gate=instance_root.get("gate"),
+            part=instance_root.get("part"),
+            x=instance_root.get("x"),
+            y=instance_root.get("y"),
+            rot=instance_root.get("rot")
+        )
     
     
     

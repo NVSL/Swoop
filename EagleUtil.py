@@ -202,24 +202,42 @@ def get_default_layers ():
     )
     
 def get_layers (root):
-    layers = root.findall("./drawing/layers/layer")
-    return layers
+    if root.tag == "eagle":
+        layers = root.findall("./drawing/layers/layer")
+        return layers
+    else:
+        raise NotImplementedError("Don't know how to find layers in "+root.tag+" section.")   
     
 def get_grid (root):
-    grid_root = root.find("./drawing/grid")
-    return grid_root
+    if root.tag == "eagle":
+        grid_root = root.find("./drawing/grid")
+        return grid_root
+    else:
+        raise NotImplementedError("Don't know how to find grid in "+root.tag+" section.")
+    
     
 def get_sheets (root):
-    sheets = root.findall("./drawing/schematic/sheets/sheet")
-    return sheets
+    if root.tag == "eagle":
+        sheets = root.findall("./drawing/schematic/sheets/sheet")
+        return sheets
+    else:
+        raise NotImplementedError("Don't know how to find sheets in "+root.tag+" section.")
+    
     
 def get_settings (root):
-    settings = root.findall("./drawing/settings")
-    return settings
+    if root.tag == "eagle":
+        settings = root.findall("./drawing/settings/setting")
+        return settings
+    else:
+        raise NotImplementedError("Don't know how to find settings in "+root.tag+" section.")
     
 def get_libraries (root):
-    libraries = root.findall("./drawing/schematic/libraries/library")
-    return libraries
+    if root.tag == "eagle":
+        libraries = root.findall("./drawing/schematic/libraries/library")
+        return libraries
+    else:
+        raise NotImplementedError("Don't know how to find libraries in "+root.tag+" section.")
+
     
 def get_attributes (root):
     return []
@@ -227,13 +245,30 @@ def get_attributes (root):
 def get_variantdefs (root):
     return []
     
-def get_classes (root):
-    classes = root.findall("./drawing/schematic/classes")
-    return classes
+def get_description (root):
+    desc = root.find("./description")
     
+    if desc is not None:
+        return desc.text
+    else:
+        return None
+    
+def get_classes (root):
+    if root.tag == "eagle":
+        classes = root.findall("./drawing/schematic/classes")
+        return classes
+    else:
+        raise NotImplementedError("Don't know how to find classes in "+root.tag+" section.")
+
 def get_parts (root):
     parts = root.findall("./drawing/schematic/parts/part")
     return parts
+    
+def get_packages (root):
+    if root.tag == "library":
+        return root.findall("./packages/package")
+    else:
+        raise Exception("Don't know how to find packages in section: "+root.tag)
     
 def set_settings (root, settings):
     settings_root = root.find("./drawing/settings")
@@ -289,3 +324,145 @@ def get_empty_sheet ():
     ET.SubElement(sheet, "nets")
     
     return sheet
+
+def get_symbols (root):
+    if root.tag == "library":
+        return root.findall("./symbols/symbol")
+    else:
+        raise NotImplementedError("Don't know how to find symbols in "+root.tag+" section.")
+
+def get_devicesets (root):
+    if root.tag == "library":
+        return root.findall("./devicesets/deviceset")
+    else:
+        raise NotImplementedError("Don't know how to find devicesets in "+root.tag+" section.")
+
+def get_pads (root):
+    if root.tag == "package":
+        return root.findall("pad")
+    else:
+        raise NotImplementedError("Don't know how to find pads in "+root.tag+" section.")
+
+def get_smds (root):
+    if root.tag == "package":
+        return root.findall("smd")
+    else:
+        raise NotImplementedError("Don't know how to find pads in "+root.tag+" section.")
+
+def get_drawing (root):
+    drawings = []
+    
+    drawings += root.findall("./wire")
+    drawings += root.findall("./rectangle")
+    drawings += root.findall("./text")
+    drawings += root.findall("./circle")
+    
+    return drawings
+
+def get_pins (root):
+    if root.tag == "symbol":
+        return root.findall("./pin")
+    else:
+        raise NotImplementedError("Don't know how to find pins in "+root.tag+" section.")
+
+def get_gates (root):
+    if root.tag == "deviceset":
+        return root.findall("./gates/gate")
+    else:
+        raise NotImplementedError("Don't know how to find gates in "+root.tag+" section.")
+
+def get_devices (root):
+    if root.tag == "deviceset":
+        return root.findall("./devices/device")
+    else:
+        raise NotImplementedError("Don't know how to find device in "+root.tag+" section.")
+
+def get_connects (root):
+    if root.tag == "device":
+        return root.findall("./connects/connect")
+    else:
+        raise NotImplementedError("Don't know how to find connects in "+root.tag+" section.")
+
+def get_technologies (root):
+    if root.tag == "device":
+        return root.findall("./technologies/technology")
+    else:
+        raise NotImplementedError("Don't know how to find technologies in "+root.tag+" section.")
+
+def get_plain (root):
+    if root.tag == "sheet":
+        return root.findall("./plain/*")
+    else:
+        raise NotImplementedError("Don't know how to find plain in "+root.tag+"section.")
+
+def get_instances (root):
+    if root.tag == "sheet":
+        return root.findall("./instances/instance")
+    else:
+        raise NotImplementedError("Don't know how to find instances in "+root.tag+"section.")
+
+def get_buses (root):
+    if root.tag == "sheet":
+        return root.findall("./buses/bus")
+    else:
+        raise NotImplementedError("Don't know how to find buses in "+root.tag+"section.")
+
+def get_nets (root):
+    if root.tag == "sheet":
+        return root.findall("./nets/net")
+    else:
+        raise NotImplementedError("Don't know how to find nets in "+root.tag+"section.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

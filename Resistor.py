@@ -196,7 +196,10 @@ class PartType:
 
     # magic to allow us to assign query objects to the fields.
     def __setattr__(self, name, value):
-        self.__dict__[name].value = value
+        if type(value) is int or type(value) is float:
+            self.__dict__[name].value = Exact(value)
+        else:
+            self.__dict__[name].value = value
                     
     def getParameter(self, s):
         return getattr(self, s)
@@ -324,6 +327,11 @@ if __name__ == "__main__":
 
     print "10 pF Cap"
     c = CeramicCapacitor(capacitance=Exact(pF(10)))
+    print c
+    print resolver.resolve(c)
+
+    print "0.1 uF Cap"
+    c = CeramicCapacitor(capacitance=uF(0.1)) # if you leave off the query, it defaults to exact
     print c
     print resolver.resolve(c)
 

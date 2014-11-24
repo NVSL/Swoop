@@ -288,7 +288,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     # define a resolution environment. It's a map between part type names and
-    # tuples.  The first entry of the tuble is a database of parts of that
+    # tuples.  The first entry of the tuple is a database of parts of that
     # type.  The entry of the tuple is a list priorities for selecting a part.
     # In this case, we prefer 0805 to 0603 to through hole, 10% over 5%, lower
     # power, and low priced (prioritized in that order).
@@ -305,12 +305,12 @@ if __name__ == "__main__":
                                                                 Minimize("price")])
                                           })
     
-    # A 1K resistor that can disapate at least 0.5W
+    # A 1K resistor that can dissipate at least 0.5W
     highWatt = Resistor()
     highWatt.resistance.value = Exact(1000)
     highWatt.watts.value = GT(0.5)
 
-    # A 1K resistor that can disapate at least 0.125W (and fancy args)
+    # A 1K resistor that can dissipate at least 0.125W (and fancy args)
     lowWatt = Resistor(resistance=Exact(1000),
                        watts=GT(0.125))
     

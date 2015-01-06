@@ -7,11 +7,15 @@ print
 
 print "Exporting empty schematic."
 print
-schematic.write("test.sch")
+schematic.write("empty.sch")
 print
 
-filename = "Adafruit-Trinket-5V.sch"
+filename = "Trinket_TH_thru_parts_power_breakout.sch"
 print "Loading", filename
 print
 loaded_schematic = HE.Schematic.from_file(filename)
 print
+
+print "Exporting loaded file."
+print 
+loaded_schematic.write("test_load.sch")

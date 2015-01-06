@@ -14,6 +14,13 @@ import EagleUtil
 class EagleFormatError (Exception):
     pass
 
+class HighEagle (object):
+    def from_et ():
+        raise NotImplementedError()
+    
+    def get_et ():
+        raise NotImplementedError()
+    
 class Schematic (object):
     """
     This is the top level for a circuit file.
@@ -68,6 +75,7 @@ class Schematic (object):
         variantdefs = EagleUtil.get_variantdefs(et)
         classes = EagleUtil.get_classes(et)
         parts = EagleUtil.get_parts(et)
+        assert len(parts) > 0
         sheets = EagleUtil.get_sheets(et)
         
         #transform
@@ -89,6 +97,7 @@ class Schematic (object):
         assert len(sch.layers) > 0, "No layers in schematic."
         
         for library in libraries:
+            print library
             new_lib = Library.from_et(library)
             sch.libraries[new_lib.name] = new_lib
             
@@ -99,17 +108,23 @@ class Schematic (object):
             pass
             
         for net_class in classes:
+            print net_class
             new_class = NetClass.from_et(net_class)
             sch.classes[new_class.name] = new_class
             
         for part in parts:
+            print part
             new_part = Part.from_et(part)
             sch.parts[new_part.name] = new_part
             
+        assert len(sch.parts) > 0
+            
         for sheet in sheets:
+            print sheet
             new_sheet = Sheet.from_et(sheet)
             sch.sheets.append(new_sheet)
         
+        return sch
         
     def write (self, filename):
         """
@@ -138,15 +153,22 @@ class Schematic (object):
         """
         Returns the ElementTree.Element xml representation.
         """
-        eagle = EagleUtil.empty_schematic()
+        
+        print
+        print
+        print
+        print
+        
+        eagle = EagleUtil.make_eagle()
         EagleUtil.set_settings(eagle, self.settings)
         EagleUtil.set_grid(eagle)
         
         for layer in self.layers.values():
             EagleUtil.add_layer(eagle, layer.get_et())
-            
-        for library in self.libraries:
+
+        for library in self.libraries.values():
             EagleUtil.add_library(eagle, library.get_et())
+            
             
         for attribute in self.attributes:
             pass
@@ -154,15 +176,30 @@ class Schematic (object):
         for varientdef in self.variantdefs:
             pass
             
-        for _class in self.classes:
-            EagleUtil.add_class(eagle, _class.get_et())
+        ET.dump(eagle) 
             
-        for part in self.parts:
+        print
+        print "Adding net classes"
+        
+        for net_class in self.classes.values():
+            EagleUtil.add_class(eagle, net_class.get_et())
+            
+        ET.dump(eagle) 
+        
+        print
+        print "Adding parts"
+        for part in self.parts.values():
             EagleUtil.add_part(eagle, part.get_et())
             
-        for sheet in self.sheets:
+        ET.dump(eagle) 
+            
+        print   
+        print "Adding sheets"
+        for i, sheet in enumerate(self.sheets):
             EagleUtil.add_sheet(eagle, sheet.get_et())
-        else:
+            print "Sheet", i
+            #ET.dump(eagle) 
+        if len(self.sheets) == 0:
             EagleUtil.add_sheet(eagle, EagleUtil.get_empty_sheet())
             
         ET.dump(eagle)    
@@ -176,6 +213,7 @@ class Pin (object):
     """
     
     def __init__ (self, name=None, x=None, y=None, visible=None, length=None, direction=None, swaplevel=None, rot=None):
+        assert name is not None
         self.name = name
         self.x = x
         self.y = y
@@ -188,6 +226,7 @@ class Pin (object):
     @classmethod
     def from_et (cls, pin_root):
         return cls(
+            name=pin_root.get("name"),
             x=pin_root.get("x"),
             y=pin_root.get("y"),
             visible=pin_root.get("visible"),
@@ -195,6 +234,18 @@ class Pin (object):
             direction=pin_root.get("direction"),
             swaplevel=pin_root.get("swaplevel"),
             rot=pin_root.get("rot")
+        )
+        
+    def get_et (self):
+        return EagleUtil.make_pin(
+            name=self.name,
+            x=self.x,
+            y=self.y,
+            visible=self.visible,
+            length=self.length,
+            direction=self.direction,
+            swaplevel=self.swaplevel,
+            rot=self.rot
         )
         
 class Library (object):
@@ -213,12 +264,13 @@ class Library (object):
         """
         Overwrites the current Library with a new one loaded from the specified file name.
         """
+        raise NotImplementedError()
         
     def load_from_file (self, filename):
         """
         Loads a Library from an EAGLE .lbr file.
         """
-        pass
+        raise NotImplementedError()
         
     @classmethod
     def from_et (cls, library_root):
@@ -236,7 +288,6 @@ class Library (object):
         for package in packages:
             new_package = Package.from_et(package)
             assert new_package.name not in lib.packages, "Cannot have duplicate package names: "+new_package.name
-
             lib.packages[new_package.name] = new_package
             
         lib.symbols = {}
@@ -251,27 +302,36 @@ class Library (object):
             assert new_deviceset.name not in lib.devicesets, "Cannot have duplicate devicesets names: "+new_deviceset.name
             lib.devicesets[new_deviceset.name] = new_deviceset
             
+            
+        assert lib is not None
         return lib
         
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.
         """
-        pass
+        return EagleUtil.make_library(
+            name=self.name,
+            packages=[package.get_et() for package in self.packages.values()],
+            symbols=[symbol.get_et() for symbol in self.symbols.values()],
+            devicesets=[deviceset.get_et() for deviceset in self.devicesets.values()],
+            description=self.description
+        )
         
     def get_part (self, name=None, deviceset=None, device=None, package=None):
         """
         Searches the library for a device that fits the specified parameters.
         """
         
+        
 class Package (object):
-    def __init__ (self, name=None, contacts=None, drawing=None):
+    def __init__ (self, name=None, contacts=None, drawings=None):
         self.name = name
         
         if contacts is None: contacts = {}
-        if drawing is None: drawing = []
+        if drawings is None: drawings = []
         
-        self.drawing = drawing
+        self.drawings = drawings
         self.contacts = contacts
         
     def __str__ (self):
@@ -304,10 +364,18 @@ class Package (object):
             
         for drawing in drawings:
             new_drawing = Drawing.from_et(drawing)
-            new_package.drawing.append(new_drawing)
+            new_package.drawings.append(new_drawing)
         
         return new_package
         
+    def get_et (self):
+        #assert len(self.drawings) > 0, self.name # not really needed I guess, might just be pads for the package
+        return EagleUtil.make_package(
+            name=self.name, 
+            drawings=[drawing.get_et() for drawing in self.drawings], 
+            contacts=[contact.get_et() for contact in self.contacts.values()]
+        )
+    
 class Pad (object):
     """
     EAGLE pad tag.
@@ -334,6 +402,17 @@ class Pad (object):
             diameter=pad_root.get("diameter"),
             shape=pad_root.get("shape"),
             rot=pad_root.get("rot")
+        )
+        
+    def get_et (self):
+        return EagleUtil.make_pad(
+            name=self.name,
+            x=self.x,
+            y=self.y,
+            drill=self.drill,
+            diameter=self.diameter,
+            shape=self.shape,
+            rot=self.rot
         )
         
 class Rectangle (object):
@@ -366,6 +445,15 @@ class Rectangle (object):
             layer=rectangle_root.get("layer")
         )
         
+    def get_et (self):
+        return EagleUtil.make_rectangle(
+            x1=self.x1,
+            x2=self.x2,
+            y1=self.y1,
+            y2=self.y2,
+            layer=self.layer
+        )
+        
 class Text (object):
     """
     EAGLE text tag.
@@ -387,6 +475,15 @@ class Text (object):
             size=text_root.get("size"),
             layer=text_root.get("layer"),
             text=text_root.text
+        )
+        
+    def get_et (self):
+        return EagleUtil.make_text(
+            x=self.x,
+            y=self.y,
+            size=self.size,
+            layer=self.layer,
+            text=self.text
         )
         
 class Circle (object):
@@ -411,6 +508,15 @@ class Circle (object):
             radius=circle_root.get("radius"),
             width=circle_root.get("width"),
             layer=circle_root.get("layer")
+        )
+        
+    def get_et (self):
+        return EagleUtil.make_circle(
+            x=self.x,
+            y=self.y,
+            radius=self.radius,
+            width=self.width,
+            layer=self.layer
         )
         
 class Drawing (object):
@@ -442,8 +548,8 @@ class SMD (object):
         self.name = name
         self.x = x
         self.y = y
-        self.x = dx
-        self.y = dy
+        self.dx = dx
+        self.dy = dy
         self.layer = layer
         self.rot = rot
     
@@ -459,6 +565,17 @@ class SMD (object):
             layer=smd_root.get("layer"),
             rot=smd_root.get("rot")
         )        
+        
+    def get_et (self):
+        return EagleUtil.make_SMD(
+            name=self.name,
+            x=self.x,
+            y=self.y,
+            dx=self.dx,
+            dy=self.dy,
+            layer=self.layer,
+            rot=self.rot
+        )
                
 class Symbol (object):
     """
@@ -466,13 +583,13 @@ class Symbol (object):
     This section holds circuit diagram symbols that can be used as gates for Devices and Parts.
     """
     
-    def __init__ (self, name=None, drawing=None, pins=None):
+    def __init__ (self, name=None, drawings=None, pins=None):
         self.name = name
         
-        if drawing is None: drawing = []
+        if drawings is None: drawings = []
         if pins is None: pins = {}
         
-        self.drawing = drawing
+        self.drawings = drawings
         self.pins = pins
     
     @classmethod
@@ -485,7 +602,7 @@ class Symbol (object):
         drawings = EagleUtil.get_drawing(symbol_root)
         for drawing in drawings:
             new_drawing = Drawing.from_et(drawing)
-            symbol.drawing.append(new_drawing)
+            symbol.drawings.append(new_drawing)
             
         pins = EagleUtil.get_pins(symbol_root)
         for pin in pins:
@@ -494,6 +611,13 @@ class Symbol (object):
 
         return symbol
         
+    def get_et (self):
+        return EagleUtil.make_symbol(
+            name=self.name,
+            drawings=[drawing.get_et() for drawing in self.drawings],
+            pins=[pin.get_et() for pin in self.pins.values()]
+        )
+    
 class Part (object):
     def __init__ (self, name=None, library=None, deviceset=None, device=None, package=None, value=None):
         self.name = name
@@ -518,7 +642,13 @@ class Part (object):
         """
         Returns the ElementTree.Element xml representation.
         """
-        pass
+        return EagleUtil.make_part(
+            name=self.name,
+            deviceset=self.deviceset,
+            library=self.library,
+            device=self.device,
+            value=self.value
+        )
        
         
 class DeviceSet (object):
@@ -557,7 +687,13 @@ class DeviceSet (object):
         """
         Returns the ElementTree.Element xml representation.
         """
-        pass
+        return EagleUtil.make_deviceset(
+            name=self.name,
+            prefix=self.prefix,
+            description=self.description,
+            gates=[gate.get_et() for gate in self.gates.values()],
+            devices=[device.get_et() for device in self.devices.values()]
+        )
         
 class Gate (object):
     """
@@ -581,6 +717,15 @@ class Gate (object):
         )
         return gate
         
+    def get_et (self):
+        return EagleUtil.make_gate(
+            name=self.name,
+            symbol=self.symbol,
+            x=self.x,
+            y=self.y
+        )
+        
+        
 class Connect (object):
     """
     EAGLE connect tag.
@@ -599,6 +744,13 @@ class Connect (object):
             gate=connect_root.get("gate"),
             pin=connect_root.get("pin"),
             pad=connect_root.get("pad")
+        )
+        
+    def get_et (self):
+        return EagleUtil.make_connect(
+            gate=self.gate,
+            pin=self.pin,
+            pad=self.pad
         )
         
 class Device (object):
@@ -624,19 +776,27 @@ class Device (object):
             new_connect = Connect.from_et(connect)
             device.connects.append(new_connect)
             
+        
         technologies = EagleUtil.get_technologies(device_root)
         for technology in technologies:
             new_technology = Technology.from_et(technology)
             name = new_technology.name
             device.technologies[name] = new_technology
                 
+                
+        
         return device
         
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.
         """
-        pass
+        return EagleUtil.make_device(
+            connects=[connect.get_et() for connect in self.connects],
+            name=self.name,
+            package=self.package,
+            technologies=[tech.get_et() for tech in self.technologies.values()]
+        )
         
 class Technology (object):
     """
@@ -660,11 +820,43 @@ class Technology (object):
  
         return tech
         
+    def get_et (self):
+        return EagleUtil.make_technology(name=self.name, attributes=self.attributes)
+        
+class Attribute (object):
+    """
+    EAGLE Attribute section.
+    This defines the attributes of an EAGLE Technology section.
+    There is also an attributes section in the Schematic section but I've never seen this have anything in there.
+    """
+    
+    def __init__ (self, name=None, value=None, constant=None):
+        self.name = name
+        self.value = value
+        self.constant = constant
+        
+    @staticmethod
+    def from_et (attribute_root):
+        assert attribute_root.tag == "attribute"
+        attribute = Attribute(
+            name=attribute.get("name"),
+            value=attribute.get("value"),
+            constant=attribute.get("constant")
+        )
+        
+    def get_et (self):
+        return EagleUtil.make_attribute(
+            name=self.name,
+            value=self.value,
+            constant=self.constant
+        )
+        
+        
 class Sheet (object):
     def __init__ (self, plain=None, instances=None, busses=None, nets=None):
         if plain is None: plain = []
         if instances is None: instances = []
-        if busses is None: busses = {}
+        if busses is None: busses = []
         if nets is None: nets = {}
     
         self.plain = plain
@@ -678,6 +870,8 @@ class Sheet (object):
         sheet = cls()
         
         plain = EagleUtil.get_plain(sheet_root)
+        for p in plain:
+            pass #process into drawing types
         sheet.plain = plain
         
         instances = EagleUtil.get_instances(sheet_root)
@@ -699,7 +893,13 @@ class Sheet (object):
         """
         Returns the ElementTree.Element xml representation.
         """
-        pass
+        return EagleUtil.make_sheet(
+            plain=[p for p in self.plain],
+            instances=[instance.get_et() for instance in self.instances],
+            busses=[bus.get_et() for bus in self.busses],
+            nets=[net.get_et() for net in self.nets.values()]
+        )
+            
         
 class Net (object):
     def __init__ (self, name=None, net_class="0", segments=None):
@@ -720,22 +920,60 @@ class Net (object):
         
         for segment in segments:
             new_segment = Segment.from_et(segment)
-            self.segments.append(new_segment)
+            net.segments.append(new_segment)
+            
+        return net
         
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.
         """
-        pass
+        return EagleUtil.make_net(
+            name=self.name,
+            net_class=self.net_class,
+            segments=[segment.get_et() for segment in self.segments]
+        )
+        
+class Label (object):
+    def __init__ (self, x=None, y=None, size=None, layer=None):
+        self.x = x
+        self.y = y
+        self.size = size
+        self.layer = layer
+        
+    @staticmethod
+    def from_et (segment_root):
+        assert segment_root.tag == "label"
+        label = Label()
+        label.x = segment_root.get("x")
+        label.y = segment_root.get("y")
+        label.size = segment_root.get("size")
+        label.layer = segment_root.get("layer")
+        return label
+        
+    def get_et (self):
+        """
+        Returns the ElementTree.Element xml representation.
+        """
+        return EagleUtil.make_label(
+            x=self.x,
+            y=self.y,
+            size=self.size,
+            layer=self.layer
+        )
         
 class Segment (object):
-    def __init__ (self, pinrefs=None, wires=None, labels=None):
+    def __init__ (self, pinrefs=None, portrefs=None, wires=None, junctions=None, labels=None):
         if pinrefs is None: pinrefs = []
+        if portrefs is None: portrefs = []
         if wires is None: wires = []
+        if junctions is None: junctions = []
         if labels is None: labels = []
     
         self.pinrefs = pinrefs
+        self.portrefs = portrefs
         self.wires = wires
+        self.junctions = junctions
         self.labels = labels
         
     @staticmethod
@@ -751,20 +989,26 @@ class Segment (object):
             segment.wires.append(new_wire)
             
         for pinref in pinrefs:
+            #ET.dump(pinref)
             new_pinref = PinRef.from_et(pinref)
-            segment.pinregs.append(new_pinref)
+            segment.pinrefs.append(new_pinref)
             
         for label in labels:
             new_label = Label.from_et(label)
             segment.labels.append(new_label)
             
-        return segement
+        return segment
         
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.
         """
-        pass
+        print "Getting et for segment", self.wires, self.pinrefs, self.labels
+        return EagleUtil.make_segment(
+            wires=[wire.get_et() for wire in self.wires],
+            pinrefs=[pinref.get_et() for pinref in self.pinrefs],
+            labels=[label.get_et() for label in self.labels]
+        )
         
 class Wire (object):
     """
@@ -800,16 +1044,29 @@ class Wire (object):
             layer=wire_root.get("layer")
         )
         
+    def get_et (self):
+        return EagleUtil.make_wire(
+            x1=self.x1,
+            x2=self.x2,
+            y1=self.y1,
+            y2=self.y2,
+            width=self.width,
+            layer=self.layer
+        )
+
+        
 class PinRef (object):
     """
     EAGLE pinref tag.
     This is used in Net Segment to show that a Part's pin is connected to the Net."
     """
     
+    
     def __init__ (self, part=None, gate=None, pin=None):
         self.part = part
         self.gate = gate
         self.pin = pin
+        #print "Making pinref:", part, gate, pin
         
     @staticmethod
     def from_et (pinref_root):
@@ -817,7 +1074,14 @@ class PinRef (object):
         return PinRef(
             part=pinref_root.get("part"),
             gate=pinref_root.get("gate"),
-            pin=pinref_root.get("part")
+            pin=pinref_root.get("pin")
+        )
+        
+    def get_et (self):
+        return EagleUtil.make_pinref(
+            part=self.part,
+            gate=self.gate,
+            pin=self.pin
         )
         
 class NetClass (object):
@@ -834,12 +1098,22 @@ class NetClass (object):
         
     @staticmethod
     def from_et (root):
+        assert root.tag == "class", "Trying to make a <class> section but got a <"+root.tag+"> section."
         number = root.get("number")
         name = root.get("name")
         width = root.get("width")
         drill = root.get("drill")
         
         return NetClass(number=number, name=name, width=width, drill=drill)
+    
+    def get_et (self):
+        return EagleUtil.make_class (
+            number=self.number,
+            name=self.name,
+            width=self.width,
+            drill=self.drill
+        )
+        
     
 class Layer (object):
     """
@@ -895,6 +1169,7 @@ class Instance (object):
         self.part = part
         self.x = x
         self.y = y
+        self.rot = rot
         
     @staticmethod
     def from_et (instance_root):
@@ -907,7 +1182,14 @@ class Instance (object):
             rot=instance_root.get("rot")
         )
     
-    
+    def get_et (self):
+        return EagleUtil.make_instance(
+            gate=self.gate,
+            part=self.part,
+            x=self.x,
+            y=self.y,
+            rot=self.rot
+        )
     
     
     

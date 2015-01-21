@@ -7,12 +7,21 @@ List of sections with a name attribute are implemented as dicts, indexed on the 
 The implementation is currently focused on the .sch circuit schematic file formate.
 """
 
-import xml.etree.ElementTree as ET
+from lxml import etree as ET
 
 import EagleUtil
 
 class EagleFormatError (Exception):
-    pass
+    def __init__(self, text=""):
+        self.text = text
+    def __str__(self):
+        return text
+
+class HighEagleError (Exception):
+    def __init__(self, text):
+        self.text = text
+    def __str__(self):
+        return text
 
 class HighEagle (object):
     def from_et ():
@@ -29,8 +38,9 @@ class Schematic (object):
     """
     def __init__ (self):
         """
-        Initialized an empty schematic or loads a schematic from a .sch file if a file name is specified.
-        The empty schematic should be compatible with EAGLE and should open and close with no warnings or errors.
+        Initialized an empty schematic or loads a schematic from a .sch file if
+        a file name is specified.  The empty schematic should be compatible
+        with EAGLE and should open and close with no warnings or errors.
         """
         self.tree = None
         self.root = None
@@ -97,7 +107,7 @@ class Schematic (object):
         assert len(sch.layers) > 0, "No layers in schematic."
         
         for library in libraries:
-            print library
+            #print library
             new_lib = Library.from_et(library)
             sch.libraries[new_lib.name] = new_lib
             
@@ -108,13 +118,13 @@ class Schematic (object):
             pass
             
         for net_class in classes:
-            print net_class
+            #print net_class
             new_class = NetClass.from_et(net_class)
             sch.classes[new_class.name] = new_class
             
         for part in parts:
-            print part
-            new_part = Part.from_et(part)
+            #print part
+            new_part = Part.from_et(part, schematic=sch)
             sch.parts[new_part.name] = new_part
             
         assert len(sch.parts) > 0
@@ -153,11 +163,6 @@ class Schematic (object):
         """
         Returns the ElementTree.Element xml representation.
         """
-        
-        print
-        print
-        print
-        print
         
         eagle = EagleUtil.make_eagle()
         EagleUtil.set_settings(eagle, self.settings)
@@ -200,12 +205,16 @@ class Schematic (object):
             print "Sheet", i
             #ET.dump(eagle) 
         if len(self.sheets) == 0:
-            EagleUtil.add_sheet(eagle, EagleUtil.get_empty_sheet())
+            EagleUtil.add_sheet(eagle, EagleUtil.make_empty_sheet())
             
         ET.dump(eagle)    
             
         return eagle
-        
+
+    def get_parts(self):
+        return self.parts
+
+
 class Pin (object):
     """
     EAGLE pin tag.
@@ -619,24 +628,49 @@ class Symbol (object):
         )
     
 class Part (object):
-    def __init__ (self, name=None, library=None, deviceset=None, device=None, package=None, value=None):
+    def __init__ (self, name=None, library=None, deviceset=None, device=None, package=None, value=None, schematic=None):
         self.name = name
         self.library = library
         self.deviceset = deviceset
         self.device = device
         self.package = package
         self.value = value
-        
+        self.schematic = schematic
+        self.attributes = {}
+
     @staticmethod
-    def from_et (root):
+    def from_et (root, schematic=None):
         name = root.get("name")
         library = root.get("library")
         deviceset = root.get("deviceset")
         device = root.get("device")
         package = root.get("package")
         value = root.get("value")
+
+        part = Part(name=name, 
+                    library=library, 
+                    deviceset=deviceset, 
+                    device=device, 
+                    package=package, 
+                    value=value, 
+                    schematic=schematic)
         
-        return Part(name=name, library=library, deviceset=deviceset, device=device, package=package, value=value)
+        part.attributes.update(part.get_device().technologies[""].attributes)
+
+        #print "here: "+ str(part.get_device().technologies[""].attributes)
+
+        return part
+        for i in root.findall("./attribute"):
+            if i.get("name") in part.attributes:
+                if part.attributes[i.get("name")].constant:
+                    raise HighEagleError("Tried to set constant attribute '" 
+                                         + i.name + "' on part '" + 
+                                         part.name + "'.")
+                part.attributes[i.get("name")].value = i.get("value")
+            else:
+                part.attributes[i.get("name")] = Attribute.from_et(i)
+
+        return part
         
     def get_et (self):
         """
@@ -649,8 +683,81 @@ class Part (object):
             device=self.device,
             value=self.value
         )
-       
+    
+    def get_library(self):
+        """
+        Get the library that contains this part
+        """
+        try:
+            lib = self.schematic.libraries[self.library]
+        except:
+            raise EagleFormatError("Missing library '" + self.library + "' for part '" + self.name + "'.")
+        return lib
+
+    def get_deviceset(self):
+        """
+        Get the deviceset for this part.
+        """
+
+        lib = self.get_library();
+
+        try:
+            deviceset = lib.devicesets[self.deviceset]
+        except:
+            raise EagleFormatError("Missing device set '" + self.library + ":" + self.deviceset + "' for part '" + self.name + "'.")
         
+        return deviceset
+        
+    def get_device(self):
+        """
+        Get the library entry for this part
+        """
+        deviceset = self.get_deviceset()
+
+        try:
+            device = deviceset.devices[self.device]
+        except:
+            raise EagleFormatError("Missing device '" + self.library + ":" + self.deviceset + ":" + self.device  + "' for part '" + self.name + "'.")
+        
+        return device
+
+    def get_package(self):
+        """
+        Get the library entry for this part
+        """
+        device = self.get_device();
+        lib = self.get_library();
+        try:
+            package = lib.packages[device.package];
+        except:
+            raise EagleFormatError("Missing package '" + device.package + "' for part '" + self.name + "'.")
+        return package
+        
+    def get_gate(self):
+        """
+        Get the library entry for this part
+        """
+        deviceset = self.get_deviceset();
+        lib = self.get_library();
+        assert deviceset.gates.len == 1
+        try:
+            gate = lib.symbols[deviceset.gates["G$1"]];
+        except:
+            raise EagleFormatError("Missing gate '" + deviceset.gate["G$1"] + "' for part '" + self.name + "'.")
+        return gate
+    
+    def get_attributes(self):
+        """
+        Get attribute values for this part.
+        """
+        return self.attributes
+
+    def get_library_attributes(self):
+        """
+        Get attribute values for this part that come from the library.
+        """
+        return {k:v for (k,v) in self.attributes.iteritems() if v.from_library}
+
 class DeviceSet (object):
     def __init__ (self, name=None, prefix=None, devices=None, description="", gates=None):
     
@@ -816,12 +923,13 @@ class Technology (object):
         attributes = EagleUtil.get_attributes(technology_root)
         
         for attribute in attributes:
-            tech.attributes[attribute.get("name")] = attribute.get("value")
+            tech.attributes[attribute.get("name")] = Attribute.from_et(attribute)
  
         return tech
         
     def get_et (self):
-        return EagleUtil.make_technology(name=self.name, attributes=self.attributes)
+        attrs = [a.get_et() for a in self.attributes.values()]
+        return EagleUtil.make_technology(name=self.name, attributes=attrs)
         
 class Attribute (object):
     """
@@ -830,25 +938,41 @@ class Attribute (object):
     There is also an attributes section in the Schematic section but I've never seen this have anything in there.
     """
     
-    def __init__ (self, name=None, value=None, constant=None):
+    def __init__ (self, name=None, value=None, constant=None, from_library=False):
         self.name = name
         self.value = value
         self.constant = constant
-        
+        self.from_library = from_library
+
+    def __str__(self):
+        return self.name + " = '" + self.value + "' [const=" + str(self.constant) + ";lib=" + str(self.from_library) +"]";
+
+
     @staticmethod
     def from_et (attribute_root):
         assert attribute_root.tag == "attribute"
-        attribute = Attribute(
-            name=attribute.get("name"),
-            value=attribute.get("value"),
-            constant=attribute.get("constant")
+        ET.dump(attribute_root);
+        ET.dump(attribute_root.getparent());
+        if attribute_root.getparent().tag == "technology":
+            from_library = True;
+        elif attribute_root.getparent().tag == "part":
+            from_library = False
+        else:
+            assert False
+            
+        n = Attribute(
+            name=attribute_root.get("name"),
+            value=attribute_root.get("value"),
+            constant=attribute_root.get("constant") != "no",
+            from_library=from_library
         )
+        return n
         
     def get_et (self):
         return EagleUtil.make_attribute(
             name=self.name,
             value=self.value,
-            constant=self.constant
+            constant="yes" if self.constant else "no"
         )
         
         

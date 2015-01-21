@@ -1,6 +1,14 @@
-import xml.etree.ElementTree as ET
+from lxml import etree as ET
 
 def export_to_eagle (circuit, filename):
+    tree = ET.ElementTree(circuit)
+    tree.write(filename)
+
+def load_schematic(filename):
+    schematic = ET.parse(filename)
+    return schematic.getroot()
+
+def make_schematic ():
     eagle = ET.Element("eagle")
     drawing = ET.SubElement(eagle, "drawing")
     settings = ET.SubElement(drawing, "settings")
@@ -13,31 +21,12 @@ def export_to_eagle (circuit, filename):
     classes = ET.SubElement(schematic, "classes")
     parts = ET.SubElement(schematic, "parts")
     sheets = ET.SubElement(schematic, "sheets")
-    
+
     set_layers_from_file(eagle)
     default_settings(eagle)
     default_class(eagle)
     inch_grid(eagle)
     sheet = add_empty_sheet(eagle)
-    
-    ET.dump(eagle)
-    
-    tree = ET.ElementTree(eagle)
-    tree.write(filename)
-    
-def empty_schematic ():
-    eagle = ET.Element("eagle")
-    drawing = ET.SubElement(eagle, "drawing")
-    settings = ET.SubElement(drawing, "settings")
-    grid = ET.SubElement(drawing, "grid")
-    layers = ET.SubElement(drawing, "layers")
-    schematic = ET.SubElement(drawing, "schematic")
-    libraries = ET.SubElement(schematic, "libraries")
-    attributes = ET.SubElement(schematic, "attributes")
-    variantdefs = ET.SubElement(schematic, "variantdefs")
-    classes = ET.SubElement(schematic, "classes")
-    parts = ET.SubElement(schematic, "parts")
-    sheets = ET.SubElement(schematic, "sheets")
     
     return eagle
     
@@ -148,8 +137,8 @@ def smart_add_layers (root):
         ET.SubElement(drawing, "layers")
     
 def add_layer (root, layer_root):
-    assert(isinstance(root, ET.Element))
-    assert(isinstance(layer_root, ET.Element))
+    assert(isinstance(root, ET._Element))
+    assert(isinstance(layer_root, ET._Element))
     assert(layer_root.tag == "layer")
     smart_add_layers(root)
     root.find("./drawing/layers").append(layer_root)
@@ -371,7 +360,20 @@ def default_class (root):
     default.set("name", "default")
     default.set("width", "0")
     default.set("drill", "0")
-    
+
+def inch_grid(root):   
+    grid = root.find("./drawing/grid")
+    grid.attrib.update(distance="0.1",
+                       unitdist="inch",
+                       unit="inch",
+                       style="lines",
+                       multiple="1",
+                       display="no",
+                       altdistance="0.01",
+                       altunitdist="inch",
+                       altunit="inch")
+
+
 def smart_add_grid (root):
     assert root.tag == "eagle"
     smart_add_drawing(root)
@@ -422,7 +424,7 @@ def add_sheet (root, sheet):
     assert sheet.tag == "sheet"
     root.find("./drawing/schematic/sheets").append(sheet)
     
-def get_empty_sheet ():
+def make_empty_sheet ():
     sheet = ET.Element("sheet")
     
     ET.SubElement(sheet, "plain")
@@ -431,6 +433,9 @@ def get_empty_sheet ():
     ET.SubElement(sheet, "nets")
     
     return sheet
+
+def add_empty_sheet(root):
+    add_sheet(root,make_empty_sheet());
 
 def get_symbols (root):
     if root.tag == "library":
@@ -679,8 +684,8 @@ def make_deviceset (
     if prefix is not None:
         deviceset.set("prefix", prefix)
     if description is not None:
-        description = ET.SubElement(deviceset, "description")
-        description.test = description
+        desc = ET.SubElement(deviceset, "description")
+        desc.text = description
     
     g = ET.SubElement(deviceset, "gates")
     g.extend(gates)
@@ -759,11 +764,16 @@ def make_technology (
 
 def get_attributes (root):
     if root.tag == "eagle":
-        return root.findall(".drawing/schematic/attributes/attribute")
+        return root.findall("./drawing/schematic/attributes/attribute")
     elif root.tag == "technology":
-        return root.findall("./attributes/attribute")
+        return root.findall("./attribute")
     else:
         raise NotImplementedError("Don't know how to find attributes in "+root.tag+" section.")
+
+def make_attribute (name, value, constant):
+    return ET.Element("attribute",name=name,
+                      value=value,
+                      constant=constant)
         
 def get_variantdefs (root):
     if root.tag == "eagle":

@@ -1,4 +1,8 @@
+#!/usr/bin/env python
+
 import HighEagle as HE
+
+import argparse
 
 print "Making empty schematic."
 print
@@ -19,3 +23,13 @@ print
 print "Exporting loaded file."
 print 
 loaded_schematic.write("test_load.sch")
+
+filename = "NVSL.lbr"
+print "Loading", filename
+print
+loaded_lbr = HE.LibraryFile.from_file(filename)
+print
+
+print "Exporting loaded file."
+print 
+loaded_lbr.write("test_load.lbr")

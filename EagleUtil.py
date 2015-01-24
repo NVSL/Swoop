@@ -73,6 +73,12 @@ def add_library (root, library):
     else:
         raise NotImplementedError("Don't know how to add library to "+root.tag+" section.")
 
+def add_library_to_library_file (root, library):
+    if root.tag == "eagle":
+        root.find("./drawing").append(library)
+    else:
+        raise NotImplementedError("Don't know how to add library to "+root.tag+" section.")
+
 def add_class (root, net_class):
     if root.tag == "eagle":
         if root.find("./drawing/schematic/classes") is None:
@@ -300,6 +306,13 @@ def get_libraries (root):
     if root.tag == "eagle":
         libraries = root.findall("./drawing/schematic/libraries/library")
         return libraries
+    else:
+        raise NotImplementedError("Don't know how to find libraries in "+root.tag+" section.")
+
+def get_library (root):
+    if root.tag == "eagle":
+        library = root.find("./drawing/library")
+        return library
     else:
         raise NotImplementedError("Don't know how to find libraries in "+root.tag+" section.")
     
@@ -771,10 +784,17 @@ def get_attributes (root):
         raise NotImplementedError("Don't know how to find attributes in "+root.tag+" section.")
 
 def make_attribute (name, value, constant):
-    return ET.Element("attribute",name=name,
-                      value=value,
-                      constant=constant)
-        
+    #print constant
+    #print name
+    #print value
+    if constant is "no":
+        return ET.Element("attribute",name=name,
+                          value=str(value),
+                          constant=constant)
+    else:
+        return ET.Element("attribute",name=name,
+                          value=str(value))
+    
 def get_variantdefs (root):
     if root.tag == "eagle":
         return root.findall(".drawing/schematic/variantdefs/variantdef")
@@ -865,7 +885,8 @@ def make_part (
     deviceset,
     device,
     technology="",
-    value=None
+    value=None,
+    attributes = None
 ):
     part = ET.Element("part")
     
@@ -881,6 +902,8 @@ def make_part (
         part.set("technology", technology)
     if value is not None:
         part.set("value", value)
+    if attributes is not None:
+        part.extend(attributes)
     return part
 
 def make_sheet (
@@ -907,9 +930,9 @@ def make_sheet (
         b.extend(busses)
     if nets is not None:
         n = ET.SubElement(sheet, "nets")
-        for nc in nets:
-            print nc
-            ET.dump(nc)
+        #for nc in nets:
+            #print nc
+            #ET.dump(nc)
         n.extend(nets)
     return sheet
 
@@ -935,7 +958,7 @@ def make_net (
     net_class="0",
     segments=None
 ):
-    print "Makeing net:", name ,net_class, segments
+    #print "Makeing net:", name ,net_class, segments
     net = ET.Element("net")
     assert name is not None
     net.set("name", name)
@@ -956,7 +979,7 @@ def make_segment (
     junctions=None,
     labels=None,
 ):
-    print "Making segment", pinrefs, portrefs, wires, junctions, labels
+    #print "Making segment", pinrefs, portrefs, wires, junctions, labels
     segment = ET.Element("segment")
     if pinrefs is not None:
         segment.extend(pinrefs)
@@ -969,7 +992,7 @@ def make_segment (
     if labels is not None:
         segment.extend(labels)
         
-    ET.dump(segment)
+        #ET.dump(segment)
     return segment
 
 def make_pinref (

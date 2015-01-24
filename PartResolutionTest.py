@@ -21,49 +21,51 @@ if __name__ == "__main__":
     # In this case, we prefer 0805 to 0603 to through hole, 10% over 5%, lower
     # power, and low priced (prioritized in that order).
 
-    resolver = PartResolutionEnvironment({"Resistor": (PartDB(Resistor, "Resistor", args.ohms[0]),
-                                                       [Prefer("stock", ["onhand", "stardardline", "nonstock"]),
-                                                        Prefer("package", ["0805", "0603", "TH"]),
-                                                        Prefer("tolerance", [0.1, 0.05]),
-                                                        Minimize("watts"),
-                                                        Minimize("price")]),
-                                          "CeramicCapacitor": (PartDB(CeramicCapacitor, "CeramicCapacitor", args.ceramics[0]),
-                                                               [Prefer("stock", ["onhand", "stardardline", "nonstock"]),
-                                                                Prefer("package", ["0805", "0603", "TH"]),
-                                                                Minimize("price")])
-                                          })
+    resistors = PartResolutionEnvironment("Resistor", 
+                                          db=PartDB(Resistor, "Resistor", args.ohms[0]),
+                                          preferences=[Prefer("STOCK", ["onhand", "stardardline", "nonstock"]),
+                                                       Prefer("CASE", ["0805", "0603", "TH"]),
+                                                       Prefer("TOL", [0.1, 0.05]),
+                                                       Minimize("PWR"),
+                                                       Minimize("PRICE")])
+    
+    ceramicCaps = PartResolutionEnvironment("CeramicCapacitor",
+                                            db=PartDB(CeramicCapacitor, "CeramicCapacitor", args.ceramics[0]),
+                                            preferences=[Prefer("STOCK", ["onhand", "stardardline", "nonstock"]),
+                                                         Prefer("CASE", ["0805", "0603", "TH"]),
+                                                         Minimize("PRICE")])
     
     # A 1K resistor that can dissipate at least 0.5W
     highWatt = Resistor()
-    highWatt.resistance.value = Exact(1000)
-    highWatt.watts.value = GT(0.5)
+    highWatt.VALUE.value = Exact(1000)
+    highWatt.PWR.value = GT(0.5)
 
     # A 1K resistor that can dissipate at least 0.125W (and fancy args)
-    lowWatt = Resistor(resistance=Exact(1000),
-                       watts=GT(0.125))
+    lowWatt = Resistor(VALUE=Exact(1000),
+                       PWR=GT(0.125))
     
     # A high tolerance 1K resistor
-    tightTolerance = Resistor(resistance = Exact(1000))
+    tightTolerance = Resistor(VALUE = Exact(1000))
     tightTolerance.tolerance = LT(0.01)
     
     print "high watt"
-    print resolver.resolve(highWatt)
+    print resistors.resolve(highWatt)
     print "low watt"
-    print resolver.resolve(lowWatt)
+    print resistors.resolve(lowWatt)
     print "tight tolerance"
-    print resolver.resolve(tightTolerance)
+    print resistors.resolve(tightTolerance)
 
     print "10 pF Cap"
-    c = CeramicCapacitor(capacitance=Exact(pF(10)))
+    c = CeramicCapacitor(VALUE=Exact(pF(10)))
     print c
-    print resolver.resolve(c)
+    print ceramicCaps.resolve(c)
 
     print "0.1 uF Cap"
-    c = CeramicCapacitor(capacitance=uF(0.1)) # if you leave off the query, it defaults to exact
+    c = CeramicCapacitor(VALUE=uF(0.1)) # if you leave off the query, it defaults to exact
     print c
-    print resolver.resolve(c)
+    print ceramicCaps.resolve(c)
 
     print "Approximately 17 pF Cap"
-    c = CeramicCapacitor(capacitance=Approx(pF(17)))
+    c = CeramicCapacitor(VALUE=Approx(pF(17)))
     print c
-    print resolver.resolve(c)
+    print ceramicCaps.resolve(c)

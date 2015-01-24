@@ -7,13 +7,13 @@ class CeramicCapacitor(PartType):
 
     def __init__(self, **args):
         setattr(self,"parameters", {
-                "VALUE" : PartParameter("capacitance", "Capacitance", "float", parseCapacitance, Exact(pF(1))),
-                "TOL" : PartParameter("tolerance", "Tolerance", "float", parseTolerance, None),
-                "VOLTS" : PartParameter("volts", "Voltage - Rated", "float",  parseVolts, GT(5)),
-                "CASE" : PartParameter("package", "Package / Case", "str", parsePackage, None),
-                "DIST1PN" : PartParameter("partnumber", "Digi-Key Part Number", "str", lambda x : x, None),
-                "PRICE" : PartParameter("price", "Unit Price (USD)", "float", parsePrice, None),
-                "STOCK" : PartParameter("stock", "Stock", "str", lambda x : x, None),
+                "VALUE" : PartParameter("VALUE", "Capacitance", "float", parseCapacitance, Exact(pF(100))),
+                "TOL" : PartParameter("TOL", "Tolerance", "float", parseTolerance, None),
+                "VOLTS" : PartParameter("VOLTS", "Voltage - Rated", "float",  parseVolts, GT(5)),
+                "CASE" : PartParameter("CASE", "Package / Case", "str", parsePackage, None),
+                "DIST1PN" : PartParameter("DIST1PN", "Digi-Key Part Number", "str", lambda x : x, None),
+                "PRICE" : PartParameter("PRICE", "Unit Price (USD)", "float", parsePrice, None),
+                "STOCK" : PartParameter("STOCK", "Stock", "str", lambda x : x, None),
                 "db" : PartParameter("db", "db", "str", lambda x : x, None),
                 "minQty" :  PartParameter("minQty", "Minimum Quantity", "int", parseQty, Exact(1))
                 })

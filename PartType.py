@@ -1,4 +1,5 @@
 from PartParameter import *
+from ParameterQuery import *
 
 class PartType:
     partType = "Abstract"

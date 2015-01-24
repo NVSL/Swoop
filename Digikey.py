@@ -5,7 +5,8 @@ def parseResistance(r):
     r = r.upper()
     m = re.match("(\d+(\.\d+)?)(.?)", r);
  #   print "s = " + r
-    assert(m is not None)
+    if m is None:
+        raise Exception("Can't parse resistance: '" + r + "'")
 #    print "m = " + m.group(3)
     if m.group(3) is "":
         mult = 1.0
@@ -14,8 +15,7 @@ def parseResistance(r):
     elif m.group(3) is "M":
         mult = 1000000.0
     else:
-        print m.group(0)
-        assert(False)
+        raise Exception("Can't parse resistance: '" + r + "'")
 
     return mult * float(m.group(1))
 
@@ -26,13 +26,17 @@ def parseTolerance(r):
         return 0.01
     m = re.search("(\d+)%", r);
     if m is None:
-        print "Can't parse tolerance: " + r + "; setting to 20%"
-        return 0.2
+        raise Exception("Can't parse tolerance: '" + r + "'")
+#    if m is None:
+#        print "Can't parse tolerance: " + r + "; setting to 20%"
+#        return 0.2
     return float(m.group(1))/100.0
 
 def parseVolts(r):
     r = r.upper()
     m = re.search("(\d+(\.\d+)?)V", r);
+    if m is None:
+        raise Exception("Can't parse volts: '" + r + "'")
     return float(m.group(1))
 
 def parsePackage(r):
@@ -44,41 +48,45 @@ def parsePackage(r):
     elif re.search("AXIAL", r):
         return "TH"
     else:
-        print r
-        assert(False)
-        return None
+        raise Exception("Can't parse package: '" + r + "'")
     
 def parseWatts(r):
     r = r.upper()
     m = re.match("(\d+(.\d+)?)W", r);
+    if m is None:
+        raise Exception("Can't parse Watts: '" + r + "'")
     return float(m.group(1))
 
 def parseQty(r):
     r = r.upper()
-    m = re.match("(.\d+)", r);
-    if m:
+    m = re.match("(\d+)", r);
+    if m is not None:
         return int(m.group(1))
     else:
-        return 1000
+        raise Exception("Can't parse qty: '" + r + "'")
 
 def parsePrice(r):
     r = r.upper()
     m = re.match("(\d+.\d+)", r);
     if m:
         return float(m.group(1))
-    else:
+    elif r == "CALL":
         return 1000
+    else:
+        raise Exception("Can't parse price: " + r)
+    
 def parseCapacitance(r):
     r = r.upper()
     m = re.match("(\d+(\.\d+)?)(.*)", r);
-    assert(m is not None)
+
+    if m is None:
+        raise Exception("Can't parse capacitance: '" + r + "'")
+
     if m.group(3) == "PF":
         mult = pF(1)
     elif m.group(3) == "UF":
         mult = uF(1)
     else:
-        print m.group(0)
-        print m.group(3)
-        assert(False)
+        raise Exception("Can't parse capacitance: '" + r + "'")
 
     return mult * float(m.group(1))

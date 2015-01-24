@@ -15,7 +15,7 @@ class Resistor(PartType):
                 "PRICE" : PartParameter("PRICE", "Unit Price (USD)", "float", parsePrice, None),
                 "STOCK" : PartParameter("STOCK", "Stock", "str", lambda x : x, None),
                 "db" : PartParameter("db", "db", "str", lambda x : x, None),
-                "minQty" : PartParameter("minQty", "Minimum Quantity", "int", parseQty, None) #Exact(1))
+                "minQty" : PartParameter("minQty", "Minimum Quantity", "int", parseQty, Exact(1))
             })
 
         for p in sorted(self.parameters):

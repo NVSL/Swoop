@@ -49,15 +49,18 @@ class PartResolutionEnvironment:
         possibilities = []
         for r in self.db.parts:
             v = True;
-            # print "============="
+            #print "============= " +  str(r.DIST1PN.value)
             for p in zip(r.parameterList, component.parameterList):
-                # print str(p[1].name) + "<->" + str(type(p[1].value))
+                #print str(p[1].name) + "<->" + str(type(p[1].value))
                 if isinstance(p[1].value, ParameterQuery):
-                    # print "-- " + " ".join(map(str,p))
+                    #print "-- " + " ".join(map(str,p))
                     v = v and p[1].value.eval(p[0])
             if v:
-                # print r
+                #print r
                 possibilities.append(r)
+            else:
+                #print str(r.DIST1PN.value) + " is not a match"
+                pass
 
         for i in reversed(component.preference + self.preferences):
             possibilities.sort(i.cmp, lambda x: x.getParameter(i.key).value)
@@ -65,7 +68,7 @@ class PartResolutionEnvironment:
         return possibilities
 
     def resolve(self, component):
-        print  component.partType + " " + self.partType
+        #print  component.partType + " " + self.partType
         assert component.partType == self.partType
         return self.alternatives(component)[0]
 

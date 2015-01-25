@@ -3,7 +3,7 @@ import re
 float_re = "([-+]?\d*\.\d+|[-+]?\d+)"
 pos_float_re = "(\d*\.\d+|\d+)"
 int_re = "([-+]?\d+)"
-
+unit_re = "(([unpkM])[FH]?)?"
 
 def all_subclasses(cls):
     return cls.__subclasses__() + [g for s in cls.__subclasses__()
@@ -20,23 +20,45 @@ class ParameterQuery(object):
     def __str__(self):
         return "(" +self.s + ")";
     
+    @staticmethod
+    def parseMultiplier(x):
+        if x is None:
+            return 1.0
+        m = re.search(unit_re,x)
+        if m is not None:
+            if m.group(2) == "p":
+                return 1e-12
+            elif m.group(2) == "u":
+                return 1e-6
+            elif m.group(2) == "n":
+                return 1e-9
+            elif m.group(2) == "K" or m.group(2) == "k":
+                return 1e3
+            elif m.group(2) == "M":
+                return 1e6
+            else:
+                raise Exception("Can't parse units: '" + x +"'")
+        elif x is "":
+            return 1.0
+        else:
+            raise Exception("Can't parse units: '" + x +"'")
     
     @staticmethod
     def parse(s):
         r = None
         stripped = s.replace(" ","")
         for c in all_subclasses(ParameterQuery):
-            try:
-                #print c.getRE()
-                #print stripped
-                match = re.search("^"+c.getRE()+"$", stripped)
-                if match is not None:
-                    t = c.buildFromMatch(match)
-                    if r is not None:
-                        print stripped + "is ambiguous " + str(c) + ": " + str(r)
-                    r = t
-            except:
-                continue;
+            #print c.getRE()
+            #print stripped
+            regex = "^"+c.getRE()+"$"
+            #print regex
+            #print stripped
+            match = re.search(regex, stripped)
+            if match is not None:
+                t = c.buildFromMatch(match)
+                if r is not None:
+                    print stripped + "is ambiguous " + str(c) + ": " + str(r)
+                r = t
         return r
 
 class Range(ParameterQuery):
@@ -47,11 +69,13 @@ class Range(ParameterQuery):
         
     @staticmethod
     def getRE():
-        return "\[" + float_re + "," + float_re +"\]"
+        return "\[" + float_re + unit_re + "," + float_re + unit_re + "\]"
 
     @staticmethod
     def buildFromMatch(match):
-        return Range(float(match.group(1)), float(match.group(2)))
+        m1 = ParameterQuery.parseMultiplier(match.group(2))
+        m2 = ParameterQuery.parseMultiplier(match.group(5))
+        return Range(float(match.group(1)) * m1 , float(match.group(4)) * m2)
 
 class Approx(ParameterQuery):
     def __init__(self, target, var=0.1):
@@ -60,11 +84,12 @@ class Approx(ParameterQuery):
 
     @staticmethod
     def getRE():
-        return pos_float_re + "\+/-" + pos_float_re + "%"
+        return pos_float_re + unit_re + "\+/-" + pos_float_re + "%"
 
     @staticmethod
     def buildFromMatch(match):
-        return Approx(float(match.group(1)), float(match.group(2))/100.0)
+        m = ParameterQuery.parseMultiplier(match.group(2))
+        return Approx(float(match.group(1)) * m, float(match.group(4))/100.0)
 
 class LT(ParameterQuery):
 
@@ -74,11 +99,12 @@ class LT(ParameterQuery):
 
     @staticmethod
     def getRE():
-        return "<=?" + float_re
+        return "<=?" + float_re + unit_re
 
     @staticmethod
     def buildFromMatch(match):
-        return LT(float(match.group(1)))        
+        m = ParameterQuery.parseMultiplier(match.group(2))
+        return LT(float(match.group(1)) * m)        
 
 
 class GT(ParameterQuery):
@@ -88,11 +114,12 @@ class GT(ParameterQuery):
 
     @staticmethod
     def getRE():
-        return ">=?" + float_re
+        return ">=?" + float_re + unit_re
 
     @staticmethod
     def buildFromMatch(match):
-        return GT(float(match.group(1)))        
+        m = ParameterQuery.parseMultiplier(match.group(2))
+        return GT(float(match.group(1)) * m)        
 
 class Exact(ParameterQuery):
     v = None
@@ -102,8 +129,9 @@ class Exact(ParameterQuery):
 
     @staticmethod
     def getRE():
-        return float_re
+        return float_re + unit_re
 
     @staticmethod
     def buildFromMatch(match):
-        return Exact(float(match.group(1)))        
+        m = ParameterQuery.parseMultiplier(match.group(2))
+        return Exact(float(match.group(1)) * m)        

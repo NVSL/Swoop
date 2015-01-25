@@ -8,3 +8,8 @@ def uF(x):
 def F(x):
     return x
 
+def M(x):
+    return 1e6*x
+
+def k(x):
+    return 1e3*x

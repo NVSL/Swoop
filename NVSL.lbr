@@ -163,7 +163,7 @@
           <wire x1="3.81" x2="3.81" y1="-1.27" y2="1.27" width="0.12" layer="21"/>
           <wire x1="3.81" x2="-0.4233" y1="1.27" y2="1.27" width="0.12" layer="21"/>
           <text x="1.27" y="0" size="2" layer="51">&gt;NAME</text>
-          <text x="1.27" y="0" size="1.2" layer="25">&gt;NAME</text>
+          <text x="1.27" y="0" size="1.2" layer="25">&gt;NAME"</text>
           <text x="1.27" y="0" size="1.2" layer="27">&gt;VALUE</text>
           <circle x="0" y="0" radius="0.25" layer="39" width="0.05"/>
           <pad name="1" drill="1.1" x="0" y="0" diameter="1.65" shape="square"/>
@@ -2219,7 +2219,6 @@ verticle or right angle</description>
                 <technology name="">
                   <attribute constant="no" name="CASE" value=""/>
                   <attribute constant="no" name="DIST1PN" value=""/>
-                  <attribute constant="no" name="VAL" value=""/>
                   <attribute constant="no" name="WV" value=""/>
                   <attribute constant="no" name="URL" value=""/>
                   <attribute constant="no" name="MPN" value=""/>
@@ -2239,7 +2238,6 @@ verticle or right angle</description>
                 <technology name="">
                   <attribute constant="no" name="CASE" value=""/>
                   <attribute constant="no" name="DIST1PN" value=""/>
-                  <attribute constant="no" name="VAL" value=""/>
                   <attribute constant="no" name="WV" value=""/>
                   <attribute constant="no" name="URL" value=""/>
                   <attribute constant="no" name="MPN" value=""/>
@@ -2345,7 +2343,6 @@ verticle or right angle</description>
                 <technology name="">
                   <attribute constant="no" name="CASE" value=""/>
                   <attribute constant="no" name="DIST1PN" value=""/>
-                  <attribute constant="no" name="VAL" value=""/>
                   <attribute constant="no" name="WV" value=""/>
                   <attribute constant="no" name="URL" value=""/>
                   <attribute constant="no" name="MPN" value=""/>
@@ -2365,7 +2362,6 @@ verticle or right angle</description>
                 <technology name="">
                   <attribute constant="no" name="CASE" value=""/>
                   <attribute constant="no" name="DIST1PN" value=""/>
-                  <attribute constant="no" name="VAL" value=""/>
                   <attribute constant="no" name="WV" value=""/>
                   <attribute constant="no" name="URL" value=""/>
                   <attribute constant="no" name="MPN" value=""/>
@@ -3071,7 +3067,6 @@ verticle or right angle</description>
                   <attribute constant="no" name="CASE" value=""/>
                   <attribute constant="no" name="DIST1PN" value=""/>
                   <attribute constant="no" name="PWR" value=""/>
-                  <attribute constant="no" name="VAL" value=""/>
                   <attribute constant="no" name="URL" value=""/>
                   <attribute constant="no" name="MPN" value=""/>
                   <attribute constant="no" name="MFR" value=""/>
@@ -3091,7 +3086,6 @@ verticle or right angle</description>
                   <attribute constant="no" name="CASE" value=""/>
                   <attribute constant="no" name="DIST1PN" value=""/>
                   <attribute constant="no" name="PWR" value=""/>
-                  <attribute constant="no" name="VAL" value=""/>
                   <attribute constant="no" name="URL" value=""/>
                   <attribute constant="no" name="MPN" value=""/>
                   <attribute constant="no" name="MFR" value=""/>
@@ -3468,7 +3462,6 @@ verticle or right angle</description>
                   <attribute constant="no" name="CASE" value=""/>
                   <attribute constant="no" name="DIST1PN" value=""/>
                   <attribute constant="no" name="PWR" value=""/>
-                  <attribute constant="no" name="VAL" value=""/>
                   <attribute constant="no" name="URL" value=""/>
                   <attribute constant="no" name="MPN" value=""/>
                   <attribute constant="no" name="MFR" value=""/>
@@ -3488,7 +3481,6 @@ verticle or right angle</description>
                   <attribute constant="no" name="CASE" value=""/>
                   <attribute constant="no" name="DIST1PN" value=""/>
                   <attribute constant="no" name="PWR" value=""/>
-                  <attribute constant="no" name="VAL" value=""/>
                   <attribute constant="no" name="URL" value=""/>
                   <attribute constant="no" name="MPN" value=""/>
                   <attribute constant="no" name="MFR" value=""/>
@@ -3562,7 +3554,6 @@ verticle or right angle</description>
                   <attribute constant="no" name="CASE" value=""/>
                   <attribute constant="no" name="DIST1PN" value=""/>
                   <attribute constant="no" name="PWR" value=""/>
-                  <attribute constant="no" name="VAL" value=""/>
                   <attribute constant="no" name="URL" value=""/>
                   <attribute constant="no" name="MPN" value=""/>
                   <attribute constant="no" name="MFR" value=""/>
@@ -3582,7 +3573,6 @@ verticle or right angle</description>
                   <attribute constant="no" name="CASE" value=""/>
                   <attribute constant="no" name="DIST1PN" value=""/>
                   <attribute constant="no" name="PWR" value=""/>
-                  <attribute constant="no" name="VAL" value=""/>
                   <attribute constant="no" name="URL" value=""/>
                   <attribute constant="no" name="MPN" value=""/>
                   <attribute constant="no" name="MFR" value=""/>

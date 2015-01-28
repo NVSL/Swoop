@@ -46,28 +46,6 @@ if __name__ == "__main__":
 
     resolverMap = {"GENERIC-RESISTOR_":resistors}
 
-    # print ParameterQuery.parse("[4, 10]")
-    # print ParameterQuery.parse("[4.2, 10]")
-    # print ParameterQuery.parse("[4, -1.0]")
-    # print ParameterQuery.parse("[-4 , 10]")
-    # print ParameterQuery.parse("[ 4,10 ]")
-    # print ParameterQuery.parse("[ 4,10 ] ")
-    # print ParameterQuery.parse(" [ 4,10 ] ")
-    print ParameterQuery.parse(" [ 4, 10 ]")
-    # print ParameterQuery.parse(" [ 4, 10 ] aoeu")
-    print ParameterQuery.parse(" [ 4uF, 10pF ]")
-    print ParameterQuery.parse(" [ 4k, 10M ]")
-    print ParameterQuery.parse(" [ 4, 10 ]")
-    print ParameterQuery.parse("<4")
-    # print ParameterQuery.parse("<=4")
-    # print ParameterQuery.parse("<=4.0")
-    # print ParameterQuery.parse("<=-4.0")
-    # print ParameterQuery.parse(">=-4.0")
-    # print ParameterQuery.parse(">=4.0")
-    # print ParameterQuery.parse("4.0")
-    # print ParameterQuery.parse("10 +/- 14%")
-    # sys.exit()
-
     sch = Schematic.from_file(args.inSch[0])
     lbr = LibraryFile.from_file(args.lbr[0])
 

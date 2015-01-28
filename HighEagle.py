@@ -770,12 +770,13 @@ class Part (object):
                     schematic=schematic,
                     technology=technology)
         
-        for i in part.attributes.values():
-            i.in_library = False
 
         #print "here: "+ str(part.get_device().technologies[""].attributes)
 
         part.attributes.update(copy.deepcopy(part.get_technology().attributes))
+
+        for i in part.attributes.values():
+            i.in_library = False
         
         for i in root.findall("./attribute"):
             if i.get("name") in part.attributes:
@@ -1134,7 +1135,7 @@ class Attribute (object):
             return EagleUtil.make_attribute(
                 name=self.name,
                 value=self.value,
-                constant=None #SS: 'constant' attributes are
+                constant=None 
                 )
         
 class Sheet (object):

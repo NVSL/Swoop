@@ -1,6 +1,13 @@
 import re
 from Units import *
 
+def parseESR(r):
+    r = r.upper()
+    m = re.match("(\d+(\.\d+)?) Ohm", r);
+    if m is None:
+        raise Exception("Can't parse resistance: '" + r + "'")
+    return float(m.group(1))
+
 def parseResistance(r):
     r = r.upper()
     m = re.match("(\d+(\.\d+)?)(.?)", r);

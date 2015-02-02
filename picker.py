@@ -32,9 +32,9 @@ if __name__ == "__main__":
 
     resistors = PartResolutionEnvironment("Resistor", 
                                           db=PartDB(Resistor, "Resistor", args.ohms[0]),
-                                          preferences=[Prefer("STOCK", ["onhand", "stardardline", "nonstock"]),
+                                          preferences=[Prefer("STOCK", ["STOCK", "SPECIAL-ORDER"]),
                                                        Prefer("CASE", ["0805", "0603", "TH"]),
-                                                       Prefer("TOL", [0.1, 0.05]),
+                                                       Prefer("TOL", [0.1, 0.05, 0.01]),
                                                        Minimize("PWR"),
                                                        Minimize("PRICE")])
     
@@ -48,6 +48,8 @@ if __name__ == "__main__":
 
     sch = Schematic.from_file(args.inSch[0])
     lbr = LibraryFile.from_file(args.lbr[0])
+
+    sch.mergeLayersFromEagleFile(lbr)
 
     sch.add_library(lbr.get_library_copy())
 

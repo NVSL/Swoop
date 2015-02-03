@@ -143,7 +143,7 @@ class EagleFile(EagleFilePart):
     def layerNameToNumber(self, name):
         assert type(name) is str
         if name not in self.layersByName:
-            raise HighEagleError("No layer named " + name)
+            raise HighEagleError("No layer named '" + name + "' in " + self.filename)
         return self.layersByName[name].number
 
     def remove_layer(self, layer):

@@ -84,7 +84,7 @@ def parsePrice(r):
     
 def parseCapacitance(r):
     r = r.upper()
-    m = re.match("(\d+(\.\d+)?)(.*)", r);
+    m = re.match("(\d+(\.\d+)?).?([PU]F?)", r);
 
     if m is None:
         raise Exception("Can't parse capacitance: '" + r + "'")
@@ -95,5 +95,42 @@ def parseCapacitance(r):
         mult = uF(1)
     else:
         raise Exception("Can't parse capacitance: '" + r + "'")
+
+    return mult * float(m.group(1))
+
+def parseNanometer(r):
+    r = r.upper()
+    m = re.match("((\d+)NM)|\d+K", r);
+
+    if m is None:
+        raise Exception("Can't parse nanometer: '" + r + "'")
+
+    if m.group(1) is not None:
+        return float(m.group(2))
+    else:
+        return None
+
+def parseMillicandela(r):
+    r = r.upper()
+    m = re.match("(\d+(\.\d+)?)MCD", r);
+
+    if m is None:
+        raise Exception("Can't parse millicandela: '" + r + "'")
+
+    return float(m.group(1))
+
+def parseAmps(r):
+    r = r.upper()
+    m = re.match("(\d+(\.\d+)?)([MU]A)", r);
+
+    if m is None:
+        raise Exception("Can't parse amps: '" + r + "'")
+
+    if m.group(3) == "MA":
+        mult = mA(1)
+    elif m.group(3) == "UA":
+        mult = uA(1)
+    else:
+        raise Exception("Can't parse amps: '" + r + "'")
 
     return mult * float(m.group(1))

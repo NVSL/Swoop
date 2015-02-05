@@ -16,11 +16,20 @@ class Parameter:
         return self.name + " = " + (str(self.value) if self.value != None else "*")
 
 class PartDB:
-    def __init__(self, partObjectType, partType, db):
+    def __init__(self, partObjectType, partTypeName, db):
         self.name = db
-        self.partType = partType
+        self.partTypeName = partTypeName
+        self.partType = partObjectType
+        self.parts = []
         r = csv.DictReader(open(db, "rU"))
-        self.parts = [partObjectType(_db_rec=h) for h in r]
+        line = 1
+        for h in r:
+            line = line + 1
+            try:
+                p = partObjectType(_db_rec=h)
+            except Exception as e:
+                raise Exception("In file '" + db + "' line " + str(line) +  ": " + str(e.args[0]))
+            self.parts.append(p)
         #print self.name + " = " + "\n".join(map(str,self.parts))
         for l in self.parts:
             l.db.value = db

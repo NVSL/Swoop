@@ -50,6 +50,9 @@ def make_library (
     s = ET.SubElement(library, "symbols")
     d = ET.SubElement(library, "devicesets")
     
+    for i in symbols:
+        assert i.tag == "symbol"
+
     p.extend(packages)
     s.extend(symbols)
     d.extend(devicesets)
@@ -505,6 +508,12 @@ def get_labels (root):
         return root.findall("./segment/label")
     else:
         raise NotImplementedError("Don't know how to find labels in "+root.tag+"section.")
+
+def get_junctions (root):
+    if root.tag == "segment":
+        return root.findall("./junction")
+    else:
+        raise NotImplementedError("Don't know how to find junctions in "+root.tag+"section.")
         
 def make_label (
     x,
@@ -532,6 +541,17 @@ def make_label (
     label.set("xref", xref)
     
     return label
+
+def make_junction (
+    x,
+    y,
+):
+    junction = ET.Element("junction")
+    assert x is not None
+    junction.set("x", x)
+    assert y is not None
+    junction.set("y", y)
+    return junction
 
 def make_symbol (
     name,

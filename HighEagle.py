@@ -91,7 +91,9 @@ class EagleFile(EagleFilePart):
         
         """
         if not self.validate():
-            raise HighEagleError("element tree does not validate")
+            f = open("junk.xml", "w")
+            f.write(ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True))
+            raise HighEagleError("element tree does not validate" + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
 
         f = open(filename, "w")
         f.write(ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True))
@@ -169,6 +171,9 @@ class EagleFile(EagleFilePart):
                         raise HighEagleError("Layer mismatch: " + ef.filename +" <" + str(srcLayer.number) + ", '" + srcLayer.name +"'>; " + self.filename +" = <" + str(dstLayer.number) + ", '" + dstLayer.name +"'>;")
             if srcLayer.name not in self.get_layers():
                 self.add_layer(srcLayer.clone())
+
+    def get_manifest(self):
+        raise NotImplementedError("Manifest for " + str(type(self)))
 
 class Schematic (EagleFile):
     """
@@ -277,8 +282,19 @@ class Schematic (EagleFile):
             sch.sheets.append(new_sheet)
         
         return sch
+
+    def get_manifest(self, indent=""):
+        r = indent + "Libraries (" + str(len(self.libraries)) + ")\n"+ indent
+        for l in self.libraries:
+            r = r + "\t" + l+ "\n"
+            r = r + self.libraries[l].get_manifest(indent + "\t"  + "\t") + "\n"+indent
+        r = r + "Parts (" + str(len(self.parts)) + ")\n"+ indent
+        for l in self.parts:
+            r = r + "\t" + l + "\n"+ indent
+        r = r + "Sheets (" + str(len(self.sheets)) + ")\n"+ indent
+        return r
         
-    def add_part (part, sheet_index=0):
+    def add_part (self, part, sheet_index=0):
         """
         Adds a part to the schematic.
         All gates are placed on the given sheet (default sheet 0).
@@ -350,6 +366,10 @@ class Schematic (EagleFile):
     def get_libraries(self):
         return libraries
 
+    def get_library(self, l):
+        if l not in self.libraries:
+            raise HighEagleError("Missing library '" + str(l) + "' in " + self.filename)
+        return self.libraries[l]
 
 class Pin (EagleFilePart):
     """
@@ -462,6 +482,12 @@ class LibraryFile(EagleFile):
 
         return lbr
 
+    def get_library(self):
+        return self.library
+    
+    def get_manifest(self, indent=""):
+        return self.library.get_manifest(indent + "\t")
+
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation of the library file
@@ -510,23 +536,35 @@ class Library (EagleFilePart):
         for package in packages:
             new_package = Package.from_et(lib, package)
             assert new_package.name not in lib.packages, "Cannot have duplicate package names: "+new_package.name
-            lib.packages[new_package.name] = new_package
+            lib.add_package(new_package)
             
         lib.symbols = {}
         for symbol in symbols:
             new_symbol = Symbol.from_et(lib, symbol)
             assert new_symbol.name not in lib.symbols, "Cannot have duplicate symbol names: "+new_symbol.name
-            lib.symbols[new_symbol.name] = new_symbol
+            lib.add_symbol(new_symbol)
             
         lib.devicesets = {}
         for deviceset in devicesets:
             new_deviceset = DeviceSet.from_et(lib, deviceset)
             assert new_deviceset.name not in lib.devicesets, "Cannot have duplicate devicesets names: "+new_deviceset.name
-            lib.devicesets[new_deviceset.name] = new_deviceset
+            lib.add_deviceset(new_deviceset)
             
             
         assert lib is not None
         return lib
+
+    def get_manifest(self, indent=""):
+        r = indent + "Symbols (" + str(len(self.symbols)) + ")\n"+ indent
+        for l in self.symbols:
+            r = r + "\t" + l+ "\n" + indent
+        r = r + "Packages (" + str(len(self.packages)) + ")\n"+ indent
+        for l in self.packages:
+            r = r + "\t" + l + "\n"+ indent
+        r = r + "DeviceSets (" + str(len(self.devicesets)) + ")\n"+ indent
+        for l in self.devicesets:
+            r = r + "\t" + l + "\n"+ indent
+        return r
         
     def get_et (self):
         """
@@ -555,14 +593,17 @@ class Library (EagleFilePart):
         return self.packages.get(name)
 
     def add_deviceset(self, deviceset):
+        assert type(deviceset) is DeviceSet
         self.devicesets[deviceset.name] = deviceset
         deviceset.parent = self
 
     def add_package(self, package):
+        assert type(package) is Package
         self.packages[package.name] = package
         package.parent = self
 
     def add_symbol(self, symbol):
+        assert type(symbol) is Symbol
         self.symbols[symbol.name] = symbol
         symbol.parent = self
 
@@ -583,6 +624,15 @@ class Package (EagleFilePart):
             string += key+": "+(self.__dict__[key].__str__())+"\n"
         return string
         
+    def clone(self):
+        n = Package(parent=None,
+                    name=self.name)
+        for i in self.drawingElements:
+            n.add_drawingElement(i.clone())
+        for i in self.contacts.values():
+            n.add_contact(i.clone())
+        return n
+
     @staticmethod
     def from_et (parent, package_root):
         new_package = Package(parent=parent)
@@ -598,17 +648,18 @@ class Package (EagleFilePart):
         for pad in pads:
             new_pad = Pad.from_et(new_package,pad)
             assert new_pad.name not in new_package.contacts, "Cannot add pad with duplicate name: "+new_pad.name
-            new_package.contacts[new_pad.name] = new_pad
+            new_package.add_contact(new_pad)
         
         for smd in smds:
             new_smd = SMD.from_et(new_package,smd)
             assert new_smd.name not in new_package.contacts, "Cannot add smd with duplicate name: "+new_smd.name
-            new_package.contacts[new_smd.name] = new_smd
+            new_package.add_contact(new_smd)
             
         for drawingElement in drawingElements:
             new_drawingElement = DrawingElement.from_et(new_package,drawingElement)
             new_package.drawingElements.append(new_drawingElement)
-        
+            new_package.add_drawingElement(new_drawingElement)
+
         return new_package
         
     def get_et (self):
@@ -619,6 +670,15 @@ class Package (EagleFilePart):
             contacts=[contact.get_et() for contact in self.contacts.values()]
         )
     
+    def add_drawingElement(self,e):
+        self.drawingElements.append(e)
+        e.parent = self
+
+    def add_contact(self,p):
+        self.contacts[p.name] = p
+        p.parent = self
+
+
 class Pad (EagleFilePart):
     """
     EAGLE pad tag.
@@ -634,7 +694,10 @@ class Pad (EagleFilePart):
         self.diameter = diameter
         self.shape = shape
         self.rot = rot
-    
+
+    def clone(self):
+        return self._clone()
+
     @staticmethod
     def from_et (parent, pad_root):
         assert pad_root.tag == "pad"
@@ -828,6 +891,9 @@ class SMD (EagleFilePart):
         self.layer = layer
         self.rot = rot
     
+    def clone(self):
+        return self._clone()
+
     @staticmethod
     def from_et (parent, smd_root):
         assert smd_root.tag == "smd"
@@ -896,16 +962,14 @@ class Symbol (EagleFilePart):
         
         drawingElements = EagleUtil.get_drawingElements(symbol_root)
         for drawing in drawingElements:
-            new_drawing = DrawingElement.from_et(symbol, drawing)
-            symbol.add_drawingElement(new_drawing)
+            symbol.add_drawingElement(DrawingElement.from_et(symbol, drawing))
             
         pins = EagleUtil.get_pins(symbol_root)
         for pin in pins:
-            new_pin = Pin.from_et(symbol, pin)
-            symbol.add_pin(new_pin)
+            symbol.add_pin(Pin.from_et(symbol, pin))
 
         return symbol
-        
+
     def get_et (self):
         return EagleUtil.make_symbol(
             name=self.name,
@@ -1015,11 +1079,10 @@ class Part (EagleFilePart):
         """
 
         lib = self.get_library();
-
         try:
             deviceset = lib.devicesets[self.deviceset]
         except:
-            raise EagleFormatError("Missing device set '" + self.library + ":" + self.deviceset + "' for part '" + self.name + "'.")
+            raise EagleFormatError("Missing device set '" + self.library + ":" + self.deviceset + "' for part '" + self.name + "' in file " +self.get_file().filename +".")
         
         return deviceset
         
@@ -1127,6 +1190,24 @@ class DeviceSet (EagleFilePart):
         
         return deviceset
         
+    def clone(self):
+        n = DeviceSet(parent=None,
+                      name=self.name)
+        for i in self.gates.values():
+            n.add_gate(i.clone())
+        for i in self.devices.values():
+            n.add_device(i.clone())
+        return n
+
+    def add_gate(self, a):
+        self.gates[a.name] = a
+        a.parent = self
+
+    def add_device(self, a):
+        self.devices[a.name] = a
+        a.parent = self
+        
+
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.
@@ -1152,6 +1233,9 @@ class Gate (EagleFilePart):
         self.x = x
         self.y = y
         
+    def clone(self):
+        return self._clone()
+
     @staticmethod
     def from_et (parent, gate_root):
         gate = Gate(
@@ -1183,6 +1267,9 @@ class Connect (EagleFilePart):
         self.gate = gate
         self.pin = pin
         self.pad = pad
+
+    def clone(self):
+        return self._clone()
         
     @classmethod
     def from_et (cls, parent,connect_root):
@@ -1211,7 +1298,7 @@ class Device (EagleFilePart):
         self.package = package
         self.connects = connects
         self.technologies = technologies
-        
+
     @classmethod
     def from_et (cls, parent, device_root):
         assert device_root.tag == "device"
@@ -1222,19 +1309,31 @@ class Device (EagleFilePart):
         
         connects = EagleUtil.get_connects(device_root)
         for connect in connects:
-            new_connect = Connect.from_et(device, connect)
-            device.connects.append(new_connect)
-            
+            device.add_connect(Connect.from_et(device, connect))
         
         technologies = EagleUtil.get_technologies(device_root)
         for technology in technologies:
-            new_technology = Technology.from_et(device, technology)
-            name = new_technology.name
-            device.technologies[name] = new_technology
-                
-                
-        
+            device.add_technology(Technology.from_et(device, technology))
+                        
         return device
+        
+    def clone(self):
+        n = Device(parent=None,
+                   name=self.name,
+                   package=self.package)
+        for i in self.connects:
+            n.add_connect(i.clone())
+        for i in self.technologies.values():
+            n.add_technology(i.clone())
+        return n
+
+    def add_connect(self, a):
+        self.connects.append(a)
+        a.parent = self
+        
+    def add_technology(self, a):
+        self.technologies[a.name] = a
+        a.parent = self
         
     def get_et (self):
         """
@@ -1259,6 +1358,13 @@ class Technology (EagleFilePart):
         self.attributes = attributes
         self.name = name
         
+    def clone(self):
+        n = Technology(parent=None,
+                       name=self.name)
+        for i in self.attributes.values():
+            n.add_attribute(i.clone())
+        return n
+
     @classmethod
     def from_et (cls, parent, technology_root):
         tech = cls(parent=parent)
@@ -1266,10 +1372,14 @@ class Technology (EagleFilePart):
         attributes = EagleUtil.get_attributes(technology_root)
         
         for attribute in attributes:
-            tech.attributes[attribute.get("name")] = Attribute.from_et(tech,attribute)
+            tech.add_attribute(Attribute.from_et(tech,attribute))
  
         return tech
         
+    def add_attribute(self, a):
+        self.attributes[a.name] = a
+        a.parent = self
+
     def get_et (self):
         attrs = [a.get_et() for a in self.attributes.values()]
         return EagleUtil.make_technology(name=self.name, attributes=attrs)
@@ -1448,6 +1558,30 @@ class Label (EagleFilePart):
             layer=Layer.etLayer(self,self.layer)
         )
         
+class Junction(EagleFilePart):
+    def __init__ (self, parent=None, x=None, y=None):
+        EagleFilePart.__init__(self,parent)
+        self.x=x
+        self.y=y
+        
+    @staticmethod
+    def from_et (parent, junction_root):
+        assert junction_root.tag == "junction"
+        return Junction(parent=parent,x=junction_root.get("x"), y=junction_root.get("y"))
+
+    def get_et (self):
+        """
+        Returns the ElementTree.Element xml representation.
+        """
+        return EagleUtil.make_junction(
+            x=self.x,
+            y=self.y,
+        )
+        
+    
+    def clone(self):
+        return self._clone()
+
 class Segment (EagleFilePart):
     def __init__ (self, parent=None, pinrefs=None, portrefs=None, wires=None, junctions=None, labels=None):
         EagleFilePart.__init__(self,parent)
@@ -1470,22 +1604,35 @@ class Segment (EagleFilePart):
         wires = EagleUtil.get_wires(segment_root)
         pinrefs = EagleUtil.get_pinrefs(segment_root)
         labels = EagleUtil.get_labels(segment_root)
+        junctions = EagleUtil.get_junctions(segment_root)
         
         for wire in wires:
-            new_wire = Wire.from_et(segment, wire)
-            segment.wires.append(new_wire)
+            segment.add_wire(Wire.from_et(segment, wire))
             
         for pinref in pinrefs:
-            #ET.dump(pinref)
-            new_pinref = PinRef.from_et(segment, pinref)
-            segment.pinrefs.append(new_pinref)
+            segment.add_pinref(PinRef.from_et(segment, pinref))
             
         for label in labels:
-            new_label = Label.from_et(segment, label)
-            segment.labels.append(new_label)
+            segment.add_label(Label.from_et(segment, label))
+
+        for junction in junctions:
+            segment.add_junction(Junction.from_et(segment, junction))
             
         return segment
         
+    def add_wire(self, w):
+        self.wires.append(w);
+        w.parent = self
+    def add_label(self, w):
+        self.labels.append(w);
+        w.parent = self
+    def add_junction(self, w):
+        self.junctions.append(w);
+        w.parent = self
+    def add_pinref(self, w):
+        self.pinrefs.append(w);
+        w.parent = self
+
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.
@@ -1494,7 +1641,8 @@ class Segment (EagleFilePart):
         return EagleUtil.make_segment(
             wires=[wire.get_et() for wire in self.wires],
             pinrefs=[pinref.get_et() for pinref in self.pinrefs],
-            labels=[label.get_et() for label in self.labels]
+            labels=[label.get_et() for label in self.labels],
+            junctions=[junction.get_et() for junction in self.junctions]
         )
         
 class Wire (DrawingElement):

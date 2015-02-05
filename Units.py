@@ -5,6 +5,12 @@ def pF(x):
 def uF(x):
     return x * 1e-6
 
+def mA(x):
+    return x * 1e-3
+
+def uA(x):
+    return x * 1e-6
+
 def F(x):
     return x
 

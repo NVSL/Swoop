@@ -3,7 +3,7 @@ import re
 float_re = "([-+]?\d*\.\d+|[-+]?\d+)"
 pos_float_re = "(\d*\.\d+|\d+)"
 int_re = "([-+]?\d+)"
-unit_re = "(([unpkM])[FH]?)?"
+unit_re = "(([unpkM\%]?)([FHW]?))?"
 
 def all_subclasses(cls):
     return cls.__subclasses__() + [g for s in cls.__subclasses__()
@@ -36,6 +36,10 @@ class ParameterQuery(object):
                 return 1e3
             elif m.group(2) == "M":
                 return 1e6
+            elif m.group(2) == "%":
+                return 1e-2
+            elif m.group(2) == "" or m.group(2) is None:
+                return 1.0
             else:
                 raise Exception("Can't parse units: '" + x +"'")
         elif x is "":
@@ -129,9 +133,12 @@ class Exact(ParameterQuery):
 
     @staticmethod
     def getRE():
-        return float_re + unit_re
+        return "(" + float_re + unit_re +")|(.*)"
 
     @staticmethod
     def buildFromMatch(match):
-        m = ParameterQuery.parseMultiplier(match.group(2))
-        return Exact(float(match.group(1)) * m)        
+        if match.group(1) is not None:
+            m = ParameterQuery.parseMultiplier(match.group(3))
+            return Exact(float(match.group(2)) * m)        
+        else:
+            return Exact(match.group(6))

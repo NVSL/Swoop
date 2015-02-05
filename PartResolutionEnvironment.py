@@ -73,6 +73,7 @@ class PartResolutionEnvironment:
         return self.alternatives(component)[0]
 
     def resolveInPlace(self, component):
+        #print component.partType, self.partType
         assert component.partType == self.partType
         options = self.alternatives(component)
         if len(options) != 0:

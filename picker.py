@@ -4,6 +4,7 @@ import argparse
 from PartResolutionEnvironment import *
 from Resistor import Resistor
 from Capacitor import CeramicCapacitor
+from LED import LED
 from PartType import *
 from PartDatabase import PartDB
 from PartParameter import *
@@ -18,6 +19,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Part picker")
     parser.add_argument("--ohms", required=True,  type=str, nargs=1, dest='ohms', help="Resistors csv")
     parser.add_argument("--ceramics", required=True,  type=str, nargs=1, dest='ceramics', help="ceramic caps csv")
+    parser.add_argument("--leds", required=True,  type=str, nargs=1, dest='leds', help="LED csv")
     parser.add_argument("--lbr", required=True,  type=str, nargs=1, dest='lbr', help="libraries to draw from")
     parser.add_argument("--in", required=True,  type=str, nargs=1, dest='inSch', help="input sch")
     parser.add_argument("--out", required=True,  type=str, nargs=1, dest='outSch', help="output sch")
@@ -44,7 +46,17 @@ if __name__ == "__main__":
                                                          Prefer("CASE", ["0805", "0603", "TH"]),
                                                          Minimize("PRICE")])
 
-    resolverMap = {"GENERIC-RESISTOR_":resistors}
+    leds = PartResolutionEnvironment("LED",
+                                     db=PartDB(LED, "LED", args.leds[0]),
+                                     preferences=[Prefer("STOCK", ["onhand", "stardardline", "nonstock"]),
+                                                  Prefer("CASE", ["0805", "0603", "TH"]),
+                                                  Minimize("PRICE")])
+
+    resolverMap = {"GENERIC-RESISTOR_":resistors,
+                   "GENERIC-CAPACITOR-NP_": ceramicCaps,
+                   "GENERIC-DIODE-LED_": leds,
+                   }
+
 
     sch = Schematic.from_file(args.inSch[0])
     lbr = LibraryFile.from_file(args.lbr[0])
@@ -59,7 +71,8 @@ if __name__ == "__main__":
             #print i
             print i.name 
             #print [(k.name, k.value) for k in i.get_attributes().values() ]
-            r = Resistor();
+            #print resolver
+            r = resolver.db.partType()
             for a in i.get_attributes().values():
                 if a.name in r.parameters and a.value is not "":
                     #print "here" + field
@@ -67,7 +80,7 @@ if __name__ == "__main__":
                     if q is None:
                         print "Couldn't parse " + a.value
                     else:
-                        r.setField(field, q)
+                        r.setField(a.name, q)
 
             if i.value is not "":
                 q = ParameterQuery.parse(str(i.value))

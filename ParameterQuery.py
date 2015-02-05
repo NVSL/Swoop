@@ -52,6 +52,8 @@ class ParameterQuery(object):
         r = None
         stripped = s.replace(" ","")
         for c in all_subclasses(ParameterQuery):
+            if c == Exact:
+                continue
             #print c.getRE()
             #print stripped
             regex = "^"+c.getRE()+"$"
@@ -61,7 +63,15 @@ class ParameterQuery(object):
             if match is not None:
                 t = c.buildFromMatch(match)
                 if r is not None:
-                    print stripped + "is ambiguous " + str(c) + ": " + str(r)
+                    raise Exception(stripped + "is ambiguous " + str(c) + ": " + str(r))
+                r = t
+        if r is None:
+            regex = "^"+Exact.getRE()+"$"
+            #print regex
+            #print stripped
+            match = re.search(regex, stripped)
+            if match is not None:
+                t = Exact.buildFromMatch(match)
                 r = t
         return r
 
@@ -78,8 +88,8 @@ class Range(ParameterQuery):
     @staticmethod
     def buildFromMatch(match):
         m1 = ParameterQuery.parseMultiplier(match.group(2))
-        m2 = ParameterQuery.parseMultiplier(match.group(5))
-        return Range(float(match.group(1)) * m1 , float(match.group(4)) * m2)
+        m2 = ParameterQuery.parseMultiplier(match.group(6))
+        return Range(float(match.group(1)) * m1 , float(match.group(5)) * m2)
 
 class Approx(ParameterQuery):
     def __init__(self, target, var=0.1):
@@ -92,8 +102,9 @@ class Approx(ParameterQuery):
 
     @staticmethod
     def buildFromMatch(match):
+        #print  pos_float_re + unit_re + "\+/-" + pos_float_re + "%"
         m = ParameterQuery.parseMultiplier(match.group(2))
-        return Approx(float(match.group(1)) * m, float(match.group(4))/100.0)
+        return Approx(float(match.group(1)) * m, float(match.group(5))/100.0)
 
 class LT(ParameterQuery):
 

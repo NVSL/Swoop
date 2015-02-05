@@ -24,7 +24,7 @@ print "Exporting loaded file."
 print 
 loaded_schematic.write("test_load.sch")
 
-filename = "NVSL.lbr"
+filename = "newNVSL.lbr"
 print "Loading", filename
 print
 loaded_lbr = HE.LibraryFile.from_file(filename)

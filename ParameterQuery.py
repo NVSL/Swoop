@@ -3,7 +3,7 @@ import re
 float_re = "([-+]?\d*\.\d+|[-+]?\d+)"
 pos_float_re = "(\d*\.\d+|\d+)"
 int_re = "([-+]?\d+)"
-unit_re = "(([unpkM\%]?)([FHW]?))?"
+unit_re = "(([unpkKM\%]?)([FHWV]?))?"
 
 def all_subclasses(cls):
     return cls.__subclasses__() + [g for s in cls.__subclasses__()
@@ -48,31 +48,27 @@ class ParameterQuery(object):
             raise Exception("Can't parse units: '" + x +"'")
     
     @staticmethod
-    def parse(s):
+    def parse(typename, string):
         r = None
-        stripped = s.replace(" ","")
-        for c in all_subclasses(ParameterQuery):
-            if c == Exact:
-                continue
-            #print c.getRE()
-            #print stripped
-            regex = "^"+c.getRE()+"$"
-            #print regex
-            #print stripped
-            match = re.search(regex, stripped)
-            if match is not None:
-                t = c.buildFromMatch(match)
-                if r is not None:
-                    raise Exception(stripped + "is ambiguous " + str(c) + ": " + str(r))
-                r = t
-        if r is None:
-            regex = "^"+Exact.getRE()+"$"
-            #print regex
-            #print stripped
-            match = re.search(regex, stripped)
-            if match is not None:
-                t = Exact.buildFromMatch(match)
-                r = t
+        if typename == "str":
+            r = ExactString(string.strip())
+        else:
+            stripped = string.replace(" ","")
+            for c in  all_subclasses(ParameterQuery):
+                if c == ExactString:
+                    continue
+                #print c.getRE()
+                #print stripped
+                regex = "^"+c.getRE()+"$"
+                #print str(c)
+                #print regex
+                #print stripped
+                match = re.search(regex, stripped)
+                if match is not None:
+                    t = c.buildFromMatch(match)
+                    if r is not None:
+                        raise Exception(stripped + " is ambiguous " + str(c) + ": " + str(r) +".  Also parsed as " + str(t))
+                    r = t
         return r
 
 class Range(ParameterQuery):
@@ -144,7 +140,7 @@ class Exact(ParameterQuery):
 
     @staticmethod
     def getRE():
-        return "(" + float_re + unit_re +")|(.*)"
+        return "(" + float_re + unit_re +")"
 
     @staticmethod
     def buildFromMatch(match):
@@ -153,3 +149,17 @@ class Exact(ParameterQuery):
             return Exact(float(match.group(2)) * m)        
         else:
             return Exact(match.group(6))
+
+class ExactString(ParameterQuery):
+    v = None
+    def __init__(self, v):
+        ParameterQuery.__init__(self, lambda x: x.value == v)
+        self.s = " ==str " + str(v)
+
+    @staticmethod
+    def getRE():
+        return "(.*)"
+
+    @staticmethod
+    def buildFromMatch(match):
+        return ExactString(match.group(1))

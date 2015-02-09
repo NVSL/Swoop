@@ -1,6 +1,7 @@
 import re
 from Units import *
 
+
 def parseESR(r):
     r = r.upper()
     m = re.match("(\d+(\.\d+)?) Ohm", r);
@@ -41,11 +42,51 @@ def parseTolerance(r):
 
 def parseVolts(r):
     r = r.upper()
-    m = re.search("(\d+(\.\d+)?)V", r);
+    m = re.search("((\d+(\.\d+)?)(M)?)V( @ (\d+m?A))?", r);
     if m is None:
         raise Exception("Can't parse volts: '" + r + "'")
-    return float(m.group(1))
 
+    if m.group(4) == "M":
+        multiplier = mV(1)
+    elif m.group(4) is None:
+        multiplier = 1.0
+    else:
+        raise Exception("Can't parse volts: '" + r + "'")
+    #print r
+    #print m.group(2)
+    return float(m.group(2)) * multiplier
+
+def parseSize(r):
+    r = r.upper()
+    sizeMap = {"0805": "large",
+               "0805 (2012 METRIC)": "large",
+               "805": "large",
+               "0603": "small",
+               "0603 (1608 METRIC)": "small",
+               "603": "small",
+               "1206 (3216 METRIC)": "large",
+               "1210 (3528 METRIC)": "large",
+               "2312 (6032 METRIC)": "large",
+               "2917 (7343 METRIC)": "large",
+               "T-18, AXIAL": "TH",
+               "DO-41": "TH",
+               "AXIAL": "TH",
+               "RADIAL": "TH",
+               "DO-204AL, DO-41, AXIAL" : "TH",
+               "DO-201AD, AXIAL": "TH",
+               "SOD-323": "large",
+               "SC-76, SOD-323": "large",
+               "SOD-123F":"large",
+               "S-FLAT (1.6X3.5)": "large",
+               "3-SMD, Non-Standard" : "large"
+               }
+    try:
+        return sizeMap[r]
+    except Exception as e:              
+        raise Exception("Unknown package: '" + r + "'")
+
+
+               
 def parsePackage(r):
     r = r.upper()
     if re.search("0?805", r):
@@ -54,15 +95,33 @@ def parsePackage(r):
         return "0603"
     elif re.search("AXIAL", r):
         return "TH"
+    elif re.search("RADIAL", r):
+        return "TH"
+    elif re.search("DO-201AD", r):
+        return "TH"
+    elif re.search("DO-41", r):
+        return "TH"
+    elif re.search("SOD-323", r):
+        return "SOD-323"
+    elif r == "S-FLAT (1.6X3.5)":
+        return "SOD-123F"
     else:
         raise Exception("Can't parse package: '" + r + "'")
     
 def parseWatts(r):
     r = r.upper()
-    m = re.match("(\d+(.\d+)?)W", r);
+    m = re.match("(\d+(.\d+)?)([M]?W)", r);
     if m is None:
         raise Exception("Can't parse Watts: '" + r + "'")
-    return float(m.group(1))
+
+    if m.group(3) == "MW":
+        mult = mW(1)
+    elif m.group(3) == "W":
+        mult = 1.0
+    else:
+        raise Exception("Can't parse Watts: '" + r + "'")
+
+    return float(m.group(1)) * mult
 
 def parseQty(r):
     r = r.upper()
@@ -100,10 +159,23 @@ def parseCapacitance(r):
 
 def parseNanometer(r):
     r = r.upper()
-    m = re.match("((\d+)NM)|\d+K", r);
-
+    m = re.match("((\d+(.\d+))NM)|(\d+K)", r);
+#    print m
+ #   print r
     if m is None:
         raise Exception("Can't parse nanometer: '" + r + "'")
+
+    if m.group(1) is not None:
+        return float(m.group(2))
+    else:
+        return None
+
+def parseNanoseconds(r):
+    r = r.upper()
+    m = re.match("((\d+)NS)|(-)", r);
+
+    if m is None:
+        raise Exception("Can't parse nanoseconds: '" + r + "'")
 
     if m.group(1) is not None:
         return float(m.group(2))
@@ -121,7 +193,7 @@ def parseMillicandela(r):
 
 def parseAmps(r):
     r = r.upper()
-    m = re.match("(\d+(\.\d+)?)([MU]A)", r);
+    m = re.match("(\d+(\.\d+)?)([MU]?A)", r);
 
     if m is None:
         raise Exception("Can't parse amps: '" + r + "'")
@@ -130,6 +202,8 @@ def parseAmps(r):
         mult = mA(1)
     elif m.group(3) == "UA":
         mult = uA(1)
+    elif m.group(3) == "A":
+        mult = 1.0
     else:
         raise Exception("Can't parse amps: '" + r + "'")
 

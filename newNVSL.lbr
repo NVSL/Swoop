@@ -11097,6 +11097,104 @@ tails</text>
             </device>
           </devices>
         </deviceset>
+        <deviceset name="RESOLVED-DIODE-ZENER_">
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="RESOLVED-DIODE-ZENER_"/>
+          </gates>
+          <devices>
+            <device name="SOD123" package="SOD3716X135HS">
+              <connects>
+                <connect gate="G$1" pin="A" pad="A"/>
+                <connect gate="G$1" pin="C" pad="C"/>
+              </connects>
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="PWR" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="VZENER" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="TOL" value=""/>
+                  <attribute constant="no" name="IZMAX" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+            <device name="SOD323" package="SOD2512X100HS">
+              <connects>
+                <connect gate="G$1" pin="A" pad="A"/>
+                <connect gate="G$1" pin="C" pad="C"/>
+              </connects>
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="PWR" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="VZENER" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="TOL" value=""/>
+                  <attribute constant="no" name="IZMAX" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="UNRESOLVED-DIODE-ZENER_">
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="UNRESOLVED-DIODE-ZENER_"/>
+          </gates>
+          <devices>
+            <device name="SOD123" package="SOD3716X135HS">
+              <connects>
+                <connect gate="G$1" pin="A" pad="A"/>
+                <connect gate="G$1" pin="C" pad="C"/>
+              </connects>
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="PWR" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="VZENER" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="TOL" value=""/>
+                  <attribute constant="no" name="IZMAX" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+            <device name="SOD323" package="SOD2512X100HS">
+              <connects>
+                <connect gate="G$1" pin="A" pad="A"/>
+                <connect gate="G$1" pin="C" pad="C"/>
+              </connects>
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="PWR" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="VZENER" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="TOL" value=""/>
+                  <attribute constant="no" name="IZMAX" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
         <deviceset name="GENERIC-ADJUSTABLE-VOLTAGE-REGULATOR_">
           <gates>
             <gate name="G$1" x="0" y="0" symbol="GENERIC-ADJUSTABLE-VOLTAGE-REGULATOR_"/>

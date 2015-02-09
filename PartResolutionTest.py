@@ -11,8 +11,8 @@ from Units import *
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Resistor Library Test")
-    parser.add_argument("--ohms", required=True,  type=str, nargs=1, dest='ohms', help="Spec for device list to build")
-    parser.add_argument("--ceramics", required=True,  type=str, nargs=1, dest='ceramics', help="Spec for device list to build")
+    parser.add_argument("--ohms", required=True,  type=str, nargs='+', dest='ohms', help="Spec for device list to build")
+    parser.add_argument("--ceramics", required=True,  type=str, nargs='+', dest='ceramics', help="Spec for device list to build")
     args = parser.parse_args()
 
     # define a resolution environment. It's a map between part type names and
@@ -21,19 +21,23 @@ if __name__ == "__main__":
     # In this case, we prefer 0805 to 0603 to through hole, 10% over 5%, lower
     # power, and low priced (prioritized in that order).
 
+    sizePref =  Prefer("SIZE", ["large", "small", "TH"])
+                  
+    
     resistors = PartResolutionEnvironment("Resistor", 
-                                          db=PartDB(Resistor, "Resistor", args.ohms[0]),
-                                          preferences=[Prefer("STOCK", ["onhand", "stardardline", "nonstock"]),
-                                                       Prefer("CASE", ["0805", "0603", "TH"]),
-                                                       Prefer("TOL", [0.1, 0.05]),
+                                          db=PartDB(Resistor, "Resistor", args.ohms),
+                                          preferences=[Prefer("STOCK", ["STOCK", "SPECIAL-ORDER"]),
+                                                       sizePref,
+                                                       Prefer("TOL", [0.05, 0.01]),
                                                        Minimize("PWR"),
                                                        Minimize("PRICE")])
     
     ceramicCaps = PartResolutionEnvironment("CeramicCapacitor",
-                                            db=PartDB(CeramicCapacitor, "CeramicCapacitor", args.ceramics[0]),
-                                            preferences=[Prefer("STOCK", ["onhand", "stardardline", "nonstock"]),
-                                                         Prefer("CASE", ["0805", "0603", "TH"]),
+                                            db=PartDB(CeramicCapacitor, "CeramicCapacitor", args.ceramics),
+                                            preferences=[Prefer("STOCK", ["STOCK", "SPECIAL-ORDER"]),
+                                                         sizePref,
                                                          Minimize("PRICE")])
+
     
     # A 1K resistor that can dissipate at least 0.5W
     highWatt = Resistor()
@@ -48,8 +52,8 @@ if __name__ == "__main__":
     tightTolerance = Resistor(VALUE = Exact(1000))
     tightTolerance.tolerance = LT(0.01)
     
-    print "high watt"
-    print resistors.resolve(highWatt)
+#    print "high watt"
+#    print resistors.resolve(highWatt)
     print "low watt"
     print resistors.resolve(lowWatt)
     print "tight tolerance"

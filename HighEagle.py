@@ -592,6 +592,20 @@ class Library (EagleFilePart):
     def get_package(self, name):
         return self.packages.get(name)
 
+    def remove_deviceset(self, deviceset):
+        if type(deviceset) == str:
+            name = deviceset
+        elif type(deviceset) == DeviceSet:
+            name = deviceset.name
+            deviceset.parent = None
+        else:
+            raise HighEagleError("Wrong type of argument to remove_deviceset()")
+
+        if name not in self.devicesets:
+            raise HighEagleError("Deviceset '" + name +"' is not in library '" + self.name + "'")
+        del self.devicesets[name]
+
+        
     def add_deviceset(self, deviceset):
         assert type(deviceset) is DeviceSet
         self.devicesets[deviceset.name] = deviceset
@@ -1207,6 +1221,8 @@ class DeviceSet (EagleFilePart):
         self.devices[a.name] = a
         a.parent = self
         
+    def get_gates(self):
+        return self.gates
 
     def get_et (self):
         """
@@ -1659,7 +1675,8 @@ class Wire (DrawingElement):
         y1=None, 
         y2=None, 
         width=None, 
-        layer=None
+        layer=None,
+        curve=None
     ):
         DrawingElement.__init__(self,parent,layer)
         self.x1 = x1
@@ -1667,6 +1684,7 @@ class Wire (DrawingElement):
         self.y1 = y1
         self.y2 = y2
         self.width = width
+        self.curve = curve
 
     def clone(self):
         return self._clone()
@@ -1681,6 +1699,7 @@ class Wire (DrawingElement):
             y1=wire_root.get("y1"),
             y2=wire_root.get("y2"),
             width=wire_root.get("width"),
+            curve=wire_root.get("curve"),
             layer=Layer.stringLayer(parent, wire_root.get("layer"))
         )
         
@@ -1691,6 +1710,7 @@ class Wire (DrawingElement):
             y1=self.y1,
             y2=self.y2,
             width=self.width,
+            curve=self.curve,
             layer=Layer.etLayer(self,self.layer)
         )
 

@@ -1,12 +1,25 @@
 from PartParameter import *
 from ParameterQuery import *
+import Digikey
 
 class PartType:
     partType = "Abstract"
     preference = []
 
     def __init__(self, typename,args,fields):
-        setattr(self,"parameters",fields)
+        setattr(self, "parameters",{
+                #                           "DIST1" : PartParameter("DIST1", "Digi-Key Part Number", "str", lambda x  :  x, None),
+                "DIST1PN" : PartParameter("DIST1PN", "Digi-Key Part Number", "str", lambda x : x, None),
+                "PRICE" : PartParameter("PRICE", "Unit Price (USD)", "float", Digikey.parsePrice, None),
+                "STOCK" : PartParameter("STOCK", "Stock", "str", lambda x : x, None),
+                "PACKAGE" : PartParameter("PACKAGE", "Package", "str", lambda x : x, None),
+                "MFR" : PartParameter("MFR", "Manufacturer", "str", lambda x : x, None),
+                "MPN" : PartParameter("MPN", "Manufacturer Part Number", "str", lambda x : x, None),
+                "db" : PartParameter("db", "db", "str", lambda x : x, None),
+                "minQty" :  PartParameter("minQty", "Minimum Quantity", "int", Digikey.parseQty, Exact(1))
+            })
+        self.parameters.update(fields)
+
         for p in sorted(self.parameters):
             self.__dict__[p] = self.parameters[p]
 

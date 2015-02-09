@@ -571,6 +571,7 @@ def make_wire (
     x2,
     y2,
     width,
+    curve,
     layer
 ):
     wire = ET.Element("wire")
@@ -580,6 +581,8 @@ def make_wire (
     wire.set("y2", y2)
     wire.set("width", width)
     wire.set("layer", layer)
+    if curve is not None:
+        wire.set("curve", curve)
     return wire
 
 def make_pin (

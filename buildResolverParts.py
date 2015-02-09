@@ -22,7 +22,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     lbr = LibraryFile.from_file(args.lbr[0])
-    
+
+    # Build symbols
     for s in lbr.library.symbols.values():
         g = re.match("_BASE-", s.name) 
         if g is not None:
@@ -48,5 +49,21 @@ if __name__ == "__main__":
             lbr.library.add_symbol(g)
             lbr.library.add_symbol(u)
             lbr.library.add_symbol(r)
- 
+    
+
+    for s in lbr.library.devicesets.values():
+        g = re.match("_BASE-", s.name)
+        if g is not None:
+            for i in ["GENERIC-", "RESOLVED-", "UNRESOLVED-"]:
+                n = s.clone()
+                n.name = n.name.replace("_BASE-", i)
+                if len(n.get_gates()) != 1:
+                    raise NotImplementedError("Multiple gates not supported")
+                n.gates[n.gates.keys()[0]].symbol = n.gates[n.gates.keys()[0]].symbol.replace("_BASE-", i)
+                lbr.library.add_deviceset(n)
+
+    for s in lbr.library.devicesets.values():
+        if re.match("_BASE-", s.name) is not None:
+            lbr.library.remove_deviceset(s)
+
     lbr.write(args.outLbr[0])

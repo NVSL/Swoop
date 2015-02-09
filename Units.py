@@ -8,6 +8,9 @@ def uF(x):
 def mA(x):
     return x * 1e-3
 
+def mV(x):
+    return x * 1e-3
+
 def uA(x):
     return x * 1e-6
 
@@ -19,3 +22,6 @@ def M(x):
 
 def k(x):
     return 1e3*x
+
+def mW(x):
+    return 1e-3*x

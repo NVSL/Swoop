@@ -11,8 +11,11 @@ from Units import *
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Resistor Library Test")
-    parser.add_argument("--ohms", required=True,  type=str, nargs='+', dest='ohms', help="Spec for device list to build")
-    parser.add_argument("--ceramics", required=True,  type=str, nargs='+', dest='ceramics', help="Spec for device list to build")
+    parser.add_argument("--ohms", required=True,  type=str, nargs='+', dest='ohms', help="Resistors csv")
+    parser.add_argument("--ceramics", required=True,  type=str, nargs='+', dest='ceramics', help="ceramic caps csv")
+    parser.add_argument("--leds", required=True,  type=str, nargs='+', dest='leds', help="LED csv")
+    parser.add_argument("--zdiodes", required=True,  type=str, nargs='+', dest='zdiodes', help="Zener diode csv")
+    parser.add_argument("--sdiodes", required=True,  type=str, nargs='+', dest='sdiodes', help="Schottky diode csv")
     args = parser.parse_args()
 
     # define a resolution environment. It's a map between part type names and

@@ -144,7 +144,7 @@ if __name__ == "__main__":
                 i.set_device(deviceset=i.get_deviceset().name.replace("GENERIC","UNRESOLVED"))
 
             r = None
-    print str(len(unresolved)) + " resolved parts."
+    print str(len(resolved)) + " resolved parts."
     for r in resolved:
         print r
 

@@ -2,8 +2,8 @@ from PartParameter import *
 from ParameterQuery import *
 
 class ParameterOrder(object):
-    def __init__(self, key, cmp):
-        self.cmp = cmp
+    def __init__(self, key, compare):
+        self.compare = lambda x,y: compare(x.getParameter(key).value,y.getParameter(key).value)
         self.key = key
         self.str = "?Ordering on " + key + "?"
     def __str__(self):
@@ -12,22 +12,39 @@ class ParameterOrder(object):
 class Minimize(ParameterOrder):
     def __init__(self, key):
         ParameterOrder.__init__(self,key, cmp)
-        self.str = "Minimize " + "key"
+        self.str = "Minimize " + key
 
 class Maximize(ParameterOrder):
     def __init__(self, key):
         ParameterOrder.__init__(self,key, lambda x,y : cmp(y,x))
-        self.str = "Maximize " + "key"
+        self.str = "Maximize " + key
 
 def sortByList(x, y, prefs):
+
+    c = 0
+    x_index = None
+    y_index = None
     for i in prefs:
-        if x == i and y != i:
-            return -1
-        elif x != i and y == i:
-            return 1
-        elif x == i and y == i:
-            return 0
-    return 0 
+        c = c + 1
+        if x == i:
+            x_index = c
+        if y == i:
+            y_index = c
+
+    if x_index is None:
+        x_index = c + 1
+    if y_index is None:
+        y_index = c + 1
+        
+    #print str(x) + " = " + str(x_index)
+    #print str(y) + " = " + str(y_index)
+
+    if x_index > y_index:
+        return 1
+    elif x_index < y_index:
+        return -1
+    else:
+        return 0
             
 class Prefer(ParameterOrder):
     def __init__(self, key, prefs):
@@ -63,7 +80,16 @@ class PartResolutionEnvironment:
                 pass
 
         for i in reversed(component.preference + self.preferences):
-            possibilities.sort(i.cmp, lambda x: x.getParameter(i.key).value)
+#            print "===== : " + i.str
+#            print "\n".join(map(str,possibilities))
+#            print str(i.compare) + " "+ i.key
+            possibilities.sort(i.compare)
+#            print "----------"
+#            print "\n".join(map(str,possibilities))
+#            print str(i.compare) + " "+ i.key
+
+#        print "====="
+#        print "\n".join(map(str,possibilities))
 
         return possibilities
 

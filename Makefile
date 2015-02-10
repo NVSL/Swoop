@@ -1,7 +1,7 @@
 
 default: build test
 
-build: eagleDTD.py
+build: eagleDTD.py Resolver.lbr
 
 PARTS=--ohms ../../Libraries/Parts/Digikey/Resistors-{0805,0603,TH}.csv --ceramics ../../Libraries/Parts/Digikey/Capacitors-{Ceramic0805,Ceramic0603,CeramicTH,TantalumSMD,TantalumTH,Extras}.csv --leds ../../Libraries/Parts/Digikey/LEDs-{0805,0603,TH}.csv --zdiodes ../../Libraries/Parts/Digikey/Zener-Diodes-{TH,SMD}.csv  --sdiodes ../../Libraries/Parts/Digikey/Schottky-Diodes-{TH,SMD}.csv
 
@@ -28,3 +28,6 @@ eagleDTD.py: eagle-tweaked.dtd
 	echo DTD=\"\"\" > $@
 	cat $< >> $@
 	echo \"\"\" >> $@b
+
+Resolver.lbr: Base.lbr
+	./buildResolverParts.py --lbr $< --out $@

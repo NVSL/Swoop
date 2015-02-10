@@ -6,6 +6,7 @@ from Resistor import Resistor
 from ZenerDiode import ZenerDiode
 from ZenerDiode import SchottkyDiode
 from Capacitor import CeramicCapacitor
+from Resonator import Resonator
 #from Diodes import SchottkyDiode
 from LED import LED
 from PartType import *
@@ -25,6 +26,7 @@ if __name__ == "__main__":
     parser.add_argument("--leds", required=True,  type=str, nargs='+', dest='leds', help="LED csv")
     parser.add_argument("--zdiodes", required=True,  type=str, nargs='+', dest='zdiodes', help="Zener diode csv")
     parser.add_argument("--sdiodes", required=True,  type=str, nargs='+', dest='sdiodes', help="Schottky diode csv")
+    parser.add_argument("--resonators", required=True,  type=str, nargs='+', dest='resonators', help="Resonators csv")
     parser.add_argument("--lbr", required=True,  type=str, nargs=1, dest='lbr', help="libraries to draw from")
     parser.add_argument("--in", required=True,  type=str, nargs=1, dest='inSch', help="input sch")
     parser.add_argument("--out", required=True,  type=str, nargs=1, dest='outSch', help="output sch")
@@ -75,12 +77,19 @@ if __name__ == "__main__":
                                                             sizePref,
                                                             Minimize("PRICE")])
 
+    resonators = PartResolutionEnvironment("Resonator",
+                                           db=PartDB(Resonator, "Resonator", args.resonators),
+                                           preferences=[Prefer("STOCK", ["STOCK", "SPECIAL-ORDER"]),
+                                                        sizePref,
+                                                        Minimize("PRICE")])
+    
     resolverMap = {
         "GENERIC-RESISTOR_":resistors,
         "GENERIC-CAPACITOR-NP_": ceramicCaps,
         "GENERIC-DIODE-LED_": leds,
         "GENERIC-DIODE-ZENER_": zennerDiodes,
-        "GENERIC-DIODE-SCHOTTKY_": schottkyDiodes
+        "GENERIC-DIODE-SCHOTTKY_": schottkyDiodes,
+        "GENERIC-RESONATOR_": resonators
         }
 
 

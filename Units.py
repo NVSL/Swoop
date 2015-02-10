@@ -25,3 +25,12 @@ def k(x):
 
 def mW(x):
     return 1e-3*x
+
+def MHz(x):
+    return x * 1e6
+
+def KHz(x):
+    return x * 1e3
+
+def GHz(x):
+    return x * 1e9

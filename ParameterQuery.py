@@ -3,7 +3,7 @@ import re
 float_re = "([-+]?\d*\.\d+|[-+]?\d+)"
 pos_float_re = "(\d*\.\d+|\d+)"
 int_re = "([-+]?\d+)"
-unit_re = "(([unpkKM\%]?)([FHWV]?))?"
+unit_re = "(([unpkKM\%]?)([FHWV]|(Hz))?)?"
 
 def all_subclasses(cls):
     return cls.__subclasses__() + [g for s in cls.__subclasses__()
@@ -57,12 +57,11 @@ class ParameterQuery(object):
             for c in  all_subclasses(ParameterQuery):
                 if c == ExactString:
                     continue
-                #print c.getRE()
-                #print stripped
+                print c.getRE()
+                print stripped
                 regex = "^"+c.getRE()+"$"
-                #print str(c)
-                #print regex
-                #print stripped
+                print str(c)
+                print regex
                 match = re.search(regex, stripped)
                 if match is not None:
                     t = c.buildFromMatch(match)
@@ -84,8 +83,8 @@ class Range(ParameterQuery):
     @staticmethod
     def buildFromMatch(match):
         m1 = ParameterQuery.parseMultiplier(match.group(2))
-        m2 = ParameterQuery.parseMultiplier(match.group(6))
-        return Range(float(match.group(1)) * m1 , float(match.group(5)) * m2)
+        m2 = ParameterQuery.parseMultiplier(match.group(8))
+        return Range(float(match.group(1)) * m1 , float(match.group(6)) * m2)
 
 class Approx(ParameterQuery):
     def __init__(self, target, var=0.1):
@@ -100,7 +99,7 @@ class Approx(ParameterQuery):
     def buildFromMatch(match):
         #print  pos_float_re + unit_re + "\+/-" + pos_float_re + "%"
         m = ParameterQuery.parseMultiplier(match.group(2))
-        return Approx(float(match.group(1)) * m, float(match.group(5))/100.0)
+        return Approx(float(match.group(1)) * m, float(match.group(6))/100.0)
 
 class LT(ParameterQuery):
 

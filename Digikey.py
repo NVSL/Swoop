@@ -78,7 +78,8 @@ def parseSize(r):
                "SC-76, SOD-323": "large",
                "SOD-123F":"large",
                "S-FLAT (1.6X3.5)": "large",
-               "3-SMD, Non-Standard" : "large"
+               "3-SMD, NON-STANDARD" : "large",
+               "RADIAL - 3 LEAD, 2.50MM PITCH" : "TH"
                }
     try:
         return sizeMap[r]
@@ -103,6 +104,8 @@ def parsePackage(r):
         return "TH"
     elif re.search("SOD-323", r):
         return "SOD-323"
+    elif r == "3-SMD, NON-STANDARD":
+        return "3-SMD, NON-STANDARD"
     elif r == "S-FLAT (1.6X3.5)":
         return "SOD-123F"
     else:
@@ -152,6 +155,22 @@ def parseCapacitance(r):
         mult = pF(1)
     elif m.group(3) == "UF":
         mult = uF(1)
+    else:
+        raise Exception("Can't parse capacitance: '" + r + "'")
+
+    return mult * float(m.group(1))
+
+def parseFrequency(r):
+    r = r.upper()
+    m = re.match("(\d+(\.\d+)?).?([MK]HZ?)", r);
+
+    if m is None:
+        raise Exception("Can't parse frequency: '" + r + "'")
+
+    if m.group(3) == "MHZ":
+        mult = MHz(1)
+    elif m.group(3) == "KHZ":
+        mult = KHz(1)
     else:
         raise Exception("Can't parse capacitance: '" + r + "'")
 

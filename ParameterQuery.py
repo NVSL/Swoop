@@ -57,11 +57,11 @@ class ParameterQuery(object):
             for c in  all_subclasses(ParameterQuery):
                 if c == ExactString:
                     continue
-                print c.getRE()
-                print stripped
+                #print c.getRE()
+                #print stripped
                 regex = "^"+c.getRE()+"$"
-                print str(c)
-                print regex
+                #print str(c)
+                #print regex
                 match = re.search(regex, stripped)
                 if match is not None:
                     t = c.buildFromMatch(match)

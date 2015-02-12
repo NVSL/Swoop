@@ -79,10 +79,10 @@ def renderOhms(x):
         
 
 def renderFarads(x):
-    if x < n(1):
+    if x < u(1)/100:
         return trimPointZero(x/p(1)) + "pF"
-    elif x <= u(1):
-        return trimPointZero(x/n(1)) + "nF"
+#    elif x <= u(1):
+#        return trimPointZero(x/n(1)) + "nF"
     elif x <= 1:
         return trimPointZero(x/u(1)) + "uF"
     else:

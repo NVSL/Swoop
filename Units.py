@@ -117,3 +117,8 @@ def renderAmps(x):
         return trimPointZero(x/m(1)) + "mA"
     else:
         return trimPointZero(x) + "A"
+
+
+def renderTolerance(x):
+    return str(trimPointZero(x*100)) + "%"
+

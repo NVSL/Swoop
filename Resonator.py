@@ -9,7 +9,7 @@ class Resonator(PartType):
     def __init__(self, **args):
         PartType.__init__(self, "Resonator", args,
                           {"VALUE" : PartParameter("VALUE", "Frequency", "float", Digikey.parseFrequency, None,render=Units.renderHz),
-                           "TOL" : PartParameter("TOL", "Frequency Tolerance", "float", Digikey.parseTolerance, LT(0.1)),
+                           "TOL" : PartParameter("TOL", "Frequency Tolerance", "float", Digikey.parseTolerance, LT(0.1),render=Units.renderTolerance),
                            "STBL" : PartParameter("STABILITY", "Frequency Stability", "float", Digikey.parseTolerance, LT(0.1)),
                            "PWR" : PartParameter("PWR", "Power (Watts)", "int",  Digikey.parseWatts, GT(0.1)),
                            "CAP": PartParameter("VALUE", "Capacitance", "float", Digikey.parseCapacitance, None, render=Units.renderFarads),

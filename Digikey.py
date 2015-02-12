@@ -66,6 +66,7 @@ def parseSize(r):
                "603": "small",
                "1206 (3216 METRIC)": "large",
                "1210 (3528 METRIC)": "large",
+               "0805 (2012 Metric)": "large",
                "2312 (6032 METRIC)": "large",
                "2917 (7343 METRIC)": "large",
                "T-18, AXIAL": "TH",
@@ -94,6 +95,12 @@ def parsePackage(r):
         return "0805"
     elif re.search("0?603", r):
         return "0603"
+    elif re.search("1206", r):
+        return "1206"
+    elif re.search("1210", r):
+        return "1210"
+    elif re.search("2917", r):
+        return "2917"
     elif re.search("AXIAL", r):
         return "TH"
     elif re.search("RADIAL", r):
@@ -187,7 +194,7 @@ def parseNanometer(r):
     if m.group(1) is not None:
         return float(m.group(2))
     else:
-        return None
+        return "unknown"
 
 def parseNanoseconds(r):
     r = r.upper()
@@ -199,7 +206,7 @@ def parseNanoseconds(r):
     if m.group(1) is not None:
         return float(m.group(2))
     else:
-        return None
+        return "unknown"
 
 def parseMillicandela(r):
     r = r.upper()

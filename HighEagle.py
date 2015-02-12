@@ -1004,6 +1004,7 @@ class Part (EagleFilePart):
         self.schematic = schematic
         self.attributes = {}
 
+        
     def add_attribute(self,attribute):
         self.attributes[attribute.name] = attribute
         attribute.parent = self
@@ -1171,6 +1172,20 @@ class Part (EagleFilePart):
         """
         return {k:v for (k,v) in self.attributes.iteritems() if v.from_library}
 
+    def set_attribute(self,name, value):
+        if name in self.attributes:
+            self.attributes[name].value = value
+        else:
+            n = Attribute(name=name, value=value, in_library=False)
+            self.add_attribute(n)
+
+    def get_attribute(self,name):
+        return self.attributes.get(name).value
+
+    def remove_attribute(self,name):
+        self.attributes[name].parent = None
+        del self.attributes[name]
+    
 class DeviceSet (EagleFilePart):
     def __init__ (self, parent=None, name=None, prefix=None, devices=None, description="", gates=None):
         EagleFilePart.__init__(self,parent)

@@ -17,7 +17,7 @@ class PartType:
                 "MPN" : PartParameter("MPN", "Manufacturer Part Number", "str", lambda x : x, None),
                 "db" : PartParameter("db", "db", "str", lambda x : x, None),
                 "minQty" :  PartParameter("minQty", "Minimum Quantity", "int", Digikey.parseQty, Exact(1))
-            })
+                })
         self.parameters.update(fields)
 
         for p in sorted(self.parameters):
@@ -41,6 +41,9 @@ class PartType:
     def getField(self, name):
         return self.parameters[name].value
 
+    def renderField(self,name):
+        return self.parameters[name].render(self.parameters[name].value)
+    
     # magic to allow us to assign query objects to the fields.
     def __setattr__(self, name, value):
         if type(value) is int or type(value) is float:

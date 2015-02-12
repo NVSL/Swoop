@@ -141,11 +141,17 @@ if __name__ == "__main__":
                     # print "=="
                     # print field
                     if a.name in r.parameters:
-                        a.value = r.getField(a.name)
+                        if r.getField(a.name) is None:
+                            raise HighEagleError("Missing parameter '" + a.name +"' for schematic part '"+ i.name + "' on library part " + str(r))
+                        i.set_attribute(a.name + "_QUERY", a.value)
+                        a.value = r.renderField(a.name)
                         # print a.name
                         # print a.value
                         # print r.getField(field)
-                i.value = r.getField("VALUE")
+                i.set_attribute("VALUE_QUERY", i.value)
+                print str(r)
+                print i.name
+                i.value = r.renderField("VALUE")
                 i.set_device(deviceset=i.get_deviceset().name.replace("GENERIC","RESOLVED"))
                 resolved.append(str(r))
             else:

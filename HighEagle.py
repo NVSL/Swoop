@@ -1332,7 +1332,7 @@ class DeviceSet (EagleFilePart):
     # are stored in the "" device.  You can't just delete all the packages,
     # since you'd lose the attributes.  This copies them from the first
     # package.
-    def makeExternal(self):
+    def convertToExternal(self):
         if len(self.get_devices()) > 0:
             d = self.get_devices().values()[0]
             for i in self.get_devices().values():

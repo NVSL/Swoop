@@ -700,7 +700,7 @@ def make_device (
     device = ET.Element("device")
     assert name is not None
     device.set("name", name)
-    if package is not None:
+    if package is not None and package != "":
         device.set("package", package)
         
     if connects is None:
@@ -751,14 +751,19 @@ def make_attribute (name, value, constant):
     #print constant
     #print name
     #print value
+
     if constant is "no":
-        return ET.Element("attribute",name=name,
-                          value=str(value),
+        r = ET.Element("attribute",name=name,
                           constant=constant)
     else:
-        return ET.Element("attribute",name=name,
-                          value=str(value))
-    
+        r = ET.Element("attribute",name=name)
+        
+    if value is not None:
+        r.set("value", str(value))
+
+    return r
+        
+
 def get_variantdefs (root):
     if root.tag == "eagle":
         return root.findall(".drawing/schematic/variantdefs/variantdef")

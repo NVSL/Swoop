@@ -13,6 +13,7 @@ import EagleUtil
 import copy
 import eagleDTD
 import StringIO
+import types
 
 
 class EagleFormatError (Exception):
@@ -26,13 +27,6 @@ class HighEagleError (Exception):
         self.text = text
     def __str__(self):
         return self.text
-
-class HighEagle (object):
-    def from_et ():
-        raise NotImplementedError()
-    
-    def get_et ():
-        raise NotImplementedError()
 
 class EagleFilePart(object):
     def __init__(self, parent=None):
@@ -48,6 +42,12 @@ class EagleFilePart(object):
 
     def get_parent(self):
         return self.parent
+
+    def from_et ():
+        raise NotImplementedError()
+    
+    def get_et ():
+        raise NotImplementedError()
 
     def get_root(self):
         if self.get_parent() is not None:
@@ -65,12 +65,53 @@ class EagleFilePart(object):
 
     def _clone(self):
         """
-        Simple clone for EagleFileParts with not collections in them.
+        Simple clone for EagleFileParts with no collections in them.
         """
         n = copy.copy(self)
         n.parent = None
         return n
 
+    def is_child(self, f):
+        if f == "parent":
+            return False
+        else:
+            return True
+        
+    def get_children(self):
+        """
+        Return all the children of this part as a single iterable.  This general implementation assumes that no file parts hold references to any file parts that are not their children.
+        """
+        children = []
+        for q in self.__dict__:
+            if self.is_child(q):
+                p = self.__dict__[q]
+
+                #print "+"
+                if type(p) is types.ListType:
+                    #print "list"
+                    #print q
+                    children = children + [i for i in p if isinstance(i,EagleFilePart)]
+                    #print str(children)
+                elif type(p) is types.DictType:
+                    #print "dict"
+                    #print q
+                    children = children + [i for i in p.values() if isinstance(i,EagleFilePart)]
+                    #print str(children)
+                elif isinstance(p,EagleFilePart):
+                    #print q
+                    #print "part"
+                    children.append(p)
+                    #print str(children)
+
+        return children
+
+    def check_sanity(self):
+        for i in self.get_children():
+            #print "."
+            if i.parent != self:
+                raise HighEagleError("Parent pointer mismatch.  Child = " + str(i) + "; child.parent = " + str(i.parent) + "; Parent = " + str(self) )
+            i.check_sanity()
+            
 
 class EagleFile(EagleFilePart):
 
@@ -90,13 +131,14 @@ class EagleFile(EagleFilePart):
         Exports the Schematic to an EAGLE schematic file.
         
         """
+        self.check_sanity()
         if not self.validate():
-            f = open("junk.xml", "w")
+            f = open(filename + ".broken.xml", "w")
             f.write(ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True))
             raise HighEagleError("element tree does not validate" + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
-
-        f = open(filename, "w")
-        f.write(ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True))
+        else:
+            f = open(filename, "w")
+            f.write(ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True))
 
     def add_layer (self, layer):
         #print "Schematic add_layer()"
@@ -104,6 +146,8 @@ class EagleFile(EagleFilePart):
         self.layersByNumber[int(layer.number)] = layer
         self.layersByName[layer.name] = layer
         layer.parent = self
+        #print str(layer)
+        #self.check_sanity()
         
     def get_layers(self):
         return self.layersByName
@@ -213,6 +257,7 @@ class Schematic (EagleFile):
         root = tree.getroot()
         sch = Schematic.from_et(root)
         sch.filename =filename
+        sch.check_sanity()
         return sch
         
     @staticmethod
@@ -256,30 +301,30 @@ class Schematic (EagleFile):
         for library in libraries:
             #print library
             new_lib = Library.from_et(sch,library) #aoeu
-            sch.libraries[new_lib.name] = new_lib
+            sch.add_library(new_lib)
             
         for attribute in attributes:
-            pass
+            raise NotImplementedError("Sheet attributes support not implemented")
             
         for variantdef in variantdefs:
-            pass
+            raise NotImplementedError("Sheet variant support not implemented")
             
         for net_class in classes:
             #print net_class
             new_class = NetClass.from_et(sch,net_class)
-            sch.classes[new_class.name] = new_class
-            
+            sch.add_class(new_class)
+
         for part in parts:
             #print part
             new_part = Part.from_et(sch,part, schematic=sch)
-            sch.parts[new_part.name] = new_part
+            sch.add_part(new_part)
             
         #assert len(sch.parts) > 0
             
         for sheet in sheets:
             #print sheet
             new_sheet = Sheet.from_et(sch,sheet)
-            sch.sheets.append(new_sheet)
+            sch.add_sheet(new_sheet)
         
         return sch
 
@@ -294,15 +339,33 @@ class Schematic (EagleFile):
         r = r + "Sheets (" + str(len(self.sheets)) + ")\n"+ indent
         return r
         
-    def add_part (self, part, sheet_index=0):
+    def add_part (self, p, sheet_index=0):
         """
         Adds a part to the schematic.
         All gates are placed on the given sheet (default sheet 0).
         """
-        pass
+        self.parts[p.name] = p
+        p.parent = self
+        #raise NotImplementedError("Adding parts not implemented")
         # add part to schematic
         # add part to sheet_index
         # make sure part is in library
+        
+    def add_class (self, c):
+        """
+        Adds a part to the schematic.
+        All gates are placed on the given sheet (default sheet 0).
+        """
+        self.classes[c.name] = c
+        c.parent = self
+
+        
+    def add_sheet(self, s):
+        """
+        Add a sheet to the schematic.
+        """
+        self.sheets.append(s)
+        s.parent = self
         
     def get_et (self):
         """
@@ -447,6 +510,7 @@ class LibraryFile(EagleFile):
         r.filename =filename
         r.name = filename.replace(".lbr","")
         r.library.name = r.name
+        r.check_sanity()
         return r
 
     @staticmethod
@@ -1004,10 +1068,11 @@ class Part (EagleFilePart):
         self.schematic = schematic
         self.attributes = {}
 
-        
-    def add_attribute(self,attribute):
-        self.attributes[attribute.name] = attribute
-        attribute.parent = self
+    def is_child(self, f):
+        if f == "schematic":
+            return False
+        else:
+            return EagleFilePart.is_child(self,f)
 
     @staticmethod
     def from_et (parent, root, schematic=None):
@@ -1077,7 +1142,11 @@ class Part (EagleFilePart):
             attributes=attrs
         )
         
-    
+
+    def add_attribute(self,attribute):
+        self.attributes[attribute.name] = attribute
+        attribute.parent = self
+
     def get_library(self):
         """
         Get the library that contains this part
@@ -1235,9 +1304,16 @@ class DeviceSet (EagleFilePart):
     def add_device(self, a):
         self.devices[a.name] = a
         a.parent = self
+
+    def remove_device(self, d):
+        del self.devices[d.name]
+        d.parent = None
         
     def get_gates(self):
         return self.gates
+
+    def get_devices(self):
+        return self.devices
 
     def get_et (self):
         """
@@ -1250,7 +1326,27 @@ class DeviceSet (EagleFilePart):
             gates=[gate.get_et() for gate in self.gates.values()],
             devices=[device.get_et() for device in self.devices.values()]
         )
-        
+
+    # This converts the deviceset into an external device.  This means that it
+    # has no associated package.  It can, however, have attributes, and those
+    # are stored in the "" device.  You can't just delete all the packages,
+    # since you'd lose the attributes.  This copies them from the first
+    # package.
+    def makeExternal(self):
+        if len(self.get_devices()) > 0:
+            d = self.get_devices().values()[0]
+            for i in self.get_devices().values():
+                self.remove_device(i)
+            d.name = ""
+            d.package = ""
+            d.clear_connects()
+        else:
+            d = Device(self, "",technologies=[Technology(name="")])
+
+        self.add_device(d)
+        for t in d.get_technologies().values():
+            t.add_attribute(Attribute(t, name="_EXTERNAL_"))
+
 class Gate (EagleFilePart):
     """
     EAGLE Gate.    
@@ -1322,13 +1418,17 @@ class Connect (EagleFilePart):
 class Device (EagleFilePart):
     def __init__ (self, parent=None, name=None, package=None, connects=None, technologies=None):
         EagleFilePart.__init__(self,parent)
-    
-        if connects is None: connects = []
-        if technologies is None: technologies = {}
+        self.connects = []
+        self.technologies = {}
+        
         self.name = name
         self.package = package
-        self.connects = connects
-        self.technologies = technologies
+        if connects is not None: 
+            for i in connects:
+                self.add_connect(i)
+        if technologies is not None:
+            for i in technologies:
+                self.add_technology(i)
 
     @classmethod
     def from_et (cls, parent, device_root):
@@ -1361,10 +1461,18 @@ class Device (EagleFilePart):
     def add_connect(self, a):
         self.connects.append(a)
         a.parent = self
+
+    def clear_connects(self):
+        for c in self.connects:
+            c.parent = None
+        self.connects=[]
         
     def add_technology(self, a):
         self.technologies[a.name] = a
         a.parent = self
+        
+    def get_technologies(self):
+        return self.technologies
         
     def get_et (self):
         """

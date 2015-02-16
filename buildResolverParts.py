@@ -60,6 +60,7 @@ if __name__ == "__main__":
                 if len(n.get_gates()) != 1:
                     raise NotImplementedError("Multiple gates not supported")
                 n.gates[n.gates.keys()[0]].symbol = n.gates[n.gates.keys()[0]].symbol.replace("_BASE-", i)
+                #n.makeExternal()
                 lbr.library.add_deviceset(n)
 
     for s in lbr.library.devicesets.values():

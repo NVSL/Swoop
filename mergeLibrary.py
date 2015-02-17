@@ -46,6 +46,13 @@ if __name__ == "__main__":
     if suffix == "sch":
         dst = Schematic.from_file(f)
         dstLib = dst.get_library(dstLib)
+
+        #for p in dst.get_parts().values():
+        #    if re.match("^GENERIC-(CAPACITOR-NP|CAPACITOR-POL|DIODE-LED|DIODE-SCHOTTKY|DIODE-ZENER|RESISTOR|RESONATOR)", p.deviceset) is not None:
+        #        print "Scubbed " + p.name
+        #        p.device = ""
+                        
+
     elif suffix == "brd":
         raise NotImplementedError("brd files not supported yet")
     elif suffix == "lbr":
@@ -59,6 +66,10 @@ if __name__ == "__main__":
     for i in srcLib.packages.values():
         dstLib.add_package(i.clone())
     for i in srcLib.devicesets.values():
+#        if re.match("^(GENERIC|RESOLVED|UNRESOLVED)-(CAPACITOR-NP|CAPACITOR-POL|DIODE-LED|DIODE-SCHOTTKY|DIODE-ZENER|RESISTOR|RESONATOR)", i.name) is not None:
+ #           print "copying " + i.name
         dstLib.add_deviceset(i.clone())
 
+    
+        
     dst.write(f)

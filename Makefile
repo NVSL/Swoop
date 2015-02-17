@@ -12,17 +12,17 @@ test: build test2.th.resolved.sch Xperimental_Trinket_Pro_small_parts_power_brea
 	./buildResolverParts.py --lbr Base.lbr --out out.lbr
 	./checkEagle.py --file *.sch *.lbr
 
-%.resolved.sch: %.sch eagleDTD.py
-	python picker.py --in $<  --out $@ $(PARTS) --goal handsolder --lbr newNVSL.lbr
+#%.resolved.sch: %.sch eagleDTD.py
+#	python picker.py --in $<  --out $@ $(PARTS) --goal handsolder --lbr out.lbr
 
 %.th.resolved.sch: %.sch eagleDTD.py
-	python picker.py --in $<  --out $@ $(PARTS) --goal th --lbr newNVSL.lbr
+	python picker.py --in $<  --out $@ $(PARTS) --goal th #--lbr out.lbr
 
 %.small.resolved.sch: %.sch eagleDTD.py
-	python picker.py --in $<  --out $@ $(PARTS) --goal small --lbr newNVSL.lbr
+	python picker.py --in $<  --out $@ $(PARTS) --goal small #--lbr out.lbr
 
 %.handsolder.resolved.sch: %.sch eagleDTD.py
-	python picker.py --in $<  --out $@ $(PARTS) --goal handsolder --lbr newNVSL.lbr
+	python picker.py --in $<  --out $@ $(PARTS) --goal handsolder #--lbr out.lbr
 
 eagleDTD.py: eagle-tweaked.dtd
 	echo DTD=\"\"\" > $@

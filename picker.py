@@ -27,7 +27,7 @@ if __name__ == "__main__":
     parser.add_argument("--zdiodes", required=True,  type=str, nargs='+', dest='zdiodes', help="Zener diode csv")
     parser.add_argument("--sdiodes", required=True,  type=str, nargs='+', dest='sdiodes', help="Schottky diode csv")
     parser.add_argument("--resonators", required=True,  type=str, nargs='+', dest='resonators', help="Resonators csv")
-    parser.add_argument("--lbr", required=True,  type=str, nargs=1, dest='lbr', help="libraries to draw from")
+#    parser.add_argument("--lbr", required=True,  type=str, nargs=1, dest='lbr', help="libraries to draw from")
     parser.add_argument("--in", required=True,  type=str, nargs=1, dest='inSch', help="input sch")
     parser.add_argument("--out", required=True,  type=str, nargs=1, dest='outSch', help="output sch")
     parser.add_argument("--goal", required=True,  type=str, nargs=1, dest='goal', help="part selection goal")
@@ -94,11 +94,11 @@ if __name__ == "__main__":
 
 
     sch = Schematic.from_file(args.inSch[0])
-    lbr = LibraryFile.from_file(args.lbr[0])
+#    lbr = LibraryFile.from_file(args.lbr[0])
 
-    sch.mergeLayersFromEagleFile(lbr)
+#    sch.mergeLayersFromEagleFile(lbr)
 
-    sch.add_library(lbr.get_library_copy())
+#    sch.add_library(lbr.get_library_copy())
 
     partCount = 0
     unresolved = []
@@ -153,6 +153,14 @@ if __name__ == "__main__":
                 print i.name
                 i.value = r.renderField("VALUE")
                 i.set_device(deviceset=i.get_deviceset().name.replace("GENERIC","RESOLVED"))
+
+
+                try:
+                    print i.name +  " " + r.getField("DEVICE")
+                    i.set_device(device=r.getField("DEVICE"))
+                except:
+                    pass
+                
                 resolved.append(str(r))
             else:
                 unresolved.append(i)

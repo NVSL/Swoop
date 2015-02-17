@@ -735,7 +735,6 @@ class Package (EagleFilePart):
             
         for drawingElement in drawingElements:
             new_drawingElement = DrawingElement.from_et(new_package,drawingElement)
-            new_package.drawingElements.append(new_drawingElement)
             new_package.add_drawingElement(new_drawingElement)
 
         return new_package
@@ -1074,6 +1073,26 @@ class Part (EagleFilePart):
         else:
             return EagleFilePart.is_child(self,f)
 
+    def check_sanity(self):
+        #assert self.get_device() is not None
+
+        try:
+            self.get_library()
+        except Exception as e:
+            raise HighEagleError("Library '" + self.library +  "' missing for " + str(self.name))
+
+        try:
+            self.get_deviceset()
+        except Exception as e:
+            raise HighEagleError("DeviceSet '" + self.get_library().name + ":" + self.deviceset + "' missing for " + str(self.name))
+
+        try:
+            self.get_device()
+        except Exception as e:
+            raise HighEagleError("Device '" + self.get_library().name + ":" + self.get_deviceset().name + ":" + self.device + "' missing for " + str(self.name))
+        
+        EagleFilePart.check_sanity(self)
+        
     @staticmethod
     def from_et (parent, root, schematic=None):
         name = root.get("name")
@@ -1146,15 +1165,15 @@ class Part (EagleFilePart):
     def add_attribute(self,attribute):
         self.attributes[attribute.name] = attribute
         attribute.parent = self
-
+        
     def get_library(self):
         """
         Get the library that contains this part
         """
-        try:
-            lib = self.schematic.libraries[self.library]
-        except:
-            raise EagleFormatError("Missing library '" + self.library + "' for part '" + self.name + "'.")
+        #try:
+        lib = self.schematic.libraries[self.library]
+        #except:
+        #raise EagleFormatError("Missing library '" + self.library + "' for part '" + self.name + "'.")
         return lib
 
     def get_deviceset(self):
@@ -1163,11 +1182,10 @@ class Part (EagleFilePart):
         """
 
         lib = self.get_library();
-        try:
-            deviceset = lib.devicesets[self.deviceset]
-        except:
-            raise EagleFormatError("Missing device set '" + self.library + ":" + self.deviceset + "' for part '" + self.name + "' in file " +self.get_file().filename +".")
-        
+        #        try:
+        deviceset = lib.devicesets[self.deviceset]
+        #        except:
+        #            raise EagleFormatError("Missing device set '" + self.library + ":" + self.deviceset + "' for part '" + self.name + "' in file " +self.get_file().filename +".")
         return deviceset
         
     def get_device(self):
@@ -1176,10 +1194,10 @@ class Part (EagleFilePart):
         """
         deviceset = self.get_deviceset()
 
-        try:
-            device = deviceset.devices[self.device]
-        except:
-            raise EagleFormatError("Missing device '" + self.library + ":" + self.deviceset + ":" + self.device  + "' for part '" + self.name + "'.")
+        #        try:
+        device = deviceset.devices[self.device]
+        #except:
+        #    raise EagleFormatError("Missing device '" + self.library + ":" + self.deviceset + ":" + self.device  + "' for part '" + self.name + "'.")
         
         return device
 
@@ -1189,10 +1207,10 @@ class Part (EagleFilePart):
         """
         device = self.get_device()
 
-        try:
-            tech = device.technologies[self.technology]
-        except:
-            raise EagleFormatError("Missing technology '" + self.library + ":" + self.deviceset + ":" + self.device  + ":" + self.technology+  "' for part '" + self.name + "'.")
+        #try:
+        tech = device.technologies[self.technology]
+        #except:
+        #    raise EagleFormatError("Missing technology '" + self.library + ":" + self.deviceset + ":" + self.device  + ":" + self.technology+  "' for part '" + self.name + "'.")
         
         return tech
 
@@ -1210,24 +1228,30 @@ class Part (EagleFilePart):
         """
         device = self.get_device();
         lib = self.get_library();
-        try:
+        #try:
+        if device.package is not None:
             package = lib.packages[device.package];
-        except:
-            raise EagleFormatError("Missing package '" + device.package + "' for part '" + self.name + "'.")
+        else:
+            package = None
+        #except:
+        #    raise EagleFormatError("Missing package '" + device.package + "' for part '" + self.name + "'.")
         return package
         
-    def get_gate(self):
-        """
-        Get the library entry for this part
-        """
-        deviceset = self.get_deviceset();
-        lib = self.get_library();
-        assert deviceset.gates.len == 1
-        try:
-            gate = lib.symbols[deviceset.gates["G$1"]];
-        except:
-            raise EagleFormatError("Missing gate '" + deviceset.gate["G$1"] + "' for part '" + self.name + "'.")
-        return gate
+    # def get_gates(self):
+    #     """
+    #     Get the library entry for this part
+    #     """
+    #     deviceset = self.get_deviceset();
+    #     lib = self.get_library();
+    #     #print self
+    #     #print len(deviceset.gates)
+    #     #print deviceset.name
+    #     assert len(deviceset.gates) == 1
+    #     #try:
+    #     gate = lib.symbols[deviceset.gates.values()[0].symbol];
+    #     #except:
+    #     #    raise EagleFormatError("Missing gate '" + deviceset.gate["G$1"] + "' for part '" + self.name + "'.")
+    #     return gate
     
     def get_attributes(self):
         """
@@ -1267,6 +1291,15 @@ class DeviceSet (EagleFilePart):
         self.description = description
         self.gates = gates
         self.devices = devices
+
+    def check_sanity(self):
+        assert isinstance(self.parent, Library)
+        
+        for g in self.gates.values():
+            if g.symbol not in self.parent.symbols:
+                raise HighEagleError("Symbol '" + g.symbol + "' missing in '" + self.parent.name + ":" + self.name + "'")
+
+        EagleFilePart.check_sanity(self)
         
     @classmethod
     def from_et (cls, parent, deviceset_root):

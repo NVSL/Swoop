@@ -161,7 +161,6 @@
 <wire x1="3.9" y1="4.26" x2="3.9" y2="-4.26" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-4.26" x2="-3.9" y2="-4.26" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="4" x2="-3.65" y2="4" width="0.12" layer="21"/>
@@ -186,7 +185,6 @@
 <wire x1="-3.9" y1="3.5" x2="3.9" y2="3.5" width="0.05" layer="39"/>
 <wire x1="3.9" y1="3.5" x2="3.9" y2="-3.5" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.5" x2="-3.9" y2="-3.5" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -213,7 +211,6 @@
 <wire x1="3.9" y1="3.26" x2="3.9" y2="-3.26" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.26" x2="-3.9" y2="-3.26" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="3" x2="-3.65" y2="3" width="0.12" layer="21"/>
@@ -238,7 +235,6 @@
 <wire x1="-3.9" y1="3.16" x2="3.9" y2="3.16" width="0.05" layer="39"/>
 <wire x1="3.9" y1="3.16" x2="3.9" y2="-3.16" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.16" x2="-3.9" y2="-3.16" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -265,7 +261,6 @@
 <wire x1="3.9" y1="3.1" x2="3.9" y2="-3.1" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.1" x2="-3.9" y2="-3.1" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="2.85" x2="-3.65" y2="2.85" width="0.12" layer="21"/>
@@ -290,7 +285,6 @@
 <wire x1="-3.9" y1="2.66" x2="3.9" y2="2.66" width="0.05" layer="39"/>
 <wire x1="3.9" y1="2.66" x2="3.9" y2="-2.66" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.66" x2="-3.9" y2="-2.66" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -317,7 +311,6 @@
 <wire x1="3.9" y1="2.46" x2="3.9" y2="-2.46" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.46" x2="-3.9" y2="-2.46" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="2.2" x2="-3.65" y2="2.2" width="0.12" layer="21"/>
@@ -342,7 +335,6 @@
 <wire x1="-3.9" y1="2.26" x2="3.9" y2="2.26" width="0.05" layer="39"/>
 <wire x1="3.9" y1="2.26" x2="3.9" y2="-2.26" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.26" x2="-3.9" y2="-2.26" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -369,7 +361,6 @@
 <wire x1="3.9" y1="2.06" x2="3.9" y2="-2.06" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.06" x2="-3.9" y2="-2.06" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="1.8" x2="-3.65" y2="1.8" width="0.12" layer="21"/>
@@ -394,7 +385,6 @@
 <wire x1="-3.9" y1="1.86" x2="3.9" y2="1.86" width="0.05" layer="39"/>
 <wire x1="3.9" y1="1.86" x2="3.9" y2="-1.86" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-1.86" x2="-3.9" y2="-1.86" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -421,7 +411,6 @@
 <wire x1="3.9" y1="2.56" x2="3.9" y2="-2.56" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.56" x2="-3.9" y2="-2.56" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="2.3" x2="-3.65" y2="2.3" width="0.12" layer="21"/>
@@ -447,7 +436,6 @@
 <wire x1="3.9" y1="3.66" x2="3.9" y2="-3.66" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.66" x2="-3.9" y2="-3.66" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="3.4" x2="-3.65" y2="3.4" width="0.12" layer="21"/>
@@ -472,7 +460,6 @@
 <wire x1="-3.9" y1="2.86" x2="3.9" y2="2.86" width="0.05" layer="39"/>
 <wire x1="3.9" y1="2.86" x2="3.9" y2="-2.86" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.86" x2="-3.9" y2="-2.86" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -46910,7 +46897,6 @@ MHz</text>
 <wire x1="3.9" y1="4.26" x2="3.9" y2="-4.26" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-4.26" x2="-3.9" y2="-4.26" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="4" x2="-3.65" y2="4" width="0.12" layer="21"/>
@@ -46935,7 +46921,6 @@ MHz</text>
 <wire x1="-3.9" y1="3.5" x2="3.9" y2="3.5" width="0.05" layer="39"/>
 <wire x1="3.9" y1="3.5" x2="3.9" y2="-3.5" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.5" x2="-3.9" y2="-3.5" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -46962,7 +46947,6 @@ MHz</text>
 <wire x1="3.9" y1="3.26" x2="3.9" y2="-3.26" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.26" x2="-3.9" y2="-3.26" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="3" x2="-3.65" y2="3" width="0.12" layer="21"/>
@@ -46987,7 +46971,6 @@ MHz</text>
 <wire x1="-3.9" y1="3.16" x2="3.9" y2="3.16" width="0.05" layer="39"/>
 <wire x1="3.9" y1="3.16" x2="3.9" y2="-3.16" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.16" x2="-3.9" y2="-3.16" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -47014,7 +46997,6 @@ MHz</text>
 <wire x1="3.9" y1="3.1" x2="3.9" y2="-3.1" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.1" x2="-3.9" y2="-3.1" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="2.85" x2="-3.65" y2="2.85" width="0.12" layer="21"/>
@@ -47039,7 +47021,6 @@ MHz</text>
 <wire x1="-3.9" y1="2.66" x2="3.9" y2="2.66" width="0.05" layer="39"/>
 <wire x1="3.9" y1="2.66" x2="3.9" y2="-2.66" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.66" x2="-3.9" y2="-2.66" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -47066,7 +47047,6 @@ MHz</text>
 <wire x1="3.9" y1="2.46" x2="3.9" y2="-2.46" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.46" x2="-3.9" y2="-2.46" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="2.2" x2="-3.65" y2="2.2" width="0.12" layer="21"/>
@@ -47091,7 +47071,6 @@ MHz</text>
 <wire x1="-3.9" y1="2.26" x2="3.9" y2="2.26" width="0.05" layer="39"/>
 <wire x1="3.9" y1="2.26" x2="3.9" y2="-2.26" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.26" x2="-3.9" y2="-2.26" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -47118,7 +47097,6 @@ MHz</text>
 <wire x1="3.9" y1="2.06" x2="3.9" y2="-2.06" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.06" x2="-3.9" y2="-2.06" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="1.8" x2="-3.65" y2="1.8" width="0.12" layer="21"/>
@@ -47143,7 +47121,6 @@ MHz</text>
 <wire x1="-3.9" y1="1.86" x2="3.9" y2="1.86" width="0.05" layer="39"/>
 <wire x1="3.9" y1="1.86" x2="3.9" y2="-1.86" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-1.86" x2="-3.9" y2="-1.86" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -47170,7 +47147,6 @@ MHz</text>
 <wire x1="3.9" y1="2.56" x2="3.9" y2="-2.56" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.56" x2="-3.9" y2="-2.56" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="2.3" x2="-3.65" y2="2.3" width="0.12" layer="21"/>
@@ -47196,7 +47172,6 @@ MHz</text>
 <wire x1="3.9" y1="3.66" x2="3.9" y2="-3.66" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.66" x2="-3.9" y2="-3.66" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="3.4" x2="-3.65" y2="3.4" width="0.12" layer="21"/>
@@ -47221,7 +47196,6 @@ MHz</text>
 <wire x1="-3.9" y1="2.86" x2="3.9" y2="2.86" width="0.05" layer="39"/>
 <wire x1="3.9" y1="2.86" x2="3.9" y2="-2.86" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.86" x2="-3.9" y2="-2.86" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -47335,7 +47309,6 @@ MHz</text>
 <wire x1="-3.9" y1="3.1" x2="3.9" y2="3.1" width="0.05" layer="39"/>
 <wire x1="3.9" y1="3.1" x2="3.9" y2="-3.1" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.1" x2="-3.9" y2="-3.1" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -55146,7 +55119,6 @@ diameter 5.2 mm, horizontal, grid 15.24 mm</description>
 <text x="-3.175" y="1.905" size="1.27" layer="25" ratio="10">&gt;NAME</text>
 <text x="-3.175" y="-3.175" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
 <rectangle x1="-2.286" y1="-1.524" x2="-1.524" y2="1.524" layer="21"/>
-<rectangle x1="-2.286" y1="-1.524" x2="-1.524" y2="1.524" layer="21"/>
 </package>
 <package name="D-5">
 <description>&lt;b&gt;DIODE&lt;/b&gt;</description>
@@ -56108,7 +56080,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="3.9" y1="4.26" x2="3.9" y2="-4.26" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-4.26" x2="-3.9" y2="-4.26" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="4" x2="-3.65" y2="4" width="0.12" layer="21"/>
@@ -56137,7 +56108,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="-3.9" y1="3.5" x2="3.9" y2="3.5" width="0.05" layer="39"/>
 <wire x1="3.9" y1="3.5" x2="3.9" y2="-3.5" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.5" x2="-3.9" y2="-3.5" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -56168,7 +56138,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="3.9" y1="3.26" x2="3.9" y2="-3.26" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.26" x2="-3.9" y2="-3.26" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="3" x2="-3.65" y2="3" width="0.12" layer="21"/>
@@ -56197,7 +56166,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="-3.9" y1="3.16" x2="3.9" y2="3.16" width="0.05" layer="39"/>
 <wire x1="3.9" y1="3.16" x2="3.9" y2="-3.16" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.16" x2="-3.9" y2="-3.16" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -56228,7 +56196,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="3.9" y1="3.1" x2="3.9" y2="-3.1" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.1" x2="-3.9" y2="-3.1" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="2.85" x2="-3.65" y2="2.85" width="0.12" layer="21"/>
@@ -56257,7 +56224,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="-3.9" y1="2.66" x2="3.9" y2="2.66" width="0.05" layer="39"/>
 <wire x1="3.9" y1="2.66" x2="3.9" y2="-2.66" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.66" x2="-3.9" y2="-2.66" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -56288,7 +56254,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="3.9" y1="2.46" x2="3.9" y2="-2.46" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.46" x2="-3.9" y2="-2.46" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="2.2" x2="-3.65" y2="2.2" width="0.12" layer="21"/>
@@ -56317,7 +56282,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="-3.9" y1="2.26" x2="3.9" y2="2.26" width="0.05" layer="39"/>
 <wire x1="3.9" y1="2.26" x2="3.9" y2="-2.26" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.26" x2="-3.9" y2="-2.26" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -56348,7 +56312,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="3.9" y1="2.06" x2="3.9" y2="-2.06" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.06" x2="-3.9" y2="-2.06" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="1.8" x2="-3.65" y2="1.8" width="0.12" layer="21"/>
@@ -56377,7 +56340,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="-3.9" y1="1.86" x2="3.9" y2="1.86" width="0.05" layer="39"/>
 <wire x1="3.9" y1="1.86" x2="3.9" y2="-1.86" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-1.86" x2="-3.9" y2="-1.86" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -56408,7 +56370,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="3.9" y1="2.56" x2="3.9" y2="-2.56" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.56" x2="-3.9" y2="-2.56" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="2.3" x2="-3.65" y2="2.3" width="0.12" layer="21"/>
@@ -56438,7 +56399,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="3.9" y1="3.66" x2="3.9" y2="-3.66" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-3.66" x2="-3.9" y2="-3.66" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
 <wire x1="-2.43" y1="3.4" x2="-3.65" y2="3.4" width="0.12" layer="21"/>
@@ -56467,7 +56427,6 @@ Source: http://www.diodes.com/datasheets/ds23001.pdf</description>
 <wire x1="-3.9" y1="2.86" x2="3.9" y2="2.86" width="0.05" layer="39"/>
 <wire x1="3.9" y1="2.86" x2="3.9" y2="-2.86" width="0.05" layer="39"/>
 <wire x1="3.9" y1="-2.86" x2="-3.9" y2="-2.86" width="0.05" layer="39"/>
-<circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <circle x="0" y="0" radius="0.25" width="0.05" layer="39"/>
 <wire x1="0.35" y1="0" x2="-0.35" y2="0" width="0.05" layer="39"/>
 <wire x1="0" y1="0.35" x2="0" y2="-0.35" width="0.05" layer="39"/>
@@ -57666,14 +57625,10 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       783&lt;BR&gt;
       781&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       2199&lt;BR&gt;
       1697/1897&lt;BR&gt;
       1680/1880&lt;BR&gt;
       2187&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       -&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
@@ -57682,8 +57637,6 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       8035EKP/CT20/RJ-20P&lt;BR&gt;
       -&lt;BR&gt;
       RJ-20X&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       1211L&lt;BR&gt;
       8012EKQ&amp;nbsp;ALT&lt;BR&gt;
@@ -57700,13 +57653,6 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       2101W&lt;BR&gt;
       2101Y&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       2102L&lt;BR&gt;
       2102S&lt;BR&gt;
       2102Y&lt;BR&gt;&lt;/FONT&gt;
@@ -57715,17 +57661,6 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       -&lt;BR&gt;
       EVMCOG&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
@@ -57733,9 +57668,6 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       43P&lt;BR&gt;
       43W&lt;BR&gt;
       43Y&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       40L&lt;BR&gt;
       40P&lt;BR&gt;
@@ -57747,18 +57679,8 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      RT/RTR12&lt;BR&gt;
-      RT/RTR12&lt;BR&gt;
       RT/RTR12&lt;BR&gt;
       -&lt;BR&gt;
-      RJ/RJR12&lt;BR&gt;
       RJ/RJR12&lt;BR&gt;
       RJ/RJR12&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
@@ -57873,22 +57795,12 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       5080&lt;BR&gt;
       5087&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       T63YB&lt;BR&gt;
       T63XB&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       5887&lt;BR&gt;
       5891&lt;BR&gt;
       5880&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       T93Z&lt;BR&gt;
       T93YA&lt;BR&gt;
@@ -57896,21 +57808,9 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       T93YB&lt;BR&gt;
       T93XB&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       8026EKP&lt;BR&gt;
       8026EKW&lt;BR&gt;
@@ -57928,35 +57828,16 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       RJ-9W&lt;BR&gt;
       RJ-9X&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       3103P&lt;BR&gt;
       3103Y&lt;BR&gt;
       3103Z&lt;BR&gt;
       3103P&lt;BR&gt;
       3103Y&lt;BR&gt;
       3103Z&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       3105P/3106P&lt;BR&gt;
       3105W/3106W&lt;BR&gt;
@@ -57971,35 +57852,8 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       EVMCBG&lt;BR&gt;
       EVMCCG&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       -&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
@@ -58009,22 +57863,9 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       55-3-X&lt;BR&gt;
       55-2-X&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       50-2-X&lt;BR&gt;
       50-4-X&lt;BR&gt;
       50-3-X&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       64P&lt;BR&gt;
       64W&lt;BR&gt;
@@ -58032,42 +57873,15 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       64Y&lt;BR&gt;
       64Z&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
       RT/RTR22&lt;BR&gt;
-      RT/RTR22&lt;BR&gt;
-      RT/RTR22&lt;BR&gt;
-      RT/RTR22&lt;BR&gt;
-      RJ/RJR22&lt;BR&gt;
-      RJ/RJR22&lt;BR&gt;
       RJ/RJR22&lt;BR&gt;
       RT/RTR26&lt;BR&gt;
-      RT/RTR26&lt;BR&gt;
-      RT/RTR26&lt;BR&gt;
-      RJ/RJR26&lt;BR&gt;
-      RJ/RJR26&lt;BR&gt;
-      RJ/RJR26&lt;BR&gt;
-      RJ/RJR26&lt;BR&gt;
-      RJ/RJR26&lt;BR&gt;
       RJ/RJR26&lt;BR&gt;
       RT/RTR24&lt;BR&gt;
-      RT/RTR24&lt;BR&gt;
-      RT/RTR24&lt;BR&gt;
       RJ/RJR24&lt;BR&gt;
-      RJ/RJR24&lt;BR&gt;
-      RJ/RJR24&lt;BR&gt;
-      RJ/RJR24&lt;BR&gt;
-      RJ/RJR24&lt;BR&gt;
-      RJ/RJR24&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       -&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
@@ -58152,8 +57966,6 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       82M&lt;BR&gt;
       82PA&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       91E&lt;BR&gt;
       91X&lt;BR&gt;
       91T&lt;BR&gt;
@@ -58182,21 +57994,8 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       T7YB&lt;BR&gt;
       T7YA&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       TXD&lt;BR&gt;
       TYA&lt;BR&gt;
@@ -58212,7 +58011,6 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       190T&lt;BR&gt;
       150TX&lt;BR&gt;
       101&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       101SX&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
@@ -58232,7 +58030,6 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       8017SMB&lt;BR&gt;
       8017SMA&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
       CT-6W&lt;BR&gt;
       CT-6H&lt;BR&gt;
       CT-6P&lt;BR&gt;
@@ -58241,11 +58038,9 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       CT-6V&lt;BR&gt;
       CT-6X&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
       8038EKV&lt;BR&gt;
       -&lt;BR&gt;
       8038EKX&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       8038EKP&lt;BR&gt;
       8038EKZ&lt;BR&gt;
@@ -58253,8 +58048,6 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       -&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       3321H&lt;BR&gt;
       3321P&lt;BR&gt;
@@ -58268,14 +58061,6 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       RVG0707V100A&lt;BR&gt;
       RVA0607V(H)306A&lt;BR&gt;
       RVA1214H213A&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       3104B&lt;BR&gt;
       3104C&lt;BR&gt;
@@ -58296,8 +58081,6 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       EVMQ0G&lt;BR&gt;
       EVMG0G&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       EVMK4GA00B&lt;BR&gt;
       EVM30GA00B&lt;BR&gt;
       EVMK0GA00B&lt;BR&gt;
@@ -58309,90 +58092,36 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       EVMMBG&lt;BR&gt;
       EVMMAG&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
       EVMMCS&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       EVMM1&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
       EVMM0&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       EVMM3&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       62-3-1&lt;BR&gt;
       62-1-2&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       67R&lt;BR&gt;
       -&lt;BR&gt;
       67P&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       67X&lt;BR&gt;
       63V&lt;BR&gt;
       63S&lt;BR&gt;
       63M&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
       63H&lt;BR&gt;
       63P&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       63X&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       RJ/RJR50&lt;BR&gt;
-      RJ/RJR50&lt;BR&gt;
-      RJ/RJR50&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       -&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
@@ -58449,15 +58178,11 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       ST63Z&lt;BR&gt;
       ST63Y&lt;BR&gt;
       -&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       ST5P&lt;BR&gt;
       ST5W&lt;BR&gt;
@@ -58465,25 +58190,13 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       -&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
@@ -58552,8 +58265,6 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       ST-4B&lt;BR&gt;
       ST-4A&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
-      -&lt;BR&gt;
       ST-3B&lt;BR&gt;
       ST-3A&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
@@ -58572,11 +58283,9 @@ for trimmer refence see : &lt;u&gt;www.electrospec-inc.com/cross_references/trim
       TR04-3S1&lt;BR&gt;
       TRG04-2S1&lt;BR&gt;
       -&lt;BR&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;&lt;/FONT&gt;
     &lt;/TD&gt;
     &lt;TD BGCOLOR="#cccccc" ALIGN=CENTER&gt;&lt;FONT FACE=ARIAL SIZE=3&gt;
-      -&lt;BR&gt;
       -&lt;BR&gt;
       DVR-43A&lt;BR&gt;
       CVR-42C&lt;BR&gt;
@@ -77521,7 +77230,6 @@ diameter 5.2 mm, horizontal, grid 15.24 mm</description>
 <wire x1="-3.175" y1="0" x2="-3.175" y2="-1.524" width="0.1524" layer="21"/>
 <wire x1="3.175" y1="0" x2="3.175" y2="1.524" width="0.1524" layer="21"/>
 <rectangle x1="-2.286" y1="-1.524" x2="-1.524" y2="1.524" layer="21"/>
-<rectangle x1="-2.286" y1="-1.524" x2="-1.524" y2="1.524" layer="21"/>
 <pad name="A" x="6.35" y="0" drill="0.8128" shape="long"/>
 <pad name="C" x="-6.35" y="0" drill="0.8128" shape="long"/>
 <text x="-3.175" y="1.905" size="1.27" layer="25" ratio="10">&gt;NAME</text>
@@ -83726,7 +83434,6 @@ With round pins</description>
 <segment>
 <pinref part="R1_3" gate="G$1" pin="2"/>
 <wire x1="86.36" y1="76.2" x2="91.44" y2="76.2" width="0.1524" layer="91"/>
-<label x="91.44" y="76.2" size="1.778" layer="95"/>
 <label x="91.44" y="76.2" size="1.778" layer="95"/>
 </segment>
 </net>

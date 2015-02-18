@@ -14,7 +14,7 @@ import copy
 import eagleDTD
 import StringIO
 import types
-
+import operator
 
 class EagleFormatError (Exception):
     def __init__(self, text=""):
@@ -113,6 +113,46 @@ class EagleFilePart(object):
             i.check_sanity()
             
 
+class EaglePartVisitor(object):
+
+    def __init__(self, root=None):
+        self.root = root
+
+    def go(self):
+        self.visit(self.root)
+        return self
+    
+    def visitFilter(self, e):
+        return True
+
+    def decendFilter(self, e):
+        return True
+
+    def default_post(self,e):
+        pass
+
+    def default_pre(self,e):
+        pass
+
+    def visit(self, efPart):
+        if self.visitFilter(efPart):
+            try:
+                pre = getattr(self,type(efPart).__name__ + "_pre")
+                pre(efPart)
+            except AttributeError:
+                self.default_pre(efPart)
+
+        if self.decendFilter(efPart):
+            for e in efPart.get_children():        
+                self.visit(e)
+                
+        if self.visitFilter(efPart):
+            try:
+                post = getattr(self,type(efPart).__name__ + "_post")
+                post(efPart)
+            except AttributeError:
+                self.default_post(efPart)
+
 class EagleFile(EagleFilePart):
 
     DTD = ET.DTD(StringIO.StringIO(eagleDTD.DTD))
@@ -125,29 +165,48 @@ class EagleFile(EagleFilePart):
 
     def validate(self):
         return EagleFile.DTD.validate(self.get_et())
-        
+
+    @staticmethod
+    def from_file (filename):
+        """
+        Loads a Eagle file from a .sch, .lbr, or .brd file.
+        """
+        tree = ET.parse(filename)
+        root = tree.getroot()
+        if filename[-4:] == ".sch":
+            ef = Schematic.from_et(root)
+        elif filename[-4:] == ".brd":
+            raise NotImplementedError("Board files not supported")
+        elif filename[-4:] == ".lbr":
+            ef = LibraryFile.from_et(root,filename=filename)
+        else:
+            raise HighEagleError("Unknown file suffix: '" + filename[-4:] + "'")
+        ef.filename = filename
+        ef.check_sanity()
+        return ef
+
     def write (self, filename):
         """
         Exports the Schematic to an EAGLE schematic file.
         
         """
+        header="""<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE eagle SYSTEM "eagle.dtd">
+"""
         self.check_sanity()
         if not self.validate():
             f = open(filename + ".broken.xml", "w")
-            f.write(ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True))
+            f.write(header + ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True))
             raise HighEagleError("element tree does not validate" + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
         else:
             f = open(filename, "w")
-            f.write(ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True))
+            f.write(header+ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True))
 
     def add_layer (self, layer):
-        #print "Schematic add_layer()"
         assert isinstance(layer, Layer)
         self.layersByNumber[int(layer.number)] = layer
         self.layersByName[layer.name] = layer
         layer.parent = self
-        #print str(layer)
-        #self.check_sanity()
         
     def get_layers(self):
         return self.layersByName
@@ -194,28 +253,18 @@ class EagleFile(EagleFilePart):
 
     def remove_layer(self, layer):
         if type(layer) is str:
-            raise NotImplementedError("Remove layer by name")
+            l = self.layersByName[layer]
+            self.remove_layer(l)
         elif type(layer) is int:
-            raise NotImplementedError("Remove layer by number")
+            l = self.layersByNumber[layer]
+            self.remove_layer(l)
         elif isinstance(layer, Layer):
             self.layersByName[layer.name].parent = None
             del self.layersByName[layer.name]
             del self.layersByNumber[layer.number]
         else:
-            raise HighEagleError("Can't remove layer by " + str(type(layer)))
+            raise HighEagleError("Invalid layer spec: " + str(layer))
             
-    def mergeLayersFromEagleFile(self, ef, force=False):
-        for srcLayer in ef.get_layers().values():
-            for dstLayer in self.get_layers().values():
-                if ((srcLayer.name == dstLayer.name and srcLayer.number != dstLayer.number) or 
-                    (srcLayer.name != dstLayer.name and srcLayer.number == dstLayer.number)):
-                    if force:
-                        self.remove_layer(dstLayer)
-                    else:
-                        raise HighEagleError("Layer mismatch: " + ef.filename +" <" + str(srcLayer.number) + ", '" + srcLayer.name +"'>; " + self.filename +" = <" + str(dstLayer.number) + ", '" + dstLayer.name +"'>;")
-            if srcLayer.name not in self.get_layers():
-                self.add_layer(srcLayer.clone())
-
     def get_manifest(self):
         raise NotImplementedError("Manifest for " + str(type(self)))
 
@@ -238,8 +287,8 @@ class Schematic (EagleFile):
         self.settings = {}
         self.grid = {}
         
-        for layer in Layer.default_layers():
-            self.add_layer(layer)
+        #for layer in Layer.default_layers():
+        #    self.add_layer(layer)
         
         self.libraries = {}
         self.attributes = {}
@@ -248,17 +297,6 @@ class Schematic (EagleFile):
         self.parts = {}
         self.sheets = []
 
-    @staticmethod
-    def from_file (filename):
-        """
-        Loads a Schematic from an EAGLE .sch file.
-        """
-        tree = ET.parse(filename)
-        root = tree.getroot()
-        sch = Schematic.from_et(root)
-        sch.filename =filename
-        sch.check_sanity()
-        return sch
         
     @staticmethod
     def from_et (et):
@@ -376,12 +414,12 @@ class Schematic (EagleFile):
         EagleUtil.set_settings(eagle, self.settings)
         EagleUtil.set_grid(eagle)
         
-        for layer in self.get_layers().values():
+        for layer in sorted(self.get_layers().values(), key=operator.attrgetter("number")):
+            #print layer.name +  " " + str(layer.number)
             EagleUtil.add_layer(eagle, layer.get_et())
 
         for library in self.libraries.values():
             EagleUtil.add_library(eagle, library.get_et())
-            
             
         for attribute in self.attributes:
             pass
@@ -497,24 +535,14 @@ class LibraryFile(EagleFile):
         self.grid = {}
         self.name = None
 
-        for layer in Layer.default_layers():
-            self.add_layer(layer)
+        #for layer in Layer.default_layers():
+        #    self.add_layer(layer)
         
         self.libraries = None
 
-    @staticmethod
-    def from_file(filename):
-        tree = ET.parse(filename)
-        root = tree.getroot()
-        r = LibraryFile.from_et(root)
-        r.filename =filename
-        r.name = filename.replace(".lbr","")
-        r.library.name = r.name
-        r.check_sanity()
-        return r
 
     @staticmethod
-    def from_et (et):
+    def from_et (et, filename=None):
         """
         Loads a Library file from an ElementTree.Element representation.
         """
@@ -543,6 +571,8 @@ class LibraryFile(EagleFile):
         assert len(lbr.get_layers()) > 0, "No layers in schematic."
         
         lbr.library = Library.from_et(lbr,library)
+        if lbr.library.name is None:
+            lbr.library.name = filename[0:-4]
 
         return lbr
 
@@ -560,8 +590,9 @@ class LibraryFile(EagleFile):
         eagle = EagleUtil.make_eagle()
         EagleUtil.set_settings(eagle, self.settings)
         EagleUtil.set_grid(eagle)
-        
-        for layer in self.get_layers().values():
+
+        for layer in sorted(self.get_layers().values(), key=operator.attrgetter("number")):
+            #print layer.name +  " " + str(layer.number)
             EagleUtil.add_layer(eagle, layer.get_et())
 
         EagleUtil.add_library_to_library_file(eagle, self.library.get_et())
@@ -1965,13 +1996,13 @@ class Layer (EagleFilePart):
         )
         return layer
         
-    @staticmethod
-    def default_layers ():
+    #@staticmethod
+    #def default_layers ():
         #print "Layer default_layers()"
-        et_layers = EagleUtil.get_default_layers()
-        et_layers = et_layers.findall("./layer")
-        layers = [Layer.from_et(None, layer) for layer in et_layers]
-        return layers
+        #et_layers = EagleUtil.get_default_layers()
+        #et_layers = et_layers.findall("./layer")
+        #layers = [Layer.from_et(None, layer) for layer in et_layers]
+        #return layers
         
     def get_et (self):
         """

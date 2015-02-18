@@ -153,6 +153,7 @@ def add_layer (root, layer_root):
     root.find("./drawing/layers").append(layer_root)
     
 def get_default_layers ():
+    assert False
     return ET.fromstring(
         """
         <layers>

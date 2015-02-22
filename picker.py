@@ -18,25 +18,27 @@ from EagleUtil import *
 from HighEagle import *
 
 import EagleTools
+import GadgetronConfig
 
 import sys
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Part picker")
-    parser.add_argument("--ohms", required=True,  type=str, nargs='+', dest='ohms', help="Resistors csv")
-    parser.add_argument("--ceramics", required=True,  type=str, nargs='+', dest='ceramics', help="ceramic caps csv")
-    parser.add_argument("--leds", required=True,  type=str, nargs='+', dest='leds', help="LED csv")
-    parser.add_argument("--zdiodes", required=True,  type=str, nargs='+', dest='zdiodes', help="Zener diode csv")
-    parser.add_argument("--sdiodes", required=True,  type=str, nargs='+', dest='sdiodes', help="Schottky diode csv")
-    parser.add_argument("--resonators", required=True,  type=str, nargs='+', dest='resonators', help="Resonators csv")
-    parser.add_argument("--layers", required=True, type=str, nargs=1, dest='layers', help="lbr file with standard layers in it.")
-    parser.add_argument("--lbr", required=True,  type=str, nargs=1, dest='lbr', help="library resolved parts")
+    parser.add_argument("--resistors", required=False,  type=str, nargs='+', default=GadgetronConfig.config.PART_PICKER_RESISTORS.split(), dest='resistors', help="Resistors csv")
+    parser.add_argument("--capacitors", required=False,  type=str, nargs='+', default=GadgetronConfig.config.PART_PICKER_CAPACITORS.split(), dest='capacitors', help="Capacitors csv")
+    parser.add_argument("--leds", required=False,  type=str, nargs='+', default=GadgetronConfig.config.PART_PICKER_LEDS.split(), dest='leds', help="Leds csv")
+    parser.add_argument("--zenerdiodes", required=False,  type=str, nargs='+', default=GadgetronConfig.config.PART_PICKER_ZENERDIODES.split(), dest='zdiodes', help="Zener diodes csv")
+    parser.add_argument("--schotkkydiodes", required=False,  type=str, nargs='+', default=GadgetronConfig.config.PART_PICKER_SCHOTKKYDIODES.split(), dest='sdiodes', help="Schotkky diodes csv")
+    parser.add_argument("--resonators", required=False,  type=str, nargs='+', default=GadgetronConfig.config.PART_PICKER_RESONATORS.split(), dest='resonators', help="Resonators csv")
+    parser.add_argument("--layers", required=False, type=str, nargs=1, default=[GadgetronConfig.config.CBC_STARDARD_LAYERS], dest='layers', help="lbr file with standard layers in it.")
+    parser.add_argument("--lbr", required=False,  type=str, nargs=1, default=[GadgetronConfig.config.PART_PICKER_EAGLE_LIB], dest='lbr', help="library resolved parts")
     parser.add_argument("--in", required=True,  type=str, nargs=1, dest='inSch', help="input sch")
     parser.add_argument("--out", required=True,  type=str, nargs=1, dest='outSch', help="output sch")
     parser.add_argument("--goal", required=True,  type=str, nargs=1, dest='goal', help="part selection goal")
 
     args = parser.parse_args()
 
+    
     # define a resolution environment. It's a map between part type names and
     # tuples.  The first entry of the tuple is a database of parts of that
     # type.  The entry of the tuple is a list priorities for selecting a part.
@@ -49,7 +51,7 @@ if __name__ == "__main__":
     
     sizePref = strategies[args.goal[0]]
     resistors = PartResolutionEnvironment("Resistor", 
-                                          db=PartDB(Resistor, "Resistor", args.ohms),
+                                          db=PartDB(Resistor, "Resistor", args.resistors),
                                           preferences=[Prefer("STOCK", ["STOCK", "SPECIAL-ORDER"]),
                                                        sizePref,
                                                        Prefer("TOL", [0.05, 0.01]),
@@ -57,7 +59,7 @@ if __name__ == "__main__":
                                                        Minimize("PRICE")])
     
     ceramicCaps = PartResolutionEnvironment("CeramicCapacitor",
-                                            db=PartDB(CeramicCapacitor, "CeramicCapacitor", args.ceramics),
+                                            db=PartDB(CeramicCapacitor, "CeramicCapacitor", args.capacitors),
                                             preferences=[Prefer("STOCK", ["STOCK", "SPECIAL-ORDER"]),
                                                          sizePref,
                                                          Minimize("PRICE")])
@@ -150,14 +152,14 @@ if __name__ == "__main__":
                         # print a.value
                         # print r.getField(field)
                 i.set_attribute("VALUE_QUERY", i.value)
-                print str(r)
-                print i.name
+                #print str(r)
+                #print i.name
                 i.value = r.renderField("VALUE")
                 i.set_device(deviceset=i.get_deviceset().name.replace("GENERIC","RESOLVED"))
 
 
                 try:
-                    print i.name +  " " + r.getField("DEVICE")
+                    #print i.name +  " " + r.getField("DEVICE")
                     i.set_device(device=r.getField("DEVICE"))
                 except:
                     pass
@@ -169,12 +171,12 @@ if __name__ == "__main__":
 
             r = None
     print str(len(resolved)) + " resolved parts."
-    for r in resolved:
-        print r
+    #for r in resolved:
+    #    print r
 
     print str(len(unresolved)) + " unresolved parts."
-    for u in unresolved:
-        print u.name
+    #for u in unresolved:
+    #    print u.name
 
 
     sch.write(args.outSch[0])

@@ -55,7 +55,7 @@ def mergeLayers(src, dst, force=False):
 def normalizeLayers(ef, layers, force=False):
     
     for i in ScanLayersVisitor(ef).go().getUnusedLayers():
-        print "removed " + str(i)
+        #print "removed " + str(i)
         ef.remove_layer(i)
         
     mergeLayers(layers, ef, force)

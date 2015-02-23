@@ -15,13 +15,13 @@ test: build $(TARGETS)  eagleDTD.py
 #	python picker.py --in $<  --out $@  --goal handsolder --lbr out.lbr
 
 %.th.resolved.sch: %.sch eagleDTD.py 
-	python picker.py --in $<  --out $@  --goal th 
+	koala.py --in $<  --out $@  --goal th 
 
 %.small.resolved.sch: %.sch eagleDTD.py 
-	python picker.py --in $<  --out $@  --goal small
+	koala.py --in $<  --out $@  --goal small
 
 %.handsolder.resolved.sch: %.sch eagleDTD.py 
-	python picker.py --in $<  --out $@  --goal handsolder
+	koala.py --in $<  --out $@  --goal handsolder
 
 eagleDTD.py: eagle-tweaked.dtd
 	echo DTD=\"\"\" > $@

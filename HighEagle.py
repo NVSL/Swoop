@@ -15,6 +15,7 @@ import eagleDTD
 import StringIO
 import types
 import operator
+import os
 
 class EagleFormatError (Exception):
     def __init__(self, text=""):
@@ -185,6 +186,13 @@ class EagleFile(EagleFilePart):
         ef.check_sanity()
         return ef
 
+    @staticmethod
+    def from_file_by_type(filename, ftype):
+        n = EagleFile.from_file(filename)
+        if not isinstance(n, ftype):
+            raise HighEagleError("File is '" + filename + "' is not " + ftype.__name__)
+        return n
+
     def write (self, filename):
         """
         Exports the Schematic to an EAGLE schematic file.
@@ -267,6 +275,9 @@ class EagleFile(EagleFilePart):
             
     def get_manifest(self):
         raise NotImplementedError("Manifest for " + str(type(self)))
+
+    def get_library(self, l):
+        return self.libraries.get(l)
 
 class Schematic (EagleFile):
     """
@@ -365,6 +376,10 @@ class Schematic (EagleFile):
             sch.add_sheet(new_sheet)
         
         return sch
+
+    @staticmethod
+    def from_file (filename):
+        return EagleFile.from_file_by_type(filename, Schematic)
 
     def get_manifest(self, indent=""):
         r = indent + "Libraries (" + str(len(self.libraries)) + ")\n"+ indent
@@ -467,10 +482,6 @@ class Schematic (EagleFile):
     def get_libraries(self):
         return libraries
 
-    def get_library(self, l):
-        if l not in self.libraries:
-            raise HighEagleError("Missing library '" + str(l) + "' in " + self.filename)
-        return self.libraries[l]
 
 class Pin (EagleFilePart):
     """
@@ -542,6 +553,10 @@ class LibraryFile(EagleFile):
 
 
     @staticmethod
+    def from_file (filename):
+        return EagleFile.from_file_by_type(filename, LibraryFile)
+
+    @staticmethod
     def from_et (et, filename=None):
         """
         Loads a Library file from an ElementTree.Element representation.
@@ -572,10 +587,18 @@ class LibraryFile(EagleFile):
         
         lbr.library = Library.from_et(lbr,library)
         if lbr.library.name is None:
-            lbr.library.name = filename[0:-4]
+            lbr.library.name = os.path.basename(filename)[:-4]
 
         return lbr
 
+    def write (self, filename):
+        """
+        Exports the Schematic to an EAGLE schematic file.
+        
+        """
+        self.library.name = os.path.basename(filename)[:-4]
+        EagleFile.write(self,filename)
+            
     def get_library(self):
         return self.library
     
@@ -615,6 +638,17 @@ class Library (EagleFilePart):
         self.packages = packages
         self.symbols = symbols
         self.devicesets = devicesets
+
+    def clone(self):
+        n = Library(name=self.name,
+                    description=self.description)
+        for p in self.packages.values():
+            n.add_package(p.clone())
+        for s in self.symbols.values():
+            n.add_symbol(s.clone())
+        for ds in self.devicesets.values():
+            n.add_deviceset(ds.clone())
+        return n;
         
     @classmethod
     def from_et (cls, parent, library_root):
@@ -699,6 +733,32 @@ class Library (EagleFilePart):
         if name not in self.devicesets:
             raise HighEagleError("Deviceset '" + name +"' is not in library '" + self.name + "'")
         del self.devicesets[name]
+
+    def remove_symbol(self, symbol):
+        if type(symbol) == str:
+            name = symbol
+        elif type(symbol) == Symbol:
+            name = symbol.name
+            symbol.parent = None
+        else:
+            raise HighEagleError("Wrong type of argument to remove_symbol()")
+
+        if name not in self.symbols:
+            raise HighEagleError("Symbol '" + name +"' is not in library '" + self.name + "'")
+        del self.symbols[name]
+
+    def remove_package(self, package):
+        if type(package) == str:
+            name = package
+        elif type(package) == Package:
+            name = package.name
+            package.parent = None
+        else:
+            raise HighEagleError("Wrong type of argument to remove_package()")
+
+        if name not in self.packages:
+            raise HighEagleError("Package '" + name +"' is not in library '" + self.name + "'")
+        del self.packages[name]
 
         
     def add_deviceset(self, deviceset):
@@ -1108,17 +1168,17 @@ class Part (EagleFilePart):
         #assert self.get_device() is not None
 
         try:
-            self.get_library()
+            assert self.get_library() is not None
         except Exception as e:
             raise HighEagleError("Library '" + self.library +  "' missing for " + str(self.name))
 
         try:
-            self.get_deviceset()
+            assert self.get_deviceset() is not None
         except Exception as e:
             raise HighEagleError("DeviceSet '" + self.get_library().name + ":" + self.deviceset + "' missing for " + str(self.name))
 
         try:
-            self.get_device()
+            assert self.get_device() is not None
         except Exception as e:
             raise HighEagleError("Device '" + self.get_library().name + ":" + self.get_deviceset().name + ":" + self.device + "' missing for " + str(self.name))
         
@@ -1202,7 +1262,7 @@ class Part (EagleFilePart):
         Get the library that contains this part
         """
         #try:
-        lib = self.schematic.libraries[self.library]
+        lib = self.schematic.libraries.get(self.library)
         #except:
         #raise EagleFormatError("Missing library '" + self.library + "' for part '" + self.name + "'.")
         return lib
@@ -1213,8 +1273,9 @@ class Part (EagleFilePart):
         """
 
         lib = self.get_library();
+
         #        try:
-        deviceset = lib.devicesets[self.deviceset]
+        deviceset = lib.devicesets.get(self.deviceset)
         #        except:
         #            raise EagleFormatError("Missing device set '" + self.library + ":" + self.deviceset + "' for part '" + self.name + "' in file " +self.get_file().filename +".")
         return deviceset
@@ -1226,7 +1287,7 @@ class Part (EagleFilePart):
         deviceset = self.get_deviceset()
 
         #        try:
-        device = deviceset.devices[self.device]
+        device = deviceset.devices.get(self.device)
         #except:
         #    raise EagleFormatError("Missing device '" + self.library + ":" + self.deviceset + ":" + self.device  + "' for part '" + self.name + "'.")
         
@@ -1239,7 +1300,7 @@ class Part (EagleFilePart):
         device = self.get_device()
 
         #try:
-        tech = device.technologies[self.technology]
+        tech = device.technologies.get(self.technology)
         #except:
         #    raise EagleFormatError("Missing technology '" + self.library + ":" + self.deviceset + ":" + self.device  + ":" + self.technology+  "' for part '" + self.name + "'.")
         
@@ -1261,7 +1322,7 @@ class Part (EagleFilePart):
         lib = self.get_library();
         #try:
         if device.package is not None:
-            package = lib.packages[device.package];
+            package = lib.packages.get(device.package);
         else:
             package = None
         #except:
@@ -1445,7 +1506,14 @@ class Gate (EagleFilePart):
             x=self.x,
             y=self.y
         )
-        
+
+    def get_library(self):
+        l = c.get_parent().get_parent()
+        assert isinstance(l, Library)
+        return l
+                
+    def get_symbol(self):
+        return self.get_library().symbols[self.symbol]
         
 class Connect (EagleFilePart):
     """
@@ -1537,7 +1605,18 @@ class Device (EagleFilePart):
         
     def get_technologies(self):
         return self.technologies
-        
+
+    def get_library(self):
+        l = self.get_parent().get_parent()
+        assert isinstance(l, Library)
+        return l
+    
+    def get_package(self):
+        if self.package is None:
+            return None
+        else:
+            return self.get_library().packages[self.package]
+            
     def get_et (self):
         """
         Returns the ElementTree.Element xml representation.

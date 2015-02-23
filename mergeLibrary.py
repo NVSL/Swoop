@@ -34,40 +34,39 @@ if __name__ == "__main__":
     ####################################################################
 
     m = re.match("(.*\.(lbr|sch|pcb))(:(.+))?", args.dst[0])
+
     if m is None:
         raise HighEagleError("Unparsable file name: '" + args.dst[0] + "'")
 
     f = m.group(1)
-    dstLib = m.group(4)
+    dstLibName = m.group(4)
     suffix=m.group(2)
 
     shutil.copy(f, f + ".bak")
 
-    if suffix == "sch":
-        dst = Schematic.from_file(f)
-        dstLib = dst.get_library(dstLib)
-
-        #for p in dst.get_parts().values():
-        #    if re.match("^GENERIC-(CAPACITOR-NP|CAPACITOR-POL|DIODE-LED|DIODE-SCHOTTKY|DIODE-ZENER|RESISTOR|RESONATOR)", p.deviceset) is not None:
-        #        print "Scubbed " + p.name
-        #        p.device = ""
-                        
-
-    elif suffix == "brd":
-        raise NotImplementedError("brd files not supported yet")
-    elif suffix == "lbr":
-        dst = LibraryFile.from_file(f)
+    dst = EagleFile.from_file(f)
+    
+    if isinstance(dst, Schematic):
+        dstLib = dst.get_library(dstLibName)
+        if dstLib is None:
+            newLib = Library(name=dstLibName)
+            dst.add_library(newLib)
+            dstLib = newLib
+            
+#    elif isinstance(dst, Board):
+#        raise NotImplementedError("brd files not supported yet")
+    elif isinstance(dst, LibraryFile):
         dstLib = dst.get_library()
     else:
-        raise Exception("File with unknown suffix: " + suffix);    
+        raise HighEagleError("Unknown type returned from EagleFile.from_file()")
 
     for i in srcLib.symbols.values():
         dstLib.add_symbol(i.clone())
+
     for i in srcLib.packages.values():
         dstLib.add_package(i.clone())
+
     for i in srcLib.devicesets.values():
-#        if re.match("^(GENERIC|RESOLVED|UNRESOLVED)-(CAPACITOR-NP|CAPACITOR-POL|DIODE-LED|DIODE-SCHOTTKY|DIODE-ZENER|RESISTOR|RESONATOR)", i.name) is not None:
- #           print "copying " + i.name
         dstLib.add_deviceset(i.clone())
 
     

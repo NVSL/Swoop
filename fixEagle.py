@@ -21,4 +21,6 @@ if __name__ == "__main__":
         if args.layers:
             EagleTools.normalizeLayers(ef, layers)
 
+        print EagleTools.ScanLibraryReferences(ef).go().get_referenced_efps()
+            
         ef.write(f)

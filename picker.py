@@ -31,14 +31,14 @@ if __name__ == "__main__":
     parser.add_argument("--schotkkydiodes", required=False,  type=str, nargs='+', default=GadgetronConfig.config.PART_PICKER_SCHOTKKYDIODES.split(), dest='sdiodes', help="Schotkky diodes csv")
     parser.add_argument("--resonators", required=False,  type=str, nargs='+', default=GadgetronConfig.config.PART_PICKER_RESONATORS.split(), dest='resonators', help="Resonators csv")
     parser.add_argument("--layers", required=False, type=str, nargs=1, default=[GadgetronConfig.config.CBC_STARDARD_LAYERS], dest='layers', help="lbr file with standard layers in it.")
-    parser.add_argument("--lbr", required=False,  type=str, nargs=1, default=[GadgetronConfig.config.PART_PICKER_EAGLE_LIB], dest='lbr', help="library resolved parts")
+    parser.add_argument("--designlbr", required=False,  type=str, nargs=1, default=[GadgetronConfig.config.PART_PICKER_DESIGN_LIB], dest='designlbr', help="Picker design library")
+    parser.add_argument("--buildlbr", required=False,  type=str, nargs=1, default=[GadgetronConfig.config.PART_PICKER_BUILD_LIB], dest='buildlbr', help="Picker build library")
     parser.add_argument("--in", required=True,  type=str, nargs=1, dest='inSch', help="input sch")
     parser.add_argument("--out", required=True,  type=str, nargs=1, dest='outSch', help="output sch")
     parser.add_argument("--goal", required=True,  type=str, nargs=1, dest='goal', help="part selection goal")
 
     args = parser.parse_args()
 
-    
     # define a resolution environment. It's a map between part type names and
     # tuples.  The first entry of the tuple is a database of parts of that
     # type.  The entry of the tuple is a list priorities for selecting a part.
@@ -100,6 +100,14 @@ if __name__ == "__main__":
     sch = Schematic.from_file(args.inSch[0])
     layers = LibraryFile.from_file(args.layers[0])
 
+    designLbr = LibraryFile.from_file(args.designlbr[0])
+    buildLbr =  LibraryFile.from_file(args.buildlbr[0])
+
+    if sch.get_library(designLbr.library.name) is None:
+        raise Exception("Design library '" + args.designlbr[0] +"' is not present in schematic '" + args.inSch[0] + "'")
+
+    sch.add_library(buildLbr.library.clone())
+    
     # make sure the schematics layers are sane
     EagleTools.normalizeLayers(sch, layers)
 
@@ -155,11 +163,11 @@ if __name__ == "__main__":
                 #print str(r)
                 #print i.name
                 i.value = r.renderField("VALUE")
-                i.set_device(deviceset=i.get_deviceset().name.replace("GENERIC","RESOLVED"))
 
+                i.set_device(deviceset=i.get_deviceset().name.replace("GENERIC","RESOLVED"),
+                             library=buildLbr.library.name)
 
                 try:
-                    #print i.name +  " " + r.getField("DEVICE")
                     i.set_device(device=r.getField("DEVICE"))
                 except:
                     pass
@@ -167,7 +175,8 @@ if __name__ == "__main__":
                 resolved.append(str(r))
             else:
                 unresolved.append(i)
-                i.set_device(deviceset=i.get_deviceset().name.replace("GENERIC","UNRESOLVED"))
+                i.set_device(deviceset=i.get_deviceset().name.replace("GENERIC","UNRESOLVED"),
+                             library=buildLbr.library.name)
 
             r = None
     print str(len(resolved)) + " resolved parts."

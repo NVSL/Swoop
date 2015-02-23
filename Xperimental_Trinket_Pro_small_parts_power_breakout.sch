@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE eagle SYSTEM "eagle.dtd">
 <eagle version="7.2.0">
   <drawing>
     <settings>
@@ -230,8 +232,1495 @@ In this library the device names are the same as the pin names of the symbols, t
             </deviceset>
           </devicesets>
         </library>
-        <library name="frames">
-          <packages/>
+    <library name="PickerDesign">
+      <packages/>
+      <symbols>
+        <symbol name="GENERIC-SIP-6_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="17.78" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.35" y1="17.78" y2="17.78" width="0.4064" layer="94"/>
+          <wire x1="6.35" x2="6.35" y1="17.78" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-SIP-4_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="12.7" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.35" y1="12.7" y2="12.7" width="0.4064" layer="94"/>
+          <wire x1="6.35" x2="6.35" y1="12.7" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-CAPACITOR-POL_">
+          <wire x1="-2.54" x2="2.54" y1="0" y2="0" width="0.254" layer="94"/>
+          <wire x1="0" x2="0" y1="-2.524" y2="-2.5401" width="0.1524" layer="94"/>
+          <wire x1="-3.81" x2="-3.81" y1="1.27" y2="-3.81" width="0.2" layer="116"/>
+          <wire x1="-3.81" x2="3.81" y1="-3.81" y2="-3.81" width="0.2" layer="116"/>
+          <wire x1="3.81" x2="3.81" y1="-3.81" y2="1.27" width="0.2" layer="116"/>
+          <wire x1="3.81" x2="-3.81" y1="1.27" y2="1.27" width="0.2" layer="116"/>
+          <wire x1="-2.54" x2="2.54" y1="-3.175" y2="-3.175" width="0.254" layer="94" curve="-60"/>
+          <rectangle x1="-2.253" x2="-1.364" y1="0.668" y2="0.795" layer="94"/>
+          <rectangle x1="-1.872" x2="-1.745" y1="0.287" y2="1.176" layer="94"/>
+          <text x="0.254" y="0.381" size="1.778" layer="95">&gt;NAME</text>
+          <text x="-3.556" y="-2.159" size="1.778" layer="96">&gt;VALUE</text>
+          <pin name="+" x="0" y="2.54" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R270"/>
+          <pin name="-" x="0" y="-5.08" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R90"/>
+        </symbol>
+        <symbol name="GENERIC-SIP-2_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="7.62" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.35" y1="7.62" y2="7.62" width="0.4064" layer="94"/>
+          <wire x1="6.35" x2="6.35" y1="7.62" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-SIP-14_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="33.02" y2="33.02" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="30.48" y2="30.48" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="27.94" y2="27.94" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="35.56" y2="35.56" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="38.1" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.35" y1="38.1" y2="38.1" width="0.4064" layer="94"/>
+          <wire x1="6.35" x2="6.35" y1="38.1" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="11" x="10.16" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="10" x="10.16" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="13" x="10.16" y="33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="12" x="10.16" y="30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="14" x="10.16" y="35.56" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-DRILLED-PAD_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="5.08" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.35" y1="5.08" y2="5.08" width="0.4064" layer="94"/>
+          <wire x1="6.35" x2="6.35" y1="5.08" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-INDUCTOR_">
+          <wire x1="-2.54" x2="-1.27" y1="5.08" y2="3.81" width="0.254" layer="94" curve="-90"/>
+          <wire x1="-2.54" x2="-1.27" y1="2.54" y2="3.81" width="0.254" layer="94" curve="90"/>
+          <wire x1="-2.54" x2="-1.27" y1="2.54" y2="1.27" width="0.254" layer="94" curve="-90"/>
+          <wire x1="-2.54" x2="-1.27" y1="0" y2="1.27" width="0.254" layer="94" curve="90"/>
+          <wire x1="-2.54" x2="-1.27" y1="0" y2="-1.27" width="0.254" layer="94" curve="-90"/>
+          <wire x1="-2.54" x2="-1.27" y1="-2.54" y2="-1.27" width="0.254" layer="94" curve="90"/>
+          <wire x1="-2.54" x2="-1.27" y1="-2.54" y2="-3.81" width="0.254" layer="94" curve="-90"/>
+          <wire x1="-2.54" x2="-1.27" y1="-5.08" y2="-3.81" width="0.254" layer="94" curve="90"/>
+          <wire x1="-4.445" x2="-4.445" y1="6.35" y2="-6.35" width="0.2" layer="116"/>
+          <wire x1="-4.445" x2="0" y1="-6.35" y2="-6.35" width="0.2" layer="116"/>
+          <wire x1="0" x2="0" y1="-6.35" y2="6.35" width="0.2" layer="116"/>
+          <wire x1="0" x2="-4.445" y1="6.35" y2="6.35" width="0.2" layer="116"/>
+          <text x="-3.81" y="-5.08" size="1.778" layer="95">&gt;NAME</text>
+          <text x="1.27" y="-5.08" size="1.778" layer="96">&gt;VALUE</text>
+          <pin name="1" x="-2.54" y="7.62" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R270"/>
+          <pin name="2" x="-2.54" y="-7.62" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R90"/>
+        </symbol>
+        <symbol name="GENERIC-SIP-13_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="33.02" y2="33.02" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="30.48" y2="30.48" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="27.94" y2="27.94" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="35.56" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.35" y1="35.56" y2="35.56" width="0.4064" layer="94"/>
+          <wire x1="6.35" x2="6.35" y1="35.56" y2="0.254" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="7.112" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="11" x="10.16" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="10" x="10.16" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="13" x="10.16" y="33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="12" x="10.16" y="30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-SIP-11_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="27.94" y2="27.94" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="30.48" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.604" y1="30.48" y2="30.48" width="0.4064" layer="94"/>
+          <wire x1="6.604" x2="6.604" y1="30.48" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="7.112" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="11" x="10.16" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="10" x="10.16" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-SIP-5_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="15.24" width="0.4064" layer="94"/>
+          <wire x1="0" x2="0.254" y1="15.24" y2="14.986" width="0.4064" layer="94"/>
+          <wire x1="0.254" x2="6.35" y1="14.986" y2="14.986" width="0.4064" layer="94"/>
+          <wire x1="6.35" x2="6.35" y1="14.986" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-SIP-8_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="22.86" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.35" y1="22.86" y2="22.86" width="0.4064" layer="94"/>
+          <wire x1="6.35" x2="6.35" y1="22.86" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-CAPACITOR-NP_">
+          <wire x1="-2.54" x2="2.54" y1="0" y2="0" width="0.254" layer="94"/>
+          <wire x1="-2.54" x2="2.54" y1="-2.54" y2="-2.54" width="0.254" layer="94"/>
+          <wire x1="-3.175" x2="-3.175" y1="1.27" y2="-3.81" width="0.2" layer="116"/>
+          <wire x1="-3.175" x2="3.175" y1="-3.81" y2="-3.81" width="0.2" layer="116"/>
+          <wire x1="3.175" x2="3.175" y1="-3.81" y2="1.27" width="0.2" layer="116"/>
+          <wire x1="3.175" x2="-3.175" y1="1.27" y2="1.27" width="0.2" layer="116"/>
+          <text x="0.508" y="0.381" size="1.778" layer="95">&gt;NAME</text>
+          <text x="-3.556" y="-2.159" size="1.778" layer="96">&gt;VALUE</text>
+          <pin name="1" x="0" y="2.54" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R270"/>
+          <pin name="2" x="0" y="-5.08" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R90"/>
+        </symbol>
+        <symbol name="GENERIC-DIODE-SCHOTTKY_">
+          <wire x1="-1.27" x2="1.27" y1="-1.27" y2="0" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="-1.27" y1="0" y2="1.27" width="0.254" layer="94"/>
+          <wire x1="1.905" x2="1.27" y1="1.27" y2="1.27" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="1.27" y1="1.27" y2="0" width="0.254" layer="94"/>
+          <wire x1="-1.27" x2="-1.27" y1="1.27" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="1.27" y1="0" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="1.905" x2="1.905" y1="1.27" y2="1.016" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="0.635" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="0.635" x2="0.635" y1="-1.016" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="-2.54" x2="-2.54" y1="2.54" y2="-2.54" width="0.2" layer="116"/>
+          <wire x1="-2.54" x2="2.54" y1="-2.54" y2="-2.54" width="0.2" layer="116"/>
+          <wire x1="2.54" x2="2.54" y1="-2.54" y2="2.54" width="0.2" layer="116"/>
+          <wire x1="2.54" x2="-2.54" y1="2.54" y2="2.54" width="0.2" layer="116"/>
+          <text x="-3.556" y="2.159" size="1.778" layer="95">&gt;NAME</text>
+          <text x="-3.556" y="-3.683" size="1.778" layer="96">&gt;VALUE</text>
+          <pin name="A" x="-3.81" y="0" visible="off" length="short" direction="pas" function="none"/>
+          <pin name="C" x="3.81" y="0" visible="off" length="short" direction="pas" function="none" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-RESONATOR_">
+          <wire x1="-0.635" x2="0.635" y1="3.81" y2="3.81" width="0.254" layer="94"/>
+          <wire x1="0.635" x2="0.635" y1="3.81" y2="1.27" width="0.254" layer="94"/>
+          <wire x1="0.635" x2="-0.635" y1="1.27" y2="1.27" width="0.254" layer="94"/>
+          <wire x1="-0.635" x2="-0.635" y1="1.27" y2="3.81" width="0.254" layer="94"/>
+          <wire x1="-1.27" x2="-1.27" y1="3.81" y2="2.54" width="0.254" layer="94"/>
+          <wire x1="-1.27" x2="-1.27" y1="2.54" y2="1.27" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="1.27" y1="3.81" y2="2.54" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="1.27" y1="2.54" y2="1.27" width="0.254" layer="94"/>
+          <wire x1="1.905" x2="2.54" y1="0" y2="0" width="0.254" layer="94"/>
+          <wire x1="2.54" x2="3.175" y1="0" y2="0" width="0.254" layer="94"/>
+          <wire x1="1.905" x2="2.54" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="2.54" x2="3.175" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="-3.175" x2="-2.54" y1="0" y2="0" width="0.254" layer="94"/>
+          <wire x1="-2.54" x2="-1.905" y1="0" y2="0" width="0.254" layer="94"/>
+          <wire x1="-1.905" x2="-2.54" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="-2.54" x2="-3.175" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="-2.54" x2="-2.54" y1="-1.27" y2="-2.54" width="0.254" layer="94"/>
+          <wire x1="-2.54" x2="2.54" y1="-2.54" y2="-2.54" width="0.254" layer="94"/>
+          <wire x1="2.54" x2="2.54" y1="-2.54" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="2.54" x2="2.54" y1="0" y2="2.54" width="0.254" layer="94"/>
+          <wire x1="-2.54" x2="-2.54" y1="0" y2="2.54" width="0.254" layer="94"/>
+          <wire x1="-2.54" x2="-1.27" y1="2.54" y2="2.54" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="2.54" y1="2.54" y2="2.54" width="0.254" layer="94"/>
+          <wire x1="-3.81" x2="-3.81" y1="5.08" y2="-3.81" width="0.2" layer="116"/>
+          <wire x1="-3.81" x2="3.81" y1="-3.81" y2="-3.81" width="0.2" layer="116"/>
+          <wire x1="3.81" x2="3.81" y1="-3.81" y2="5.08" width="0.2" layer="116"/>
+          <wire x1="3.81" x2="-3.81" y1="5.08" y2="5.08" width="0.2" layer="116"/>
+          <text x="2.032" y="4.572" size="1.778" layer="95">&gt;NAME</text>
+          <text x="1.016" y="-5.588" size="1.778" layer="96">&gt;VALUE</text>
+          <pin name="GND" x="0" y="-5.08" visible="off" length="short" direction="pwr" function="none" rot="R90"/>
+          <pin name="OSC2" x="5.08" y="2.54" visible="off" length="short" function="none" rot="R180"/>
+          <pin name="OSC1" x="-5.08" y="2.54" visible="off" length="short" function="none"/>
+        </symbol>
+        <symbol name="GENERIC-DIODE_">
+          <wire x1="-1.27" x2="1.27" y1="-1.27" y2="0" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="-1.27" y1="0" y2="1.27" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="1.27" y1="1.27" y2="0" width="0.254" layer="94"/>
+          <wire x1="-1.27" x2="-1.27" y1="1.27" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="1.27" y1="0" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="-2.54" x2="-2.54" y1="2.54" y2="-2.54" width="0.2" layer="116"/>
+          <wire x1="-2.54" x2="2.54" y1="-2.54" y2="-2.54" width="0.2" layer="116"/>
+          <wire x1="2.54" x2="2.54" y1="-2.54" y2="2.54" width="0.2" layer="116"/>
+          <wire x1="2.54" x2="-1.905" y1="2.54" y2="2.54" width="0.2" layer="116"/>
+          <text x="-4.318" y="2.032" size="1.778" layer="95">&gt;NAME</text>
+          <text x="-4.318" y="-3.556" size="1.778" layer="96">&gt;VALUE</text>
+          <pin name="A" x="-3.81" y="0" visible="off" length="short" direction="pas" function="none"/>
+          <pin name="C" x="3.81" y="0" visible="off" length="short" direction="pas" function="none" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-SIP-7_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="20.32" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.35" y1="20.32" y2="20.32" width="0.4064" layer="94"/>
+          <wire x1="6.35" x2="6.35" y1="20.32" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-SINGLE-PIN_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="5.08" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.35" y1="5.08" y2="5.08" width="0.4064" layer="94"/>
+          <wire x1="6.35" x2="6.35" y1="5.08" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="6.604" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-SIP-50_">
+          <wire x1="1.27" x2="-5.08" y1="-53.34" y2="-53.34" width="0.4064" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-45.72" y2="-45.72" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-48.26" y2="-48.26" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-50.8" y2="-50.8" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-40.64" y2="-40.64" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-43.18" y2="-43.18" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-38.1" y2="-38.1" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-35.56" y2="-35.56" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-33.02" y2="-33.02" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-30.48" y2="-30.48" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-27.94" y2="-27.94" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-20.32" y2="-20.32" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-22.86" y2="-22.86" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-25.4" y2="-25.4" width="0.6096" layer="94"/>
+          <wire x1="-5.08" x2="-5.08" y1="76.2" y2="-53.34" width="0.4064" layer="94"/>
+          <wire x1="-5.08" x2="1.27" y1="76.2" y2="76.2" width="0.4064" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-15.24" y2="-15.24" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-17.78" y2="-17.78" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-12.7" y2="-12.7" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-10.16" y2="-10.16" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-7.62" y2="-7.62" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-5.08" y2="-5.08" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="-2.54" y2="-2.54" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="0" y2="0" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="30.48" y2="30.48" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="27.94" y2="27.94" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="35.56" y2="35.56" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="33.02" y2="33.02" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="38.1" y2="38.1" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="40.64" y2="40.64" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="43.18" y2="43.18" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="45.72" y2="45.72" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="48.26" y2="48.26" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="50.8" y2="50.8" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="53.34" y2="53.34" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="55.88" y2="55.88" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="58.42" y2="58.42" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="60.96" y2="60.96" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="63.5" y2="63.5" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="66.04" y2="66.04" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="68.58" y2="68.58" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="71.12" y2="71.12" width="0.6096" layer="94"/>
+          <wire x1="-1.27" x2="0" y1="73.66" y2="73.66" width="0.6096" layer="94"/>
+          <wire x1="1.27" x2="1.27" y1="-53.34" y2="76.2" width="0.4064" layer="94"/>
+          <text x="-5.08" y="-55.88" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="2.032" y="-53.34" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="42" x="5.08" y="53.34" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="22" x="5.08" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="43" x="5.08" y="55.88" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="49" x="5.08" y="71.12" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="24" x="5.08" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="25" x="5.08" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="26" x="5.08" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="27" x="5.08" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="20" x="5.08" y="-2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="21" x="5.08" y="0" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="48" x="5.08" y="68.58" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="23" x="5.08" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="46" x="5.08" y="63.5" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="47" x="5.08" y="66.04" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="44" x="5.08" y="58.42" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="45" x="5.08" y="60.96" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="28" x="5.08" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="29" x="5.08" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="40" x="5.08" y="48.26" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="41" x="5.08" y="50.8" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="1" x="5.08" y="-50.8" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="3" x="5.08" y="-45.72" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="5.08" y="-48.26" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="5" x="5.08" y="-40.64" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="4" x="5.08" y="-43.18" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="7" x="5.08" y="-35.56" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="6" x="5.08" y="-38.1" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="9" x="5.08" y="-30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="8" x="5.08" y="-33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="39" x="5.08" y="45.72" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="38" x="5.08" y="43.18" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="11" x="5.08" y="-25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="10" x="5.08" y="-27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="13" x="5.08" y="-20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="12" x="5.08" y="-22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="15" x="5.08" y="-15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="14" x="5.08" y="-17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="17" x="5.08" y="-10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="16" x="5.08" y="-12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="19" x="5.08" y="-5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="18" x="5.08" y="-7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="31" x="5.08" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="30" x="5.08" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="37" x="5.08" y="40.64" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="36" x="5.08" y="38.1" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="35" x="5.08" y="35.56" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="34" x="5.08" y="33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="33" x="5.08" y="30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="32" x="5.08" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="50" x="5.08" y="73.66" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-SIP-3_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="10.16" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.35" y1="10.16" y2="10.16" width="0.4064" layer="94"/>
+          <wire x1="6.35" x2="6.35" y1="10.16" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-PUSHBUTTON-SHIELD-GND_">
+          <wire x1="1.905" x2="2.54" y1="0" y2="0" width="0.254" layer="94"/>
+          <wire x1="1.905" x2="1.905" y1="4.445" y2="3.175" width="0.254" layer="94"/>
+          <wire x1="-1.905" x2="-1.905" y1="4.445" y2="3.175" width="0.254" layer="94"/>
+          <wire x1="1.905" x2="0" y1="4.445" y2="4.445" width="0.254" layer="94"/>
+          <wire x1="0" x2="-1.905" y1="4.445" y2="4.445" width="0.254" layer="94"/>
+          <wire x1="0" x2="0" y1="2.54" y2="1.905" width="0.1524" layer="94"/>
+          <wire x1="0" x2="0" y1="1.27" y2="0.635" width="0.1524" layer="94"/>
+          <wire x1="0" x2="0" y1="4.445" y2="3.175" width="0.1524" layer="94"/>
+          <wire x1="2.54" x2="2.54" y1="-2.54" y2="0" width="0.1524" layer="94"/>
+          <wire x1="-2.54" x2="-2.54" y1="-2.54" y2="0" width="0.1524" layer="94"/>
+          <wire x1="-2.54" x2="1.905" y1="0" y2="1.27" width="0.254" layer="94"/>
+          <text x="2.54" y="2.54" size="1.778" layer="95">&gt;NAME</text>
+          <text x="0.508" y="-5.08" size="1.778" layer="96">&gt;VALUE</text>
+          <circle x="-2.54" y="0" radius="0.127" layer="94" width="0.4064"/>
+          <circle x="2.54" y="0" radius="0.127" layer="94" width="0.4064"/>
+          <pin name="1" x="-5.08" y="0" visible="pad" length="short" direction="pas" function="none" swaplevel="2"/>
+          <pin name="3" x="5.08" y="-2.54" visible="pad" length="short" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="-5.08" y="-2.54" visible="pad" length="short" direction="pas" function="none" swaplevel="2"/>
+          <pin name="5" x="0" y="-5.08" visible="off" length="short" direction="pwr" function="none" rot="R90"/>
+          <pin name="4" x="5.08" y="0" visible="pad" length="short" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-DIODE-ZENER_">
+          <wire x1="-1.27" x2="1.27" y1="-1.27" y2="0" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="-1.27" y1="0" y2="1.27" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="1.27" y1="1.27" y2="0" width="0.254" layer="94"/>
+          <wire x1="-1.27" x2="-1.27" y1="1.27" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="1.27" y1="0" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="1.778" y1="1.27" y2="1.27" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="0.762" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="-2.54" x2="-2.54" y1="2.54" y2="-2.54" width="0.2" layer="116"/>
+          <wire x1="-2.54" x2="2.54" y1="-2.54" y2="-2.54" width="0.2" layer="116"/>
+          <wire x1="2.54" x2="2.54" y1="-2.54" y2="2.54" width="0.2" layer="116"/>
+          <wire x1="2.54" x2="-2.54" y1="2.54" y2="2.54" width="0.2" layer="116"/>
+          <text x="-3.556" y="2.0066" size="1.778" layer="95">&gt;NAME</text>
+          <text x="-3.556" y="-3.8354" size="1.778" layer="96">&gt;VALUE</text>
+          <pin name="A" x="-3.81" y="0" visible="off" length="short" direction="pas" function="none"/>
+          <pin name="C" x="3.81" y="0" visible="off" length="short" direction="pas" function="none" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-ADJUSTABLE-VOLTAGE-REGULATOR_">
+          <wire x1="-10.16" x2="10.16" y1="10.16" y2="10.16" width="0.4064" layer="94"/>
+          <wire x1="10.16" x2="10.16" y1="10.16" y2="-10.16" width="0.4064" layer="94"/>
+          <wire x1="10.16" x2="-10.16" y1="-10.16" y2="-10.16" width="0.4064" layer="94"/>
+          <wire x1="-10.16" x2="-10.16" y1="-10.16" y2="10.16" width="0.4064" layer="94"/>
+          <text x="-10.16" y="11.43" size="1.778" layer="95">&gt;NAME</text>
+          <text x="-10.16" y="-12.7" size="1.778" layer="96">&gt;VALUE</text>
+          <pin name="FEEDB" x="12.7" y="2.54" length="short" direction="out" function="none" rot="R180"/>
+          <pin name="ERROR" x="12.7" y="-7.62" length="short" direction="out" function="none" rot="R180"/>
+          <pin name="SHDN" x="-12.7" y="-2.54" length="short" direction="in" function="none"/>
+          <pin name="GND" x="-12.7" y="-7.62" length="short" direction="pwr" function="none"/>
+          <pin name="SENSE" x="-12.7" y="2.54" length="short" direction="in" function="none"/>
+          <pin name="INPUT" x="12.7" y="7.62" length="short" direction="pas" function="none" rot="R180"/>
+          <pin name="VTAB" x="12.7" y="-2.54" length="short" direction="in" function="none" rot="R180"/>
+          <pin name="OUT" x="-12.7" y="7.62" length="short" direction="out" function="none"/>
+        </symbol>
+        <symbol name="GENERIC-SIP-15_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="33.02" y2="33.02" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="30.48" y2="30.48" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="27.94" y2="27.94" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="38.1" y2="38.1" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="35.56" y2="35.56" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="40.64" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.604" y1="40.64" y2="40.64" width="0.4064" layer="94"/>
+          <wire x1="6.604" x2="6.604" y1="40.64" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="7.366" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="11" x="10.16" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="10" x="10.16" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="13" x="10.16" y="33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="12" x="10.16" y="30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="15" x="10.16" y="38.1" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="14" x="10.16" y="35.56" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-USB-5PIN-CONN_">
+          <wire x1="-10.2" x2="-10.16" y1="7.62" y2="7.62" width="0.254" layer="94"/>
+          <wire x1="-10.16" x2="7.62" y1="7.62" y2="7.62" width="0.254" layer="94"/>
+          <wire x1="7.62" x2="7.62" y1="7.62" y2="-7.62" width="0.254" layer="94"/>
+          <wire x1="-10.16" x2="-10.16" y1="7.62" y2="-7.62" width="0.254" layer="94"/>
+          <wire x1="-10.16" x2="7.62" y1="-7.62" y2="-7.62" width="0.254" layer="94"/>
+          <text x="-10.16" y="8.636" size="1.27" layer="95">&gt;NAME</text>
+          <text x="-10.16" y="-10.16" size="1.27" layer="96">&gt;VALUE</text>
+          <text x="-9.144" y="-5.08" size="1.778" layer="94">pins
+     viewed
+     from
+     tails</text>
+          <pin name="VBUS" x="10.16" y="5.08" visible="pin" length="short" direction="pwr" function="none" rot="R180"/>
+          <pin name="D-" x="10.16" y="2.54" visible="pin" length="short" function="none" rot="R180"/>
+          <pin name="D+" x="10.16" y="0" visible="pin" length="short" function="none" rot="R180"/>
+          <pin name="GND" x="10.16" y="-5.08" visible="pin" length="short" direction="pwr" function="none" rot="R180"/>
+          <pin name="ID" x="10.16" y="-2.54" visible="pin" length="short" function="none" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-SIP-10_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="27.94" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.35" y1="27.94" y2="27.94" width="0.4064" layer="94"/>
+          <wire x1="6.35" x2="6.35" y1="27.94" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="10" x="10.16" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-RESISTOR_">
+          <wire x1="-2.54" x2="-2.159" y1="0" y2="1.016" width="0.2032" layer="94"/>
+          <wire x1="-2.159" x2="-1.524" y1="1.016" y2="-1.016" width="0.2032" layer="94"/>
+          <wire x1="-1.524" x2="-0.889" y1="-1.016" y2="1.016" width="0.2032" layer="94"/>
+          <wire x1="-0.889" x2="-0.254" y1="1.016" y2="-1.016" width="0.2032" layer="94"/>
+          <wire x1="-0.254" x2="0.381" y1="-1.016" y2="1.016" width="0.2032" layer="94"/>
+          <wire x1="0.381" x2="1.016" y1="1.016" y2="-1.016" width="0.2032" layer="94"/>
+          <wire x1="1.016" x2="1.651" y1="-1.016" y2="1.016" width="0.2032" layer="94"/>
+          <wire x1="1.651" x2="2.286" y1="1.016" y2="-1.016" width="0.2032" layer="94"/>
+          <wire x1="2.286" x2="2.54" y1="-1.016" y2="0" width="0.2032" layer="94"/>
+          <wire x1="-3.81" x2="-3.81" y1="2.54" y2="-2.54" width="0.2" layer="116"/>
+          <wire x1="-3.81" x2="3.81" y1="-2.54" y2="-2.54" width="0.2" layer="116"/>
+          <wire x1="3.81" x2="3.81" y1="-2.54" y2="2.54" width="0.2" layer="116"/>
+          <wire x1="3.81" x2="-3.81" y1="2.54" y2="2.54" width="0.2" layer="116"/>
+          <text x="-3.81" y="1.4986" size="1.778" layer="95">&gt;NAME</text>
+          <text x="-3.81" y="-3.302" size="1.778" layer="96">&gt;VALUE</text>
+          <pin name="1" x="-5.08" y="0" visible="off" length="short" direction="pas" function="none" swaplevel="1"/>
+          <pin name="2" x="5.08" y="0" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-SIP-16_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="33.02" y2="33.02" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="30.48" y2="30.48" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="27.94" y2="27.94" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="38.1" y2="38.1" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="35.56" y2="35.56" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="40.64" y2="40.64" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="43.18" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.604" y1="43.18" y2="43.18" width="0.4064" layer="94"/>
+          <wire x1="6.604" x2="6.604" y1="43.18" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="7.366" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="11" x="10.16" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="10" x="10.16" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="13" x="10.16" y="33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="12" x="10.16" y="30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="15" x="10.16" y="38.1" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="14" x="10.16" y="35.56" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="16" x="10.16" y="40.64" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-SIP-12_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="30.48" y2="30.48" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="27.94" y2="27.94" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="33.02" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.35" y1="33.02" y2="33.02" width="0.4064" layer="94"/>
+          <wire x1="6.35" x2="6.35" y1="33.02" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="11" x="10.16" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="10" x="10.16" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="12" x="10.16" y="30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-DIODE-LED_">
+          <wire x1="0" x2="2.54" y1="1.27" y2="0" width="0.254" layer="94"/>
+          <wire x1="2.54" x2="0" y1="0" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="2.54" x2="2.54" y1="1.27" y2="0" width="0.254" layer="94"/>
+          <wire x1="2.54" x2="2.54" y1="0" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="0" x2="0" y1="1.27" y2="-1.27" width="0.254" layer="94"/>
+          <wire x1="0" x2="1.27" y1="-1.905" y2="-3.175" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="1.27" y1="-2.54" y2="-3.175" width="0.254" layer="94"/>
+          <wire x1="0.635" x2="1.27" y1="-3.175" y2="-3.175" width="0.254" layer="94"/>
+          <wire x1="1.27" x2="2.54" y1="-1.905" y2="-3.175" width="0.254" layer="94"/>
+          <wire x1="2.54" x2="2.54" y1="-2.54" y2="-3.175" width="0.254" layer="94"/>
+          <wire x1="2.54" x2="1.905" y1="-3.175" y2="-3.175" width="0.254" layer="94"/>
+          <wire x1="-1.27" x2="-1.27" y1="2.54" y2="-4.445" width="0.2" layer="116"/>
+          <wire x1="-1.27" x2="3.81" y1="-4.445" y2="-4.445" width="0.2" layer="116"/>
+          <wire x1="3.81" x2="3.81" y1="-4.445" y2="2.54" width="0.2" layer="116"/>
+          <wire x1="3.81" x2="-1.27" y1="2.54" y2="2.54" width="0.2" layer="116"/>
+          <text x="-3.048" y="1.778" size="1.778" layer="95">&gt;NAME</text>
+          <text x="-3.302" y="-5.207" size="1.778" layer="96">&gt;VALUE</text>
+          <pin name="A" x="-2.54" y="0" visible="off" length="short" direction="pas" function="none"/>
+          <pin name="C" x="5.08" y="0" visible="off" length="short" direction="pas" function="none" rot="R180"/>
+        </symbol>
+        <symbol name="GENERIC-SIP-9_">
+          <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
+          <wire x1="3.81" x2="5.08" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
+          <wire x1="0" x2="0" y1="0" y2="25.4" width="0.4064" layer="94"/>
+          <wire x1="0" x2="6.604" y1="25.4" y2="25.4" width="0.4064" layer="94"/>
+          <wire x1="6.604" x2="6.604" y1="25.4" y2="0" width="0.4064" layer="94"/>
+          <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+          <text x="7.112" y="0" size="1.778" layer="95">&gt;NAME</text>
+          <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+          <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+        </symbol>
+      </symbols>
+      <devicesets>
+        <deviceset name="GENERIC-SIP-6_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-6_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SIP-4_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-4_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-CAPACITOR-NP_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-CAPACITOR-NP_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="VAL" value=""/>
+                  <attribute constant="no" name="WV" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="TOL" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SIP-2_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-2_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SIP-14_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-14_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SIP-13_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-13_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SIP-11_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-11_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SIP-5_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-5_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SIP-8_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-8_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-DIODE-SCHOTTKY_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-DIODE-SCHOTTKY_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="VREV" value=""/>
+                  <attribute constant="no" name="RECOV" value=""/>
+                  <attribute constant="no" name="VFWD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-RESONATOR_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-RESONATOR_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="TEMP" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="TOL" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="FREQ" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-DIODE_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-DIODE_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="IFWD" value=""/>
+                  <attribute constant="no" name="VBR" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="PWR" value=""/>
+                  <attribute constant="no" name="VFWD" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SIP-7_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-7_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SIP-3_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-3_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-CAPACITOR-POL_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-CAPACITOR-POL_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="VAL" value=""/>
+                  <attribute constant="no" name="WV" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="TOL" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-FERRITE-BEAD_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="2.54" y="0" symbol="GENERIC-INDUCTOR_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="IMAX" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="IMPEDANCE" value=""/>
+                  <attribute constant="no" name="DCRES" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SINGLE-PIN_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SINGLE-PIN_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="SQR-RND" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SIP-50_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-50_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-USB-5PIN-CONN_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-USB-5PIN-CONN_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-PUSHBUTTON-SHIELD-GND_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-PUSHBUTTON-SHIELD-GND_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-ADJUSTABLE-VOLTAGE-REGULATOR_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-ADJUSTABLE-VOLTAGE-REGULATOR_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SIP-15_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-15_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SIP-12_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-12_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SIP-10_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-10_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-RESISTOR_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-RESISTOR_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="PWR" value=""/>
+                  <attribute constant="no" name="VAL" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="TOL" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="DESC" value=""/>
+                  <attribute constant="no" name="SIZE" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SIP-16_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-16_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-DIODE-ZENER_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-DIODE-ZENER_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="PWR" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="VZENER" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="TOL" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="IZMAX" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-DIODE-LED_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="-2.54" y="0" symbol="GENERIC-DIODE-LED_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="VFWD" value=""/>
+                  <attribute constant="no" name="COLOR" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+        <deviceset name="GENERIC-SIP-9_">
+          <description></description>
+          <gates>
+            <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-9_"/>
+          </gates>
+          <devices>
+            <device name="">
+              <technologies>
+                <technology name="">
+                  <attribute constant="no" name="CASE" value=""/>
+                  <attribute constant="no" name="DIST1PN" value=""/>
+                  <attribute constant="no" name="URL" value=""/>
+                  <attribute constant="no" name="MPN" value=""/>
+                  <attribute constant="no" name="HEIGHT" value=""/>
+                  <attribute constant="no" name="SHROUD" value=""/>
+                  <attribute constant="no" name="MFR" value=""/>
+                  <attribute constant="no" name="DIST1" value=""/>
+                  <attribute constant="no" name="_EXTERNAL_"/>
+                  <attribute constant="no" name="VRT-RA" value=""/>
+                  <attribute constant="no" name="M-F" value=""/>
+                  <attribute constant="no" name="DESC" value=""/>
+                </technology>
+              </technologies>
+            </device>
+          </devices>
+        </deviceset>
+      </devicesets>
+</library>
+<library name="frames">
+<packages/>
           <symbols>
             <symbol name="FRAME_A_L"/>
             <symbol name="DOCFIELD">
@@ -366,6 +1855,30 @@ In this library the device names are the same as the pin names of the symbols, t
               <circle x="0" y="0" radius="0.25" layer="39" width="0.05"/>
               <smd name="A" x="1.665" y="0" dx="1.25" dy="0.8" layer="1"/>
               <smd name="C" x="-1.665" y="0" dx="1.25" dy="0.8" layer="1" rot="R180"/>
+            </package>
+            <package name="RESC2012X60HS">
+              <wire x1="-1.05" x2="-1.05" y1="-0.675" y2="0.675" width="0.0006" layer="51"/>
+              <wire x1="-1.05" x2="1.05" y1="0.675" y2="0.675" width="0.0006" layer="51"/>
+              <wire x1="1.05" x2="1.05" y1="0.675" y2="-0.675" width="0.0006" layer="51"/>
+              <wire x1="1.05" x2="-1.05" y1="-0.675" y2="-0.675" width="0.0006" layer="51"/>
+              <wire x1="-1.05" x2="-1.05" y1="-0.68" y2="0.68" width="0.12" layer="51"/>
+              <wire x1="-1.05" x2="1.05" y1="0.68" y2="0.68" width="0.12" layer="51"/>
+              <wire x1="1.05" x2="1.05" y1="0.68" y2="-0.68" width="0.12" layer="51"/>
+              <wire x1="1.05" x2="-1.05" y1="-0.68" y2="-0.68" width="0.12" layer="51"/>
+              <wire x1="1.05" x2="-1.05" y1="0.87" y2="0.87" width="0.12" layer="21"/>
+              <wire x1="1.05" x2="-1.05" y1="-0.87" y2="-0.87" width="0.12" layer="21"/>
+              <wire x1="-1.67" x2="-1.67" y1="-0.94" y2="0.94" width="0.05" layer="39"/>
+              <wire x1="-1.67" x2="1.67" y1="0.94" y2="0.94" width="0.05" layer="39"/>
+              <wire x1="1.67" x2="1.67" y1="0.94" y2="-0.94" width="0.05" layer="39"/>
+              <wire x1="1.67" x2="-1.67" y1="-0.94" y2="-0.94" width="0.05" layer="39"/>
+              <wire x1="0.35" x2="-0.35" y1="0" y2="0" width="0.05" layer="39"/>
+              <wire x1="0" x2="0" y1="0.35" y2="-0.35" width="0.05" layer="39"/>
+              <text x="0" y="0" size="0.87" layer="51">&gt;NAME</text>
+              <text x="0" y="0" size="1.2" layer="25">&gt;NAME</text>
+              <text x="0" y="0" size="1.2" layer="27">&gt;VALUE</text>
+              <circle x="0" y="0" radius="0.25" layer="39" width="0.05"/>
+              <smd name="1" x="-0.955" y="0" dx="0.92" dy="1.38" layer="1" rot="R180"/>
+              <smd name="2" x="0.955" y="0" dx="0.92" dy="1.38" layer="1"/>
             </package>
             <package name="FCI_10033526">
               <wire x1="-5.35" x2="-5.35" y1="-5.6" y2="5.6" width="0.05" layer="39"/>
@@ -796,34 +2309,6 @@ In this library the device names are the same as the pin names of the symbols, t
               <pad name="6" drill="1.1" x="12.7" y="0" diameter="1.65" rot="R80"/>
               <pad name="8" drill="1.1" x="17.78" y="0" diameter="1.65" rot="R80"/>
             </package>
-            <package name="HDRV5W63P254_5X1_1270X254H838">
-              <wire x1="-1.52" x2="-1.52" y1="-1.52" y2="1.52" width="0.05" layer="39"/>
-              <wire x1="-1.52" x2="11.68" y1="1.52" y2="1.52" width="0.05" layer="39"/>
-              <wire x1="11.68" x2="11.68" y1="1.52" y2="-1.52" width="0.05" layer="39"/>
-              <wire x1="11.68" x2="-1.52" y1="-1.52" y2="-1.52" width="0.05" layer="39"/>
-              <wire x1="0.35" x2="-0.35" y1="0" y2="0" width="0.05" layer="39"/>
-              <wire x1="0" x2="0" y1="0.35" y2="-0.35" width="0.05" layer="39"/>
-              <wire x1="-1.27" x2="-1.27" y1="0.4233" y2="1.27" width="0.00838125" layer="51"/>
-              <wire x1="-1.27" x2="-0.4233" y1="1.27" y2="1.27" width="0.00838125" layer="51"/>
-              <wire x1="-1.27" x2="-1.27" y1="-1.27" y2="0.4233" width="0.12" layer="51"/>
-              <wire x1="-1.27" x2="-0.4233" y1="0.4233" y2="1.27" width="0.12" layer="51"/>
-              <wire x1="-0.4233" x2="11.43" y1="1.27" y2="1.27" width="0.12" layer="51"/>
-              <wire x1="11.43" x2="11.43" y1="1.27" y2="-1.27" width="0.12" layer="51"/>
-              <wire x1="11.43" x2="-1.27" y1="-1.27" y2="-1.27" width="0.12" layer="51"/>
-              <wire x1="-1.27" x2="-1.27" y1="0.4233" y2="-1.27" width="0.12" layer="21"/>
-              <wire x1="-1.27" x2="11.43" y1="-1.27" y2="-1.27" width="0.12" layer="21"/>
-              <wire x1="11.43" x2="11.43" y1="-1.27" y2="1.27" width="0.12" layer="21"/>
-              <wire x1="11.43" x2="-0.4233" y1="1.27" y2="1.27" width="0.12" layer="21"/>
-              <text x="5.08" y="0" size="2" layer="51">&gt;NAME</text>
-              <text x="5.08" y="0" size="1.2" layer="25">&gt;NAME</text>
-              <text x="5.08" y="0" size="1.2" layer="27">&gt;VALUE</text>
-              <circle x="0" y="0" radius="0.25" layer="39" width="0.05"/>
-              <pad name="1" drill="1.1" x="0" y="0" diameter="1.65" shape="square"/>
-              <pad name="3" drill="1.1" x="5.08" y="0" diameter="1.65" rot="R80"/>
-              <pad name="2" drill="1.1" x="2.54" y="0" diameter="1.65" rot="R80"/>
-              <pad name="5" drill="1.1" x="10.16" y="0" diameter="1.65" rot="R80"/>
-              <pad name="4" drill="1.1" x="7.62" y="0" diameter="1.65" rot="R80"/>
-            </package>
             <package name="CAPC1608X90_HS">
               <wire x1="-0.85" x2="-0.85" y1="-0.45" y2="0.45" width="0.12" layer="51"/>
               <wire x1="-0.85" x2="0.85" y1="0.45" y2="0.45" width="0.12" layer="51"/>
@@ -1007,32 +2492,78 @@ In this library the device names are the same as the pin names of the symbols, t
               <pad name="9" drill="1.1" x="20.32" y="0" diameter="1.65" rot="R80"/>
               <pad name="8" drill="1.1" x="17.78" y="0" diameter="1.65" rot="R80"/>
             </package>
-            <package name="DIOM5436X330HS">
-              <wire x1="-2.795" x2="-2.795" y1="-1.97" y2="1.97" width="0.0033" layer="51"/>
-              <wire x1="-2.795" x2="-1.53" y1="1.97" y2="1.97" width="0.0033" layer="51"/>
-              <wire x1="-1.53" x2="2.795" y1="1.97" y2="1.97" width="0.0033" layer="51"/>
-              <wire x1="2.795" x2="2.795" y1="1.97" y2="-1.97" width="0.0033" layer="51"/>
-              <wire x1="2.795" x2="-2.795" y1="-1.97" y2="-1.97" width="0.0033" layer="51"/>
-              <wire x1="-3.56" x2="-3.56" y1="-2.22" y2="2.22" width="0.05" layer="39"/>
-              <wire x1="-3.56" x2="3.56" y1="2.22" y2="2.22" width="0.05" layer="39"/>
-              <wire x1="3.56" x2="3.56" y1="2.22" y2="-2.22" width="0.05" layer="39"/>
-              <wire x1="3.56" x2="-3.56" y1="-2.22" y2="-2.22" width="0.05" layer="39"/>
+            <package name="HDRV50W63P254_50X1_12700X254H838">
+              <wire x1="-1.52" x2="-1.52" y1="-1.52" y2="1.52" width="0.05" layer="39"/>
+              <wire x1="-1.52" x2="125.98" y1="1.52" y2="1.52" width="0.05" layer="39"/>
+              <wire x1="125.98" x2="125.98" y1="1.52" y2="-1.52" width="0.05" layer="39"/>
+              <wire x1="125.98" x2="-1.52" y1="-1.52" y2="-1.52" width="0.05" layer="39"/>
               <wire x1="0.35" x2="-0.35" y1="0" y2="0" width="0.05" layer="39"/>
               <wire x1="0" x2="0" y1="0.35" y2="-0.35" width="0.05" layer="39"/>
-              <wire x1="-2.8" x2="-2.8" y1="-1.97" y2="0.7" width="0.12" layer="51"/>
-              <wire x1="-2.8" x2="-1.53" y1="0.7" y2="1.97" width="0.12" layer="51"/>
-              <wire x1="-1.53" x2="2.8" y1="1.97" y2="1.97" width="0.12" layer="51"/>
-              <wire x1="2.8" x2="2.8" y1="1.97" y2="-1.97" width="0.12" layer="51"/>
-              <wire x1="2.8" x2="-2.8" y1="-1.97" y2="-1.97" width="0.12" layer="51"/>
-              <wire x1="2.8" x2="-3.485" y1="1.97" y2="1.97" width="0.12" layer="21"/>
-              <wire x1="-3.485" x2="-3.485" y1="1.97" y2="-1.97" width="0.12" layer="21"/>
-              <wire x1="-3.485" x2="2.8" y1="-1.97" y2="-1.97" width="0.12" layer="21"/>
-              <text x="0" y="0" size="2" layer="51">&gt;NAME</text>
-              <text x="0" y="0" size="1.2" layer="25">&gt;NAME</text>
-              <text x="0" y="0" size="1.2" layer="27">&gt;VALUE</text>
+              <wire x1="-1.27" x2="-1.27" y1="0.4233" y2="1.27" width="0.00838125" layer="51"/>
+              <wire x1="-1.27" x2="-0.4233" y1="1.27" y2="1.27" width="0.00838125" layer="51"/>
+              <wire x1="-1.27" x2="-1.27" y1="-1.27" y2="0.4233" width="0.12" layer="51"/>
+              <wire x1="-1.27" x2="-0.4233" y1="0.4233" y2="1.27" width="0.12" layer="51"/>
+              <wire x1="-0.4233" x2="125.73" y1="1.27" y2="1.27" width="0.12" layer="51"/>
+              <wire x1="125.73" x2="125.73" y1="1.27" y2="-1.27" width="0.12" layer="51"/>
+              <wire x1="125.73" x2="-1.27" y1="-1.27" y2="-1.27" width="0.12" layer="51"/>
+              <wire x1="-1.27" x2="-1.27" y1="0.4233" y2="-1.27" width="0.12" layer="21"/>
+              <wire x1="-1.27" x2="125.73" y1="-1.27" y2="-1.27" width="0.12" layer="21"/>
+              <wire x1="125.73" x2="125.73" y1="-1.27" y2="1.27" width="0.12" layer="21"/>
+              <wire x1="125.73" x2="-0.4233" y1="1.27" y2="1.27" width="0.12" layer="21"/>
+              <text x="62.23" y="0" size="2" layer="51">&gt;NAME</text>
+              <text x="62.23" y="0" size="1.2" layer="25">&gt;NAME</text>
+              <text x="62.23" y="0" size="1.2" layer="27">&gt;VALUE</text>
               <circle x="0" y="0" radius="0.25" layer="39" width="0.05"/>
-              <smd name="A" x="2.215" y="0" dx="2.18" dy="2.13" layer="1"/>
-              <smd name="C" x="-2.215" y="0" dx="2.18" dy="2.13" layer="1" rot="R180"/>
+              <pad name="42" drill="1.1" x="104.14" y="0" diameter="1.65" rot="R80"/>
+              <pad name="43" drill="1.1" x="106.68" y="0" diameter="1.65" rot="R80"/>
+              <pad name="49" drill="1.1" x="121.92" y="0" diameter="1.65" rot="R80"/>
+              <pad name="24" drill="1.1" x="58.42" y="0" diameter="1.65" rot="R80"/>
+              <pad name="25" drill="1.1" x="60.96" y="0" diameter="1.65" rot="R80"/>
+              <pad name="26" drill="1.1" x="63.5" y="0" diameter="1.65" rot="R80"/>
+              <pad name="27" drill="1.1" x="66.04" y="0" diameter="1.65" rot="R80"/>
+              <pad name="20" drill="1.1" x="48.26" y="0" diameter="1.65" rot="R80"/>
+              <pad name="21" drill="1.1" x="50.8" y="0" diameter="1.65" rot="R80"/>
+              <pad name="22" drill="1.1" x="53.34" y="0" diameter="1.65" rot="R80"/>
+              <pad name="23" drill="1.1" x="55.88" y="0" diameter="1.65" rot="R80"/>
+              <pad name="46" drill="1.1" x="114.3" y="0" diameter="1.65" rot="R80"/>
+              <pad name="47" drill="1.1" x="116.84" y="0" diameter="1.65" rot="R80"/>
+              <pad name="44" drill="1.1" x="109.22" y="0" diameter="1.65" rot="R80"/>
+              <pad name="45" drill="1.1" x="111.76" y="0" diameter="1.65" rot="R80"/>
+              <pad name="28" drill="1.1" x="68.58" y="0" diameter="1.65" rot="R80"/>
+              <pad name="29" drill="1.1" x="71.12" y="0" diameter="1.65" rot="R80"/>
+              <pad name="40" drill="1.1" x="99.06" y="0" diameter="1.65" rot="R80"/>
+              <pad name="41" drill="1.1" x="101.6" y="0" diameter="1.65" rot="R80"/>
+              <pad name="1" drill="1.1" x="0" y="0" diameter="1.65" shape="square"/>
+              <pad name="3" drill="1.1" x="5.08" y="0" diameter="1.65" rot="R80"/>
+              <pad name="2" drill="1.1" x="2.54" y="0" diameter="1.65" rot="R80"/>
+              <pad name="5" drill="1.1" x="10.16" y="0" diameter="1.65" rot="R80"/>
+              <pad name="4" drill="1.1" x="7.62" y="0" diameter="1.65" rot="R80"/>
+              <pad name="7" drill="1.1" x="15.24" y="0" diameter="1.65" rot="R80"/>
+              <pad name="6" drill="1.1" x="12.7" y="0" diameter="1.65" rot="R80"/>
+              <pad name="9" drill="1.1" x="20.32" y="0" diameter="1.65" rot="R80"/>
+              <pad name="8" drill="1.1" x="17.78" y="0" diameter="1.65" rot="R80"/>
+              <pad name="39" drill="1.1" x="96.52" y="0" diameter="1.65" rot="R80"/>
+              <pad name="38" drill="1.1" x="93.98" y="0" diameter="1.65" rot="R80"/>
+              <pad name="14" drill="1.1" x="33.02" y="0" diameter="1.65" rot="R80"/>
+              <pad name="11" drill="1.1" x="25.4" y="0" diameter="1.65" rot="R80"/>
+              <pad name="10" drill="1.1" x="22.86" y="0" diameter="1.65" rot="R80"/>
+              <pad name="13" drill="1.1" x="30.48" y="0" diameter="1.65" rot="R80"/>
+              <pad name="12" drill="1.1" x="27.94" y="0" diameter="1.65" rot="R80"/>
+              <pad name="15" drill="1.1" x="35.56" y="0" diameter="1.65" rot="R80"/>
+              <pad name="48" drill="1.1" x="119.38" y="0" diameter="1.65" rot="R80"/>
+              <pad name="17" drill="1.1" x="40.64" y="0" diameter="1.65" rot="R80"/>
+              <pad name="16" drill="1.1" x="38.1" y="0" diameter="1.65" rot="R80"/>
+              <pad name="19" drill="1.1" x="45.72" y="0" diameter="1.65" rot="R80"/>
+              <pad name="32" drill="1.1" x="78.74" y="0" diameter="1.65" rot="R80"/>
+              <pad name="31" drill="1.1" x="76.2" y="0" diameter="1.65" rot="R80"/>
+              <pad name="30" drill="1.1" x="73.66" y="0" diameter="1.65" rot="R80"/>
+              <pad name="37" drill="1.1" x="91.44" y="0" diameter="1.65" rot="R80"/>
+              <pad name="36" drill="1.1" x="88.9" y="0" diameter="1.65" rot="R80"/>
+              <pad name="35" drill="1.1" x="86.36" y="0" diameter="1.65" rot="R80"/>
+              <pad name="34" drill="1.1" x="83.82" y="0" diameter="1.65" rot="R80"/>
+              <pad name="33" drill="1.1" x="81.28" y="0" diameter="1.65" rot="R80"/>
+              <pad name="18" drill="1.1" x="43.18" y="0" diameter="1.65" rot="R80"/>
+              <pad name="50" drill="1.1" x="124.46" y="0" diameter="1.65" rot="R80"/>
             </package>
             <package name="HDRV1W63P0_1X1_254X254H838">
               <wire x1="-1.52" x2="-1.52" y1="-1.52" y2="1.52" width="0.05" layer="39"/>
@@ -1117,7 +2648,7 @@ In this library the device names are the same as the pin names of the symbols, t
               <pad name="1" drill="0.8" x="-5" y="0" diameter="1.2" rot="R80"/>
               <pad name="2" drill="0.8" x="5" y="0" diameter="1.2" rot="R80"/>
             </package>
-            <package name="RESC1608X55HS">
+            <package name="RESC1608X55_HS">
               <wire x1="-0.85" x2="-0.85" y1="-0.45" y2="0.45" width="0.12" layer="51"/>
               <wire x1="-0.85" x2="0.85" y1="0.45" y2="0.45" width="0.12" layer="51"/>
               <wire x1="0.85" x2="0.85" y1="0.45" y2="-0.45" width="0.12" layer="51"/>
@@ -1186,78 +2717,32 @@ In this library the device names are the same as the pin names of the symbols, t
               <pad name="4" drill="1.1" x="7.62" y="0" diameter="1.65" rot="R80"/>
               <pad name="6" drill="1.1" x="12.7" y="0" diameter="1.65" rot="R80"/>
             </package>
-            <package name="HDRV50W63P254_50X1_12700X254H838">
-              <wire x1="-1.52" x2="-1.52" y1="-1.52" y2="1.52" width="0.05" layer="39"/>
-              <wire x1="-1.52" x2="125.98" y1="1.52" y2="1.52" width="0.05" layer="39"/>
-              <wire x1="125.98" x2="125.98" y1="1.52" y2="-1.52" width="0.05" layer="39"/>
-              <wire x1="125.98" x2="-1.52" y1="-1.52" y2="-1.52" width="0.05" layer="39"/>
+            <package name="DIOM5436X330HS">
+              <wire x1="-2.795" x2="-2.795" y1="-1.97" y2="1.97" width="0.0033" layer="51"/>
+              <wire x1="-2.795" x2="-1.53" y1="1.97" y2="1.97" width="0.0033" layer="51"/>
+              <wire x1="-1.53" x2="2.795" y1="1.97" y2="1.97" width="0.0033" layer="51"/>
+              <wire x1="2.795" x2="2.795" y1="1.97" y2="-1.97" width="0.0033" layer="51"/>
+              <wire x1="2.795" x2="-2.795" y1="-1.97" y2="-1.97" width="0.0033" layer="51"/>
+              <wire x1="-3.56" x2="-3.56" y1="-2.22" y2="2.22" width="0.05" layer="39"/>
+              <wire x1="-3.56" x2="3.56" y1="2.22" y2="2.22" width="0.05" layer="39"/>
+              <wire x1="3.56" x2="3.56" y1="2.22" y2="-2.22" width="0.05" layer="39"/>
+              <wire x1="3.56" x2="-3.56" y1="-2.22" y2="-2.22" width="0.05" layer="39"/>
               <wire x1="0.35" x2="-0.35" y1="0" y2="0" width="0.05" layer="39"/>
               <wire x1="0" x2="0" y1="0.35" y2="-0.35" width="0.05" layer="39"/>
-              <wire x1="-1.27" x2="-1.27" y1="0.4233" y2="1.27" width="0.00838125" layer="51"/>
-              <wire x1="-1.27" x2="-0.4233" y1="1.27" y2="1.27" width="0.00838125" layer="51"/>
-              <wire x1="-1.27" x2="-1.27" y1="-1.27" y2="0.4233" width="0.12" layer="51"/>
-              <wire x1="-1.27" x2="-0.4233" y1="0.4233" y2="1.27" width="0.12" layer="51"/>
-              <wire x1="-0.4233" x2="125.73" y1="1.27" y2="1.27" width="0.12" layer="51"/>
-              <wire x1="125.73" x2="125.73" y1="1.27" y2="-1.27" width="0.12" layer="51"/>
-              <wire x1="125.73" x2="-1.27" y1="-1.27" y2="-1.27" width="0.12" layer="51"/>
-              <wire x1="-1.27" x2="-1.27" y1="0.4233" y2="-1.27" width="0.12" layer="21"/>
-              <wire x1="-1.27" x2="125.73" y1="-1.27" y2="-1.27" width="0.12" layer="21"/>
-              <wire x1="125.73" x2="125.73" y1="-1.27" y2="1.27" width="0.12" layer="21"/>
-              <wire x1="125.73" x2="-0.4233" y1="1.27" y2="1.27" width="0.12" layer="21"/>
-              <text x="62.23" y="0" size="2" layer="51">&gt;NAME</text>
-              <text x="62.23" y="0" size="1.2" layer="25">&gt;NAME</text>
-              <text x="62.23" y="0" size="1.2" layer="27">&gt;VALUE</text>
+              <wire x1="-2.8" x2="-2.8" y1="-1.97" y2="0.7" width="0.12" layer="51"/>
+              <wire x1="-2.8" x2="-1.53" y1="0.7" y2="1.97" width="0.12" layer="51"/>
+              <wire x1="-1.53" x2="2.8" y1="1.97" y2="1.97" width="0.12" layer="51"/>
+              <wire x1="2.8" x2="2.8" y1="1.97" y2="-1.97" width="0.12" layer="51"/>
+              <wire x1="2.8" x2="-2.8" y1="-1.97" y2="-1.97" width="0.12" layer="51"/>
+              <wire x1="2.8" x2="-3.485" y1="1.97" y2="1.97" width="0.12" layer="21"/>
+              <wire x1="-3.485" x2="-3.485" y1="1.97" y2="-1.97" width="0.12" layer="21"/>
+              <wire x1="-3.485" x2="2.8" y1="-1.97" y2="-1.97" width="0.12" layer="21"/>
+              <text x="0" y="0" size="2" layer="51">&gt;NAME</text>
+              <text x="0" y="0" size="1.2" layer="25">&gt;NAME</text>
+              <text x="0" y="0" size="1.2" layer="27">&gt;VALUE</text>
               <circle x="0" y="0" radius="0.25" layer="39" width="0.05"/>
-              <pad name="30" drill="1.1" x="73.66" y="0" diameter="1.65" rot="R80"/>
-              <pad name="28" drill="1.1" x="68.58" y="0" diameter="1.65" rot="R80"/>
-              <pad name="29" drill="1.1" x="71.12" y="0" diameter="1.65" rot="R80"/>
-              <pad name="24" drill="1.1" x="58.42" y="0" diameter="1.65" rot="R80"/>
-              <pad name="25" drill="1.1" x="60.96" y="0" diameter="1.65" rot="R80"/>
-              <pad name="26" drill="1.1" x="63.5" y="0" diameter="1.65" rot="R80"/>
-              <pad name="27" drill="1.1" x="66.04" y="0" diameter="1.65" rot="R80"/>
-              <pad name="20" drill="1.1" x="48.26" y="0" diameter="1.65" rot="R80"/>
-              <pad name="21" drill="1.1" x="50.8" y="0" diameter="1.65" rot="R80"/>
-              <pad name="22" drill="1.1" x="53.34" y="0" diameter="1.65" rot="R80"/>
-              <pad name="23" drill="1.1" x="55.88" y="0" diameter="1.65" rot="R80"/>
-              <pad name="46" drill="1.1" x="114.3" y="0" diameter="1.65" rot="R80"/>
-              <pad name="47" drill="1.1" x="116.84" y="0" diameter="1.65" rot="R80"/>
-              <pad name="44" drill="1.1" x="109.22" y="0" diameter="1.65" rot="R80"/>
-              <pad name="45" drill="1.1" x="111.76" y="0" diameter="1.65" rot="R80"/>
-              <pad name="42" drill="1.1" x="104.14" y="0" diameter="1.65" rot="R80"/>
-              <pad name="43" drill="1.1" x="106.68" y="0" diameter="1.65" rot="R80"/>
-              <pad name="40" drill="1.1" x="99.06" y="0" diameter="1.65" rot="R80"/>
-              <pad name="41" drill="1.1" x="101.6" y="0" diameter="1.65" rot="R80"/>
-              <pad name="1" drill="1.1" x="0" y="0" diameter="1.65" shape="square"/>
-              <pad name="3" drill="1.1" x="5.08" y="0" diameter="1.65" rot="R80"/>
-              <pad name="2" drill="1.1" x="2.54" y="0" diameter="1.65" rot="R80"/>
-              <pad name="5" drill="1.1" x="10.16" y="0" diameter="1.65" rot="R80"/>
-              <pad name="4" drill="1.1" x="7.62" y="0" diameter="1.65" rot="R80"/>
-              <pad name="7" drill="1.1" x="15.24" y="0" diameter="1.65" rot="R80"/>
-              <pad name="6" drill="1.1" x="12.7" y="0" diameter="1.65" rot="R80"/>
-              <pad name="9" drill="1.1" x="20.32" y="0" diameter="1.65" rot="R80"/>
-              <pad name="8" drill="1.1" x="17.78" y="0" diameter="1.65" rot="R80"/>
-              <pad name="13" drill="1.1" x="30.48" y="0" diameter="1.65" rot="R80"/>
-              <pad name="12" drill="1.1" x="27.94" y="0" diameter="1.65" rot="R80"/>
-              <pad name="14" drill="1.1" x="33.02" y="0" diameter="1.65" rot="R80"/>
-              <pad name="11" drill="1.1" x="25.4" y="0" diameter="1.65" rot="R80"/>
-              <pad name="10" drill="1.1" x="22.86" y="0" diameter="1.65" rot="R80"/>
-              <pad name="39" drill="1.1" x="96.52" y="0" diameter="1.65" rot="R80"/>
-              <pad name="38" drill="1.1" x="93.98" y="0" diameter="1.65" rot="R80"/>
-              <pad name="15" drill="1.1" x="35.56" y="0" diameter="1.65" rot="R80"/>
-              <pad name="48" drill="1.1" x="119.38" y="0" diameter="1.65" rot="R80"/>
-              <pad name="17" drill="1.1" x="40.64" y="0" diameter="1.65" rot="R80"/>
-              <pad name="16" drill="1.1" x="38.1" y="0" diameter="1.65" rot="R80"/>
-              <pad name="19" drill="1.1" x="45.72" y="0" diameter="1.65" rot="R80"/>
-              <pad name="18" drill="1.1" x="43.18" y="0" diameter="1.65" rot="R80"/>
-              <pad name="31" drill="1.1" x="76.2" y="0" diameter="1.65" rot="R80"/>
-              <pad name="49" drill="1.1" x="121.92" y="0" diameter="1.65" rot="R80"/>
-              <pad name="37" drill="1.1" x="91.44" y="0" diameter="1.65" rot="R80"/>
-              <pad name="36" drill="1.1" x="88.9" y="0" diameter="1.65" rot="R80"/>
-              <pad name="35" drill="1.1" x="86.36" y="0" diameter="1.65" rot="R80"/>
-              <pad name="34" drill="1.1" x="83.82" y="0" diameter="1.65" rot="R80"/>
-              <pad name="33" drill="1.1" x="81.28" y="0" diameter="1.65" rot="R80"/>
-              <pad name="32" drill="1.1" x="78.74" y="0" diameter="1.65" rot="R80"/>
-              <pad name="50" drill="1.1" x="124.46" y="0" diameter="1.65" rot="R80"/>
+              <smd name="A" x="2.215" y="0" dx="2.18" dy="2.13" layer="1"/>
+              <smd name="C" x="-2.215" y="0" dx="2.18" dy="2.13" layer="1" rot="R180"/>
             </package>
             <package name="CAPCP1709X100_HS">
               <wire x1="-0.9" x2="-0.9" y1="0.1667" y2="0.5" width="0.001" layer="51"/>
@@ -1307,37 +2792,31 @@ In this library the device names are the same as the pin names of the symbols, t
               <smd name="1" x="-0.955" y="0" dx="0.92" dy="1.38" layer="1" rot="R180"/>
               <smd name="2" x="0.955" y="0" dx="0.92" dy="1.38" layer="1"/>
             </package>
-            <package name="HDRV9W63P254_9X1_2286X254H838">
-              <wire x1="-1.52" x2="-1.52" y1="-1.52" y2="1.52" width="0.05" layer="39"/>
-              <wire x1="-1.52" x2="21.84" y1="1.52" y2="1.52" width="0.05" layer="39"/>
-              <wire x1="21.84" x2="21.84" y1="1.52" y2="-1.52" width="0.05" layer="39"/>
-              <wire x1="21.84" x2="-1.52" y1="-1.52" y2="-1.52" width="0.05" layer="39"/>
+            <package name="MURATA_CSTCEXXMYY">
+              <wire x1="-1.6" x2="-1.6" y1="-0.2167" y2="0.2167" width="0.001" layer="51"/>
+              <wire x1="-1.7" x2="-1.7" y1="-1.1" y2="1.1" width="0.05" layer="39"/>
+              <wire x1="-1.7" x2="1.7" y1="1.1" y2="1.1" width="0.05" layer="39"/>
+              <wire x1="1.7" x2="1.7" y1="1.1" y2="-1.1" width="0.05" layer="39"/>
+              <wire x1="1.7" x2="-1.7" y1="-1.1" y2="-1.1" width="0.05" layer="39"/>
               <wire x1="0.35" x2="-0.35" y1="0" y2="0" width="0.05" layer="39"/>
               <wire x1="0" x2="0" y1="0.35" y2="-0.35" width="0.05" layer="39"/>
-              <wire x1="-1.27" x2="-1.27" y1="0.4233" y2="1.27" width="0.00838125" layer="51"/>
-              <wire x1="-1.27" x2="-0.4233" y1="1.27" y2="1.27" width="0.00838125" layer="51"/>
-              <wire x1="-1.27" x2="-1.27" y1="-1.27" y2="0.4233" width="0.12" layer="51"/>
-              <wire x1="-1.27" x2="-0.4233" y1="0.4233" y2="1.27" width="0.12" layer="51"/>
-              <wire x1="-0.4233" x2="21.59" y1="1.27" y2="1.27" width="0.12" layer="51"/>
-              <wire x1="21.59" x2="21.59" y1="1.27" y2="-1.27" width="0.12" layer="51"/>
-              <wire x1="21.59" x2="-1.27" y1="-1.27" y2="-1.27" width="0.12" layer="51"/>
-              <wire x1="-1.27" x2="-1.27" y1="0.4233" y2="-1.27" width="0.12" layer="21"/>
-              <wire x1="-1.27" x2="21.59" y1="-1.27" y2="-1.27" width="0.12" layer="21"/>
-              <wire x1="21.59" x2="21.59" y1="-1.27" y2="1.27" width="0.12" layer="21"/>
-              <wire x1="21.59" x2="-0.4233" y1="1.27" y2="1.27" width="0.12" layer="21"/>
-              <text x="10.16" y="0" size="2" layer="51">&gt;NAME</text>
-              <text x="10.16" y="0" size="1.2" layer="25">&gt;NAME</text>
-              <text x="10.16" y="0" size="1.2" layer="27">&gt;VALUE</text>
+              <wire x1="-1.66" x2="-1.66" y1="-0.71" y2="-0.2367" width="0.12" layer="21"/>
+              <wire x1="1.66" x2="1.66" y1="-0.71" y2="0.71" width="0.12" layer="21"/>
+              <wire x1="-1.66" x2="-1.66" y1="0.2367" y2="0.71" width="0.12" layer="21"/>
+              <wire x1="1.6" x2="-1.6" y1="-0.65" y2="-0.65" width="0.12" layer="51"/>
+              <wire x1="-1.6" x2="-1.6" y1="-0.65" y2="-0.2167" width="0.12" layer="51"/>
+              <wire x1="-1.6" x2="-1.1667" y1="-0.2167" y2="0" width="0.12" layer="51"/>
+              <wire x1="-1.1667" x2="-1.6" y1="0" y2="0.2167" width="0.12" layer="51"/>
+              <wire x1="-1.6" x2="-1.6" y1="0.2167" y2="0.65" width="0.12" layer="51"/>
+              <wire x1="-1.6" x2="1.6" y1="0.65" y2="0.65" width="0.12" layer="51"/>
+              <wire x1="1.6" x2="1.6" y1="0.65" y2="-0.65" width="0.12" layer="51"/>
+              <text x="0" y="0" size="1.2" layer="25">&gt;NAME</text>
+              <text x="0" y="0" size="1.2" layer="27">&gt;VALUE</text>
+              <text x="0" y="0" size="0.82" layer="51">&gt;NAME</text>
               <circle x="0" y="0" radius="0.25" layer="39" width="0.05"/>
-              <pad name="1" drill="1.1" x="0" y="0" diameter="1.65" shape="square"/>
-              <pad name="3" drill="1.1" x="5.08" y="0" diameter="1.65" rot="R80"/>
-              <pad name="2" drill="1.1" x="2.54" y="0" diameter="1.65" rot="R80"/>
-              <pad name="5" drill="1.1" x="10.16" y="0" diameter="1.65" rot="R80"/>
-              <pad name="4" drill="1.1" x="7.62" y="0" diameter="1.65" rot="R80"/>
-              <pad name="7" drill="1.1" x="15.24" y="0" diameter="1.65" rot="R80"/>
-              <pad name="6" drill="1.1" x="12.7" y="0" diameter="1.65" rot="R80"/>
-              <pad name="9" drill="1.1" x="20.32" y="0" diameter="1.65" rot="R80"/>
-              <pad name="8" drill="1.1" x="17.78" y="0" diameter="1.65" rot="R80"/>
+              <smd name="1" x="-0.95" y="0" dx="2" dy="0.7" layer="1" rot="R90"/>
+              <smd name="3" x="0.95" y="0" dx="2" dy="0.7" layer="1" rot="R90"/>
+              <smd name="2" x="0" y="0" dx="2" dy="0.5" layer="1" rot="R90"/>
             </package>
             <package name="CAPMP2014X150_HS">
               <wire x1="-1.125" x2="-1.125" y1="-0.775" y2="0.775" width="0.001" layer="51"/>
@@ -1496,7 +2975,7 @@ In this library the device names are the same as the pin names of the symbols, t
               <pad name="9" drill="1.1" x="20.32" y="0" diameter="1.65" rot="R80"/>
               <pad name="8" drill="1.1" x="17.78" y="0" diameter="1.65" rot="R80"/>
             </package>
-            <package name="RESC1608X55_HS">
+            <package name="RESC1608X55HS">
               <wire x1="-0.85" x2="-0.85" y1="-0.45" y2="0.45" width="0.12" layer="51"/>
               <wire x1="-0.85" x2="0.85" y1="0.45" y2="0.45" width="0.12" layer="51"/>
               <wire x1="0.85" x2="0.85" y1="0.45" y2="-0.45" width="0.12" layer="51"/>
@@ -1536,31 +3015,37 @@ In this library the device names are the same as the pin names of the symbols, t
               <smd name="1" x="-0.86" y="0" dx="1.2" dy="1.42" layer="1" rot="R180"/>
               <smd name="2" x="0.86" y="0" dx="1.2" dy="1.42" layer="1"/>
             </package>
-            <package name="MURATA_CSTCEXXMYY">
-              <wire x1="-1.6" x2="-1.6" y1="-0.2167" y2="0.2167" width="0.001" layer="51"/>
-              <wire x1="-1.7" x2="-1.7" y1="-1.1" y2="1.1" width="0.05" layer="39"/>
-              <wire x1="-1.7" x2="1.7" y1="1.1" y2="1.1" width="0.05" layer="39"/>
-              <wire x1="1.7" x2="1.7" y1="1.1" y2="-1.1" width="0.05" layer="39"/>
-              <wire x1="1.7" x2="-1.7" y1="-1.1" y2="-1.1" width="0.05" layer="39"/>
+            <package name="HDRV9W63P254_9X1_2286X254H838">
+              <wire x1="-1.52" x2="-1.52" y1="-1.52" y2="1.52" width="0.05" layer="39"/>
+              <wire x1="-1.52" x2="21.84" y1="1.52" y2="1.52" width="0.05" layer="39"/>
+              <wire x1="21.84" x2="21.84" y1="1.52" y2="-1.52" width="0.05" layer="39"/>
+              <wire x1="21.84" x2="-1.52" y1="-1.52" y2="-1.52" width="0.05" layer="39"/>
               <wire x1="0.35" x2="-0.35" y1="0" y2="0" width="0.05" layer="39"/>
               <wire x1="0" x2="0" y1="0.35" y2="-0.35" width="0.05" layer="39"/>
-              <wire x1="-1.66" x2="-1.66" y1="-0.71" y2="-0.2367" width="0.12" layer="21"/>
-              <wire x1="1.66" x2="1.66" y1="-0.71" y2="0.71" width="0.12" layer="21"/>
-              <wire x1="-1.66" x2="-1.66" y1="0.2367" y2="0.71" width="0.12" layer="21"/>
-              <wire x1="1.6" x2="-1.6" y1="-0.65" y2="-0.65" width="0.12" layer="51"/>
-              <wire x1="-1.6" x2="-1.6" y1="-0.65" y2="-0.2167" width="0.12" layer="51"/>
-              <wire x1="-1.6" x2="-1.1667" y1="-0.2167" y2="0" width="0.12" layer="51"/>
-              <wire x1="-1.1667" x2="-1.6" y1="0" y2="0.2167" width="0.12" layer="51"/>
-              <wire x1="-1.6" x2="-1.6" y1="0.2167" y2="0.65" width="0.12" layer="51"/>
-              <wire x1="-1.6" x2="1.6" y1="0.65" y2="0.65" width="0.12" layer="51"/>
-              <wire x1="1.6" x2="1.6" y1="0.65" y2="-0.65" width="0.12" layer="51"/>
-              <text x="0" y="0" size="1.2" layer="25">&gt;NAME</text>
-              <text x="0" y="0" size="1.2" layer="27">&gt;VALUE</text>
-              <text x="0" y="0" size="0.82" layer="51">&gt;NAME</text>
+              <wire x1="-1.27" x2="-1.27" y1="0.4233" y2="1.27" width="0.00838125" layer="51"/>
+              <wire x1="-1.27" x2="-0.4233" y1="1.27" y2="1.27" width="0.00838125" layer="51"/>
+              <wire x1="-1.27" x2="-1.27" y1="-1.27" y2="0.4233" width="0.12" layer="51"/>
+              <wire x1="-1.27" x2="-0.4233" y1="0.4233" y2="1.27" width="0.12" layer="51"/>
+              <wire x1="-0.4233" x2="21.59" y1="1.27" y2="1.27" width="0.12" layer="51"/>
+              <wire x1="21.59" x2="21.59" y1="1.27" y2="-1.27" width="0.12" layer="51"/>
+              <wire x1="21.59" x2="-1.27" y1="-1.27" y2="-1.27" width="0.12" layer="51"/>
+              <wire x1="-1.27" x2="-1.27" y1="0.4233" y2="-1.27" width="0.12" layer="21"/>
+              <wire x1="-1.27" x2="21.59" y1="-1.27" y2="-1.27" width="0.12" layer="21"/>
+              <wire x1="21.59" x2="21.59" y1="-1.27" y2="1.27" width="0.12" layer="21"/>
+              <wire x1="21.59" x2="-0.4233" y1="1.27" y2="1.27" width="0.12" layer="21"/>
+              <text x="10.16" y="0" size="2" layer="51">&gt;NAME</text>
+              <text x="10.16" y="0" size="1.2" layer="25">&gt;NAME</text>
+              <text x="10.16" y="0" size="1.2" layer="27">&gt;VALUE</text>
               <circle x="0" y="0" radius="0.25" layer="39" width="0.05"/>
-              <smd name="1" x="-0.95" y="0" dx="2" dy="0.7" layer="1" rot="R90"/>
-              <smd name="3" x="0.95" y="0" dx="2" dy="0.7" layer="1" rot="R90"/>
-              <smd name="2" x="0" y="0" dx="2" dy="0.5" layer="1" rot="R90"/>
+              <pad name="1" drill="1.1" x="0" y="0" diameter="1.65" shape="square"/>
+              <pad name="3" drill="1.1" x="5.08" y="0" diameter="1.65" rot="R80"/>
+              <pad name="2" drill="1.1" x="2.54" y="0" diameter="1.65" rot="R80"/>
+              <pad name="5" drill="1.1" x="10.16" y="0" diameter="1.65" rot="R80"/>
+              <pad name="4" drill="1.1" x="7.62" y="0" diameter="1.65" rot="R80"/>
+              <pad name="7" drill="1.1" x="15.24" y="0" diameter="1.65" rot="R80"/>
+              <pad name="6" drill="1.1" x="12.7" y="0" diameter="1.65" rot="R80"/>
+              <pad name="9" drill="1.1" x="20.32" y="0" diameter="1.65" rot="R80"/>
+              <pad name="8" drill="1.1" x="17.78" y="0" diameter="1.65" rot="R80"/>
             </package>
             <package name="SOD2512X100_HS">
               <wire x1="-0.9" x2="-0.9" y1="-0.675" y2="0.2267" width="0.001" layer="51"/>
@@ -1763,29 +3248,33 @@ In this library the device names are the same as the pin names of the symbols, t
               <smd name="6" x="0.325" y="2.165" dx="1.42" dy="0.5" layer="1" rot="R90"/>
               <smd name="8" x="-0.975" y="2.165" dx="1.42" dy="0.5" layer="1" rot="R90"/>
             </package>
-            <package name="RESC2012X60HS">
-              <wire x1="-1.05" x2="-1.05" y1="-0.675" y2="0.675" width="0.0006" layer="51"/>
-              <wire x1="-1.05" x2="1.05" y1="0.675" y2="0.675" width="0.0006" layer="51"/>
-              <wire x1="1.05" x2="1.05" y1="0.675" y2="-0.675" width="0.0006" layer="51"/>
-              <wire x1="1.05" x2="-1.05" y1="-0.675" y2="-0.675" width="0.0006" layer="51"/>
-              <wire x1="-1.05" x2="-1.05" y1="-0.68" y2="0.68" width="0.12" layer="51"/>
-              <wire x1="-1.05" x2="1.05" y1="0.68" y2="0.68" width="0.12" layer="51"/>
-              <wire x1="1.05" x2="1.05" y1="0.68" y2="-0.68" width="0.12" layer="51"/>
-              <wire x1="1.05" x2="-1.05" y1="-0.68" y2="-0.68" width="0.12" layer="51"/>
-              <wire x1="1.05" x2="-1.05" y1="0.87" y2="0.87" width="0.12" layer="21"/>
-              <wire x1="1.05" x2="-1.05" y1="-0.87" y2="-0.87" width="0.12" layer="21"/>
-              <wire x1="-1.67" x2="-1.67" y1="-0.94" y2="0.94" width="0.05" layer="39"/>
-              <wire x1="-1.67" x2="1.67" y1="0.94" y2="0.94" width="0.05" layer="39"/>
-              <wire x1="1.67" x2="1.67" y1="0.94" y2="-0.94" width="0.05" layer="39"/>
-              <wire x1="1.67" x2="-1.67" y1="-0.94" y2="-0.94" width="0.05" layer="39"/>
+            <package name="HDRV5W63P254_5X1_1270X254H838">
+              <wire x1="-1.52" x2="-1.52" y1="-1.52" y2="1.52" width="0.05" layer="39"/>
+              <wire x1="-1.52" x2="11.68" y1="1.52" y2="1.52" width="0.05" layer="39"/>
+              <wire x1="11.68" x2="11.68" y1="1.52" y2="-1.52" width="0.05" layer="39"/>
+              <wire x1="11.68" x2="-1.52" y1="-1.52" y2="-1.52" width="0.05" layer="39"/>
               <wire x1="0.35" x2="-0.35" y1="0" y2="0" width="0.05" layer="39"/>
               <wire x1="0" x2="0" y1="0.35" y2="-0.35" width="0.05" layer="39"/>
-              <text x="0" y="0" size="0.87" layer="51">&gt;NAME</text>
-              <text x="0" y="0" size="1.2" layer="25">&gt;NAME</text>
-              <text x="0" y="0" size="1.2" layer="27">&gt;VALUE</text>
+              <wire x1="-1.27" x2="-1.27" y1="0.4233" y2="1.27" width="0.00838125" layer="51"/>
+              <wire x1="-1.27" x2="-0.4233" y1="1.27" y2="1.27" width="0.00838125" layer="51"/>
+              <wire x1="-1.27" x2="-1.27" y1="-1.27" y2="0.4233" width="0.12" layer="51"/>
+              <wire x1="-1.27" x2="-0.4233" y1="0.4233" y2="1.27" width="0.12" layer="51"/>
+              <wire x1="-0.4233" x2="11.43" y1="1.27" y2="1.27" width="0.12" layer="51"/>
+              <wire x1="11.43" x2="11.43" y1="1.27" y2="-1.27" width="0.12" layer="51"/>
+              <wire x1="11.43" x2="-1.27" y1="-1.27" y2="-1.27" width="0.12" layer="51"/>
+              <wire x1="-1.27" x2="-1.27" y1="0.4233" y2="-1.27" width="0.12" layer="21"/>
+              <wire x1="-1.27" x2="11.43" y1="-1.27" y2="-1.27" width="0.12" layer="21"/>
+              <wire x1="11.43" x2="11.43" y1="-1.27" y2="1.27" width="0.12" layer="21"/>
+              <wire x1="11.43" x2="-0.4233" y1="1.27" y2="1.27" width="0.12" layer="21"/>
+              <text x="5.08" y="0" size="2" layer="51">&gt;NAME</text>
+              <text x="5.08" y="0" size="1.2" layer="25">&gt;NAME</text>
+              <text x="5.08" y="0" size="1.2" layer="27">&gt;VALUE</text>
               <circle x="0" y="0" radius="0.25" layer="39" width="0.05"/>
-              <smd name="1" x="-0.955" y="0" dx="0.92" dy="1.38" layer="1" rot="R180"/>
-              <smd name="2" x="0.955" y="0" dx="0.92" dy="1.38" layer="1"/>
+              <pad name="1" drill="1.1" x="0" y="0" diameter="1.65" shape="square"/>
+              <pad name="3" drill="1.1" x="5.08" y="0" diameter="1.65" rot="R80"/>
+              <pad name="2" drill="1.1" x="2.54" y="0" diameter="1.65" rot="R80"/>
+              <pad name="5" drill="1.1" x="10.16" y="0" diameter="1.65" rot="R80"/>
+              <pad name="4" drill="1.1" x="7.62" y="0" diameter="1.65" rot="R80"/>
             </package>
             <package name="INDC2012X110_HS">
               <wire x1="-1.1" x2="-1.1" y1="-0.7" y2="0.7" width="0.12" layer="51"/>
@@ -2027,10 +3516,10 @@ In this library the device names are the same as the pin names of the symbols, t
               <wire x1="1.27" x2="1.27" y1="-53.34" y2="76.2" width="0.4064" layer="94"/>
               <text x="-5.08" y="-55.88" size="1.778" layer="96">&gt;VALUE</text>
               <text x="2.032" y="-53.34" size="1.778" layer="95">&gt;NAME</text>
-              <pin name="30" x="5.08" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="28" x="5.08" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="42" x="5.08" y="53.34" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="22" x="5.08" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="29" x="5.08" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="43" x="5.08" y="55.88" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="23" x="5.08" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="24" x="5.08" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="25" x="5.08" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="26" x="5.08" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
@@ -2043,8 +3532,8 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="47" x="5.08" y="66.04" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="44" x="5.08" y="58.42" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="45" x="5.08" y="60.96" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="42" x="5.08" y="53.34" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="43" x="5.08" y="55.88" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="28" x="5.08" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="29" x="5.08" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="40" x="5.08" y="48.26" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="41" x="5.08" y="50.8" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="1" x="5.08" y="-50.8" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
@@ -2056,26 +3545,26 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="6" x="5.08" y="-38.1" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="9" x="5.08" y="-30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="8" x="5.08" y="-33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="13" x="5.08" y="-20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="12" x="5.08" y="-22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="11" x="5.08" y="-25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="10" x="5.08" y="-27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="39" x="5.08" y="45.72" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="38" x="5.08" y="43.18" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="11" x="5.08" y="-25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="10" x="5.08" y="-27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="13" x="5.08" y="-20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="12" x="5.08" y="-22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="15" x="5.08" y="-15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="14" x="5.08" y="-17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="17" x="5.08" y="-10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="16" x="5.08" y="-12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="19" x="5.08" y="-5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="32" x="5.08" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="18" x="5.08" y="-7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="31" x="5.08" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="23" x="5.08" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="30" x="5.08" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="37" x="5.08" y="40.64" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="36" x="5.08" y="38.1" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="35" x="5.08" y="35.56" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="34" x="5.08" y="33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="33" x="5.08" y="30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="18" x="5.08" y="-7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="32" x="5.08" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="50" x="5.08" y="73.66" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
             <symbol name="_BASE-SIP-50_">
@@ -2135,9 +3624,9 @@ In this library the device names are the same as the pin names of the symbols, t
               <wire x1="1.27" x2="1.27" y1="-53.34" y2="76.2" width="0.4064" layer="94"/>
               <text x="-5.08" y="-55.88" size="1.778" layer="96">&gt;VALUE</text>
               <text x="2.032" y="-53.34" size="1.778" layer="95">&gt;NAME</text>
-              <pin name="42" x="5.08" y="53.34" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="43" x="5.08" y="55.88" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="49" x="5.08" y="71.12" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="30" x="5.08" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="28" x="5.08" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="29" x="5.08" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="24" x="5.08" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="25" x="5.08" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="26" x="5.08" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
@@ -2145,13 +3634,13 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="20" x="5.08" y="-2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="21" x="5.08" y="0" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="48" x="5.08" y="68.58" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="23" x="5.08" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="49" x="5.08" y="71.12" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="46" x="5.08" y="63.5" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="47" x="5.08" y="66.04" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="44" x="5.08" y="58.42" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="45" x="5.08" y="60.96" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="28" x="5.08" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="29" x="5.08" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="42" x="5.08" y="53.34" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="43" x="5.08" y="55.88" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="40" x="5.08" y="48.26" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="41" x="5.08" y="50.8" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="1" x="5.08" y="-50.8" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
@@ -2163,28 +3652,47 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="6" x="5.08" y="-38.1" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="9" x="5.08" y="-30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="8" x="5.08" y="-33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="39" x="5.08" y="45.72" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="38" x="5.08" y="43.18" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="13" x="5.08" y="-20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="12" x="5.08" y="-22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="14" x="5.08" y="-17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="11" x="5.08" y="-25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="10" x="5.08" y="-27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="13" x="5.08" y="-20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="12" x="5.08" y="-22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="39" x="5.08" y="45.72" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="38" x="5.08" y="43.18" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="15" x="5.08" y="-15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="22" x="5.08" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="17" x="5.08" y="-10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="16" x="5.08" y="-12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="19" x="5.08" y="-5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="32" x="5.08" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="18" x="5.08" y="-7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="31" x="5.08" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="30" x="5.08" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="23" x="5.08" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="37" x="5.08" y="40.64" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="36" x="5.08" y="38.1" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="35" x="5.08" y="35.56" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="34" x="5.08" y="33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="33" x="5.08" y="30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="18" x="5.08" y="-7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="32" x="5.08" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="50" x="5.08" y="73.66" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+            </symbol>
+            <symbol name="UNRESOLVED-RESISTOR_">
+              <wire x1="-2.54" x2="-2.159" y1="0" y2="1.016" width="0.2032" layer="94"/>
+              <wire x1="-2.159" x2="-1.524" y1="1.016" y2="-1.016" width="0.2032" layer="94"/>
+              <wire x1="-1.524" x2="-0.889" y1="-1.016" y2="1.016" width="0.2032" layer="94"/>
+              <wire x1="-0.889" x2="-0.254" y1="1.016" y2="-1.016" width="0.2032" layer="94"/>
+              <wire x1="-0.254" x2="0.381" y1="-1.016" y2="1.016" width="0.2032" layer="94"/>
+              <wire x1="0.381" x2="1.016" y1="1.016" y2="-1.016" width="0.2032" layer="94"/>
+              <wire x1="1.016" x2="1.651" y1="-1.016" y2="1.016" width="0.2032" layer="94"/>
+              <wire x1="1.651" x2="2.286" y1="1.016" y2="-1.016" width="0.2032" layer="94"/>
+              <wire x1="2.286" x2="2.54" y1="-1.016" y2="0" width="0.2032" layer="94"/>
+              <wire x1="-3.81" x2="-3.81" y1="2.54" y2="-2.54" width="1.27" layer="114"/>
+              <wire x1="-3.81" x2="3.81" y1="-2.54" y2="-2.54" width="1.27" layer="114"/>
+              <wire x1="3.81" x2="3.81" y1="-2.54" y2="2.54" width="1.27" layer="114"/>
+              <wire x1="3.81" x2="-3.81" y1="2.54" y2="2.54" width="1.27" layer="114"/>
+              <text x="-3.81" y="1.4986" size="1.778" layer="95">&gt;NAME</text>
+              <text x="-3.81" y="-3.302" size="1.778" layer="96">&gt;VALUE</text>
+              <pin name="1" x="-5.08" y="0" visible="off" length="short" direction="pas" function="none" swaplevel="1"/>
+              <pin name="2" x="5.08" y="0" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
             <symbol name="UNRESOLVED-DIODE-SCHOTTKY_">
               <wire x1="-1.27" x2="1.27" y1="-1.27" y2="0" width="0.254" layer="94"/>
@@ -2278,9 +3786,9 @@ In this library the device names are the same as the pin names of the symbols, t
               <wire x1="3.81" x2="-3.81" y1="5.08" y2="5.08" width="0.2" layer="116"/>
               <text x="2.032" y="4.572" size="1.778" layer="95">&gt;NAME</text>
               <text x="1.016" y="-5.588" size="1.778" layer="96">&gt;VALUE</text>
-              <pin name="OSC1" x="-5.08" y="2.54" visible="off" length="short" function="none"/>
-              <pin name="OSC2" x="5.08" y="2.54" visible="off" length="short" function="none" rot="R180"/>
               <pin name="GND" x="0" y="-5.08" visible="off" length="short" direction="pwr" function="none" rot="R90"/>
+              <pin name="OSC2" x="5.08" y="2.54" visible="off" length="short" function="none" rot="R180"/>
+              <pin name="OSC1" x="-5.08" y="2.54" visible="off" length="short" function="none"/>
             </symbol>
             <symbol name="UNRESOLVED-SIP-15_">
               <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
@@ -2545,33 +4053,17 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="+" x="0" y="2.54" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R270"/>
               <pin name="-" x="0" y="-5.08" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R90"/>
             </symbol>
-            <symbol name="_BASE-SIP-10_">
+            <symbol name="UNRESOLVED-SIP-2_">
               <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
               <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
               <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
-              <wire x1="0" x2="0" y1="0" y2="27.94" width="0.4064" layer="94"/>
-              <wire x1="0" x2="6.35" y1="27.94" y2="27.94" width="0.4064" layer="94"/>
-              <wire x1="6.35" x2="6.35" y1="27.94" y2="0" width="0.4064" layer="94"/>
+              <wire x1="0" x2="0" y1="0" y2="7.62" width="0.4064" layer="94"/>
+              <wire x1="0" x2="6.35" y1="7.62" y2="7.62" width="0.4064" layer="94"/>
+              <wire x1="6.35" x2="6.35" y1="7.62" y2="0" width="0.4064" layer="94"/>
               <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
               <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
-              <pin name="10" x="10.16" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
             <symbol name="GENERIC-SIP-16_">
               <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
@@ -2745,17 +4237,33 @@ In this library the device names are the same as the pin names of the symbols, t
               <text x="6.604" y="0" size="1.778" layer="95">&gt;NAME</text>
               <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
-            <symbol name="UNRESOLVED-SIP-2_">
+            <symbol name="_BASE-SIP-10_">
               <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
               <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
               <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
-              <wire x1="0" x2="0" y1="0" y2="7.62" width="0.4064" layer="94"/>
-              <wire x1="0" x2="6.35" y1="7.62" y2="7.62" width="0.4064" layer="94"/>
-              <wire x1="6.35" x2="6.35" y1="7.62" y2="0" width="0.4064" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
+              <wire x1="0" x2="0" y1="0" y2="27.94" width="0.4064" layer="94"/>
+              <wire x1="0" x2="6.35" y1="27.94" y2="27.94" width="0.4064" layer="94"/>
+              <wire x1="6.35" x2="6.35" y1="27.94" y2="0" width="0.4064" layer="94"/>
               <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
               <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
+              <pin name="10" x="10.16" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
             <symbol name="UNRESOLVED-DIODE-ZENER_">
               <wire x1="-1.27" x2="1.27" y1="-1.27" y2="0" width="0.254" layer="94"/>
@@ -2804,45 +4312,21 @@ In this library the device names are the same as the pin names of the symbols, t
               <wire x1="3.81" x2="-3.81" y1="5.08" y2="5.08" width="1.27" layer="114"/>
               <text x="2.032" y="4.572" size="1.778" layer="95">&gt;NAME</text>
               <text x="1.016" y="-5.588" size="1.778" layer="96">&gt;VALUE</text>
-              <pin name="OSC1" x="-5.08" y="2.54" visible="off" length="short" function="none"/>
-              <pin name="OSC2" x="5.08" y="2.54" visible="off" length="short" function="none" rot="R180"/>
               <pin name="GND" x="0" y="-5.08" visible="off" length="short" direction="pwr" function="none" rot="R90"/>
+              <pin name="OSC2" x="5.08" y="2.54" visible="off" length="short" function="none" rot="R180"/>
+              <pin name="OSC1" x="-5.08" y="2.54" visible="off" length="short" function="none"/>
             </symbol>
-            <symbol name="_BASE-SIP-14_">
-              <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="33.02" y2="33.02" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="30.48" y2="30.48" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="27.94" y2="27.94" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="35.56" y2="35.56" width="0.6096" layer="94"/>
-              <wire x1="0" x2="0" y1="0" y2="38.1" width="0.4064" layer="94"/>
-              <wire x1="0" x2="6.35" y1="38.1" y2="38.1" width="0.4064" layer="94"/>
-              <wire x1="6.35" x2="6.35" y1="38.1" y2="0" width="0.4064" layer="94"/>
-              <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
-              <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
-              <pin name="11" x="10.16" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="10" x="10.16" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="13" x="10.16" y="33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="12" x="10.16" y="30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="14" x="10.16" y="35.56" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+            <symbol name="GENERIC-CAPACITOR-NP_">
+              <wire x1="-2.54" x2="2.54" y1="0" y2="0" width="0.254" layer="94"/>
+              <wire x1="-2.54" x2="2.54" y1="-2.54" y2="-2.54" width="0.254" layer="94"/>
+              <wire x1="-3.175" x2="-3.175" y1="1.27" y2="-3.81" width="0.2" layer="116"/>
+              <wire x1="-3.175" x2="3.175" y1="-3.81" y2="-3.81" width="0.2" layer="116"/>
+              <wire x1="3.175" x2="3.175" y1="-3.81" y2="1.27" width="0.2" layer="116"/>
+              <wire x1="3.175" x2="-3.175" y1="1.27" y2="1.27" width="0.2" layer="116"/>
+              <text x="0.508" y="0.381" size="1.778" layer="95">&gt;NAME</text>
+              <text x="-3.556" y="-2.159" size="1.778" layer="96">&gt;VALUE</text>
+              <pin name="1" x="0" y="2.54" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R270"/>
+              <pin name="2" x="0" y="-5.08" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R90"/>
             </symbol>
             <symbol name="GENERIC-SIP-2_">
               <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
@@ -2855,114 +4339,6 @@ In this library the device names are the same as the pin names of the symbols, t
               <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
               <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-            </symbol>
-            <symbol name="UNRESOLVED-SIP-50_">
-              <wire x1="1.27" x2="-5.08" y1="-53.34" y2="-53.34" width="0.4064" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-45.72" y2="-45.72" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-48.26" y2="-48.26" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-50.8" y2="-50.8" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-40.64" y2="-40.64" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-43.18" y2="-43.18" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-38.1" y2="-38.1" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-35.56" y2="-35.56" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-33.02" y2="-33.02" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-30.48" y2="-30.48" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-27.94" y2="-27.94" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-20.32" y2="-20.32" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-22.86" y2="-22.86" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-25.4" y2="-25.4" width="0.6096" layer="94"/>
-              <wire x1="-5.08" x2="-5.08" y1="76.2" y2="-53.34" width="0.4064" layer="94"/>
-              <wire x1="-5.08" x2="1.27" y1="76.2" y2="76.2" width="0.4064" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-15.24" y2="-15.24" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-17.78" y2="-17.78" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-12.7" y2="-12.7" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-10.16" y2="-10.16" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-7.62" y2="-7.62" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-5.08" y2="-5.08" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="-2.54" y2="-2.54" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="0" y2="0" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="30.48" y2="30.48" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="27.94" y2="27.94" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="35.56" y2="35.56" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="33.02" y2="33.02" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="38.1" y2="38.1" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="40.64" y2="40.64" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="43.18" y2="43.18" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="45.72" y2="45.72" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="48.26" y2="48.26" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="50.8" y2="50.8" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="53.34" y2="53.34" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="55.88" y2="55.88" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="58.42" y2="58.42" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="60.96" y2="60.96" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="63.5" y2="63.5" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="66.04" y2="66.04" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="68.58" y2="68.58" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="71.12" y2="71.12" width="0.6096" layer="94"/>
-              <wire x1="-1.27" x2="0" y1="73.66" y2="73.66" width="0.6096" layer="94"/>
-              <wire x1="1.27" x2="1.27" y1="-53.34" y2="76.2" width="0.4064" layer="94"/>
-              <text x="-5.08" y="-55.88" size="1.778" layer="96">&gt;VALUE</text>
-              <text x="2.032" y="-53.34" size="1.778" layer="95">&gt;NAME</text>
-              <pin name="30" x="5.08" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="28" x="5.08" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="22" x="5.08" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="29" x="5.08" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="24" x="5.08" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="25" x="5.08" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="26" x="5.08" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="27" x="5.08" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="20" x="5.08" y="-2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="21" x="5.08" y="0" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="48" x="5.08" y="68.58" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="49" x="5.08" y="71.12" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="46" x="5.08" y="63.5" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="47" x="5.08" y="66.04" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="44" x="5.08" y="58.42" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="45" x="5.08" y="60.96" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="42" x="5.08" y="53.34" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="43" x="5.08" y="55.88" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="40" x="5.08" y="48.26" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="41" x="5.08" y="50.8" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="1" x="5.08" y="-50.8" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="3" x="5.08" y="-45.72" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="2" x="5.08" y="-48.26" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="5" x="5.08" y="-40.64" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="4" x="5.08" y="-43.18" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="7" x="5.08" y="-35.56" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="6" x="5.08" y="-38.1" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="9" x="5.08" y="-30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="8" x="5.08" y="-33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="13" x="5.08" y="-20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="12" x="5.08" y="-22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="11" x="5.08" y="-25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="10" x="5.08" y="-27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="39" x="5.08" y="45.72" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="38" x="5.08" y="43.18" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="15" x="5.08" y="-15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="14" x="5.08" y="-17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="17" x="5.08" y="-10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="16" x="5.08" y="-12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="19" x="5.08" y="-5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="32" x="5.08" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="31" x="5.08" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="23" x="5.08" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="37" x="5.08" y="40.64" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="36" x="5.08" y="38.1" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="35" x="5.08" y="35.56" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="34" x="5.08" y="33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="33" x="5.08" y="30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="18" x="5.08" y="-7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="50" x="5.08" y="73.66" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
             <symbol name="RESOLVED-DIODE-SCHOTTKY_">
               <wire x1="-1.27" x2="1.27" y1="-1.27" y2="0" width="0.254" layer="94"/>
@@ -3099,39 +4475,45 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="5" x="0" y="-5.08" visible="off" length="short" direction="pwr" function="none" rot="R90"/>
               <pin name="4" x="5.08" y="0" visible="pad" length="short" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
-            <symbol name="RESOLVED-RESONATOR_">
-              <wire x1="-0.635" x2="0.635" y1="3.81" y2="3.81" width="0.254" layer="94"/>
-              <wire x1="0.635" x2="0.635" y1="3.81" y2="1.27" width="0.254" layer="94"/>
-              <wire x1="0.635" x2="-0.635" y1="1.27" y2="1.27" width="0.254" layer="94"/>
-              <wire x1="-0.635" x2="-0.635" y1="1.27" y2="3.81" width="0.254" layer="94"/>
-              <wire x1="-1.27" x2="-1.27" y1="3.81" y2="2.54" width="0.254" layer="94"/>
-              <wire x1="-1.27" x2="-1.27" y1="2.54" y2="1.27" width="0.254" layer="94"/>
-              <wire x1="1.27" x2="1.27" y1="3.81" y2="2.54" width="0.254" layer="94"/>
-              <wire x1="1.27" x2="1.27" y1="2.54" y2="1.27" width="0.254" layer="94"/>
-              <wire x1="1.905" x2="2.54" y1="0" y2="0" width="0.254" layer="94"/>
-              <wire x1="2.54" x2="3.175" y1="0" y2="0" width="0.254" layer="94"/>
-              <wire x1="1.905" x2="2.54" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
-              <wire x1="2.54" x2="3.175" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
-              <wire x1="-3.175" x2="-2.54" y1="0" y2="0" width="0.254" layer="94"/>
-              <wire x1="-2.54" x2="-1.905" y1="0" y2="0" width="0.254" layer="94"/>
-              <wire x1="-1.905" x2="-2.54" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
-              <wire x1="-2.54" x2="-3.175" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
-              <wire x1="-2.54" x2="-2.54" y1="-1.27" y2="-2.54" width="0.254" layer="94"/>
-              <wire x1="-2.54" x2="2.54" y1="-2.54" y2="-2.54" width="0.254" layer="94"/>
-              <wire x1="2.54" x2="2.54" y1="-2.54" y2="-1.27" width="0.254" layer="94"/>
-              <wire x1="2.54" x2="2.54" y1="0" y2="2.54" width="0.254" layer="94"/>
-              <wire x1="-2.54" x2="-2.54" y1="0" y2="2.54" width="0.254" layer="94"/>
-              <wire x1="-2.54" x2="-1.27" y1="2.54" y2="2.54" width="0.254" layer="94"/>
-              <wire x1="1.27" x2="2.54" y1="2.54" y2="2.54" width="0.254" layer="94"/>
-              <wire x1="-3.81" x2="-3.81" y1="5.08" y2="-3.81" width="0.2" layer="115"/>
-              <wire x1="-3.81" x2="3.81" y1="-3.81" y2="-3.81" width="0.2" layer="115"/>
-              <wire x1="3.81" x2="3.81" y1="-3.81" y2="5.08" width="0.2" layer="115"/>
-              <wire x1="3.81" x2="-3.81" y1="5.08" y2="5.08" width="0.2" layer="115"/>
-              <text x="2.032" y="4.572" size="1.778" layer="95">&gt;NAME</text>
-              <text x="1.016" y="-5.588" size="1.778" layer="96">&gt;VALUE</text>
-              <pin name="OSC1" x="-5.08" y="2.54" visible="off" length="short" function="none"/>
-              <pin name="OSC2" x="5.08" y="2.54" visible="off" length="short" function="none" rot="R180"/>
-              <pin name="GND" x="0" y="-5.08" visible="off" length="short" direction="pwr" function="none" rot="R90"/>
+            <symbol name="ATMEGA328-NO-THERMAL_">
+              <wire x1="-17.78" x2="20.32" y1="30.48" y2="30.48" width="0.254" layer="94"/>
+              <wire x1="20.32" x2="20.32" y1="30.48" y2="-33.02" width="0.254" layer="94"/>
+              <wire x1="20.32" x2="-17.78" y1="-33.02" y2="-33.02" width="0.254" layer="94"/>
+              <wire x1="-17.78" x2="-17.78" y1="-33.02" y2="30.48" width="0.254" layer="94"/>
+              <text x="-17.78" y="-35.56" size="1.778" layer="95">&gt;NAME</text>
+              <text x="-17.78" y="31.75" size="1.778" layer="96">&gt;VALUE</text>
+              <pin name="GND" x="-22.86" y="22.86" length="middle" direction="pwr" function="none"/>
+              <pin name="PC1(ADC1)" x="25.4" y="25.4" length="middle" function="none" rot="R180"/>
+              <pin name="PB0(ICP)" x="25.4" y="-17.78" length="middle" function="none" rot="R180"/>
+              <pin name="PC0(ADC0)" x="25.4" y="27.94" length="middle" function="none" rot="R180"/>
+              <pin name="PD2(INT0)" x="25.4" y="0" length="middle" function="none" rot="R180"/>
+              <pin name="PB3(MOSI/OC2)" x="25.4" y="-25.4" length="middle" function="none" rot="R180"/>
+              <pin name="AREF" x="-22.86" y="20.32" length="middle" direction="pas" function="none"/>
+              <pin name="ADC6" x="25.4" y="12.7" length="middle" function="none" rot="R180"/>
+              <pin name="PC2(ADC2)" x="25.4" y="22.86" length="middle" function="none" rot="R180"/>
+              <pin name="PC5(ADC5/SCL)" x="25.4" y="15.24" length="middle" function="none" rot="R180"/>
+              <pin name="ADC7" x="25.4" y="10.16" length="middle" function="none" rot="R180"/>
+              <pin name="PB1(OC1A)" x="25.4" y="-20.32" length="middle" function="none" rot="R180"/>
+              <pin name="VCC@1" x="-22.86" y="-7.62" length="middle" direction="pwr" function="none"/>
+              <pin name="VCC@2" x="-22.86" y="-10.16" length="middle" direction="pwr" function="none"/>
+              <pin name="PB6(XTAL1/TOSC1)" x="-22.86" y="10.16" length="middle" function="none"/>
+              <pin name="PB7(XTAL2/TOSC2)" x="-22.86" y="5.08" length="middle" function="none"/>
+              <pin name="GND@1" x="-22.86" y="-2.54" length="middle" direction="pwr" function="none"/>
+              <pin name="GND@2" x="-22.86" y="-5.08" length="middle" direction="pwr" function="none"/>
+              <pin name="PD5(T1)" x="25.4" y="-7.62" length="middle" function="none" rot="R180"/>
+              <pin name="PB4(MISO)" x="25.4" y="-27.94" length="middle" function="none" rot="R180"/>
+              <pin name="PD3(INT1)" x="25.4" y="-2.54" length="middle" function="none" rot="R180"/>
+              <pin name="PD1(TXD)" x="25.4" y="2.54" length="middle" function="none" rot="R180"/>
+              <pin name="PB5(SCK)" x="25.4" y="-30.48" length="middle" function="none" rot="R180"/>
+              <pin name="PB2(SS/OC1B)" x="25.4" y="-22.86" length="middle" function="none" rot="R180"/>
+              <pin name="AVCC" x="-22.86" y="17.78" length="middle" direction="pwr" function="none"/>
+              <pin name="PD7(AIN1)" x="25.4" y="-12.7" length="middle" function="none" rot="R180"/>
+              <pin name="PC6(/RESET)" x="-22.86" y="27.94" length="middle" function="none"/>
+              <pin name="PD6(AIN0)" x="25.4" y="-10.16" length="middle" function="none" rot="R180"/>
+              <pin name="PD4(XCK/T0)" x="25.4" y="-5.08" length="middle" function="none" rot="R180"/>
+              <pin name="PC3(ADC3)" x="25.4" y="20.32" length="middle" function="none" rot="R180"/>
+              <pin name="PC4(ADC4/SDA)" x="25.4" y="17.78" length="middle" function="none" rot="R180"/>
+              <pin name="PD0(RXD)" x="25.4" y="5.08" length="middle" function="none" rot="R180"/>
             </symbol>
             <symbol name="ADJUSTABLE-VOLTAGE-REGULATOR_">
               <wire x1="-10.16" x2="10.16" y1="10.16" y2="10.16" width="0.4064" layer="94"/>
@@ -3224,12 +4606,12 @@ In this library the device names are the same as the pin names of the symbols, t
               <wire x1="-20.32" x2="-20.32" y1="-33.02" y2="30.48" width="0.254" layer="94"/>
               <text x="-20.32" y="-35.56" size="1.778" layer="95">&gt;NAME</text>
               <text x="-20.32" y="31.75" size="1.778" layer="96">&gt;VALUE</text>
-              <pin name="PB3(MOSI/OC2)" x="22.86" y="-25.4" length="middle" function="none" rot="R180"/>
+              <pin name="GND" x="-25.4" y="22.86" length="middle" direction="pwr" function="none"/>
               <pin name="PC1(ADC1)" x="22.86" y="25.4" length="middle" function="none" rot="R180"/>
-              <pin name="PB5(SCK)" x="22.86" y="-30.48" length="middle" function="none" rot="R180"/>
+              <pin name="PB0(ICP)" x="22.86" y="-17.78" length="middle" function="none" rot="R180"/>
               <pin name="PC0(ADC0)" x="22.86" y="27.94" length="middle" function="none" rot="R180"/>
               <pin name="PD2(INT0)" x="22.86" y="0" length="middle" function="none" rot="R180"/>
-              <pin name="GND" x="-25.4" y="22.86" length="middle" direction="pwr" function="none"/>
+              <pin name="PB3(MOSI/OC2)" x="22.86" y="-25.4" length="middle" function="none" rot="R180"/>
               <pin name="AREF" x="-25.4" y="20.32" length="middle" direction="pas" function="none"/>
               <pin name="ADC6" x="22.86" y="12.7" length="middle" function="none" rot="R180"/>
               <pin name="PC2(ADC2)" x="22.86" y="22.86" length="middle" function="none" rot="R180"/>
@@ -3247,14 +4629,14 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="PB4(MISO)" x="22.86" y="-27.94" length="middle" function="none" rot="R180"/>
               <pin name="PD3(INT1)" x="22.86" y="-2.54" length="middle" function="none" rot="R180"/>
               <pin name="PD1(TXD)" x="22.86" y="2.54" length="middle" function="none" rot="R180"/>
-              <pin name="PB0(ICP)" x="22.86" y="-17.78" length="middle" function="none" rot="R180"/>
+              <pin name="PB5(SCK)" x="22.86" y="-30.48" length="middle" function="none" rot="R180"/>
               <pin name="PB2(SS/OC1B)" x="22.86" y="-22.86" length="middle" function="none" rot="R180"/>
               <pin name="AVCC" x="-25.4" y="17.78" length="middle" direction="pwr" function="none"/>
               <pin name="PD7(AIN1)" x="22.86" y="-12.7" length="middle" function="none" rot="R180"/>
               <pin name="PC6(/RESET)" x="-25.4" y="27.94" length="middle" function="none"/>
               <pin name="PD6(AIN0)" x="22.86" y="-10.16" length="middle" function="none" rot="R180"/>
-              <pin name="PC3(ADC3)" x="22.86" y="20.32" length="middle" function="none" rot="R180"/>
               <pin name="PD4(XCK/T0)" x="22.86" y="-5.08" length="middle" function="none" rot="R180"/>
+              <pin name="PC3(ADC3)" x="22.86" y="20.32" length="middle" function="none" rot="R180"/>
               <pin name="PC4(ADC4/SDA)" x="22.86" y="17.78" length="middle" function="none" rot="R180"/>
               <pin name="PD0(RXD)" x="22.86" y="5.08" length="middle" function="none" rot="R180"/>
             </symbol>
@@ -3408,20 +4790,29 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
-            <symbol name="_BASE-CAPACITOR-POL_">
-              <wire x1="-2.54" x2="2.54" y1="0" y2="0" width="0.254" layer="94"/>
-              <wire x1="0" x2="0" y1="-2.524" y2="-2.5401" width="0.1524" layer="94"/>
-              <wire x1="-3.81" x2="-3.81" y1="1.27" y2="-3.81" width="1.27" layer="114"/>
-              <wire x1="-3.81" x2="3.81" y1="-3.81" y2="-3.81" width="1.27" layer="114"/>
-              <wire x1="3.81" x2="3.81" y1="-3.81" y2="1.27" width="1.27" layer="114"/>
-              <wire x1="3.81" x2="-3.81" y1="1.27" y2="1.27" width="1.27" layer="114"/>
-              <wire x1="-2.54" x2="2.54" y1="-3.175" y2="-3.175" width="0.254" layer="94" curve="-60"/>
-              <rectangle x1="-2.253" x2="-1.364" y1="0.668" y2="0.795" layer="94"/>
-              <rectangle x1="-1.872" x2="-1.745" y1="0.287" y2="1.176" layer="94"/>
-              <text x="0.254" y="0.381" size="1.778" layer="95">&gt;NAME</text>
-              <text x="-3.556" y="-2.159" size="1.778" layer="96">&gt;VALUE</text>
-              <pin name="+" x="0" y="2.54" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R270"/>
-              <pin name="-" x="0" y="-5.08" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R90"/>
+            <symbol name="RESOLVED-SIP-8_">
+              <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
+              <wire x1="0" x2="0" y1="0" y2="22.86" width="0.4064" layer="94"/>
+              <wire x1="0" x2="6.35" y1="22.86" y2="22.86" width="0.4064" layer="94"/>
+              <wire x1="6.35" x2="6.35" y1="22.86" y2="0" width="0.4064" layer="94"/>
+              <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+              <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
+              <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
             <symbol name="_BASE-SIP-16_">
               <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
@@ -3659,57 +5050,75 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="+" x="0" y="2.54" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R270"/>
               <pin name="-" x="0" y="-5.08" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R90"/>
             </symbol>
-            <symbol name="GENERIC-CAPACITOR-NP_">
-              <wire x1="-2.54" x2="2.54" y1="0" y2="0" width="0.254" layer="94"/>
-              <wire x1="-2.54" x2="2.54" y1="-2.54" y2="-2.54" width="0.254" layer="94"/>
-              <wire x1="-3.175" x2="-3.175" y1="1.27" y2="-3.81" width="0.2" layer="116"/>
-              <wire x1="-3.175" x2="3.175" y1="-3.81" y2="-3.81" width="0.2" layer="116"/>
-              <wire x1="3.175" x2="3.175" y1="-3.81" y2="1.27" width="0.2" layer="116"/>
-              <wire x1="3.175" x2="-3.175" y1="1.27" y2="1.27" width="0.2" layer="116"/>
-              <text x="0.508" y="0.381" size="1.778" layer="95">&gt;NAME</text>
-              <text x="-3.556" y="-2.159" size="1.778" layer="96">&gt;VALUE</text>
-              <pin name="1" x="0" y="2.54" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R270"/>
-              <pin name="2" x="0" y="-5.08" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R90"/>
+            <symbol name="_BASE-SIP-14_">
+              <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="33.02" y2="33.02" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="30.48" y2="30.48" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="27.94" y2="27.94" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="35.56" y2="35.56" width="0.6096" layer="94"/>
+              <wire x1="0" x2="0" y1="0" y2="38.1" width="0.4064" layer="94"/>
+              <wire x1="0" x2="6.35" y1="38.1" y2="38.1" width="0.4064" layer="94"/>
+              <wire x1="6.35" x2="6.35" y1="38.1" y2="0" width="0.4064" layer="94"/>
+              <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+              <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
+              <pin name="11" x="10.16" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="10" x="10.16" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="13" x="10.16" y="33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="12" x="10.16" y="30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="14" x="10.16" y="35.56" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
-            <symbol name="ATMEGA328-NO-THERMAL_">
-              <wire x1="-17.78" x2="20.32" y1="30.48" y2="30.48" width="0.254" layer="94"/>
-              <wire x1="20.32" x2="20.32" y1="30.48" y2="-33.02" width="0.254" layer="94"/>
-              <wire x1="20.32" x2="-17.78" y1="-33.02" y2="-33.02" width="0.254" layer="94"/>
-              <wire x1="-17.78" x2="-17.78" y1="-33.02" y2="30.48" width="0.254" layer="94"/>
-              <text x="-17.78" y="-35.56" size="1.778" layer="95">&gt;NAME</text>
-              <text x="-17.78" y="31.75" size="1.778" layer="96">&gt;VALUE</text>
-              <pin name="PB3(MOSI/OC2)" x="25.4" y="-25.4" length="middle" function="none" rot="R180"/>
-              <pin name="PC1(ADC1)" x="25.4" y="25.4" length="middle" function="none" rot="R180"/>
-              <pin name="PB5(SCK)" x="25.4" y="-30.48" length="middle" function="none" rot="R180"/>
-              <pin name="PC0(ADC0)" x="25.4" y="27.94" length="middle" function="none" rot="R180"/>
-              <pin name="PD2(INT0)" x="25.4" y="0" length="middle" function="none" rot="R180"/>
-              <pin name="GND" x="-22.86" y="22.86" length="middle" direction="pwr" function="none"/>
-              <pin name="AREF" x="-22.86" y="20.32" length="middle" direction="pas" function="none"/>
-              <pin name="ADC6" x="25.4" y="12.7" length="middle" function="none" rot="R180"/>
-              <pin name="PC2(ADC2)" x="25.4" y="22.86" length="middle" function="none" rot="R180"/>
-              <pin name="PC5(ADC5/SCL)" x="25.4" y="15.24" length="middle" function="none" rot="R180"/>
-              <pin name="ADC7" x="25.4" y="10.16" length="middle" function="none" rot="R180"/>
-              <pin name="PB1(OC1A)" x="25.4" y="-20.32" length="middle" function="none" rot="R180"/>
-              <pin name="VCC@1" x="-22.86" y="-7.62" length="middle" direction="pwr" function="none"/>
-              <pin name="VCC@2" x="-22.86" y="-10.16" length="middle" direction="pwr" function="none"/>
-              <pin name="PB6(XTAL1/TOSC1)" x="-22.86" y="10.16" length="middle" function="none"/>
-              <pin name="PB7(XTAL2/TOSC2)" x="-22.86" y="5.08" length="middle" function="none"/>
-              <pin name="GND@1" x="-22.86" y="-2.54" length="middle" direction="pwr" function="none"/>
-              <pin name="GND@2" x="-22.86" y="-5.08" length="middle" direction="pwr" function="none"/>
-              <pin name="PD5(T1)" x="25.4" y="-7.62" length="middle" function="none" rot="R180"/>
-              <pin name="PB4(MISO)" x="25.4" y="-27.94" length="middle" function="none" rot="R180"/>
-              <pin name="PD3(INT1)" x="25.4" y="-2.54" length="middle" function="none" rot="R180"/>
-              <pin name="PD1(TXD)" x="25.4" y="2.54" length="middle" function="none" rot="R180"/>
-              <pin name="PB0(ICP)" x="25.4" y="-17.78" length="middle" function="none" rot="R180"/>
-              <pin name="PB2(SS/OC1B)" x="25.4" y="-22.86" length="middle" function="none" rot="R180"/>
-              <pin name="AVCC" x="-22.86" y="17.78" length="middle" direction="pwr" function="none"/>
-              <pin name="PD7(AIN1)" x="25.4" y="-12.7" length="middle" function="none" rot="R180"/>
-              <pin name="PC6(/RESET)" x="-22.86" y="27.94" length="middle" function="none"/>
-              <pin name="PD6(AIN0)" x="25.4" y="-10.16" length="middle" function="none" rot="R180"/>
-              <pin name="PC3(ADC3)" x="25.4" y="20.32" length="middle" function="none" rot="R180"/>
-              <pin name="PD4(XCK/T0)" x="25.4" y="-5.08" length="middle" function="none" rot="R180"/>
-              <pin name="PC4(ADC4/SDA)" x="25.4" y="17.78" length="middle" function="none" rot="R180"/>
-              <pin name="PD0(RXD)" x="25.4" y="5.08" length="middle" function="none" rot="R180"/>
+            <symbol name="RESOLVED-RESONATOR_">
+              <wire x1="-0.635" x2="0.635" y1="3.81" y2="3.81" width="0.254" layer="94"/>
+              <wire x1="0.635" x2="0.635" y1="3.81" y2="1.27" width="0.254" layer="94"/>
+              <wire x1="0.635" x2="-0.635" y1="1.27" y2="1.27" width="0.254" layer="94"/>
+              <wire x1="-0.635" x2="-0.635" y1="1.27" y2="3.81" width="0.254" layer="94"/>
+              <wire x1="-1.27" x2="-1.27" y1="3.81" y2="2.54" width="0.254" layer="94"/>
+              <wire x1="-1.27" x2="-1.27" y1="2.54" y2="1.27" width="0.254" layer="94"/>
+              <wire x1="1.27" x2="1.27" y1="3.81" y2="2.54" width="0.254" layer="94"/>
+              <wire x1="1.27" x2="1.27" y1="2.54" y2="1.27" width="0.254" layer="94"/>
+              <wire x1="1.905" x2="2.54" y1="0" y2="0" width="0.254" layer="94"/>
+              <wire x1="2.54" x2="3.175" y1="0" y2="0" width="0.254" layer="94"/>
+              <wire x1="1.905" x2="2.54" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
+              <wire x1="2.54" x2="3.175" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
+              <wire x1="-3.175" x2="-2.54" y1="0" y2="0" width="0.254" layer="94"/>
+              <wire x1="-2.54" x2="-1.905" y1="0" y2="0" width="0.254" layer="94"/>
+              <wire x1="-1.905" x2="-2.54" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
+              <wire x1="-2.54" x2="-3.175" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
+              <wire x1="-2.54" x2="-2.54" y1="-1.27" y2="-2.54" width="0.254" layer="94"/>
+              <wire x1="-2.54" x2="2.54" y1="-2.54" y2="-2.54" width="0.254" layer="94"/>
+              <wire x1="2.54" x2="2.54" y1="-2.54" y2="-1.27" width="0.254" layer="94"/>
+              <wire x1="2.54" x2="2.54" y1="0" y2="2.54" width="0.254" layer="94"/>
+              <wire x1="-2.54" x2="-2.54" y1="0" y2="2.54" width="0.254" layer="94"/>
+              <wire x1="-2.54" x2="-1.27" y1="2.54" y2="2.54" width="0.254" layer="94"/>
+              <wire x1="1.27" x2="2.54" y1="2.54" y2="2.54" width="0.254" layer="94"/>
+              <wire x1="-3.81" x2="-3.81" y1="5.08" y2="-3.81" width="0.2" layer="115"/>
+              <wire x1="-3.81" x2="3.81" y1="-3.81" y2="-3.81" width="0.2" layer="115"/>
+              <wire x1="3.81" x2="3.81" y1="-3.81" y2="5.08" width="0.2" layer="115"/>
+              <wire x1="3.81" x2="-3.81" y1="5.08" y2="5.08" width="0.2" layer="115"/>
+              <text x="2.032" y="4.572" size="1.778" layer="95">&gt;NAME</text>
+              <text x="1.016" y="-5.588" size="1.778" layer="96">&gt;VALUE</text>
+              <pin name="GND" x="0" y="-5.08" visible="off" length="short" direction="pwr" function="none" rot="R90"/>
+              <pin name="OSC2" x="5.08" y="2.54" visible="off" length="short" function="none" rot="R180"/>
+              <pin name="OSC1" x="-5.08" y="2.54" visible="off" length="short" function="none"/>
             </symbol>
             <symbol name="_BASE-SIP-13_">
               <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
@@ -3973,37 +5382,39 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
-            <symbol name="_BASE-SIP-12_">
-              <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="30.48" y2="30.48" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="27.94" y2="27.94" width="0.6096" layer="94"/>
-              <wire x1="0" x2="0" y1="0" y2="33.02" width="0.4064" layer="94"/>
-              <wire x1="0" x2="6.35" y1="33.02" y2="33.02" width="0.4064" layer="94"/>
-              <wire x1="6.35" x2="6.35" y1="33.02" y2="0" width="0.4064" layer="94"/>
-              <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
-              <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
-              <pin name="11" x="10.16" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="10" x="10.16" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="12" x="10.16" y="30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+            <symbol name="_BASE-RESONATOR_">
+              <wire x1="-0.635" x2="0.635" y1="3.81" y2="3.81" width="0.254" layer="94"/>
+              <wire x1="0.635" x2="0.635" y1="3.81" y2="1.27" width="0.254" layer="94"/>
+              <wire x1="0.635" x2="-0.635" y1="1.27" y2="1.27" width="0.254" layer="94"/>
+              <wire x1="-0.635" x2="-0.635" y1="1.27" y2="3.81" width="0.254" layer="94"/>
+              <wire x1="-1.27" x2="-1.27" y1="3.81" y2="2.54" width="0.254" layer="94"/>
+              <wire x1="-1.27" x2="-1.27" y1="2.54" y2="1.27" width="0.254" layer="94"/>
+              <wire x1="1.27" x2="1.27" y1="3.81" y2="2.54" width="0.254" layer="94"/>
+              <wire x1="1.27" x2="1.27" y1="2.54" y2="1.27" width="0.254" layer="94"/>
+              <wire x1="1.905" x2="2.54" y1="0" y2="0" width="0.254" layer="94"/>
+              <wire x1="2.54" x2="3.175" y1="0" y2="0" width="0.254" layer="94"/>
+              <wire x1="1.905" x2="2.54" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
+              <wire x1="2.54" x2="3.175" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
+              <wire x1="-3.175" x2="-2.54" y1="0" y2="0" width="0.254" layer="94"/>
+              <wire x1="-2.54" x2="-1.905" y1="0" y2="0" width="0.254" layer="94"/>
+              <wire x1="-1.905" x2="-2.54" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
+              <wire x1="-2.54" x2="-3.175" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
+              <wire x1="-2.54" x2="-2.54" y1="-1.27" y2="-2.54" width="0.254" layer="94"/>
+              <wire x1="-2.54" x2="2.54" y1="-2.54" y2="-2.54" width="0.254" layer="94"/>
+              <wire x1="2.54" x2="2.54" y1="-2.54" y2="-1.27" width="0.254" layer="94"/>
+              <wire x1="2.54" x2="2.54" y1="0" y2="2.54" width="0.254" layer="94"/>
+              <wire x1="-2.54" x2="-2.54" y1="0" y2="2.54" width="0.254" layer="94"/>
+              <wire x1="-2.54" x2="-1.27" y1="2.54" y2="2.54" width="0.254" layer="94"/>
+              <wire x1="1.27" x2="2.54" y1="2.54" y2="2.54" width="0.254" layer="94"/>
+              <wire x1="-3.81" x2="-3.81" y1="5.08" y2="-3.81" width="1.27" layer="114"/>
+              <wire x1="-3.81" x2="3.81" y1="-3.81" y2="-3.81" width="1.27" layer="114"/>
+              <wire x1="3.81" x2="3.81" y1="-3.81" y2="5.08" width="1.27" layer="114"/>
+              <wire x1="3.81" x2="-3.81" y1="5.08" y2="5.08" width="1.27" layer="114"/>
+              <text x="2.032" y="4.572" size="1.778" layer="95">&gt;NAME</text>
+              <text x="1.016" y="-5.588" size="1.778" layer="96">&gt;VALUE</text>
+              <pin name="OSC1" x="-5.08" y="2.54" visible="off" length="short" function="none"/>
+              <pin name="OSC2" x="5.08" y="2.54" visible="off" length="short" function="none" rot="R180"/>
+              <pin name="GND" x="0" y="-5.08" visible="off" length="short" direction="pwr" function="none" rot="R90"/>
             </symbol>
             <symbol name="RESOLVED-SIP-16_">
               <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
@@ -4233,6 +5644,16 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
+            <symbol name="GENERIC-BATTERY-CONN-RECEPTACLE">
+              <wire x1="-3.81" x2="3.81" y1="0" y2="0" width="0.4064" layer="94"/>
+              <wire x1="3.81" x2="3.81" y1="0" y2="7.62" width="0.4064" layer="94"/>
+              <wire x1="3.81" x2="-3.81" y1="7.62" y2="7.62" width="0.4064" layer="94"/>
+              <wire x1="-3.81" x2="-3.81" y1="7.62" y2="0" width="0.4064" layer="94"/>
+              <text x="-3.81" y="8.255" size="1.778" layer="95">&gt;NAME</text>
+              <text x="-3.81" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+              <pin name="1" x="0" y="5.08" visible="pad" length="short" direction="pas" function="none"/>
+              <pin name="2" x="0" y="2.54" visible="pad" length="short" direction="pas" function="none"/>
+            </symbol>
             <symbol name="GENERIC-SIP-9_">
               <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
               <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
@@ -4259,15 +5680,113 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
-            <symbol name="GENERIC-BATTERY-CONN-RECEPTACLE">
-              <wire x1="-3.81" x2="3.81" y1="0" y2="0" width="0.4064" layer="94"/>
-              <wire x1="3.81" x2="3.81" y1="0" y2="7.62" width="0.4064" layer="94"/>
-              <wire x1="3.81" x2="-3.81" y1="7.62" y2="7.62" width="0.4064" layer="94"/>
-              <wire x1="-3.81" x2="-3.81" y1="7.62" y2="0" width="0.4064" layer="94"/>
-              <text x="-3.81" y="8.255" size="1.778" layer="95">&gt;NAME</text>
-              <text x="-3.81" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
-              <pin name="1" x="0" y="5.08" visible="pad" length="short" direction="pas" function="none"/>
-              <pin name="2" x="0" y="2.54" visible="pad" length="short" direction="pas" function="none"/>
+            <symbol name="UNRESOLVED-SIP-50_">
+              <wire x1="1.27" x2="-5.08" y1="-53.34" y2="-53.34" width="0.4064" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-45.72" y2="-45.72" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-48.26" y2="-48.26" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-50.8" y2="-50.8" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-40.64" y2="-40.64" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-43.18" y2="-43.18" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-38.1" y2="-38.1" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-35.56" y2="-35.56" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-33.02" y2="-33.02" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-30.48" y2="-30.48" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-27.94" y2="-27.94" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-20.32" y2="-20.32" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-22.86" y2="-22.86" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-25.4" y2="-25.4" width="0.6096" layer="94"/>
+              <wire x1="-5.08" x2="-5.08" y1="76.2" y2="-53.34" width="0.4064" layer="94"/>
+              <wire x1="-5.08" x2="1.27" y1="76.2" y2="76.2" width="0.4064" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-15.24" y2="-15.24" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-17.78" y2="-17.78" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-12.7" y2="-12.7" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-10.16" y2="-10.16" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-7.62" y2="-7.62" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-5.08" y2="-5.08" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="-2.54" y2="-2.54" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="0" y2="0" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="30.48" y2="30.48" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="27.94" y2="27.94" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="35.56" y2="35.56" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="33.02" y2="33.02" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="38.1" y2="38.1" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="40.64" y2="40.64" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="43.18" y2="43.18" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="45.72" y2="45.72" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="48.26" y2="48.26" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="50.8" y2="50.8" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="53.34" y2="53.34" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="55.88" y2="55.88" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="58.42" y2="58.42" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="60.96" y2="60.96" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="63.5" y2="63.5" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="66.04" y2="66.04" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="68.58" y2="68.58" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="71.12" y2="71.12" width="0.6096" layer="94"/>
+              <wire x1="-1.27" x2="0" y1="73.66" y2="73.66" width="0.6096" layer="94"/>
+              <wire x1="1.27" x2="1.27" y1="-53.34" y2="76.2" width="0.4064" layer="94"/>
+              <text x="-5.08" y="-55.88" size="1.778" layer="96">&gt;VALUE</text>
+              <text x="2.032" y="-53.34" size="1.778" layer="95">&gt;NAME</text>
+              <pin name="42" x="5.08" y="53.34" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="22" x="5.08" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="43" x="5.08" y="55.88" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="23" x="5.08" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="24" x="5.08" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="25" x="5.08" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="26" x="5.08" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="27" x="5.08" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="20" x="5.08" y="-2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="21" x="5.08" y="0" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="48" x="5.08" y="68.58" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="49" x="5.08" y="71.12" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="46" x="5.08" y="63.5" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="47" x="5.08" y="66.04" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="44" x="5.08" y="58.42" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="45" x="5.08" y="60.96" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="28" x="5.08" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="29" x="5.08" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="40" x="5.08" y="48.26" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="41" x="5.08" y="50.8" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="1" x="5.08" y="-50.8" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="3" x="5.08" y="-45.72" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="2" x="5.08" y="-48.26" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="5" x="5.08" y="-40.64" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="4" x="5.08" y="-43.18" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="7" x="5.08" y="-35.56" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="6" x="5.08" y="-38.1" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="9" x="5.08" y="-30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="8" x="5.08" y="-33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="39" x="5.08" y="45.72" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="38" x="5.08" y="43.18" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="11" x="5.08" y="-25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="10" x="5.08" y="-27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="13" x="5.08" y="-20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="12" x="5.08" y="-22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="15" x="5.08" y="-15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="14" x="5.08" y="-17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="17" x="5.08" y="-10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="16" x="5.08" y="-12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="19" x="5.08" y="-5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="18" x="5.08" y="-7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="31" x="5.08" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="30" x="5.08" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="37" x="5.08" y="40.64" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="36" x="5.08" y="38.1" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="35" x="5.08" y="35.56" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="34" x="5.08" y="33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="33" x="5.08" y="30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="32" x="5.08" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="50" x="5.08" y="73.66" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
             <symbol name="RESOLVED-SIP-6_">
               <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
@@ -4288,24 +5807,6 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-            </symbol>
-            <symbol name="_BASE-INDUCTOR_">
-              <wire x1="-2.54" x2="-1.27" y1="5.08" y2="3.81" width="0.254" layer="94" curve="-90"/>
-              <wire x1="-2.54" x2="-1.27" y1="2.54" y2="3.81" width="0.254" layer="94" curve="90"/>
-              <wire x1="-2.54" x2="-1.27" y1="2.54" y2="1.27" width="0.254" layer="94" curve="-90"/>
-              <wire x1="-2.54" x2="-1.27" y1="0" y2="1.27" width="0.254" layer="94" curve="90"/>
-              <wire x1="-2.54" x2="-1.27" y1="0" y2="-1.27" width="0.254" layer="94" curve="-90"/>
-              <wire x1="-2.54" x2="-1.27" y1="-2.54" y2="-1.27" width="0.254" layer="94" curve="90"/>
-              <wire x1="-2.54" x2="-1.27" y1="-2.54" y2="-3.81" width="0.254" layer="94" curve="-90"/>
-              <wire x1="-2.54" x2="-1.27" y1="-5.08" y2="-3.81" width="0.254" layer="94" curve="90"/>
-              <wire x1="-4.445" x2="-4.445" y1="6.35" y2="-6.35" width="1.27" layer="114"/>
-              <wire x1="-4.445" x2="0" y1="-6.35" y2="-6.35" width="1.27" layer="114"/>
-              <wire x1="0" x2="0" y1="-6.35" y2="6.35" width="1.27" layer="114"/>
-              <wire x1="0" x2="-4.445" y1="6.35" y2="6.35" width="1.27" layer="114"/>
-              <text x="-3.81" y="-5.08" size="1.778" layer="95">&gt;NAME</text>
-              <text x="1.27" y="-5.08" size="1.778" layer="96">&gt;VALUE</text>
-              <pin name="1" x="-2.54" y="7.62" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R270"/>
-              <pin name="2" x="-2.54" y="-7.62" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R90"/>
             </symbol>
             <symbol name="GENERIC-SIP-6_">
               <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
@@ -4416,24 +5917,23 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
-            <symbol name="UNRESOLVED-RESISTOR_">
-              <wire x1="-2.54" x2="-2.159" y1="0" y2="1.016" width="0.2032" layer="94"/>
-              <wire x1="-2.159" x2="-1.524" y1="1.016" y2="-1.016" width="0.2032" layer="94"/>
-              <wire x1="-1.524" x2="-0.889" y1="-1.016" y2="1.016" width="0.2032" layer="94"/>
-              <wire x1="-0.889" x2="-0.254" y1="1.016" y2="-1.016" width="0.2032" layer="94"/>
-              <wire x1="-0.254" x2="0.381" y1="-1.016" y2="1.016" width="0.2032" layer="94"/>
-              <wire x1="0.381" x2="1.016" y1="1.016" y2="-1.016" width="0.2032" layer="94"/>
-              <wire x1="1.016" x2="1.651" y1="-1.016" y2="1.016" width="0.2032" layer="94"/>
-              <wire x1="1.651" x2="2.286" y1="1.016" y2="-1.016" width="0.2032" layer="94"/>
-              <wire x1="2.286" x2="2.54" y1="-1.016" y2="0" width="0.2032" layer="94"/>
-              <wire x1="-3.81" x2="-3.81" y1="2.54" y2="-2.54" width="1.27" layer="114"/>
-              <wire x1="-3.81" x2="3.81" y1="-2.54" y2="-2.54" width="1.27" layer="114"/>
-              <wire x1="3.81" x2="3.81" y1="-2.54" y2="2.54" width="1.27" layer="114"/>
-              <wire x1="3.81" x2="-3.81" y1="2.54" y2="2.54" width="1.27" layer="114"/>
-              <text x="-3.81" y="1.4986" size="1.778" layer="95">&gt;NAME</text>
-              <text x="-3.81" y="-3.302" size="1.778" layer="96">&gt;VALUE</text>
-              <pin name="1" x="-5.08" y="0" visible="off" length="short" direction="pas" function="none" swaplevel="1"/>
-              <pin name="2" x="5.08" y="0" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R180"/>
+            <symbol name="_BASE-INDUCTOR_">
+              <wire x1="-2.54" x2="-1.27" y1="5.08" y2="3.81" width="0.254" layer="94" curve="-90"/>
+              <wire x1="-2.54" x2="-1.27" y1="2.54" y2="3.81" width="0.254" layer="94" curve="90"/>
+              <wire x1="-2.54" x2="-1.27" y1="2.54" y2="1.27" width="0.254" layer="94" curve="-90"/>
+              <wire x1="-2.54" x2="-1.27" y1="0" y2="1.27" width="0.254" layer="94" curve="90"/>
+              <wire x1="-2.54" x2="-1.27" y1="0" y2="-1.27" width="0.254" layer="94" curve="-90"/>
+              <wire x1="-2.54" x2="-1.27" y1="-2.54" y2="-1.27" width="0.254" layer="94" curve="90"/>
+              <wire x1="-2.54" x2="-1.27" y1="-2.54" y2="-3.81" width="0.254" layer="94" curve="-90"/>
+              <wire x1="-2.54" x2="-1.27" y1="-5.08" y2="-3.81" width="0.254" layer="94" curve="90"/>
+              <wire x1="-4.445" x2="-4.445" y1="6.35" y2="-6.35" width="1.27" layer="114"/>
+              <wire x1="-4.445" x2="0" y1="-6.35" y2="-6.35" width="1.27" layer="114"/>
+              <wire x1="0" x2="0" y1="-6.35" y2="6.35" width="1.27" layer="114"/>
+              <wire x1="0" x2="-4.445" y1="6.35" y2="6.35" width="1.27" layer="114"/>
+              <text x="-3.81" y="-5.08" size="1.778" layer="95">&gt;NAME</text>
+              <text x="1.27" y="-5.08" size="1.778" layer="96">&gt;VALUE</text>
+              <pin name="1" x="-2.54" y="7.62" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R270"/>
+              <pin name="2" x="-2.54" y="-7.62" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R90"/>
             </symbol>
             <symbol name="_BASE-SIP-2_">
               <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
@@ -4522,10 +6022,10 @@ In this library the device names are the same as the pin names of the symbols, t
               <wire x1="1.27" x2="1.27" y1="-53.34" y2="76.2" width="0.4064" layer="94"/>
               <text x="-5.08" y="-55.88" size="1.778" layer="96">&gt;VALUE</text>
               <text x="2.032" y="-53.34" size="1.778" layer="95">&gt;NAME</text>
-              <pin name="30" x="5.08" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="28" x="5.08" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="42" x="5.08" y="53.34" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="22" x="5.08" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="29" x="5.08" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="43" x="5.08" y="55.88" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="23" x="5.08" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="24" x="5.08" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="25" x="5.08" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="26" x="5.08" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
@@ -4538,8 +6038,8 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="47" x="5.08" y="66.04" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="44" x="5.08" y="58.42" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="45" x="5.08" y="60.96" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="42" x="5.08" y="53.34" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="43" x="5.08" y="55.88" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="28" x="5.08" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="29" x="5.08" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="40" x="5.08" y="48.26" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="41" x="5.08" y="50.8" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="1" x="5.08" y="-50.8" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
@@ -4551,26 +6051,26 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="6" x="5.08" y="-38.1" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="9" x="5.08" y="-30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="8" x="5.08" y="-33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="13" x="5.08" y="-20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="12" x="5.08" y="-22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="11" x="5.08" y="-25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="10" x="5.08" y="-27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="39" x="5.08" y="45.72" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="38" x="5.08" y="43.18" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="11" x="5.08" y="-25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="10" x="5.08" y="-27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="13" x="5.08" y="-20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="12" x="5.08" y="-22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="15" x="5.08" y="-15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="14" x="5.08" y="-17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="17" x="5.08" y="-10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="16" x="5.08" y="-12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="19" x="5.08" y="-5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="32" x="5.08" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="18" x="5.08" y="-7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="31" x="5.08" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="23" x="5.08" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="30" x="5.08" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="37" x="5.08" y="40.64" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="36" x="5.08" y="38.1" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="35" x="5.08" y="35.56" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="34" x="5.08" y="33.02" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="33" x="5.08" y="30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="18" x="5.08" y="-7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="32" x="5.08" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
               <pin name="50" x="5.08" y="73.66" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
             <symbol name="_BASE-SIP-11_">
@@ -4869,29 +6369,20 @@ In this library the device names are the same as the pin names of the symbols, t
               <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
               <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
-            <symbol name="RESOLVED-SIP-8_">
-              <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
-              <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
-              <wire x1="0" x2="0" y1="0" y2="22.86" width="0.4064" layer="94"/>
-              <wire x1="0" x2="6.35" y1="22.86" y2="22.86" width="0.4064" layer="94"/>
-              <wire x1="6.35" x2="6.35" y1="22.86" y2="0" width="0.4064" layer="94"/>
-              <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
-              <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
-              <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
-              <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+            <symbol name="_BASE-CAPACITOR-POL_">
+              <wire x1="-2.54" x2="2.54" y1="0" y2="0" width="0.254" layer="94"/>
+              <wire x1="0" x2="0" y1="-2.524" y2="-2.5401" width="0.1524" layer="94"/>
+              <wire x1="-3.81" x2="-3.81" y1="1.27" y2="-3.81" width="1.27" layer="114"/>
+              <wire x1="-3.81" x2="3.81" y1="-3.81" y2="-3.81" width="1.27" layer="114"/>
+              <wire x1="3.81" x2="3.81" y1="-3.81" y2="1.27" width="1.27" layer="114"/>
+              <wire x1="3.81" x2="-3.81" y1="1.27" y2="1.27" width="1.27" layer="114"/>
+              <wire x1="-2.54" x2="2.54" y1="-3.175" y2="-3.175" width="0.254" layer="94" curve="-60"/>
+              <rectangle x1="-2.253" x2="-1.364" y1="0.668" y2="0.795" layer="94"/>
+              <rectangle x1="-1.872" x2="-1.745" y1="0.287" y2="1.176" layer="94"/>
+              <text x="0.254" y="0.381" size="1.778" layer="95">&gt;NAME</text>
+              <text x="-3.556" y="-2.159" size="1.778" layer="96">&gt;VALUE</text>
+              <pin name="+" x="0" y="2.54" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R270"/>
+              <pin name="-" x="0" y="-5.08" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R90"/>
             </symbol>
             <symbol name="GENERIC-ADJUSTABLE-VOLTAGE-REGULATOR_">
               <wire x1="-10.16" x2="10.16" y1="10.16" y2="10.16" width="0.4064" layer="94"/>
@@ -4909,39 +6400,37 @@ In this library the device names are the same as the pin names of the symbols, t
               <pin name="VTAB" x="12.7" y="-2.54" length="short" direction="in" function="none" rot="R180"/>
               <pin name="OUT" x="-12.7" y="7.62" length="short" direction="out" function="none"/>
             </symbol>
-            <symbol name="_BASE-RESONATOR_">
-              <wire x1="-0.635" x2="0.635" y1="3.81" y2="3.81" width="0.254" layer="94"/>
-              <wire x1="0.635" x2="0.635" y1="3.81" y2="1.27" width="0.254" layer="94"/>
-              <wire x1="0.635" x2="-0.635" y1="1.27" y2="1.27" width="0.254" layer="94"/>
-              <wire x1="-0.635" x2="-0.635" y1="1.27" y2="3.81" width="0.254" layer="94"/>
-              <wire x1="-1.27" x2="-1.27" y1="3.81" y2="2.54" width="0.254" layer="94"/>
-              <wire x1="-1.27" x2="-1.27" y1="2.54" y2="1.27" width="0.254" layer="94"/>
-              <wire x1="1.27" x2="1.27" y1="3.81" y2="2.54" width="0.254" layer="94"/>
-              <wire x1="1.27" x2="1.27" y1="2.54" y2="1.27" width="0.254" layer="94"/>
-              <wire x1="1.905" x2="2.54" y1="0" y2="0" width="0.254" layer="94"/>
-              <wire x1="2.54" x2="3.175" y1="0" y2="0" width="0.254" layer="94"/>
-              <wire x1="1.905" x2="2.54" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
-              <wire x1="2.54" x2="3.175" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
-              <wire x1="-3.175" x2="-2.54" y1="0" y2="0" width="0.254" layer="94"/>
-              <wire x1="-2.54" x2="-1.905" y1="0" y2="0" width="0.254" layer="94"/>
-              <wire x1="-1.905" x2="-2.54" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
-              <wire x1="-2.54" x2="-3.175" y1="-1.27" y2="-1.27" width="0.254" layer="94"/>
-              <wire x1="-2.54" x2="-2.54" y1="-1.27" y2="-2.54" width="0.254" layer="94"/>
-              <wire x1="-2.54" x2="2.54" y1="-2.54" y2="-2.54" width="0.254" layer="94"/>
-              <wire x1="2.54" x2="2.54" y1="-2.54" y2="-1.27" width="0.254" layer="94"/>
-              <wire x1="2.54" x2="2.54" y1="0" y2="2.54" width="0.254" layer="94"/>
-              <wire x1="-2.54" x2="-2.54" y1="0" y2="2.54" width="0.254" layer="94"/>
-              <wire x1="-2.54" x2="-1.27" y1="2.54" y2="2.54" width="0.254" layer="94"/>
-              <wire x1="1.27" x2="2.54" y1="2.54" y2="2.54" width="0.254" layer="94"/>
-              <wire x1="-3.81" x2="-3.81" y1="5.08" y2="-3.81" width="1.27" layer="114"/>
-              <wire x1="-3.81" x2="3.81" y1="-3.81" y2="-3.81" width="1.27" layer="114"/>
-              <wire x1="3.81" x2="3.81" y1="-3.81" y2="5.08" width="1.27" layer="114"/>
-              <wire x1="3.81" x2="-3.81" y1="5.08" y2="5.08" width="1.27" layer="114"/>
-              <text x="2.032" y="4.572" size="1.778" layer="95">&gt;NAME</text>
-              <text x="1.016" y="-5.588" size="1.778" layer="96">&gt;VALUE</text>
-              <pin name="GND" x="0" y="-5.08" visible="off" length="short" direction="pwr" function="none" rot="R90"/>
-              <pin name="OSC2" x="5.08" y="2.54" visible="off" length="short" function="none" rot="R180"/>
-              <pin name="OSC1" x="-5.08" y="2.54" visible="off" length="short" function="none"/>
+            <symbol name="_BASE-SIP-12_">
+              <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="7.62" y2="7.62" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="5.08" y2="5.08" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="2.54" y2="2.54" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="12.7" y2="12.7" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="10.16" y2="10.16" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="15.24" y2="15.24" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="17.78" y2="17.78" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="20.32" y2="20.32" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="22.86" y2="22.86" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="25.4" y2="25.4" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="30.48" y2="30.48" width="0.6096" layer="94"/>
+              <wire x1="3.81" x2="5.08" y1="27.94" y2="27.94" width="0.6096" layer="94"/>
+              <wire x1="0" x2="0" y1="0" y2="33.02" width="0.4064" layer="94"/>
+              <wire x1="0" x2="6.35" y1="33.02" y2="33.02" width="0.4064" layer="94"/>
+              <wire x1="6.35" x2="6.35" y1="33.02" y2="0" width="0.4064" layer="94"/>
+              <text x="0" y="-2.54" size="1.778" layer="96">&gt;VALUE</text>
+              <text x="6.858" y="0" size="1.778" layer="95">&gt;NAME</text>
+              <pin name="11" x="10.16" y="27.94" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="10" x="10.16" y="25.4" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="12" x="10.16" y="30.48" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="1" x="10.16" y="2.54" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="3" x="10.16" y="7.62" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="2" x="10.16" y="5.08" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="5" x="10.16" y="12.7" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="4" x="10.16" y="10.16" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="7" x="10.16" y="17.78" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="6" x="10.16" y="15.24" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="9" x="10.16" y="22.86" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="8" x="10.16" y="20.32" visible="pad" length="middle" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
             <symbol name="_BASE-SINGLE-PIN_">
               <wire x1="6.35" x2="0" y1="0" y2="0" width="0.4064" layer="94"/>
@@ -5157,8 +6646,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -5234,8 +6723,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -5258,11 +6747,11 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="VFWD" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="VREV" value=""/>
                       <attribute constant="no" name="RECOV" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="VFWD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
@@ -5282,8 +6771,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -5312,8 +6801,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -5337,8 +6826,8 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="TEMP" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
@@ -5360,8 +6849,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -5390,9 +6879,9 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="PWR" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
-                      <attribute constant="no" name="VZENER" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="VZENER" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
@@ -5413,8 +6902,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -5438,8 +6927,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -5471,8 +6960,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -5499,8 +6988,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -5525,14 +7014,14 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="PWR" value=""/>
                       <attribute constant="no" name="VAL" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
-                      <attribute constant="no" name="SIZE" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
+                      <attribute constant="no" name="SIZE" value=""/>
                     </technology>
                   </technologies>
                 </device>
@@ -5550,8 +7039,8 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="IFWD" value=""/>
                       <attribute constant="no" name="VBR" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
@@ -5579,8 +7068,8 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="VAL" value=""/>
                       <attribute constant="no" name="WV" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
@@ -5600,8 +7089,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
@@ -5623,8 +7112,8 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="VAL" value=""/>
                       <attribute constant="no" name="WV" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
@@ -5645,8 +7134,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -5670,8 +7159,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -5708,8 +7197,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -5732,8 +7221,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -5758,9 +7247,9 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="VFWD" value=""/>
-                      <attribute constant="no" name="COLOR" value=""/>
                       <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="COLOR" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
@@ -5780,8 +7269,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
@@ -5807,13 +7296,13 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="PWR" value=""/>
                       <attribute constant="no" name="VAL" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
-                      <attribute constant="no" name="SIZE" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
+                      <attribute constant="no" name="SIZE" value=""/>
                     </technology>
                   </technologies>
                 </device>
@@ -5828,13 +7317,13 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="PWR" value=""/>
                       <attribute constant="no" name="VAL" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
-                      <attribute constant="no" name="SIZE" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
+                      <attribute constant="no" name="SIZE" value=""/>
                     </technology>
                   </technologies>
                 </device>
@@ -5849,13 +7338,13 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="PWR" value=""/>
                       <attribute constant="no" name="VAL" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
-                      <attribute constant="no" name="SIZE" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
+                      <attribute constant="no" name="SIZE" value=""/>
                     </technology>
                   </technologies>
                 </device>
@@ -5870,13 +7359,13 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="PWR" value=""/>
                       <attribute constant="no" name="VAL" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
-                      <attribute constant="no" name="SIZE" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
+                      <attribute constant="no" name="SIZE" value=""/>
                     </technology>
                   </technologies>
                 </device>
@@ -5892,10 +7381,10 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="SQR-RND" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
-                      <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
@@ -5918,9 +7407,9 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="PWR" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
-                      <attribute constant="no" name="VZENER" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="VZENER" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
@@ -5943,8 +7432,8 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="TEMP" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
@@ -5966,8 +7455,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -5995,11 +7484,11 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="VFWD" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="VREV" value=""/>
                       <attribute constant="no" name="RECOV" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="VFWD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
@@ -6015,11 +7504,11 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="VFWD" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="VREV" value=""/>
                       <attribute constant="no" name="RECOV" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="VFWD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
@@ -6028,24 +7517,25 @@ In this library the device names are the same as the pin names of the symbols, t
                 </device>
               </devices>
             </deviceset>
-            <deviceset name="GENERIC-BATTERY-CONN-RECEPTACLE">
+            <deviceset name="GENERIC-SIP-14_">
               <gates>
-                <gate name="G$1" x="0" y="-2.54" symbol="GENERIC-BATTERY-CONN-RECEPTACLE"/>
+                <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-14_"/>
               </gates>
               <devices>
-                <device name="PH-SMD-2MM" package="JST_S2B-PH-SM4-TB">
-                  <connects>
-                    <connect gate="G$1" pin="1" pad="1"/>
-                    <connect gate="G$1" pin="2" pad="2"/>
-                  </connects>
+                <device name="">
                   <technologies>
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="HEIGHT" value=""/>
+                      <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
+                      <attribute constant="no" name="_EXTERNAL_"/>
+                      <attribute constant="no" name="VRT-RA" value=""/>
+                      <attribute constant="no" name="M-F" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
                     </technology>
                   </technologies>
@@ -6069,8 +7559,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
@@ -6089,8 +7579,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -6121,8 +7611,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
@@ -6131,54 +7621,28 @@ In this library the device names are the same as the pin names of the symbols, t
                 </device>
               </devices>
             </deviceset>
-            <deviceset name="ATMEGA328-NO-THERMAL_">
+            <deviceset name="RESOLVED-RESONATOR_">
               <gates>
-                <gate name="G$1" x="0" y="0" symbol="ATMEGA328-NO-THERMAL_"/>
+                <gate name="G$1" x="0" y="0" symbol="RESOLVED-RESONATOR_"/>
               </gates>
               <devices>
-                <device name="32TQFP" package="QFP80P900X900X120-32L30HS">
+                <device name="V53-R0" package="MURATA_CSTCEXXMYY">
                   <connects>
-                    <connect gate="G$1" pin="ADC6" pad="19"/>
-                    <connect gate="G$1" pin="ADC7" pad="22"/>
-                    <connect gate="G$1" pin="AREF" pad="20"/>
-                    <connect gate="G$1" pin="AVCC" pad="18"/>
-                    <connect gate="G$1" pin="GND" pad="21"/>
-                    <connect gate="G$1" pin="GND@1" pad="3"/>
-                    <connect gate="G$1" pin="GND@2" pad="5"/>
-                    <connect gate="G$1" pin="PB0(ICP)" pad="12"/>
-                    <connect gate="G$1" pin="PB1(OC1A)" pad="13"/>
-                    <connect gate="G$1" pin="PB2(SS/OC1B)" pad="14"/>
-                    <connect gate="G$1" pin="PB3(MOSI/OC2)" pad="15"/>
-                    <connect gate="G$1" pin="PB4(MISO)" pad="16"/>
-                    <connect gate="G$1" pin="PB5(SCK)" pad="17"/>
-                    <connect gate="G$1" pin="PB6(XTAL1/TOSC1)" pad="7"/>
-                    <connect gate="G$1" pin="PB7(XTAL2/TOSC2)" pad="8"/>
-                    <connect gate="G$1" pin="PC0(ADC0)" pad="23"/>
-                    <connect gate="G$1" pin="PC1(ADC1)" pad="24"/>
-                    <connect gate="G$1" pin="PC2(ADC2)" pad="25"/>
-                    <connect gate="G$1" pin="PC3(ADC3)" pad="26"/>
-                    <connect gate="G$1" pin="PC4(ADC4/SDA)" pad="27"/>
-                    <connect gate="G$1" pin="PC5(ADC5/SCL)" pad="28"/>
-                    <connect gate="G$1" pin="PC6(/RESET)" pad="29"/>
-                    <connect gate="G$1" pin="PD0(RXD)" pad="30"/>
-                    <connect gate="G$1" pin="PD1(TXD)" pad="31"/>
-                    <connect gate="G$1" pin="PD2(INT0)" pad="32"/>
-                    <connect gate="G$1" pin="PD3(INT1)" pad="1"/>
-                    <connect gate="G$1" pin="PD4(XCK/T0)" pad="2"/>
-                    <connect gate="G$1" pin="PD5(T1)" pad="9"/>
-                    <connect gate="G$1" pin="PD6(AIN0)" pad="10"/>
-                    <connect gate="G$1" pin="PD7(AIN1)" pad="11"/>
-                    <connect gate="G$1" pin="VCC@1" pad="4"/>
-                    <connect gate="G$1" pin="VCC@2" pad="6"/>
+                    <connect gate="G$1" pin="GND" pad="2"/>
+                    <connect gate="G$1" pin="OSC1" pad="1"/>
+                    <connect gate="G$1" pin="OSC2" pad="3"/>
                   </connects>
                   <technologies>
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
+                      <attribute constant="no" name="TEMP" value=""/>
                       <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
+                      <attribute constant="no" name="TOL" value=""/>
+                      <attribute constant="no" name="FREQ" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
                     </technology>
                   </technologies>
@@ -6205,8 +7669,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
@@ -6228,8 +7692,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
@@ -6255,8 +7719,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -6314,8 +7778,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
@@ -6341,8 +7805,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
@@ -6363,8 +7827,8 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="IFWD" value=""/>
                       <attribute constant="no" name="VBR" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
@@ -6386,8 +7850,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -6423,8 +7887,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -6448,9 +7912,9 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="PWR" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
-                      <attribute constant="no" name="VZENER" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="VZENER" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
@@ -6472,8 +7936,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -6502,9 +7966,9 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="VFWD" value=""/>
-                      <attribute constant="no" name="COLOR" value=""/>
                       <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="COLOR" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
@@ -6523,8 +7987,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -6554,8 +8018,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -6580,8 +8044,8 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="VAL" value=""/>
                       <attribute constant="no" name="WV" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
@@ -6619,8 +8083,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -6643,8 +8107,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -6670,8 +8134,8 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="VAL" value=""/>
                       <attribute constant="no" name="WV" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
@@ -6694,8 +8158,8 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="VAL" value=""/>
                       <attribute constant="no" name="WV" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
@@ -6706,28 +8170,54 @@ In this library the device names are the same as the pin names of the symbols, t
                 </device>
               </devices>
             </deviceset>
-            <deviceset name="RESOLVED-RESONATOR_">
+            <deviceset name="ATMEGA328-NO-THERMAL_">
               <gates>
-                <gate name="G$1" x="0" y="0" symbol="RESOLVED-RESONATOR_"/>
+                <gate name="G$1" x="0" y="0" symbol="ATMEGA328-NO-THERMAL_"/>
               </gates>
               <devices>
-                <device name="V53-R0" package="MURATA_CSTCEXXMYY">
+                <device name="32TQFP" package="QFP80P900X900X120-32L30HS">
                   <connects>
-                    <connect gate="G$1" pin="GND" pad="2"/>
-                    <connect gate="G$1" pin="OSC1" pad="1"/>
-                    <connect gate="G$1" pin="OSC2" pad="3"/>
+                    <connect gate="G$1" pin="ADC6" pad="19"/>
+                    <connect gate="G$1" pin="ADC7" pad="22"/>
+                    <connect gate="G$1" pin="AREF" pad="20"/>
+                    <connect gate="G$1" pin="AVCC" pad="18"/>
+                    <connect gate="G$1" pin="GND" pad="21"/>
+                    <connect gate="G$1" pin="GND@1" pad="3"/>
+                    <connect gate="G$1" pin="GND@2" pad="5"/>
+                    <connect gate="G$1" pin="PB0(ICP)" pad="12"/>
+                    <connect gate="G$1" pin="PB1(OC1A)" pad="13"/>
+                    <connect gate="G$1" pin="PB2(SS/OC1B)" pad="14"/>
+                    <connect gate="G$1" pin="PB3(MOSI/OC2)" pad="15"/>
+                    <connect gate="G$1" pin="PB4(MISO)" pad="16"/>
+                    <connect gate="G$1" pin="PB5(SCK)" pad="17"/>
+                    <connect gate="G$1" pin="PB6(XTAL1/TOSC1)" pad="7"/>
+                    <connect gate="G$1" pin="PB7(XTAL2/TOSC2)" pad="8"/>
+                    <connect gate="G$1" pin="PC0(ADC0)" pad="23"/>
+                    <connect gate="G$1" pin="PC1(ADC1)" pad="24"/>
+                    <connect gate="G$1" pin="PC2(ADC2)" pad="25"/>
+                    <connect gate="G$1" pin="PC3(ADC3)" pad="26"/>
+                    <connect gate="G$1" pin="PC4(ADC4/SDA)" pad="27"/>
+                    <connect gate="G$1" pin="PC5(ADC5/SCL)" pad="28"/>
+                    <connect gate="G$1" pin="PC6(/RESET)" pad="29"/>
+                    <connect gate="G$1" pin="PD0(RXD)" pad="30"/>
+                    <connect gate="G$1" pin="PD1(TXD)" pad="31"/>
+                    <connect gate="G$1" pin="PD2(INT0)" pad="32"/>
+                    <connect gate="G$1" pin="PD3(INT1)" pad="1"/>
+                    <connect gate="G$1" pin="PD4(XCK/T0)" pad="2"/>
+                    <connect gate="G$1" pin="PD5(T1)" pad="9"/>
+                    <connect gate="G$1" pin="PD6(AIN0)" pad="10"/>
+                    <connect gate="G$1" pin="PD7(AIN1)" pad="11"/>
+                    <connect gate="G$1" pin="VCC@1" pad="4"/>
+                    <connect gate="G$1" pin="VCC@2" pad="6"/>
                   </connects>
                   <technologies>
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="TEMP" value=""/>
                       <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
-                      <attribute constant="no" name="TOL" value=""/>
-                      <attribute constant="no" name="FREQ" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
                     </technology>
                   </technologies>
@@ -6744,8 +8234,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -6769,8 +8259,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
@@ -6790,8 +8280,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -6815,11 +8305,11 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="VFWD" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="VREV" value=""/>
                       <attribute constant="no" name="RECOV" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="VFWD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
@@ -6839,8 +8329,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -6873,8 +8363,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -6900,10 +8390,10 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="SQR-RND" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
-                      <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="VRT-RA" value=""/>
@@ -6924,8 +8414,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="IMAX" value=""/>
@@ -6952,8 +8442,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -6994,8 +8484,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7018,8 +8508,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
@@ -7039,8 +8529,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
@@ -7060,8 +8550,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7085,8 +8575,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7110,8 +8600,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7125,25 +8615,24 @@ In this library the device names are the same as the pin names of the symbols, t
                 </device>
               </devices>
             </deviceset>
-            <deviceset name="GENERIC-SIP-14_">
+            <deviceset name="GENERIC-BATTERY-CONN-RECEPTACLE">
               <gates>
-                <gate name="G$1" x="0" y="0" symbol="GENERIC-SIP-14_"/>
+                <gate name="G$1" x="0" y="-2.54" symbol="GENERIC-BATTERY-CONN-RECEPTACLE"/>
               </gates>
               <devices>
-                <device name="">
+                <device name="PH-SMD-2MM" package="JST_S2B-PH-SM4-TB">
+                  <connects>
+                    <connect gate="G$1" pin="1" pad="1"/>
+                    <connect gate="G$1" pin="2" pad="2"/>
+                  </connects>
                   <technologies>
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
-                      <attribute constant="no" name="HEIGHT" value=""/>
-                      <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
-                      <attribute constant="no" name="_EXTERNAL_"/>
-                      <attribute constant="no" name="VRT-RA" value=""/>
-                      <attribute constant="no" name="M-F" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
                     </technology>
                   </technologies>
@@ -7160,8 +8649,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7185,8 +8674,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7218,8 +8707,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7242,8 +8731,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7267,8 +8756,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7303,8 +8792,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7331,8 +8820,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="IMAX" value=""/>
@@ -7356,14 +8845,14 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="PWR" value=""/>
                       <attribute constant="no" name="VAL" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
-                      <attribute constant="no" name="SIZE" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
+                      <attribute constant="no" name="SIZE" value=""/>
                     </technology>
                   </technologies>
                 </device>
@@ -7386,8 +8875,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
@@ -7406,8 +8895,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7445,8 +8934,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7469,8 +8958,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7500,8 +8989,8 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="VAL" value=""/>
                       <attribute constant="no" name="WV" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="TOL" value=""/>
@@ -7521,8 +9010,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7552,8 +9041,8 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="IFWD" value=""/>
                       <attribute constant="no" name="VBR" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="PWR" value=""/>
@@ -7588,8 +9077,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7612,8 +9101,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7653,8 +9142,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7677,10 +9166,10 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="SQR-RND" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
-                      <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
@@ -7702,8 +9191,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7737,8 +9226,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7761,8 +9250,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
@@ -7792,8 +9281,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
@@ -7815,8 +9304,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="DESC" value=""/>
@@ -7835,8 +9324,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7860,8 +9349,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="IMAX" value=""/>
@@ -7885,9 +9374,9 @@ In this library the device names are the same as the pin names of the symbols, t
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
                       <attribute constant="no" name="VFWD" value=""/>
-                      <attribute constant="no" name="COLOR" value=""/>
                       <attribute constant="no" name="URL" value=""/>
                       <attribute constant="no" name="MPN" value=""/>
+                      <attribute constant="no" name="COLOR" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
                       <attribute constant="no" name="DIST1" value=""/>
                       <attribute constant="no" name="_EXTERNAL_"/>
@@ -7922,8 +9411,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7946,8 +9435,8 @@ In this library the device names are the same as the pin names of the symbols, t
                     <technology name="">
                       <attribute constant="no" name="CASE" value=""/>
                       <attribute constant="no" name="DIST1PN" value=""/>
-                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="URL" value=""/>
+                      <attribute constant="no" name="MPN" value=""/>
                       <attribute constant="no" name="HEIGHT" value=""/>
                       <attribute constant="no" name="SHROUD" value=""/>
                       <attribute constant="no" name="MFR" value=""/>
@@ -7969,37 +9458,32 @@ In this library the device names are the same as the pin names of the symbols, t
         <class number="1" name="power" width="0.3048" drill="0"/>
       </classes>
       <parts>
-        <part name="LED1" library="NVSL" deviceset="GENERIC-DIODE-LED_" device="" technology="" value="Red"/>
-        <part name="FRAME8" library="frames" deviceset="FRAME_A_L" device="" technology="" value="None"/>
-        <part name="FRAME7" library="frames" deviceset="FRAME_A_L" device="" technology="" value="None"/>
+        <part name="R4" library="PickerDesign" deviceset="GENERIC-RESISTOR_" device="" technology="" value="68"/>
+        <part name="FRAME3" library="frames" deviceset="FRAME_A_L" device="" technology="" value="None"/>
+        <part name="D3" library="PickerDesign" deviceset="GENERIC-DIODE-ZENER_" device="" technology="" value="3.6"/>
         <part name="U1" library="NVSL" deviceset="ATMEGA328-NO-THERMAL_" device="32TQFP" technology="" value="None">
           <attribute name="DIST1PN" value="ATMEGA328-AU-ND"/>
           <attribute name="MPN" value="ATMEGA328-AU"/>
           <attribute name="MFR" value="Atmel"/>
           <attribute name="DIST1" value="DigiKey"/>
         </part>
-        <part name="GND9" library="supply1" deviceset="GND" device="" technology="" value="None"/>
-        <part name="R2A" library="NVSL" deviceset="GENERIC-RESISTOR_" device="" technology="" value="305K+/-2%">
+        <part name="R6" library="PickerDesign" deviceset="GENERIC-RESISTOR_" device="" technology="" value="470"/>
+        <part name="R2A" library="PickerDesign" deviceset="GENERIC-RESISTOR_" device="" technology="" value="305K+/-2%">
           <attribute name="TOL" value="1%"/>
         </part>
         <part name="U2" library="NVSL" deviceset="ADJUSTABLE-VOLTAGE-REGULATOR_" device="SOIC8" technology="" value="None">
           <attribute name="DIST1PN" value="576-1149-1-ND"/>
           <attribute name="IFWD" value="150ma"/>
           <attribute name="VFWD" value="0.3V"/>
-          <attribute name="MPN" value="MIC2951-03YM"/>
           <attribute name="IOUT" value=""/>
           <attribute name="VIN" value=""/>
+          <attribute name="MPN" value="MIC2951-03YM"/>
           <attribute name="MFR" value="Micrel"/>
           <attribute name="DIST1" value="DigiKey"/>
           <attribute name="VDO" value=""/>
         </part>
-        <part name="Y1" library="NVSL" deviceset="GENERIC-RESONATOR_" device="" technology="" value="16 MHz">
-          <attribute name="STBL" value=""/>
-          <attribute name="CAP" value=""/>
-          <attribute name="FTOL" value=""/>
-          <attribute name="FSTBL" value=""/>
-        </part>
-        <part name="LED2" library="NVSL" deviceset="GENERIC-DIODE-LED_" device="" technology="" value="Green"/>
+        <part name="R7" library="PickerDesign" deviceset="GENERIC-RESISTOR_" device="" technology="" value="1.5K"/>
+        <part name="D2" library="PickerDesign" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" technology="" value="&lt;0.500V"/>
         <part name="JP1" library="NVSL" deviceset="USB-5PIN-CONN_" device="USB-MINIB-MTH-POSTS" technology="" value="None">
           <attribute name="DIST1PN" value="609-4701-1-ND"/>
           <attribute name="MPN" value="10033526-N3212MLF"/>
@@ -8013,7 +9497,6 @@ In this library the device names are the same as the pin names of the symbols, t
           <attribute name="MFR" value="Samtec"/>
           <attribute name="DIST1" value="DigiKey"/>
         </part>
-        <part name="FRAME4" library="frames" deviceset="FRAME_A_L" device="" technology="" value="None"/>
         <part name="JP5" library="NVSL" deviceset="SIP-2_" device="2.54-SPACE-VERTICAL" technology="" value="None">
           <attribute name="DIST1PN" value="SAM1035-50-ND"/>
           <attribute name="BREAKAWAY" value="2 position"/>
@@ -8022,17 +9505,17 @@ In this library the device names are the same as the pin names of the symbols, t
           <attribute name="DIST1" value="DigiKey"/>
         </part>
         <part name="U$20" library="microbuilder" deviceset="VBUS" device="" technology="" value="None"/>
-        <part name="FRAME6" library="frames" deviceset="FRAME_A_L" device="" technology="" value="None"/>
         <part name="U$3" library="microbuilder" deviceset="VBUS" device="" technology="" value="None"/>
+        <part name="D1" library="PickerDesign" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" technology="" value="&lt;0.500V"/>
         <part name="U$1" library="microbuilder" deviceset="VBAT" device="" technology="" value="None"/>
         <part name="U$6" library="microbuilder" deviceset="VBUS" device="" technology="" value="None"/>
         <part name="U2A" library="NVSL" deviceset="ADJUSTABLE-VOLTAGE-REGULATOR_" device="SOIC8" technology="" value="None">
           <attribute name="DIST1PN" value="576-1149-1-ND"/>
           <attribute name="IFWD" value="150ma"/>
           <attribute name="VFWD" value="0.3V"/>
-          <attribute name="MPN" value="MIC2951-03YM"/>
           <attribute name="IOUT" value=""/>
           <attribute name="VIN" value=""/>
+          <attribute name="MPN" value="MIC2951-03YM"/>
           <attribute name="MFR" value="Micrel"/>
           <attribute name="DIST1" value="DigiKey"/>
           <attribute name="VDO" value=""/>
@@ -8053,38 +9536,39 @@ In this library the device names are the same as the pin names of the symbols, t
         <part name="SUPPLY5" library="supply2" deviceset="VCC" device="" technology="" value="None"/>
         <part name="SUPPLY6" library="supply2" deviceset="VCC" device="" technology="" value="None"/>
         <part name="SUPPLY7" library="supply2" deviceset="VCC" device="" technology="" value="None"/>
-        <part name="D2A" library="NVSL" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" technology="" value="&lt;0.500V"/>
-        <part name="C2" library="NVSL" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="100pF"/>
-        <part name="C1" library="NVSL" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="3.3uF">
+        <part name="D2A" library="PickerDesign" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" technology="" value="&lt;0.500V"/>
+        <part name="C2" library="PickerDesign" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="100pF"/>
+        <part name="C1" library="PickerDesign" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="3.3uF">
           <attribute name="VOLTS" value="35V"/>
         </part>
-        <part name="D2B" library="NVSL" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" technology="" value="&lt;0.500V"/>
+        <part name="D2B" library="PickerDesign" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" technology="" value="&lt;0.500V"/>
         <part name="SUPPLY8" library="supply2" deviceset="VCC" device="" technology="" value="None"/>
         <part name="SUPPLY9" library="supply2" deviceset="VCC" device="" technology="" value="None"/>
-        <part name="C5" library="NVSL" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="0.1uF"/>
-        <part name="C4" library="NVSL" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="0.1uF"/>
-        <part name="R4" library="NVSL" deviceset="GENERIC-RESISTOR_" device="" technology="" value="68"/>
-        <part name="R5" library="NVSL" deviceset="GENERIC-RESISTOR_" device="" technology="" value="68"/>
-        <part name="R6" library="NVSL" deviceset="GENERIC-RESISTOR_" device="" technology="" value="470"/>
-        <part name="R7" library="NVSL" deviceset="GENERIC-RESISTOR_" device="" technology="" value="1.5K"/>
-        <part name="R1" library="NVSL" deviceset="GENERIC-RESISTOR_" device="" technology="" value="100K">
+        <part name="C5" library="PickerDesign" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="0.1uF"/>
+        <part name="C4" library="PickerDesign" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="0.1uF"/>
+        <part name="LED1" library="PickerDesign" deviceset="GENERIC-DIODE-LED_" device="" technology="" value="Red"/>
+        <part name="R5" library="PickerDesign" deviceset="GENERIC-RESISTOR_" device="" technology="" value="68"/>
+        <part name="GND9" library="supply1" deviceset="GND" device="" technology="" value="None"/>
+        <part name="LED2" library="PickerDesign" deviceset="GENERIC-DIODE-LED_" device="" technology="" value="Green"/>
+        <part name="R1" library="PickerDesign" deviceset="GENERIC-RESISTOR_" device="" technology="" value="100K">
           <attribute name="TOL" value="1%"/>
         </part>
-        <part name="R3" library="NVSL" deviceset="GENERIC-RESISTOR_" device="" technology="" value="470"/>
+        <part name="R3" library="PickerDesign" deviceset="GENERIC-RESISTOR_" device="" technology="" value="470"/>
         <part name="GND3" library="supply1" deviceset="GND" device="" technology="" value="None"/>
-        <part name="R2C" library="NVSL" deviceset="GENERIC-RESISTOR_" device="" technology="" value="143K">
+        <part name="R2C" library="PickerDesign" deviceset="GENERIC-RESISTOR_" device="" technology="" value="143K">
           <attribute name="TOL" value="1%"/>
         </part>
-        <part name="R8" library="NVSL" deviceset="GENERIC-RESISTOR_" device="" technology="" value="10K"/>
+        <part name="GND10" library="supply1" deviceset="GND" device="" technology="" value="None"/>
+        <part name="R8" library="PickerDesign" deviceset="GENERIC-RESISTOR_" device="" technology="" value="10K"/>
         <part name="GND4" library="supply1" deviceset="GND" device="" technology="" value="None"/>
-        <part name="C3" library="NVSL" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="3.3uF">
+        <part name="C3" library="PickerDesign" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="3.3uF">
           <attribute name="VOLTS" value="35V"/>
         </part>
-        <part name="R2B" library="NVSL" deviceset="GENERIC-RESISTOR_" device="" technology="" value="170K+/-3%">
+        <part name="R2B" library="PickerDesign" deviceset="GENERIC-RESISTOR_" device="" technology="" value="170K+/-3%">
           <attribute name="TOL" value="1%"/>
         </part>
         <part name="U$12" library="microbuilder" deviceset="VBAT" device="" technology="" value="None"/>
-        <part name="R1A" library="NVSL" deviceset="GENERIC-RESISTOR_" device="" technology="" value="100K">
+        <part name="R1A" library="PickerDesign" deviceset="GENERIC-RESISTOR_" device="" technology="" value="100K">
           <attribute name="TOL" value="1%"/>
         </part>
         <part name="GND17" library="supply1" deviceset="GND" device="" technology="" value="None"/>
@@ -8104,21 +9588,21 @@ In this library the device names are the same as the pin names of the symbols, t
           <attribute name="DIST1PN" value="576-1149-1-ND"/>
           <attribute name="IFWD" value="150ma"/>
           <attribute name="VFWD" value="0.3V"/>
-          <attribute name="MPN" value="MIC2951-03YM"/>
           <attribute name="IOUT" value=""/>
           <attribute name="VIN" value=""/>
+          <attribute name="MPN" value="MIC2951-03YM"/>
           <attribute name="MFR" value="Micrel"/>
           <attribute name="DIST1" value="DigiKey"/>
           <attribute name="VDO" value=""/>
         </part>
         <part name="GND14" library="supply1" deviceset="GND" device="" technology="" value="None"/>
-        <part name="C1B" library="NVSL" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="3.3uF">
+        <part name="C1B" library="PickerDesign" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="3.3uF">
           <attribute name="VOLTS" value="35V"/>
         </part>
-        <part name="C1A" library="NVSL" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="3.3uF">
+        <part name="C1A" library="PickerDesign" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="3.3uF">
           <attribute name="VOLTS" value="35V"/>
         </part>
-        <part name="C2A" library="NVSL" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="100pF"/>
+        <part name="C2A" library="PickerDesign" deviceset="GENERIC-CAPACITOR-NP_" device="" technology="" value="100pF"/>
         <part name="J2" library="NVSL" deviceset="GENERIC-BATTERY-CONN-RECEPTACLE" device="PH-SMD-2MM" technology="" value="None">
           <attribute name="DIST1PN" value="455-1749-2-ND"/>
           <attribute name="MPN" value="S2B-PH-SM4-TB(LF)(SN)"/>
@@ -8132,22 +9616,27 @@ In this library the device names are the same as the pin names of the symbols, t
           <attribute name="DIST1" value="DigiKey"/>
         </part>
         <part name="FRAME9" library="frames" deviceset="FRAME_A_L" device="" technology="" value="None"/>
-        <part name="GND10" library="supply1" deviceset="GND" device="" technology="" value="None"/>
-        <part name="D1A" library="NVSL" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" technology="" value="&lt;0.500V"/>
+        <part name="FRAME8" library="frames" deviceset="FRAME_A_L" device="" technology="" value="None"/>
+        <part name="D1A" library="PickerDesign" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" technology="" value="&lt;0.500V"/>
         <part name="SW1" library="NVSL" deviceset="PUSHBUTTON-SHIELD-GND_" device="CK_KMR211GLSR-TACTILE" technology="" value="None">
           <attribute name="DIST1PN" value="401-1426-1-ND"/>
           <attribute name="MPN" value="KMR211GLFS"/>
           <attribute name="MFR" value="C&amp;K"/>
           <attribute name="DIST1" value="DigiKey"/>
         </part>
-        <part name="FRAME3" library="frames" deviceset="FRAME_A_L" device="" technology="" value="None"/>
+        <part name="Y1" library="PickerDesign" deviceset="GENERIC-RESONATOR_" device="" technology="" value="16 MHz">
+          <attribute name="STBL" value=""/>
+          <attribute name="CAP" value=""/>
+          <attribute name="FTOL" value=""/>
+          <attribute name="FSTBL" value=""/>
+        </part>
         <part name="FRAME2" library="frames" deviceset="FRAME_A_L" device="" technology="" value="None"/>
-        <part name="D4" library="NVSL" deviceset="GENERIC-DIODE-ZENER_" device="" technology="" value="3.6"/>
-        <part name="D5" library="NVSL" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" technology="" value="&lt;0.500V"/>
-        <part name="D2" library="NVSL" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" technology="" value="&lt;0.500V"/>
-        <part name="D3" library="NVSL" deviceset="GENERIC-DIODE-ZENER_" device="" technology="" value="3.6"/>
+        <part name="D4" library="PickerDesign" deviceset="GENERIC-DIODE-ZENER_" device="" technology="" value="3.6"/>
+        <part name="D5" library="PickerDesign" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" technology="" value="&lt;0.500V"/>
+        <part name="FRAME7" library="frames" deviceset="FRAME_A_L" device="" technology="" value="None"/>
+        <part name="FRAME6" library="frames" deviceset="FRAME_A_L" device="" technology="" value="None"/>
         <part name="FRAME5" library="frames" deviceset="FRAME_A_L" device="" technology="" value="None"/>
-        <part name="D1" library="NVSL" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" technology="" value="&lt;0.500V"/>
+        <part name="FRAME4" library="frames" deviceset="FRAME_A_L" device="" technology="" value="None"/>
       </parts>
       <sheets>
         <sheet>
@@ -8562,29 +10051,16 @@ signal to meet USB specs at the receiver.  Below 3.3V add a level translator - ?
                 <label x="111.76" y="154.94" size="1.778" layer="95" font="proportional" ratio="8" rot="R0" xref="no"/>
               </segment>
             </net>
-            <net name="RST" class="0">
+            <net name="D6" class="0">
               <segment>
-                <pinref gate="G$1" part="U1" pin="PC6(/RESET)"/>
-                <pinref gate="G$1" part="SW1" pin="3"/>
-                <pinref gate="G$1" part="SW1" pin="2"/>
-                <pinref gate="G$1" part="R8" pin="2"/>
-                <pinref gate="G$1" part="C4" pin="1"/>
-                <wire x1="88.9" x2="76.2" y1="137.16" y2="137.16" width="0.1524" layer="91"/>
-                <wire x1="81.28" x2="76.2" y1="149.86" y2="149.86" width="0.1524" layer="91"/>
-                <wire x1="76.2" x2="76.2" y1="149.86" y2="137.16" width="0.1524" layer="91"/>
-                <wire x1="76.2" x2="76.2" y1="149.86" y2="154.94" width="0.1524" layer="91"/>
-                <wire x1="76.2" x2="76.2" y1="154.94" y2="162.56" width="0.1524" layer="91"/>
-                <wire x1="76.2" x2="73.66" y1="149.86" y2="149.86" width="0.1524" layer="91"/>
-                <wire x1="86.36" x2="76.2" y1="162.56" y2="162.56" width="0.1524" layer="91"/>
-                <wire x1="86.36" x2="76.2" y1="154.94" y2="154.94" width="0.1524" layer="91"/>
-                <junction x="76.2" y="149.86"/>
-                <junction x="76.2" y="154.94"/>
-                <label x="78.74" y="137.16" size="1.778" layer="95" font="proportional" ratio="8" rot="R0" xref="no"/>
+                <pinref gate="G$1" part="JP4" pin="6"/>
+                <wire x1="200.66" x2="210.82" y1="149.86" y2="149.86" width="0.1524" layer="91"/>
+                <label x="203.2" y="149.86" size="1.778" layer="95" font="proportional" ratio="8" rot="R0" xref="no"/>
               </segment>
               <segment>
-                <pinref gate="G$1" part="JP4" pin="12"/>
-                <wire x1="210.82" x2="200.66" y1="134.62" y2="134.62" width="0.1524" layer="91"/>
-                <label x="200.66" y="134.62" size="1.778" layer="95" font="proportional" ratio="8" rot="R0" xref="no"/>
+                <pinref gate="G$1" part="U1" pin="PD6(AIN0)"/>
+                <wire x1="149.86" x2="137.16" y1="99.06" y2="99.06" width="0.1524" layer="91"/>
+                <label x="139.7" y="99.06" size="1.778" layer="95" font="proportional" ratio="8" rot="R0" xref="no"/>
               </segment>
             </net>
             <net name="N$2" class="0">
@@ -8666,16 +10142,29 @@ signal to meet USB specs at the receiver.  Below 3.3V add a level translator - ?
                 <label x="170.18" y="162.56" size="1.778" layer="95" font="proportional" ratio="8" rot="R0" xref="no"/>
               </segment>
             </net>
-            <net name="D6" class="0">
+            <net name="RST" class="0">
               <segment>
-                <pinref gate="G$1" part="JP4" pin="6"/>
-                <wire x1="200.66" x2="210.82" y1="149.86" y2="149.86" width="0.1524" layer="91"/>
-                <label x="203.2" y="149.86" size="1.778" layer="95" font="proportional" ratio="8" rot="R0" xref="no"/>
+                <pinref gate="G$1" part="U1" pin="PC6(/RESET)"/>
+                <pinref gate="G$1" part="SW1" pin="3"/>
+                <pinref gate="G$1" part="SW1" pin="2"/>
+                <pinref gate="G$1" part="R8" pin="2"/>
+                <pinref gate="G$1" part="C4" pin="1"/>
+                <wire x1="88.9" x2="76.2" y1="137.16" y2="137.16" width="0.1524" layer="91"/>
+                <wire x1="81.28" x2="76.2" y1="149.86" y2="149.86" width="0.1524" layer="91"/>
+                <wire x1="76.2" x2="76.2" y1="149.86" y2="137.16" width="0.1524" layer="91"/>
+                <wire x1="76.2" x2="76.2" y1="149.86" y2="154.94" width="0.1524" layer="91"/>
+                <wire x1="76.2" x2="76.2" y1="154.94" y2="162.56" width="0.1524" layer="91"/>
+                <wire x1="76.2" x2="73.66" y1="149.86" y2="149.86" width="0.1524" layer="91"/>
+                <wire x1="86.36" x2="76.2" y1="162.56" y2="162.56" width="0.1524" layer="91"/>
+                <wire x1="86.36" x2="76.2" y1="154.94" y2="154.94" width="0.1524" layer="91"/>
+                <junction x="76.2" y="149.86"/>
+                <junction x="76.2" y="154.94"/>
+                <label x="78.74" y="137.16" size="1.778" layer="95" font="proportional" ratio="8" rot="R0" xref="no"/>
               </segment>
               <segment>
-                <pinref gate="G$1" part="U1" pin="PD6(AIN0)"/>
-                <wire x1="149.86" x2="137.16" y1="99.06" y2="99.06" width="0.1524" layer="91"/>
-                <label x="139.7" y="99.06" size="1.778" layer="95" font="proportional" ratio="8" rot="R0" xref="no"/>
+                <pinref gate="G$1" part="JP4" pin="12"/>
+                <wire x1="210.82" x2="200.66" y1="134.62" y2="134.62" width="0.1524" layer="91"/>
+                <label x="200.66" y="134.62" size="1.778" layer="95" font="proportional" ratio="8" rot="R0" xref="no"/>
               </segment>
             </net>
             <net name="D7" class="0">

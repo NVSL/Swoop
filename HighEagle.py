@@ -1697,6 +1697,16 @@ class Attribute (EagleFilePart):
         assert attribute_root.tag == "attribute"
         #ET.dump(attribute_root);
         #ET.dump(attribute_root.getparent());
+        if attribute_root.get("extent") is not None:
+            raise NotImplementedError("BRD-style Attributes not supported yet")
+        if attribute_root.get("x") is not None:
+            raise NotImplementedError("BRD-style Attributes not supported yet")
+        if attribute_root.get("y") is not None:
+            raise NotImplementedError("BRD-style Attributes not supported yet")
+        if attribute_root.get("display") is not None:
+            raise NotImplementedError("BRD-style Attributes not supported yet")
+        
+
         if attribute_root.getparent().tag == "technology":
             from_library = True;
         elif attribute_root.getparent().tag == "part":
@@ -1958,6 +1968,8 @@ class Wire (DrawingElement):
     @staticmethod
     def from_et (parent, wire_root):
         assert wire_root.tag == "wire"
+        if wire_root.get("extent") is not None:
+            raise NotImplementedError("BRD-style wires not supported yet")
         return Wire(
             parent=parent,
             x1=wire_root.get("x1"),
@@ -2138,3 +2150,178 @@ class Instance (EagleFilePart):
             rot=self.rot
         )
     
+class NetClass (EagleFilePart):
+    """
+    Eagle brd net class
+    """
+    def __init__(self, parent=None, number=None, name=None,width=None,drill=None):
+        EagleFilePart.__init__(self,parent)
+        self.parent = parent
+        self.number = number
+        self.name = name
+        self.width = width
+        self.drill = drill
+
+    @staticmethod
+    def from_et(parent, instance_root):
+        assert instance_root.tag == "class"
+        return NetClass(
+            parent = parent,
+            number = instance_root.get("number"),
+            name= instance_root.get("name"),
+            width = instance_root.get("width"),
+            drill = instance_root.get("drill")
+        )
+
+    def get_et(self):
+        return EagleUtil.make_class(
+            number=self.number,
+            name=self.name,
+            width=self.width,
+            drill= self.drill);
+
+class ContactRef(EagleFilePart):
+
+    def __init__(self, parent=None, element=None,pad=None):
+        """
+        """
+        EagleFilePart.__init__(self,parent)
+        self.element=element
+        self.pad=pad
+
+    @staticmethod
+    def from_et(parent, root):
+        assert root.tag == "contactref"
+        return ContactRef(
+            element=element,
+            pad=pad
+        )
+
+    def get_et(self):
+        return EagleUtil.make_contactref(
+            element=self.element,
+            pad=self.pad
+        )
+
+class Description(EagleFilePart):
+
+    def __init__(self, parent=None, language=None):
+        """
+        """
+        EagleFilePart.__init__(self,parent)
+        self.language=language
+
+    @staticmethod
+    def from_et(parent, root):
+        assert root.tag == "description"
+        return Description(
+            language=language
+        )
+
+    def get_et(self):
+        return EagleUtil.make_description(
+            language=self.language
+        )
+
+class Signal(EagleFilePart):
+
+    def __init__(self, parent=None, name=None,contactrefs=None):
+        """
+        """
+        EagleFilePart.__init__(self,parent)
+        self.name=name
+        self.contactrefs=contactrefs
+
+    @staticmethod
+    def from_et(parent, root):
+        assert root.tag == "signal"
+        return Signal(
+            name=name,
+            contactrefs=contactrefs
+        )
+
+    def get_et(self):
+        return EagleUtil.make_signal(
+            name=self.name,
+            contactrefs=self.contactrefs
+        )
+
+class Param(EagleFilePart):
+
+    def __init__(self, parent=None, name=None,value=None):
+        """
+        """
+        EagleFilePart.__init__(self,parent)
+        self.name=name
+        self.value=value
+
+    @staticmethod
+    def from_et(parent, root):
+        assert root.tag == "param"
+        return Param(
+            name=name,
+            value=value
+        )
+
+    def get_et(self):
+        return EagleUtil.make_param(
+            name=self.name,
+            value=self.value
+        )
+
+class Element(EagleFilePart):
+
+    def __init__(self, parent=None, name=None,value=None,package=None,x=None,y=None):
+        """
+        """
+        EagleFilePart.__init__(self,parent)
+        self.name=name
+        self.value=value
+        self.package=package
+        self.value=value
+        self.x=x
+        self.y=y
+
+    @staticmethod
+    def from_et(parent, root):
+        assert root.tag == "element"
+        return Element(
+            name=name,
+            value=value,
+            package=package,
+            x=x,
+            y=y
+        )
+
+    def get_et(self):
+        return EagleUtil.make_element(
+            name=self.name,
+            value=self.value,
+            package=self.package,
+            x=self.x,
+            y=self.y
+        )
+
+class Pass(EagleFilePart):
+
+    def __init__(self, parent=None, name=None,params=None):
+        """
+        """
+        EagleFilePart.__init__(self,parent)
+        self.name=name
+        self.params=params
+
+    @staticmethod
+    def from_et(parent, root):
+        assert root.tag == "pass"
+        return Pass(
+            name=name,
+            params=params
+        )
+
+    def get_et(self):
+        return EagleUtil.make_pass(
+            name=self.name,
+            params=self.params
+        )
+

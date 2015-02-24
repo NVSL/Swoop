@@ -994,5 +994,74 @@ def make_rectangle (
     return rectangle
 
 
+def make_contactref(
+        element,
+        pad
+):
+    contactref = ET.Element("contactref")
+    contactref.set("element", element)
+    contactref.set("pad", pad)
 
+    return contactref
+
+
+def make_description(
+        language
+):
+    description = ET.Element("description")
+    description.set("language", language)
+
+    return description
+
+
+def make_signal(
+        name,
+        contactrefs
+):
+    signal = ET.Element("signal")
+    signal.set("name", name)
+    raise NotImplementedError("Multilpe contact refs not supported")
+    signal.set("contactrefs", contactrefs)
+
+    return signal
+
+
+def make_param(
+        name,
+        value
+):
+    param = ET.Element("param")
+    param.set("name", name)
+    param.set("value", value)
+
+    return param
+
+
+def make_element(
+        name,
+        value,
+        package,
+        x,
+        y
+):
+    element = ET.Element("element")
+    element.set("name", name)
+    element.set("value", value)
+    element.set("package", package)
+    element.set("x", x)
+    element.set("y", y)
+
+    return element
+
+
+def make_pass(
+        name,
+        params
+):
+    p = ET.Element("pass")
+    p.set("name", name)
+    raise NotImplementedError("Multilpe params not supported")
+    p.set("params", params)
+
+    return p
 

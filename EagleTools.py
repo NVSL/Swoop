@@ -89,11 +89,14 @@ def mergeLayers(src, dst, force=False):
             if ((srcLayer.name == dstLayer.name and srcLayer.number != dstLayer.number) or 
                 (srcLayer.name != dstLayer.name and srcLayer.number == dstLayer.number)):
                 if force:
-                    src.remove_layer(dstLayer)
+                    try:
+                        src.remove_layer(dstLayer)
+                    except:
+                        pass
                 else:
-                    raise HighEagleError("Layer mismatch: " +
-                                         ef.filename + " <" + str(srcLayer.number) + ", '" + srcLayer.name +"'>; " +
-                                         src.filename +" = <" + str(dstLayer.number) + ", '" + dstLayer.name +"'>;")
+                    raise HE.HighEagleError("Layer mismatch: " +
+                                            src.filename + " <" + str(srcLayer.number) + ", '" + srcLayer.name +"'>; " +
+                                            dst.filename +" = <" + str(dstLayer.number) + ", '" + dstLayer.name +"'>;")
         if srcLayer.name not in dst.get_layers():
             dst.add_layer(srcLayer.clone())
         

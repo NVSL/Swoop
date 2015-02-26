@@ -279,6 +279,130 @@ class EagleFile(EagleFilePart):
     def get_library(self, l):
         return self.libraries.get(l)
 
+class Board (EagleFile):
+    """
+    This is the top level for a circuit file.
+    
+    It contains libraries, parts, sheets, and some other information required by the EAGLE file format.
+    """
+    def __init__ (self):
+        """
+        Initialized an empty board  or loads a board from a .brd file if
+        a file name is specified.
+        """
+        EagleFile.__init__(self)
+        self.tree = None
+        self.root = None
+    
+        self.settings = {}
+        self.grid = {}
+        self.plain = []
+        self.libraries = {}
+        self.attributes = {}
+        self.variantdefs = {}
+        self.classes = {}
+        self.designrules = {}
+        self.autorouter = {}
+        self.elements = {}
+        self.signals = {}
+        
+    @staticmethod
+    def from_et (et):
+        """
+        Loads a Schematic from an ElementTree.Element representation.
+        """
+        brd = Board()
+        brd.tree = ET.ElementTree(et)
+        
+        # get sections
+        settings = EagleUtil.get_settings(et)
+        grid = EagleUtil.get_grid(et)
+        libraries = EagleUtil.get_libraries(et)
+        attributes = EagleUtil.get_attributes(et)
+        variantdefs = EagleUtil.get_variantdefs(et)
+        classes = EagleUtil.get_classes(et)
+        plain = EagleUtil.get_plain(et)
+        designrules = EagleUtil.get_designrule_params(et)
+        autorouter = EagleUtil.get_autorouter_passes(et)
+        elements = EagleUtil.get_elements(et)
+        signals = EagleUtil.get_signals(et)
+        
+        #transform
+        #print "Working on settings.", "Found", len(settings)
+        for setting in settings:
+            for key in setting.attrib:
+                brd.settings[key] = setting.attrib[key]
+                #print "Got:", key, setting.attrib[key]
+                
+                
+        for key in grid.attrib:
+            brd.grid[key] = grid.attrib[key]
+            
+        assert len(brd.get_layers()) > 0, "No layers in brdematic."
+        
+        for library in libraries:
+            new_lib = Library.from_et(brd,library)
+            brd.add_library(new_lib)
+            
+        for attribute in attributes:
+            raise NotImplementedError("Board attributes support not implemented")
+            
+        for variantdef in variantdefs:
+            raise NotImplementedError("Board variant support not implemented")
+            
+        for net_class in classes:
+            #print net_class
+            new_class = NetClass.from_et(brd,net_class)
+            brd.add_class(new_class)
+
+        for param in designrules:
+            new_param = Param.from_et(brd,param)
+            brd.add_designrule_param(new_param)
+            
+        for p in autorouter:
+            new_pass= Pass.from_et(brd,p)
+            brd.add_autorouter_pass(new_pass)
+            
+        for element in elements:
+            #print element
+            new_element = Element.from_et(brd,element)
+            brd.add_element(new_element)
+        
+        for signal in signals:
+            #print signal
+            new_signal = Signal.from_et(brd,signal)
+            brd.add_signal(new_signal)
+        
+        return brd
+
+    
+    @staticmethod
+    def from_file (filename):
+        return EagleFile.from_file_by_type(filename, Schematic)
+
+    def get_manifest(self, indent=""):
+        r = indent + "Libraries (" + str(len(self.libraries)) + ")\n"+ indent
+        for l in self.libraries:
+            r = r + "\t" + l+ "\n"
+            r = r + self.libraries[l].get_manifest(indent + "\t"  + "\t") + "\n"+indent
+        r = r + "Parts (" + str(len(self.parts)) + ")\n"+ indent
+        for l in self.parts:
+            r = r + "\t" + l + "\n"+ indent
+        r = r + "Sheets (" + str(len(self.sheets)) + ")\n"+ indent
+        return r
+        
+    def add_part (self, p, sheet_index=0):
+        """
+        Adds a part to the schematic.
+        All gates are placed on the given sheet (default sheet 0).
+        """
+        self.parts[p.name] = p
+        p.parent = self
+        #raise NotImplementedError("Adding parts not implemented")
+        # add part to schematic
+        # add part to sheet_index
+        # make sure part is in library
+        
 class Schematic (EagleFile):
     """
     This is the top level for a circuit file.
@@ -2189,6 +2313,9 @@ class ContactRef(EagleFilePart):
         self.element=element
         self.pad=pad
 
+    def clone(self):
+        return self._clone()
+    
     @staticmethod
     def from_et(parent, root):
         assert root.tag == "contactref"
@@ -2225,27 +2352,50 @@ class Description(EagleFilePart):
 
 class Signal(EagleFilePart):
 
-    def __init__(self, parent=None, name=None,contactrefs=None):
+    def __init__(self, parent=None, name=None,contactrefs=None, wires=None):
         """
         """
         EagleFilePart.__init__(self,parent)
         self.name=name
-        self.contactrefs=contactrefs
-
+        if contactrefs is None:
+            self.contactrefs=[]
+        if wires is None:
+            self.wires=[]
+            
+    def clone(self):
+        n = copy.copy(self)
+        [n.add_contactref(i.clone()) for i in self.contactrefs]
+        [n.add_wire(i.clone()) for i in self.wires]
+        
     @staticmethod
     def from_et(parent, root):
         assert root.tag == "signal"
-        return Signal(
-            name=name,
-            contactrefs=contactrefs
-        )
+        n = Signal(parent, name=root.get("name"))
+        for cr in EagleUtil.get_contactrefs(root):
+            c = ContactRef.from_et(cr)
+            self.add_contactref(c)
+        for cr in EagleUtil.get_wires(root):
+            c = Wire.from_et(cr)
+            self.add_wire(c)
+            
+        return n
 
     def get_et(self):
+        n = EagleUtil.make_signal(name=self.name)
+        
         return EagleUtil.make_signal(
             name=self.name,
-            contactrefs=self.contactrefs
+            contactrefs=[c.get_et() for i in self.contactrefs]
         )
 
+    def add_contactref(self, c):
+        self.contactrefs.append(c)
+        c.parent = self
+
+    def add_wire(self, c):
+        self.wireds.append(c)
+        c.parent = self
+        
 class Param(EagleFilePart):
 
     def __init__(self, parent=None, name=None,value=None):

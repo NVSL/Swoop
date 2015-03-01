@@ -18,7 +18,8 @@ if __name__ == "__main__":
         Class representing an attribute
         """
         def __init__(self, name, required=False, parse=None, unparse=None):
-            self.xml_name = name
+            self.xmlName = name
+            self.accessorName = name
             self.name = name.replace("-", "_")
             self.required = required
             if parse is None:
@@ -80,7 +81,8 @@ if __name__ == "__main__":
                      baseclass=None, # what class should you derive from
                      attrs=None,
                      sections=None,
-                     customchild = None  # I will create a subclass of this type for actual use
+                     customchild = None,  # I will create a subclass of this type for actual use
+                     preserveTextAs=""
                      ):
             if sections is None:
                 self.sections = []
@@ -94,7 +96,8 @@ if __name__ == "__main__":
             self.baseclass = baseclass
             self.classname = self.get_tag_initial_cap()
             self.customchild = customchild
-
+            self.preserveTextAs = preserveTextAs
+            
         def get_attr_names(self):
             return [x for x in self.attrs]
         def get_list_names(self):
@@ -128,8 +131,18 @@ if __name__ == "__main__":
                      )
 
     # clean up attributes that class with python reserve words
-    for t in ["clearance", "net","signal"]:
+    for t in ["clearance", "net", "signal"]:
         tags[t].attrs["class"].name = "netclass"
+        tags[t].attrs["class"].accessorName = "class"
+        tags[t].attrs["class"].xmlName = "class"
+
+    for i in ["border-left", "border-top", "border-right", "border-bottom"]:
+        tags["frame"].attrs[i].name = i.replace("-", "_")
+        tags["frame"].attrs[i].accessorName = i.replace("-", "_")
+        tags["frame"].attrs[i].xmlName = i
+        
+    for t in ["clearance", "net", "signal"]:
+        tags[t].attrs["class"].accessorName = "netclass"
         tags[t].attrs["class"].xmlName = "class"
 
     # add parsing support for layers
@@ -241,12 +254,12 @@ if __name__ == "__main__":
                                 Map("devices", "./devices/device")]
 
     tags["device"].sections=[List("connects", "./connects/connect"),
-                          List("technologies", "./technologies/technology")]
+                             List("technologies", "./technologies/technology")]
 
     tags["designrules"].sections=[Singleton("description", "./description"),
                                   Map("params", "./param")]
     
-    tags["technology"].sections=[Map("attributes", "./attributes/attribute")]
+    tags["technology"].sections=[Map("attributes", "./attribute")]
                              
     tags["package"].sections=[Singleton("description", "./description"),
                               List("drawing_elements","./polygon|./wire|./text|./dimension|./circle|./rectangle|./frame|./hole"),
@@ -254,8 +267,8 @@ if __name__ == "__main__":
                               Map("smds", "./smd"),
                           ]
     tags["symbol"].sections=[Singleton("description", "./description"),
-                              List("drawing_elements","./polygon|./wire|./text|./dimension|./circle|./rectangle|./frame|./hole"),
-                              Map("pins", "./pin")]
+                             List("drawing_elements","./polygon|./wire|./text|./dimension|./circle|./rectangle|./frame|./hole"),
+                             Map("pins", "./pin")]
     
     tags["class"].sections=[Map("clearances", "./clearance")]
 
@@ -271,6 +284,9 @@ if __name__ == "__main__":
 
     tags["polygon"].sections = [List("vertices", "./vertex")]
 
+    tags["description"].preserveTextAs = "text"
+    tags["text"].preserveTextAs = "text"
+    
     # finalize() does some post-processing on the sections to prepare them for
     # genearting code.
     for i in tags.values():

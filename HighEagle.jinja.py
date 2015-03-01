@@ -1,4 +1,4 @@
-#from HighEagle import *
+
 from lxml import etree as ET
 import eagleDTD
 import StringIO
@@ -305,7 +305,7 @@ def unparse_constant(s):
     if not s:
         return "no"
     else:
-        return "yes"
+        return None
     
 #{% for tag in tags %}
 
@@ -354,15 +354,19 @@ class {{classname}}({{tag.baseclass}}):
         self.{{s.name}} = {{s.name}}
         #{%endfor%}
 
+        #{%if tag.preserveTextAs != "" %}
+        self.{{tag.preserveTextAs}} = ""
+        #{%endif%}
+
     @classmethod
     def from_et(cls,root,parent=None):
         assert root.tag == "{{tag.tag}}"
         n = cls(
             #{%for a in tag.attrs.values()%}
             #{%if a.parse != "" %}
-            {{a.name}}={{a.parse}}(root.get("{{a.name}}")),
+            {{a.name}}={{a.parse}}(root.get("{{a.xmlName}}")),
             #{%else%}
-            {{a.name}}=root.get("{{a.name}}"),
+            {{a.name}}=root.get("{{a.xmlName}}"),
             #{%endif%}
             #{%endfor%}
         )
@@ -383,33 +387,43 @@ class {{classname}}({{tag.baseclass}}):
         if len(x) is not 0:
             n.set_{{s.adderName}}(classMap[x[0].tag].from_et(x[0],n))
         #{%endfor%}
+
+        #{%if tag.preserveTextAs != "" %}
+        n.{{tag.preserveTextAs}} = root.text
+        #{% endif %}
         return n
 
 
     def get_et(self):
         r = ET.Element("{{tag.tag}}")
         #{%for a in tag.attrs.values()%}
+        #print "self.{{a.name}} = " + str( self.{{a.name}})
         #{%if a.required %}
-        if self.{{a.name}} is None:
-            #{%if a.unparse != "" %}
-            r.set("{{a.xml_name}}", {{a.unparse}}(None))
-            #{%else%}
-            r.set("{{a.xml_name}}", "")
-            #{%endif%}
-        else:
-            #{%if a.unparse != "" %}
-            r.set("{{a.xml_name}}", {{a.unparse}}(self.{{a.name}}))
-            #{%else%}
-            r.set("{{a.xml_name}}", self.{{a.name}})
-            #{%endif%}
+
+        #{%if a.unparse != "" %}
+        v = {{a.unparse}}(self.{{a.name}})
         #{%else%}
-        if self.{{a.name}} is not None:
-            #{%if a.unparse != "" %}
-            r.set("{{a.xml_name}}", {{a.unparse}}(self.{{a.name}}))
-            #{%else%}
-            r.set("{{a.xml_name}}", self.{{a.name}})
-            #{%endif%}
-        #{%endif%}g
+        v = self.{{a.name}}
+        #{%endif%}
+        
+        if v is None:
+            r.set("{{a.xmlName}}", "")
+        else:
+            r.set("{{a.xmlName}}", v)
+
+        #{%else%}
+
+        #{%if a.unparse != "" %}
+        v = {{a.unparse}}(self.{{a.name}})
+        #{%else%}
+        v = self.{{a.name}}
+        #{%endif%}
+
+        if v is not None:
+            r.set("{{a.xmlName}}", v)
+
+        #{%endif%}
+
         #{%endfor%}
         
         #{%for l in tag.sections%}
@@ -427,6 +441,10 @@ class {{classname}}({{tag.baseclass}}):
             target.append(self.{{l.name}}.get_et())
         #{%endif%}
         #{%endfor%}
+
+        #{%if tag.preserveTextAs != "" %}
+        r.text = self.{{tag.preserveTextAs}}
+        #{% endif %}
         return r
 
     def clone(self):
@@ -448,10 +466,10 @@ class {{classname}}({{tag.baseclass}}):
         return n
         
     #{%for a in tag.attrs.values()%}
-    def get_{{a.name}}(self):
+    def get_{{a.accessorName}}(self):
         return self.{{a.name}}
 
-    def set_{{a.name}}(self,v):
+    def set_{{a.accessorName}}(self,v):
         self.{{a.name}} = v
     #{%endfor%}
 
@@ -672,7 +690,7 @@ class Attribute (Base_Attribute):
                                 rot,
                                 display,
                                 size)
-        self.in_library = False
+        self.in_library = in_library
 
 
     def __str__(self):
@@ -688,7 +706,6 @@ class Attribute (Base_Attribute):
             from_library = False
         else:
             assert False
-
 
         n.in_library = from_library
         return n

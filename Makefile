@@ -1,5 +1,5 @@
 
-default: build test
+default: build test HighEagle.py
 
 build: eagleDTD.py HighEagle.py
 

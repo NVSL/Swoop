@@ -13,7 +13,7 @@ class ScanLayersVisitor(EaglePartVisitor):
         self.definedLayers = set()
 
     def default_pre(self, efp):
-        if "layer" in efp.__dict__:
+        if "layer" in efp.__dict__ and efp.layer is not None:
             assert type(efp.layer) == str
             self.foundLayers.add(efp.layer)
 

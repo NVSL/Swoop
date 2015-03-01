@@ -29,6 +29,7 @@ def make_schematic ():
     sheet = add_empty_sheet(eagle)
     
     return eagle
+
     
 def make_library (
     name,
@@ -99,7 +100,17 @@ def add_part (root, part):
         root.find("./drawing/schematic/parts").append(part)
     else:
         raise NotImplementedError("Don't know how to add part to "+root.tag+" section.")
- 
+
+def smart_add_autorouter(root):
+    smart_add_board(root)
+    if root.find("./drawing/board/autorouter") is None:
+        schematic = root.find("./drawing/board")
+        ET.SubElement(schematic, "autorouter")
+    
+def add_autorouter_pass (root, p):
+    smart_add_autorouter(root)
+    root.find("./drawing/board/autorouter").append(p)
+    
 def make_package (
     name,
     drawingElements,
@@ -222,7 +233,13 @@ def get_layers (root):
         layers = root.findall("./drawing/layers/layer")
         return layers
     else:
-        raise NotImplementedError("Don't know how to find layers in "+root.tag+" section.")   
+        raise NotImplementedError("Don't know how to find layers in "+root.tag+" section.")
+
+def get_vertices (root):
+    if root.tag == "polygon":
+        return root.findall("./vertex")
+    else:
+        raise NotImplementedError("Don't know how to find vertices in "+root.tag+" section.")   
     
 def get_grid (root):
     if root.tag == "eagle":
@@ -362,7 +379,66 @@ def set_grid (
     grid_root.set("altdistance", altdistance)
     grid_root.set("altunitdist", altunitdist)
     grid_root.set("altunit", altunit)
-    
+
+def smart_add_board (root):
+    assert root.tag == "eagle"
+    smart_add_drawing(root)
+    if root.find("./drawing/board") is None:
+        drawing = root.find("./drawing")
+        ET.SubElement(drawing, "board")
+
+def smart_add_elements (root):
+    assert root.tag == "eagle"
+    smart_add_board(root)
+    if root.find("./drawing/board/elements") is None:
+        board = root.find("./drawing/board")
+        ET.SubElement(board, "elements")
+
+def smart_add_signals (root):
+    assert root.tag == "eagle"
+    smart_add_drawing(root)
+    if root.find("./drawing/board/signals") is None:
+        drawing = root.find("./drawing/board")
+        ET.SubElement(drawing, "signals")
+
+def add_signal (root, e):
+    smart_add_signals(root)
+    assert e.tag == "signal"
+    root.find("./drawing/board/signals").append(e)
+
+def add_element (root, e):
+    smart_add_elements(root)
+    assert e.tag == "element"
+    root.find("./drawing/board/elements").append(e)
+
+def smart_add_designrules (root):
+    assert root.tag == "eagle"
+    smart_add_board(root)
+    if root.find("./drawing/board/designrules") is None:
+        drawing = root.find("./drawing")
+        ET.SubElement(drawing, "designrules")
+
+def add_param (root, e):
+    assert root.tag == "pass" or root.tag == "designrules"
+    assert e.tag == "param"
+    root.append(e)
+
+def add_description (root, e):
+    assert root.tag == "designrules"
+    assert e.tag == "description"
+    root.append(e)
+
+def add_contactref (root, e):
+    assert root.tag == "signal"
+    assert e.tag == "contactref"
+    root.append(e)
+
+def add_element (root, e):
+    smart_add_elements(root)
+    assert e.tag == "element"
+    root.find("./drawing/board/elements").append(e)
+
+
 def smart_add_schematic (root):
     assert root.tag == "eagle"
     smart_add_drawing(root)
@@ -381,7 +457,23 @@ def add_sheet (root, sheet):
     smart_add_sheets(root)
     assert sheet.tag == "sheet"
     root.find("./drawing/schematic/sheets").append(sheet)
-    
+
+            
+def smart_add_plain (root):
+    assert root.tag == "eagle"
+    if root.find("./drawing/board/plain") is None:
+        schematic = root.find("./drawing/board")
+        ET.SubElement(schematic, "plain")
+
+def add_plain_element (root, e):
+    smart_add_plain(root)
+    root.find("./drawing/board/plain").append(e)
+
+def add_sheet (root, sheet):
+    smart_add_sheets(root)
+    assert sheet.tag == "sheet"
+    root.find("./drawing/schematic/sheets").append(sheet)
+
 def make_empty_sheet ():
     sheet = ET.Element("sheet")
     
@@ -437,6 +529,18 @@ def get_pins (root):
     else:
         raise NotImplementedError("Don't know how to find pins in "+root.tag+" section.")
 
+def get_params (root):
+    if root.tag == "pass" or root.tag == "designrules":
+        return root.findall("./param")
+    else:
+        raise NotImplementedError("Don't know how to find params in "+root.tag+" section.")
+
+def get_descriptions (root):
+    if root.tag == "designrules":
+        return root.findall("./description")
+    else:
+        raise NotImplementedError("Don't know how to find descriptions in "+root.tag+" section.")
+
 def get_gates (root):
     if root.tag == "deviceset":
         return root.findall("./gates/gate")
@@ -464,32 +568,64 @@ def get_technologies (root):
 def get_plain (root):
     if root.tag == "sheet":
         return root.findall("./plain/*")
+    elif root.tag == "eagle":
+        return root.findall("./board/plain/*")
     else:
-        raise NotImplementedError("Don't know how to find plain in "+root.tag+"section.")
+        raise NotImplementedError("Don't know how to find plain in "+root.tag+" section.")
 
 def get_instances (root):
     if root.tag == "sheet":
         return root.findall("./instances/instance")
     else:
-        raise NotImplementedError("Don't know how to find instances in "+root.tag+"section.")
+        raise NotImplementedError("Don't know how to find instances in "+root.tag+" section.")
 
 def get_buses (root):
     if root.tag == "sheet":
         return root.findall("./buses/bus")
     else:
-        raise NotImplementedError("Don't know how to find buses in "+root.tag+"section.")
+        raise NotImplementedError("Don't know how to find buses in "+root.tag+" section.")
+
+def get_designrules (root):
+    if root.tag == "eagle":
+        return root.findall("./drawing/board/designrules")
+    else:
+        raise NotImplementedError("Don't know how to find designrules in "+root.tag+" section.")
+
+def get_autorouter_passes (root):
+    if root.tag == "eagle":
+        return root.findall("./drawing/board/autorouter/pass")
+    else:
+        raise NotImplementedError("Don't know how to find autorouter passes in "+root.tag+" section.")
+
+def get_elements (root):
+    if root.tag == "eagle":
+        return root.findall("./drawing/board/elements/element")
+    else:
+        raise NotImplementedError("Don't know how to find elements in "+root.tag+" section.")
+
+def get_signals (root):
+    if root.tag == "eagle":
+        return root.findall("./drawing/board/signals/signal")
+    else:
+        raise NotImplementedError("Don't know how to find signals in "+root.tag+" section.")
 
 def get_nets (root):
     if root.tag == "sheet":
         return root.findall("./nets/net")
     else:
-        raise NotImplementedError("Don't know how to find nets in "+root.tag+"section.")
+        raise NotImplementedError("Don't know how to find nets in "+root.tag+" section.")
+
+def get_contactrefs (root):
+    if root.tag == "signal":
+        return root.findall("./contactref")
+    else:
+        raise NotImplementedError("Don't know how to find contactref  in "+root.tag+" section.")
 
 def get_segments (root):
     if root.tag == "net":
         return root.findall("./segment")
     else:
-        raise NotImplementedError("Don't know how to find segments in "+root.tag+"section.")
+        raise NotImplementedError("Don't know how to find segments in "+root.tag+" section.")
 
 def get_wires (root):
     return root.findall("./wire")
@@ -500,7 +636,7 @@ def get_pinrefs (root):
     elif root.tag == "net":
         return root.findall("./segment/pinref")
     else:
-        raise NotImplementedError("Don't know how to find pinrefs in "+root.tag+"section.")
+        raise NotImplementedError("Don't know how to find pinrefs in "+root.tag+" section.")
 
 def get_labels (root):
     if root.tag == "segment":
@@ -508,13 +644,13 @@ def get_labels (root):
     elif root.tag == "net":
         return root.findall("./segment/label")
     else:
-        raise NotImplementedError("Don't know how to find labels in "+root.tag+"section.")
+        raise NotImplementedError("Don't know how to find labels in "+root.tag+" section.")
 
 def get_junctions (root):
     if root.tag == "segment":
         return root.findall("./junction")
     else:
-        raise NotImplementedError("Don't know how to find junctions in "+root.tag+"section.")
+        raise NotImplementedError("Don't know how to find junctions in "+root.tag+" section.")
         
 def make_label (
     x,
@@ -566,14 +702,53 @@ def make_symbol (
     
     return symbol
 
+def make_polygon(width,
+                 layer,
+                 spacing,
+                 pour,
+                 isolate,
+                 orphans,
+                 thermals,
+                 rank,
+                 vertices):
+    polygon = ET.Element("polygon")
+    if width is not None: polygon.set("width",width)
+    if layer is not None: polygon.set("layer",layer)
+    if spacing is not None: polygon.set("spacing",spacing)
+    if pour is not None: polygon.set("pour",pour)
+    if isolate is not None: polygon.set("isolate",isolate)
+    if orphans is not None: polygon.set("orphans",orphans)
+    if thermals is not None: polygon.set("thermals",thermals)
+    if rank is not None: polygon.set("rank",rank)
+
+    polygon.extend(vertices)
+    
+    return polygon
+
+def make_vertex (
+        x,
+        y,
+        curve
+):
+    vertex = ET.Element("vertex")
+    if x is not None: vertex.set("x",x)
+    if y is not None: vertex.set("y",y)
+    if curve is not None: vertex.set("curve",curve)
+
+    return vertex
+
+
 def make_wire (
-    x1,
-    y1,
-    x2,
-    y2,
-    width,
-    curve,
-    layer
+        x1,
+        y1,
+        x2,
+        y2,
+        width,
+        curve,
+        layer,
+        extent,
+        style,
+        cap
 ):
     wire = ET.Element("wire")
     wire.set("x1", x1)
@@ -582,8 +757,12 @@ def make_wire (
     wire.set("y2", y2)
     wire.set("width", width)
     wire.set("layer", layer)
-    if curve is not None:
-        wire.set("curve", curve)
+    if extent is not None:
+        wire.set("extent", extent)
+    if style is not None:
+        wire.set("style", style)
+    if cap is not None:
+        wire.set("cap", cap)
     return wire
 
 def make_pin (
@@ -748,6 +927,7 @@ def get_attributes (root):
     else:
         raise NotImplementedError("Don't know how to find attributes in "+root.tag+" section.")
 
+    
 def make_attribute (name, value, constant):
     #print constant
     #print name
@@ -1056,12 +1236,14 @@ def make_element(
 
 def make_pass(
         name,
-        params
+        params,
+        refer
 ):
     p = ET.Element("pass")
     p.set("name", name)
-    raise NotImplementedError("Multilpe params not supported")
-    p.set("params", params)
+    if refer is not None:
+        p.set("refer", refer)
+    [p.append(p) for p in params]
 
     return p
 

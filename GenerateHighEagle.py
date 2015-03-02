@@ -4,8 +4,78 @@ import argparse
 import logging as log
 import copy
 
+# This program generates a set of python classes for manipulating eagle files.
+# The process relies on three bodies of information.
+#
+# 1.  The contents of tag-summary.dat, which is generated from the eagle DTD by
+#     the Makefile.  It contains the list of tags and the attributes each one
+#     can/must carry.
+#
+# 2.  The contents of this file.  It specifies the characteristic of each that
+#     corresponds to a part of an eagle file.  The file defines several classes
+#     (Attr, List,Map,Singleton, and Tag) that specify how the class eagle
+#     classes should behave.
+#
+# 3.  The contents of HighEagle.jinja.py.  This contains the template code for
+#     the classes, a base class for all the classes, and a class to represent
+#     eagle files, EagleFile.
+#
+# The classes that this code generates each represent a part of an eagle file
+# (class EagleFilePart).  Instances of this class form a tree.  The root of the
+# tree is an instance of SchematicFile, BoardFile, or LibraryFile, all of which
+# are subclasses of EagleFile.
+#
+# Each EagleFilePart contains one or more attribute values and one or more
+# 'collections' (i.e., lists, maps, or singletons) of EagleFileParts.  For
+# instance, SchematicFile contains a collection that maps library names to
+# Library objects, a list of Sheet objects, and a singleton Description
+# instance.
+#
+# This file defines the set of collections that each subclass of EagleFilePart
+# contains.  Each of these subclasses is represented by a Tag object, which
+# contains a list (called "sections") of collections (represented by subclasses
+# of Collection -- namely Map, List, and Singleton).  The Tag object also
+# includes a list of attributes (represented by class Attr).
+#
+# Each Attr, Map, List, and Singleton object includes information necessary to
+# generate code for it.  This includes mostly pedantic stuff like converting
+# "-" to "_" in attribute names so they are valid python identifiers, dealing
+# with eagle tag and attribute names that clash with python reserve words, and
+# information about which attributes and tags are required and which are
+# optional.  There's also some support for parsing values (e.g., converting
+# "yes" to True).
+#
+# The organization of the EagleFilePart hierarchy is similar to the structure
+# of the eagle xml file.  However, we make it easier to navigate by flattening
+# it somewhat.  For instance, in the eagle file layer defintions live in
+# eagle/drawing/layers and sheets live in eagle/drawing/schematic/sheets.  Our
+# library "flattens" this hierarchy so that the SchematicFile class has a map of
+# layers and a list of sheets.
+#
+# To realize this flattened structure, we specify the contents of each
+# collection using an xpath expression.  All the elements that match the
+# expression for Map, List, or Singleton will end up in that collection.  The
+# xpath expressions get passed the constructors for the Map,List, and Singleton.
+#
+# The final stage is to generate the code.  We use the jinja templating system
+# for this.  HighEagle.jinja.py contains templates for EagleFilePart subclass.
+# It generates code for the constructor, the from_et() method to convert for
+# element tree to EagleFileParts, the get_et() method for the reverse
+# conversion, a clone() function for copying EagleFileParts, and accessors for
+# attributes (get_*() and set_*()) and collections (get_*() and add_*()).
+#
+# The jinja file also generates a python map called classMap.  This map defines
+# the mapping between tag names and EagleFilePart subclasses, and the from_et()
+# methods use this map to determine what kind of object to instantiate for a
+# given tag.  My manipulating this map, you can extend classes the parser
+# generates.  For instance, if you created the class CoolPart(Part) (a subclass
+# of Part which represents a <part> tag in an eagle file), set classMap["part"]
+# = CoolPart, and then parse an EagleFile, it will be populated with CoolPart
+# objects instead of Part objects.  In this way, you can easily extend the
+# library which additional functionality.
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Generate functions for building Eagle tags")
+    parser = argparse.ArgumentParser(description="Generate a set of classes for manipulating eagle files")
     parser.add_argument("--in", required=True,  type=str, nargs=1, dest='infile', help="tag definition file")
     parser.add_argument("--out", required=True,  type=str, nargs=1, dest='outfile', help="python output")
     args = parser.parse_args()
@@ -139,40 +209,40 @@ if __name__ == "__main__":
                      )
 
     # clean up attributes that class with python reserve words
+    # for t in ["clearance", "net", "signal"]:
+    #     tags[t].attrs["class"].accessorName = "class"
+    #     tags[t].attrs["class"].xmlName = "class"
+
     for t in ["clearance", "net", "signal"]:
         tags[t].attrs["class"].name = "netclass"
-        tags[t].attrs["class"].accessorName = "class"
+        tags[t].attrs["class"].accessorName = "netclass"
         tags[t].attrs["class"].xmlName = "class"
-
     
     for i in ["border-left", "border-top", "border-right", "border-bottom"]:
         tags["frame"].attrs[i].name = i.replace("-", "_")
         tags["frame"].attrs[i].accessorName = i.replace("-", "_")
         tags["frame"].attrs[i].xmlName = i
         
-    for t in ["clearance", "net", "signal"]:
-        tags[t].attrs["class"].accessorName = "netclass"
-        tags[t].attrs["class"].xmlName = "class"
-
     # add parsing support for layers
     for tag in tags.values():
         if "layer" in tag.attrs:
             tag.attrs["layer"].parse =   "parent.get_root().parse_layer_number"
             tag.attrs["layer"].unparse = "self.get_root().unparse_layer_name"
 
-    # the 'constant' attribute needst to be parsed
+    # the 'constant' attribute needs to be parsed
     tags["attribute"].attrs["constant"].parse = "parse_constant"
     tags["attribute"].attrs["constant"].unparse = "unparse_constant"
 
     # Each of the file types gets their own class.  They are all derived from EagleBoardFile
-    tags["eagleBoard"] = copy.deepcopy(tags["eagle"])
-    tags["eagleBoard"].classname = "BoardFile"
-    tags["eagleBoard"].baseclass = "EagleFile"
+        
     # This section provides a mapping between the contents of this tag and the
     # attributes of this class.  This information maps mostly to the contents
     # of the DTD.  For each collections, the first argument is the name.  The
     # second is the xpath expression that will collect the contents of the
     # collection.
+    tags["eagleBoard"] = copy.deepcopy(tags["eagle"])
+    tags["eagleBoard"].classname = "BoardFile"
+    tags["eagleBoard"].baseclass = "EagleFile"
     tags["eagleBoard"].sections = [List("settings", "./drawing/settings/setting",requireTag=True),
                                    Singleton("grid", "./drawing/grid"),
                                    # EagleFile implements layer accessors
@@ -212,7 +282,7 @@ if __name__ == "__main__":
                                        Singleton("compatibility", "./compatibility")]
     # and for the library file
     tags["eagleLibrary"] = copy.deepcopy(tags["eagle"])
-    tags["eagleLibrary"].customchild = True
+    #tags["eagleLibrary"].customchild = True
     tags["eagleLibrary"].classname = "LibraryFile"
     tags["eagleLibrary"].baseclass = "EagleFile"
     tags["eagleLibrary"].sections = [List("settings", "./drawing/settings/setting", requireTag=True),

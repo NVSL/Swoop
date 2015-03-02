@@ -1,6 +1,45 @@
 from HighEagle import EagleFile
-from HighEagle import EaglePartVisitor
 import HighEagle as HE
+
+class EaglePartVisitor(object):
+
+    def __init__(self, root=None):
+        self.root = root
+
+    def go(self):
+        self.visit(self.root)
+        return self
+    
+    def visitFilter(self, e):
+        return True
+
+    def decendFilter(self, e):
+        return True
+
+    def default_post(self,e):
+        pass
+
+    def default_pre(self,e):
+        pass
+
+    def visit(self, efPart):
+        if self.visitFilter(efPart):
+            try:
+                pre = getattr(self,type(efPart).__name__ + "_pre")
+                pre(efPart)
+            except AttributeError:
+                self.default_pre(efPart)
+
+        if self.decendFilter(efPart):
+            for e in efPart.get_children():        
+                self.visit(e)
+                
+        if self.visitFilter(efPart):
+            try:
+                post = getattr(self,type(efPart).__name__ + "_post")
+                post(efPart)
+            except AttributeError:
+                self.default_post(efPart)
 
 class ScanLayersVisitor(EaglePartVisitor):
 

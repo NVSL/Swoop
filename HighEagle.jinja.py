@@ -827,10 +827,10 @@ def convertToExternal(self):
         for i in self.get_devices().values():
             self.remove_device(i)
         d.name = ""
-        d.package = ""
+        d.package = "_EXTERNAL_"
         d.clear_connects()
     else:
-        d = Device(name="",technologies=[Technology(name="")])
+        d = Device(name="",package="_EXTERNAL_",technologies=[Technology(name="")])
 
     self.add_device(d)
     for t in d.get_technologies().values():

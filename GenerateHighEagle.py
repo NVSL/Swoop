@@ -339,7 +339,7 @@ if __name__ == "__main__":
                                 Map("devices", "./devices/device", requireTag=True)]
 
     tags["device"].sections=[List("connects", "./connects/connect"),
-                             List("technologies", "./technologies/technology")]
+                             Map("technologies", "./technologies/technology")]
 
     tags["designrules"].sections=[List("description", "./description", requireTag=True),
                                   Map("params", "./param")]

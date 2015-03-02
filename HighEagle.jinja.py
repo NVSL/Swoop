@@ -248,6 +248,8 @@ class EagleFile(EagleFilePart):
         """
         Given a layer name, return the number.
         """
+        #print type(name)
+        #print name
         assert type(name) is str
         if name not in self.layersByName:
             raise HighEagleError("No layer named '" + name + "' in " + str(self.filename))
@@ -535,6 +537,11 @@ class {{classname}}({{tag.baseclass}}):
         """ get then list of {{l.addrName}} from this {{tag.classname}}.
         """
         return self.{{l.name}}
+    def clear_{{l.name}}(self):
+        for efp in self.{{l.name}}:
+            efp.parent = None
+        self.{{l.name}} = []
+        
     #{%else%}
     # {{l.name}} accessor supressed
     #{%endif%}
@@ -577,6 +584,10 @@ class {{classname}}({{tag.baseclass}}):
         """ Get map of {{m.addrName}}s from this {{tag.classname}}.
         """
         return self.{{m.name}}
+
+    def remove_{{m.adderName}}(self, efp):
+        del self.{{m.name}}[efp.{{m.mapkey}}]
+        efp.parent = None
     #{%endif%}
     #{%endfor%}
 
@@ -803,6 +814,30 @@ class Attribute (Base_Attribute):
 
 classMap["attribute"] = Attribute
 
+#### Extra methods for DeviceSets
+
+# This converts the deviceset into an external device.  This means that it
+# has no associated package.  It can, however, have attributes, and those
+# are stored in the "" device.  You can't just delete all the packages,
+# since you'd lose the attributes.  This copies them from the first
+# package.
+def convertToExternal(self):
+    if len(self.get_devices()) > 0:
+        d = self.get_devices().values()[0]
+        for i in self.get_devices().values():
+            self.remove_device(i)
+        d.name = ""
+        d.package = ""
+        d.clear_connects()
+    else:
+        d = Device(name="",technologies=[Technology(name="")])
+
+    self.add_device(d)
+    for t in d.get_technologies().values():
+        t.add_attribute(Attribute(name="_EXTERNAL_"))
+
+setattr(Deviceset, "convertToExternal", convertToExternal)
+        
 # class LibraryFile(Base_LibraryFile):
 #     """ 
     

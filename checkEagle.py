@@ -9,19 +9,16 @@ import logging as log
 import sys, traceback
 
 def countParts(et, tags, attrs):
-    if et.tag in tags:
-        tags[et.tag] = tags[et.tag] + 1
-    else:
-        tags[et.tag] =  1
-        
-    for i in et.attrib:
-        if i in attrs:
-            attrs[i] = attrs[i] + 1
+    for et in et.findall(".//*"):
+        if et.tag in tags:
+            tags[et.tag] = tags[et.tag] + 1
         else:
-            attrs[i] =  1
-
-    for s in et:
-        countParts(s,tags, attrs)
+            tags[et.tag] =  1
+        for i in et.attrib:
+            if i in attrs:
+                attrs[i] = attrs[i] + 1
+            else:
+                attrs[i] =  1
 
 def compareEagleElementTrees(orig, new):
     origAttrs = {}

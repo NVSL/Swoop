@@ -105,12 +105,20 @@ class EagleFile(EagleFilePart):
         """
         Check that this file conforms to the eagle DTD. Return True, if it does, False otherwise.
         """
-        v = EagleFile.DTD.validate(self.get_et())
+        et = self.get_et()
+        v = EagleFile.DTD.validate(et)
         
         if not v:
             log.warning("Eagle file opened as '" + str(self.filename) +"' is invalid: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
         else:
             log.info("Eagle file opened as '" + self.filename +"' parsed to valid Eagle data.")
+
+        for t in et.findall(".//*"):
+            for a in t.attrib.values():
+                if a == str(None):
+                    log.warning("Eagle file opened as '" + str(self.filename) +"' has 'None' attribute value")
+                    return False
+        
         return v
 
     @staticmethod
@@ -830,7 +838,7 @@ def convertToExternal(self):
         d.package = "_EXTERNAL_"
         d.clear_connects()
     else:
-        d = Device(name="",package="_EXTERNAL_",technologies=[Technology(name="")])
+        d = Device(name="", package="_EXTERNAL_", technologies=[Technology(name="")])
 
     self.add_device(d)
     for t in d.get_technologies().values():

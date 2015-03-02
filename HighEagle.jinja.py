@@ -4,8 +4,9 @@ import eagleDTD
 import StringIO
 import logging as log
 import copy
+import os
 
-class EagleFormatError (Exception):
+class EagleFormatError(Exception):
     def __init__(self, text=""):
         self.text = text
     def __str__(self):
@@ -144,8 +145,9 @@ class EagleFile(EagleFilePart):
         self.filename= None
         self.root = None
         self.tree = None
-        self.layersByNumber = {}
         self.layers = {}
+        self.layersByName = {}
+
         
     def validate(self):
         v = EagleFile.DTD.validate(self.get_et())
@@ -153,23 +155,34 @@ class EagleFile(EagleFilePart):
         if not v:
             log.warning("Eagle file opened as '" + str(self.filename) +"' is invalid: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
         else:
-            log.info("Eagle file opened as '" + self.filename +"' is valid.")
+            log.info("Eagle file opened as '" + self.filename +"' parsed to valid Eagle data.")
         return v
 
     @staticmethod
-    def from_file (filename):
+    def from_file (filename, bestEffort = True):
         """
         Loads a Eagle file from a .sch, .lbr, or .brd file.
         """
-        tree = ET.parse(filename)
-        root = tree.getroot()
+        try:
+            tree = ET.parse(filename)
+        except ET.XMLSyntaxError as e:
+            raise EagleFormatError("Eagle file '" + str(filename) +"' doesn't look like XML eagle file.  Try resaving with a newer version of eagle.")
         
+        root = tree.getroot()
+
+        v = EagleFile.DTD.validate(root)
+        if not v:
+            if bestEffort:
+                log.warning("Eagle file opened as '" + str(filename) +"' is invalid on disk: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
+            else:
+                raise EagleFormatError("Eagle file opened as '" + str(filename) +"' is invalid on disk: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
+                
         if filename[-4:] == ".sch":
             ef = SchematicFile.from_et(root)
         elif filename[-4:] == ".brd":
             ef = BoardFile.from_et(root)
         elif filename[-4:] == ".lbr":
-            ef = LibraryFile.from_et(root)#,filename=filename)
+            ef = LibraryFile.from_et(root,filename=filename)
         else:
             raise HighEagleError("Unknown file suffix: '" + filename[-4:] + "'")
         ef.filename = filename
@@ -206,15 +219,15 @@ class EagleFile(EagleFilePart):
     def add_layer (self, layer):
         assert isinstance(layer, Layer)
         #print str(self) +" " + str(int(layer.number))
-        self.layersByNumber[int(layer.number)] = layer
-        self.layers[layer.name] = layer
+        self.layers[int(layer.number)] = layer
+        self.layersByName[layer.name] = layer
         layer.parent = self
 
     def get_layers(self):
-        return self.layers
+        return self.layersByName
 
     def get_layersByNumber(self):
-        return self.layersByNumber
+        return self.layers
 
     # def get_flippedLayer(self, l):
     #     if (isinstance(l, str)):
@@ -227,17 +240,17 @@ class EagleFile(EagleFilePart):
     #             l = "Bottom"
     #         elif l == "Bottom":
     #             l = "Top"
-    #         if l not in self.layers:
+    #         if l not in self.layersByName:
     #             raise HighEagleError("Tried to flip layer '" + origName + "', but '" + l + "' doesn't exist")
     #         return name
     #     elif (isinstance(l,int)):
-    #         if l in self.layersByNumber:
-    #             return self.get_flippedLayer(self, self.layersByNumber[l]).number
+    #         if l in self.layers:
+    #             return self.get_flippedLayer(self, self.layers[l]).number
     #         else:
     #             raise HighEagleError("Can't find layer number " + number)
     #     elif (isinstance(l,Layer)):
-    #         if l.name in self.layers:
-    #             return self.layers[get_flippedLayer(l.name)]
+    #         if l.name in self.layersByName:
+    #             return self.layersByName[get_flippedLayer(l.name)]
     #         else:
     #             raise HighEagleError("Can't find layer '" + l.name +"' in this file")
 
@@ -253,28 +266,27 @@ class EagleFile(EagleFilePart):
     
     def layer_number_to_name(self, num):
         n = int(num)
-        if n not in self.layersByNumber:
-            #print self
-            raise HighEagleError("No layer number " + str(n))
-        return self.layersByNumber[n].name
+        if n not in self.layers:
+            raise HighEagleError("No layer number " + str(n) +" in " + str(self.filename))
+        return self.layers[n].name
 
     def layer_name_to_number(self, name):
         assert type(name) is str
-        if name not in self.layers:
-            raise HighEagleError("No layer named '" + name + "' in " + self.filename)
-        return self.layers[name].number
+        if name not in self.layersByName:
+            raise HighEagleError("No layer named '" + name + "' in " + str(self.filename))
+        return self.layersByName[name].number
 
     def remove_layer(self, layer):
         if type(layer) is str:
-            l = self.layers[layer]
+            l = self.layersByName[layer]
             self.remove_layer(l)
         elif type(layer) is int:
-            l = self.layersByNumber[layer]
+            l = self.layers[layer]
             self.remove_layer(l)
         elif isinstance(layer, Layer):
-            self.layers[layer.name].parent = None
-            del self.layers[layer.name]
-            del self.layersByNumber[int(layer.number)]
+            self.layersByName[layer.name].parent = None
+            del self.layersByName[layer.name]
+            del self.layers[int(layer.number)]
         else:
             raise HighEagleError("Invalid layer spec: " + str(layer))
             
@@ -291,6 +303,7 @@ def smartAddSubTags(root, path):
     for p in pathSegments[0:-1]:
         new_target = target.find(p)
         if new_target is None:
+            #print "created  " + p
             target = ET.SubElement(target,p)
         else:
             target = new_target
@@ -360,7 +373,9 @@ class {{classname}}({{tag.baseclass}}):
 
     @classmethod
     def from_et(cls,root,parent=None):
-        assert root.tag == "{{tag.tag}}"
+        if root.tag != "{{tag.tag}}":
+            raise EagleFormatError("Tried to create {{tag.tag}} from " + root.tag)
+        
         n = cls(
             #{%for a in tag.attrs.values()%}
             #{%if a.parse != "" %}
@@ -427,6 +442,10 @@ class {{classname}}({{tag.baseclass}}):
         #{%endfor%}
         
         #{%for l in tag.sections%}
+        #{%if l.requireTag %}
+        #print "ensuring {{l.xpath}}"
+        smartAddSubTags(r, "{{l.xpath}}")
+        #{%endif%}
         #{%if l.type == "List" %}
         if len(self.{{l.name}}) is not 0:
             target = smartAddSubTags(r, "{{l.xpath}}")
@@ -501,11 +520,11 @@ class {{classname}}({{tag.baseclass}}):
     #{%for m in tag.maps%}
     #{%if not m.suppressAccessors %}
     def add_{{m.adderName}}(self, s):
-        self.{{m.name}}[s.name] = s
+        self.{{m.name}}[s.{{m.mapkey}}] = s
         s.parent = self
 
-    def get_{{m.adderName}}(self, name):
-        return self.{{m.name}}[name]
+    def get_{{m.adderName}}(self, key):
+        return self.{{m.name}}[key]
 
     def get_{{m.name}}(self):
         return self.{{m.name}}
@@ -704,8 +723,14 @@ class Attribute (Base_Attribute):
             from_library = True;
         elif attribute_root.getparent().tag == "part":
             from_library = False
+        elif attribute_root.getparent().tag == "instance":
+            from_library = False
+        elif attribute_root.getparent().tag == "element":
+            from_library = False
+        elif attribute_root.getparent().tag == "attributes":
+            from_library = False
         else:
-            assert False
+            raise HighEagleError("Unexpectedly found attribute in '" + attribute_root.getparent().tag +"' tag.")
 
         n.in_library = from_library
         return n
@@ -720,3 +745,34 @@ class Attribute (Base_Attribute):
         return n
 
 classMap["attribute"] = Attribute
+
+class LibraryFile(Base_LibraryFile):
+    def __init__(self,
+                 version=None,
+                 settings=None,
+                 grid=None,
+                 layers=None,
+                 library=None,
+                 compatibility=None
+                ):
+        Base_LibraryFile.__init__(self,
+                                  version,
+                                  settings,
+                                  grid,
+                                  layers,
+                                  library,
+                                  compatibility)
+    @classmethod
+    def from_et (cls, et, filename):
+        """
+        Loads a Library file from an ElementTree.Element representation.
+        """
+        r = Base_LibraryFile.from_et(et)
+        #if r.get_library().name is None:
+        #r.get_library().set_name(os.path.basename(filename)[:-4])
+        return r
+
+    # def get_library_copy(self):
+    #     return copy.deepcopy(self.library)
+
+    

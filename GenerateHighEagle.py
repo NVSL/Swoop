@@ -36,10 +36,12 @@ if __name__ == "__main__":
         """
         Base class for collections.
         """
-        def __init__(self, name, xpath, adderName=None, itemType=None,suppressAccessors=False):
+        def __init__(self, name, xpath, adderName=None, itemType=None,suppressAccessors=False, requireTag=False, mapkey=None):
             self.name = name
             self.xpath = xpath
             self.subtag = xpath.split("/")[-1]
+            if mapkey is None:
+                self.mapkey = "name"
             if adderName is None:
                 self.adderName = self.subtag
             else:
@@ -47,29 +49,35 @@ if __name__ == "__main__":
 
             self.itemType = itemType
             self.suppressAccessors = suppressAccessors
+            self.requireTag = requireTag
 
     class Map(Collection):
         """
         Collection that maps strings to items
         """
-        def __init__(self, name, xpath, adderName=None, itemType=None,suppressAccessors=False):
-            Collection.__init__(self,name, xpath, adderName, itemType, suppressAccessors)
+        def __init__(self, name, xpath, adderName=None, itemType=None,suppressAccessors=False, requireTag=False, mapkey=None):
+            Collection.__init__(self,name, xpath, adderName, itemType, suppressAccessors, requireTag)
             self.type = "Map"
+            if mapkey is None:
+                self.mapkey = "name"
+            else:
+                self.mapkey = mapkey
+        
 
     class List(Collection):
         """
         Collection that is an ordered list
         """
-        def __init__(self, name, xpath, adderName=None, itemType=None,suppressAccessors=False):
-            Collection.__init__(self,name, xpath, adderName, itemType, suppressAccessors)
+        def __init__(self, name, xpath, adderName=None, itemType=None,suppressAccessors=False, requireTag=False):
+            Collection.__init__(self,name, xpath, adderName, itemType, suppressAccessors, requireTag)
             self.type = "List"
 
     class Singleton(Collection):
         """
         Collection with a single element
         """
-        def __init__(self, name, xpath, adderName=None, itemType=None, suppressAccessors=False):
-            Collection.__init__(self,name, xpath, adderName, itemType, suppressAccessors)
+        def __init__(self, name, xpath, adderName=None, itemType=None, suppressAccessors=False, requireTag=False):
+            Collection.__init__(self,name, xpath, adderName, itemType, suppressAccessors, requireTag)
             self.type = "Singleton"
                 
     class TagClass:
@@ -136,6 +144,7 @@ if __name__ == "__main__":
         tags[t].attrs["class"].accessorName = "class"
         tags[t].attrs["class"].xmlName = "class"
 
+    
     for i in ["border-left", "border-top", "border-right", "border-bottom"]:
         tags["frame"].attrs[i].name = i.replace("-", "_")
         tags["frame"].attrs[i].accessorName = i.replace("-", "_")
@@ -164,59 +173,65 @@ if __name__ == "__main__":
     # of the DTD.  For each collections, the first argument is the name.  The
     # second is the xpath expression that will collect the contents of the
     # collection.
-    tags["eagleBoard"].sections = [List("settings", "./drawing/settings/setting"),
+    tags["eagleBoard"].sections = [List("settings", "./drawing/settings/setting",requireTag=True),
                                    Singleton("grid", "./drawing/grid"),
                                    # EagleFile implements layer accessors
-                                   Map("layers", "./drawing/layers/layer",suppressAccessors=True),
-                                   Singleton("description", "./drawing/board/description"),
+                                   Map("layers", "./drawing/layers/layer",suppressAccessors=True,mapkey="number"),
+                                   Singleton("description", "./drawing/board/description", requireTag=True),
                                    # We keep all the drawing elements in one container
-                                   List("plain_elements", "./drawing/board/plain/polygon|./drawing/board/plain/wire|./drawing/board/plain/text|./drawing/board/plain/dimension|./drawing/board/plain/circle|./drawing/board/plain/rectangle|./drawing/board/plain/frame|./drawing/board/plain/hole"),
-                                   Map("libraries", "./drawing/board/libraries/library"),                              
-                                   Map("attributes", "./drawing/board/attributes/attribute"),                              
-                                   Map("variantdefs", "./drawing/board/variantdefs/variantdef"),
+                                   List("plain_elements", "./drawing/board/plain/polygon|./drawing/board/plain/wire|./drawing/board/plain/text|./drawing/board/plain/dimension|./drawing/board/plain/circle|./drawing/board/plain/rectangle|./drawing/board/plain/frame|./drawing/board/plain/hole", requireTag=True),
+                                   Map("libraries", "./drawing/board/libraries/library", requireTag=True),                              
+                                   Map("attributes", "./drawing/board/attributes/attribute", requireTag=True),                              
+                                   Map("variantdefs", "./drawing/board/variantdefs/variantdef", requireTag=True),
                                    Map("classes", "./drawing/board/classes/class"),
                                    Singleton("designrules", "./drawing/board/designrules"),
                                    Map("autorouter_passes", "./drawing/board/autorouter/pass"),
-                                   Map("elements", "./drawing/board/elements/element"),
-                                   Map("signals", "./drawing/board/signals/signal"),
-                                   List("approved_errors", "./drawing/board/errors/approved")]
+                                   Map("elements", "./drawing/board/elements/element", requireTag=True),
+                                   Map("signals", "./drawing/board/signals/signal", requireTag=True),
+                                   List("approved_errors", "./drawing/board/errors/approved"),
+                                   Singleton("compatibility", "./compatibility")]
 
     # Specification for the SchematicFile class
     tags["eagleSchematic"] = copy.deepcopy(tags["eagle"])
     tags["eagleSchematic"].classname = "SchematicFile"
     tags["eagleSchematic"].baseclass = "EagleFile"
-    tags["eagleSchematic"].sections = [List("settings", "./drawing/settings/setting"),
+    tags["eagleSchematic"].sections = [List("settings", "./drawing/settings/setting",requireTag=True),
                                        Singleton("grid", "./drawing/grid"),
                                        Map("layers", "./drawing/layers/layer", suppressAccessors=True),
-                                       Singleton("description", "./drawing/schematic/description"),
-                                       Map("libraries", "./drawing/schematic/libraries/library"),                              
-                                       Map("attributes", "./drawing/schematic/attributes/attribute"),                              
-                                       Map("variantdefs", "./drawing/schematic/variantdefs/variantdef"),
+                                       # this is necessary to preserve and provide access to the attributes on the schematic. This object doesn't actually contain anything, though.
+                                       Singleton("schematic", "./drawing/schematic"), 
+                                       Singleton("description", "./drawing/schematic/description", requireTag=True),
+                                       Map("libraries", "./drawing/schematic/libraries/library", requireTag=True),                              
+                                       Map("attributes", "./drawing/schematic/attributes/attribute", requireTag=True),                              
+                                       Map("variantdefs", "./drawing/schematic/variantdefs/variantdef", requireTag=True),
                                        Map("classes", "./drawing/schematic/classes/class"),
                                        Map("modules", "./drawing/schematic/modules/module"),
-                                       Map("parts", "./drawing/schematic/parts/part"),
+                                       Map("parts", "./drawing/schematic/parts/part", requireTag=True),
                                        List("sheets", "./drawing/schematic/sheets/sheet"),
-                                       List("approved_errors", "./drawing/schematic/errors/approved")]
+                                       List("approved_errors", "./drawing/schematic/errors/approved"),
+                                       Singleton("compatibility", "./compatibility")]
     # and for the library file
     tags["eagleLibrary"] = copy.deepcopy(tags["eagle"])
+    tags["eagleLibrary"].customchild = True
     tags["eagleLibrary"].classname = "LibraryFile"
     tags["eagleLibrary"].baseclass = "EagleFile"
-    tags["eagleLibrary"].sections = [List("settings", "./drawing/settings/setting"),
+    tags["eagleLibrary"].sections = [List("settings", "./drawing/settings/setting", requireTag=True),
                                      Singleton("grid", "./drawing/grid"),
                                      Map("layers", "./drawing/layers/layer", suppressAccessors=True),
-                                     Singleton("library", "./drawing/library")]
+                                     Singleton("library", "./drawing/library"),
+                                     Singleton("compatibility", "./compatibility")]
 
     # we don't need the default class for the eagle tag.
     del tags["eagle"]
     
-    tags["module"].sections = [Singleton("description", "./description"),
+    tags["module"].sections = [Singleton("description", "./description", requireTag=True),
                                Map("ports", "./ports/port"),
-                               Map("variantdefs", "./variantdefs/variantdef"),
-                               Map("parts", "./parts/part"),
+                               Map("variantdefs", "./variantdefs/variantdef", requireTag=True),
+                               Map("parts", "./parts/part", requireTag=True),
                                List("sheets", "./sheets/sheet")]
 
     tags["part"].customchild = True
-    tags["part"].sections= [Map("attributes", "./attribute"),
+    tags["part"].sections= [Map("attributes", "./attribute", requireTag=True),
                             Map("variants", "./variant")]
 
     # customchild means that we will create our own, custum child class for
@@ -225,14 +240,14 @@ if __name__ == "__main__":
     # deriving from Base_Attribute
     tags["attribute"].customchild = True
     
-    tags["sheet"].sections =[Singleton("description", "./description"),
-                             List("plain_elements", "./plain/polygon|./plain/wire|./plain/text|./plain/dimension|./plain/circle|./plain/rectangle|./plain/frame|./plain/hole"),
+    tags["sheet"].sections =[Singleton("description", "./description", requireTag=True),
+                             List("plain_elements", "./plain/polygon|./plain/wire|./plain/text|./plain/dimension|./plain/circle|./plain/rectangle|./plain/frame|./plain/hole", requireTag=True),
                              Map("moduleinsts", "./moduleinsts/moduleinst"),
-                             List("instances", "./instances/instance"),
-                             Map("busses", "./busses/bus"),
-                             Map("nets", "./nets/net")]
+                             List("instances", "./instances/instance", requireTag=True),
+                             Map("busses", "./busses/bus", requireTag=True),
+                             Map("nets", "./nets/net", requireTag=True)]
                              
-    tags["instance"].sections= [Map("attributes", "./attribute")]
+    tags["instance"].sections= [Map("attributes", "./attribute", requireTag=True)]
 
     tags["bus"].sections = [List("segments", "./segment")]
 
@@ -243,39 +258,39 @@ if __name__ == "__main__":
                                 List("labels", "./label")]
 
     tags["net"].sections = [List("segments", "./segment")]
-    
-    tags["library"].sections=[Singleton("description", "./description"),
-                              Map("packages", "./packages/package"),
-                              Map("symbols", "./symbols/symbol" ),
-                              Map("devicesets", "./devicesets/deviceset")]
 
-    tags["deviceset"].sections=[Singleton("description", "./description"),
-                                Map("gates", "./gates/gate"),
-                                Map("devices", "./devices/device")]
+    tags["library"].sections=[Singleton("description", "./description", requireTag=True),
+                              Map("packages", "./packages/package", requireTag=True),
+                              Map("symbols", "./symbols/symbol" , requireTag=True),
+                              Map("devicesets", "./devicesets/deviceset", requireTag=True)]
+
+    tags["deviceset"].sections=[Singleton("description", "./description", requireTag=True),
+                                Map("gates", "./gates/gate", requireTag=True),
+                                Map("devices", "./devices/device", requireTag=True)]
 
     tags["device"].sections=[List("connects", "./connects/connect"),
                              List("technologies", "./technologies/technology")]
 
-    tags["designrules"].sections=[Singleton("description", "./description"),
+    tags["designrules"].sections=[List("description", "./description", requireTag=True),
                                   Map("params", "./param")]
     
-    tags["technology"].sections=[Map("attributes", "./attribute")]
+    tags["technology"].sections=[Map("attributes", "./attribute", requireTag=True)]
                              
-    tags["package"].sections=[Singleton("description", "./description"),
+    tags["package"].sections=[Singleton("description", "./description", requireTag=True),
                               List("drawing_elements","./polygon|./wire|./text|./dimension|./circle|./rectangle|./frame|./hole"),
                               Map("pads", "./pad"),
-                              Map("smds", "./smd"),
-                          ]
-    tags["symbol"].sections=[Singleton("description", "./description"),
+                              Map("smds", "./smd")]
+    
+    tags["symbol"].sections=[Singleton("description", "./description", requireTag=True),
                              List("drawing_elements","./polygon|./wire|./text|./dimension|./circle|./rectangle|./frame|./hole"),
                              Map("pins", "./pin")]
     
-    tags["class"].sections=[Map("clearances", "./clearance")]
+    tags["class"].sections=[Map("clearances", "./clearance", mapkey="netclass")]
 
     tags["pass"].sections=[Map("params", "./param")]
 
     tags["element"].customchild = True
-    tags["element"].sections = [Map("attributes", "./attribute")]
+    tags["element"].sections = [Map("attributes", "./attribute", requireTag=True)]
     
     tags["signal"].sections = [List("contactrefs", "./contactref"),
                                List("polygons", "./polygon"),
@@ -283,9 +298,12 @@ if __name__ == "__main__":
                                List("vias", "./via")]
 
     tags["polygon"].sections = [List("vertices", "./vertex")]
+    tags["compatibility"].sections = [List("notes", "./note")]
 
     tags["description"].preserveTextAs = "text"
     tags["text"].preserveTextAs = "text"
+    tags["note"].preserveTextAs = "text"
+
     
     # finalize() does some post-processing on the sections to prepare them for
     # genearting code.

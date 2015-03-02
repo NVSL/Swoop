@@ -12,12 +12,12 @@ eagleDTD.py: eagle-tweaked.dtd
 	cat $< >> $@
 	echo \"\"\" >> $@
 
-HighEagle.py: HighEagle.jinja.py tag-summary.dat
+HighEagle.py: HighEagle.jinja.py tag-summary.dat GenerateHighEagle.py
 	python GenerateHighEagle.py --in tag-summary.dat --out $@
 
-tag-summary.dat: eagle-tweaked.dtd
+tag-summary.dat: eagle-tweaked.dtd Makefile
 	cat $< | perl -ne 's/ +/ /g; s/\n/,/g;s/>/>\n/g;print' | perl -ne 's/^,*\s*</</g;s/, >/>/g;s/\%\w+;//g;print' | grep ATTLIST | perl -ne 's/!ATTLIST //g; s/"\w*"/OPTIONAL/g; s/#//g; s/<|>//g; s/,/:/; print'  > $@
-	echo "sheet: \nsegment: " >> $@  # these two tags have no attributes
+	echo "sheet: \nsegment: \ncompatibility: " >> $@  # these two tags have no attributes
 
 
 

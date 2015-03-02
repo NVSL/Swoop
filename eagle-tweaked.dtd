@@ -11,6 +11,11 @@
   in the EAGLE File Format. If your program writes files in the EAGLE File
   Format, these files must be readable by EAGLE version 7.2.0
   without any error messages or warnings.
+
+  Gadgetron: We've made two changes: The name on the <library> in a library file
+  is optional because many libraries lack it, and we added minversion
+  to <note> because many files have it.
+
 -->
 
 <!-- ### Entity definitions ############################################### -->
@@ -69,10 +74,10 @@
 
 <!ELEMENT library (description?, packages?, symbols?, devicesets?)>
 <!ATTLIST library
-          name          %String;       #REQUIRED
+          name          %String;       "" 
           >
           <!-- name: Only in libraries used inside boards or schematics -->
-
+	  <!--#REQUIRED-->
 <!ELEMENT schematic (description?, libraries?, attributes?, variantdefs?, classes?, modules?, parts?, sheets?, errors?)>
 <!ATTLIST schematic
           xreflabel     %String;       #IMPLIED

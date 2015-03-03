@@ -15,7 +15,7 @@ eagleDTD.py: eagle-tweaked.dtd
 	cat $< >> $@
 	echo \"\"\" >> $@
 
-HighEagle.py: HighEagle.jinja.py tag-summary.dat GenerateHighEagle.py
+HighEagle.py: HighEagle.jinja.py GenerateHighEagle.py
 	python GenerateHighEagle.py --in tag-summary.dat --out $@
 
 #tag-summary.dat: eagle-tweaked.dtd Makefile

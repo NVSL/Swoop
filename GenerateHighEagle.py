@@ -87,41 +87,47 @@ class Attr:
     Class representing an attribute.
     
     """
-    def __init__(self, name, required=False, parse=None, unparse=None,type=None,accessorName=None,xmlName=None):
+    def __init__(self, name, required=False, parse=None, unparse=None,vtype=None,accessorName=None,xmlName=None):
         """Create a class describing an attribute.
-
+        
         :param name: The attribute's name.  This is the name used for the member of the :class:`EagleFilePart` object.  For example :code:`foo.netclass` (since :code:`class` clashes with a the Python :code:`class` reserved word.
         :param require: Is the attribute required?
         :param parse: String used to parse to attribute value.  It will be invoked as :code:`parse(x)` where :code:`x` is the contents of the XML attribute.
         :param unparse: String used to unparse the attribute value while generating XML. It will be invoked as :code:`unparse(x)` where :code:`x` is :mod:`HighEagle`'s value for the attribute.  :code:'unparse(parse(x))` should be the identity function.
         :param accessorName:This is the string that will appear in HighEagle API calls.  For example :code:`foo.get_class()`
         :param xmlName:This is string used in the XML representation.  For example, :code:`class`.
+
         """
         self.name = name.replace("-", "_")
         if xmlName is None:
             self.xmlName = name
         else:
             self.xmlName = xmlName
-
+            
             #assert self.xmlName is not None
-#        print "Is " + str(self.name) + " == " + str(self.xmlName) +"?"
-        
-        self.type=type
+            #        print "Is " + str(self.name) + " == " + str(self.xmlName) +"?"
+
+
+        if vtype is None:
+            self.vtype = "str"
+        else:
+            self.vtype = vtype
+            
         if accessorName is None:
             self.accessorName = name
         else:
             self.accessorName = accessorName
         self.required = required
 
-        if parse is None:
-            self.parse = ""
-        else:
-            self.parse = parse
-
-        if parse is None:
-            self.unparse = ""
+        if unparse is None:
+            self.unparse = "unparseByType"
         else:
             self.unparse = unparse
+
+        if parse is None:
+            self.parse = "parseByType"
+        else:
+            self.parse = parse
 
 
 class Collection:
@@ -254,39 +260,55 @@ if __name__ == "__main__":
 
     tags = {}
 
-    layerAttr = Attr("layer",
-                     type="LayerAttr",
-                     required=True)
+    def layerAttr(required=True):
+        return Attr(name="layer",
+                    vtype="layer_string",
+                    required=required)
 
-    dxAttr = Attr("dx",
-                  type="float",
-                  required=True)
+    def dimensionAttr(name, required):
+        return Attr(name, vtype="float", required=required)
 
-    dyAttr = Attr("dy",
-                  type="float",
-                  required=True)
+    def widthAttr(required):
+        return dimensionAttr("width", required)
+    
+    def drillAttr(required):
+        return dimensionAttr("drill", required)
 
-    xAttr = Attr("x",
-                 type="float",
-                 required=True)
-
-    yAttr = Attr("y",
-                 type="float",
-                 required=True)
+    def extwidthAttr(required):
+        return dimensionAttr("extwidth", required)
+    def extlengthAttr(required):
+        return dimensionAttr("extlength", required)
+    def extoffsetAttr(required):
+        return dimensionAttr("extoffset", required)
+    def textsizeAttr(required):
+        return dimensionAttr("textsize", required)
+    def sizeAttr(required):
+        return dimensionAttr("size", required)
+    def diameterAttr(required):
+        return dimensionAttr("diameter", required)
+    def spacingAttr(required):
+        return dimensionAttr("spacing", required)
+    def isolateAttr(required):
+        return dimensionAttr("isolate", required)
 
     rotAttr = Attr("rot",
-                   type="str",
+                   vtype="str",
                    required=False)
 
-    nameAttr = Attr("name",
-                    type="str",
-                    required=True)
+    def nameAttr():
+        return Attr("name",
+                vtype="str",
+                required=True)
+
+    smashedAttr = Attr("smashed", required=False)
     
     tags["note"] = TagClass("note",
                             baseclass = "EagleFilePart",
                             preserveTextAs = "text",
-                            attrs=[Attr("minversion", required=True),
-                                   Attr("version", required=True),
+                            attrs=[Attr("minversion", 
+                                        required=True),
+                                   Attr("version",
+                                        required=True),
                                    Attr("severity", required=True)])
 
     tags["library"] = TagClass("library",
@@ -304,10 +326,10 @@ if __name__ == "__main__":
 
     tags["module"] = TagClass("module",
                               baseclass = "EagleFilePart",
-                              attrs=[nameAttr,
+                              attrs=[nameAttr(),
                                      Attr("prefix", required=False),
-                                     dxAttr,
-                                     dyAttr],
+                                     dimensionAttr("dx",True),
+                                     dimensionAttr("dy",True)],
                               sections=[Singleton("description", "./description", requireTag=True),
                                         Map("ports", "./ports/port"),
                                         Map("variantdefs", "./variantdefs/variantdef", requireTag=True),
@@ -316,7 +338,7 @@ if __name__ == "__main__":
 
     tags["package"] = TagClass("package",
                                baseclass = "EagleFilePart",
-                               attrs=[nameAttr],
+                               attrs=[nameAttr()],
                                sections=[Singleton("description", "./description", requireTag=True),
                                          List("drawing_elements","./polygon|./wire|./text|./dimension|./circle|./rectangle|./frame|./hole"),
                                          Map("pads", "./pad"),
@@ -324,16 +346,18 @@ if __name__ == "__main__":
 
     tags["symbol"] = TagClass("symbol",
                               baseclass = "EagleFilePart",
-                              attrs=[nameAttr],
+                              attrs=[nameAttr()],
                               sections=[Singleton("description", "./description", requireTag=True),
                                         List("drawing_elements","./polygon|./wire|./text|./dimension|./circle|./rectangle|./frame|./hole"),
                                         Map("pins", "./pin")])
 
     tags["deviceset"] = TagClass("deviceset",
                                  baseclass = "EagleFilePart",
-                                 attrs=[nameAttr,
+                                 attrs=[nameAttr(),
                                         Attr("prefix", required=False),
-                                        Attr("uservalue", required=False)],
+                                        Attr("uservalue",
+                                             vtype="bool",
+                                             required=False)],
                                  sections=[Singleton("description", "./description", requireTag=True),
                                            Map("gates", "./gates/gate", requireTag=True),
                                            Map("devices", "./devices/device", requireTag=True)])
@@ -347,14 +371,14 @@ if __name__ == "__main__":
 
     tags["bus"] = TagClass("bus",
                            baseclass = "EagleFilePart",
-                           attrs=[nameAttr],
+                           attrs=[nameAttr()],
                            sections = [List("segments", "./segment")])
 
 
 
     tags["net"] = TagClass("net",
                            baseclass = "EagleFilePart",
-                           attrs=[nameAttr,
+                           attrs=[nameAttr(),
                                   Attr("netclass",
                                        accessorName = "netclass",
                                        xmlName="class",
@@ -365,12 +389,14 @@ if __name__ == "__main__":
 
     tags["signal"] = TagClass("signal",
                               baseclass = "EagleFilePart",
-                              attrs=[nameAttr,
+                              attrs=[nameAttr(),
                                      Attr("netclass",
                                           accessorName = "netclass",
                                           xmlName="class",
                                           required=False),
-                                     Attr("airwireshidden", required=False)],
+                                     Attr("airwireshidden", 
+                                             vtype="bool",
+                                             required=False)],
                               sections = [List("contactrefs", "./contactref"),
                                           List("polygons", "./polygon"),
                                           List("wires", "./wire"),
@@ -380,28 +406,34 @@ if __name__ == "__main__":
 
     tags["moduleinst"] = TagClass("moduleinst",
                                   baseclass = "EagleFilePart",
-                                  attrs=[nameAttr,
+                                  attrs=[nameAttr(),
                                          Attr("module", required=True),
                                          Attr("modulevariant", required=False),
-                                         xAttr,
-                                         yAttr,
-                                         Attr("offset", required=False),
-                                         Attr("smashed", required=False),
+                                         dimensionAttr("x",True),
+                                         dimensionAttr("y",True),
+                                         Attr("offset",
+                                              vtype="int",
+                                              required=False),
+                                         smashedAttr,
                                          rotAttr])
 
 
 
     tags["variantdef"] = TagClass("variantdef",
                                   baseclass = "EagleFilePart",
-                                  attrs=[nameAttr,
-                                         Attr("current", required=False)])
+                                  attrs=[nameAttr(),
+                                         Attr("current", 
+                                             vtype="bool",
+                                             required=False)])
 
 
 
     tags["variant"] = TagClass("variant",
                                baseclass = "EagleFilePart",
-                               attrs=[nameAttr,
-                                      Attr("populate", required=False),
+                               attrs=[nameAttr(),
+                                      Attr("populate", 
+                                           vtype="bool",
+                                           required=False),
                                       Attr("value", required=False),
                                       Attr("technology", required=False)])
 
@@ -409,171 +441,207 @@ if __name__ == "__main__":
 
     tags["gate"] = TagClass("gate",
                             baseclass = "EagleFilePart",
-                            attrs=[nameAttr,
+                            attrs=[nameAttr(),
                                    Attr("symbol", required=True),
-                                   xAttr,
-                                   yAttr,
+                                   dimensionAttr("x",True),
+                                   dimensionAttr("y",True),
                                    Attr("addlevel", required=False),
-                                   Attr("swaplevel", required=False)])
+                                   Attr("swaplevel",
+                                        vtype="int",
+                                        required=False)])
 
 
 
     tags["wire"] = TagClass("wire",
                             baseclass = "EagleFilePart",
-                            attrs=[Attr("x1", required=True),
-                                   Attr("y1", required=True),
-                                   Attr("x2", required=True),
-                                   Attr("y2", required=True),
-                                   Attr("width", required=True),
-                                   layerAttr,
+                            attrs=[dimensionAttr("x1", required=True),
+                                   dimensionAttr("y1", required=True),
+                                   dimensionAttr("x2", required=True),
+                                   dimensionAttr("y2", required=True),
+                                   widthAttr(required=True),
+                                   layerAttr(required=True),
                                    Attr("extent", required=False),
                                    Attr("style", required=False),
-                                   Attr("curve", required=False),
+                                   Attr("curve", 
+                                        vtype="float",
+                                        required=False),
                                    Attr("cap", required=False)])
 
 
 
     tags["dimension"] = TagClass("dimension",
                                  baseclass = "EagleFilePart",
-                                 attrs=[Attr("x1", required=True),
-                                        Attr("y1", required=True),
-                                        Attr("x2", required=True),
-                                        Attr("y2", required=True),
-                                        Attr("x3", required=True),
-                                        Attr("y3", required=True),
-                                        layerAttr,
+                                 attrs=[dimensionAttr("x1", required=True),
+                                        dimensionAttr("y1", required=True),
+                                        dimensionAttr("x2", required=True),
+                                        dimensionAttr("y2", required=True),
+                                        dimensionAttr("x3", required=True),
+                                        dimensionAttr("y3", required=True),
+                                        layerAttr(required=True),
                                         Attr("dtype", required=False),
-                                        Attr("width", required=True),
-                                        Attr("extwidth", required=False),
-                                        Attr("extlength", required=False),
-                                        Attr("extoffset", required=False),
-                                        Attr("textsize", required=True),
-                                        Attr("textratio", required=False),
+                                        widthAttr( required=True),
+                                        extwidthAttr(required=False),
+                                        extlengthAttr(required=False),
+                                        extoffsetAttr(required=False),
+                                        textsizeAttr(required=True),
+                                        Attr("textratio",
+                                             vtype="int",
+                                             required=False),
                                         Attr("unit", required=False),
-                                        Attr("precision", required=False),
-                                        Attr("visible", required=False)])
+                                        Attr("precision",
+                                             vtype="int",
+                                             required=False),
+                                        Attr("visible", 
+                                             vtype="bool",
+                                             required=False)])
 
 
 
     tags["text"] = TagClass("text",
                             baseclass = "EagleFilePart",
                             preserveTextAs = "text",
-                            attrs=[xAttr,
-                                   yAttr,
-                                   Attr("size", required=True),
-                                   layerAttr,
+                            attrs=[dimensionAttr("x",True),
+                                   dimensionAttr("y",True),
+                                   sizeAttr(required=True),
+                                   layerAttr(required=True),
                                    Attr("font", required=False),
-                                   Attr("ratio", required=False),
+                                   Attr("ratio", 
+                                        vtype="int",
+                                        required=False),
                                    rotAttr,
                                    Attr("align", required=False),
-                                   Attr("distance", required=False)])
-
+                                   Attr("distance", 
+                                        vtype="int",
+                                        required=False)])
+    
 
 
     tags["circle"] = TagClass("circle",
                               baseclass = "EagleFilePart",
-                              attrs=[xAttr,
-                                     yAttr,
-                                     Attr("radius", required=True),
-                                     Attr("width", required=True),
-                                     layerAttr])
+                              attrs=[dimensionAttr("x",required=True),
+                                     dimensionAttr("y",required=True),
+                                     dimensionAttr("radius", required=True),
+                                     widthAttr( required=True),
+                                     layerAttr()])
 
 
 
     tags["rectangle"] = TagClass("rectangle",
                                  baseclass = "EagleFilePart",
-                                 attrs=[Attr("x1", required=True),
-                                        Attr("y1", required=True),
-                                        Attr("x2", required=True),
-                                        Attr("y2", required=True),
-                                        layerAttr,
+                                 attrs=[dimensionAttr("x1", required=True),
+                                        dimensionAttr("y1", required=True),
+                                        dimensionAttr("x2", required=True),
+                                        dimensionAttr("y2", required=True),
+                                        layerAttr(required=True),
                                         rotAttr])
 
 
 
     tags["frame"] = TagClass("frame",
                              baseclass = "EagleFilePart",
-                             attrs=[Attr("x1", required=True),
-                                    Attr("y1", required=True),
-                                    Attr("x2", required=True),
-                                    Attr("y2", required=True),
-                                    Attr("columns", required=True),
-                                    Attr("rows", required=True),
-                                    layerAttr,
-                                    Attr(
-                                         name="border_left",
+                             attrs=[dimensionAttr("x1", required=True),
+                                    dimensionAttr("y1", required=True),
+                                    dimensionAttr("x2", required=True),
+                                    dimensionAttr("y2", required=True),
+                                    Attr("columns", 
+                                         vtype="int",
+                                         required=True),
+                                    Attr("rows",
+                                         vtype="int",
+                                         required=True),
+                                    layerAttr(required=True),
+                                    Attr(name="border_left",
                                          accessorName="border_left",
                                          xmlName="border-left",
+                                         vtype="bool",
                                          required=False),
-                                    Attr(
-                                         name="border_right",
+                                    Attr(name="border_right",
                                          accessorName="border_right",
                                          xmlName="border-right",
+                                         vtype="bool",
                                          required=False),
-                                    Attr(
-                                         name="border_top",
+                                    Attr(name="border_top",
                                          accessorName="border_top",
                                          xmlName="border-top",
+                                         vtype="bool",
                                          required=False),
-                                    Attr(
-                                         name="border_bottom",
+                                    Attr(name="border_bottom",
                                          accessorName="border_bottom",
                                          xmlName="border-bottom",
+                                         vtype="bool",
                                          required=False)])
 
 
 
     tags["hole"] = TagClass("hole",
                             baseclass = "EagleFilePart",
-                            attrs=[xAttr,
-                                   yAttr,
-                                   Attr("drill", required=True)])
+                            attrs=[dimensionAttr("x",True),
+                                   dimensionAttr("y",True),
+                                   drillAttr( required=True)])
 
 
 
     tags["pad"] = TagClass("pad",
                            baseclass = "EagleFilePart",
-                           attrs=[nameAttr,
-                                  xAttr,
-                                  yAttr,
-                                  Attr("drill", required=True),
-                                  Attr("diameter", required=False),
+                           attrs=[nameAttr(),
+                                  dimensionAttr("x",True),
+                                  dimensionAttr("y",True),
+                                  drillAttr( required=True),
+                                  diameterAttr(required=False),
                                   Attr("shape", required=False),
                                   rotAttr,
-                                  Attr("stop", required=False),
-                                  Attr("thermals", required=False),
-                                  Attr("first", required=False)])
+                                  Attr("stop",
+                                       vtype="bool",
+                                       required=False),
+                                  Attr("thermals",
+                                       vtype="bool",
+                                       required=False),
+                                  Attr("first",
+                                       vtype="bool",
+                                       required=False)])
 
 
 
     tags["smd"] = TagClass("smd",
                            baseclass = "EagleFilePart",
-                           attrs=[nameAttr,
-                                  xAttr,
-                                  yAttr,
-                                  dxAttr,
-                                  dyAttr,
-                                  layerAttr,
-                                  Attr("roundness", required=False),
+                           attrs=[nameAttr(),
+                                  dimensionAttr("x",True),
+                                  dimensionAttr("y",True),
+                                  dimensionAttr("dx",True),
+                                  dimensionAttr("dy",True),
+                                  layerAttr(required=True),
+                                  Attr("roundness", 
+                                       vtype="int",
+                                       required=False),
                                   rotAttr,
-                                  Attr("stop", required=False),
-                                  Attr("thermals", required=False),
-                                  Attr("cream", required=False)])
+                                  Attr("stop",
+                                       vtype="bool",
+                                        required=False),
+                                  Attr("thermals",
+                                       vtype="bool",
+                                        required=False),
+                                  Attr("cream",
+                                       vtype="bool",
+                                        required=False)])
 
 
 
     tags["element"] = TagClass("element",
                                baseclass = "EagleFilePart",
                                customchild = True,
-                               attrs=[nameAttr,
+                               attrs=[nameAttr(),
                                       Attr("library", required=True),
                                       Attr("package", required=True),
                                       Attr("value", required=True),
-                                      xAttr,
-                                      yAttr,
-                                      Attr("locked", required=False),
-                                      Attr("populate", required=False),
-                                      Attr("smashed", required=False),
+                                      dimensionAttr("x",True),
+                                      dimensionAttr("y",True),
+                                      Attr("locked",
+                                       vtype="bool",
+                                        required=False),
+                                      Attr("populate", 
+                                             vtype="bool",
+                                             required=False),
+                                      smashedAttr,
                                       rotAttr],
                                # Everywhere else we keep attributes in maps,
                                # but this is list because these are actually
@@ -584,48 +652,61 @@ if __name__ == "__main__":
 
     tags["via"] = TagClass("via",
                            baseclass = "EagleFilePart",
-                           attrs=[xAttr,
-                                  yAttr,
+                           attrs=[dimensionAttr("x",True),
+                                  dimensionAttr("y",True),
                                   Attr("extent", required=True),
-                                  Attr("drill", required=True),
-                                  Attr("diameter", required=False),
+                                  drillAttr( required=True),
+                                  diameterAttr(required=False),
                                   Attr("shape", required=False),
-                                  Attr("alwaysstop", required=False)])
+                                  Attr("alwaysstop", 
+                                       vtype="bool",
+                                       required=False)])
 
 
 
     tags["polygon"] = TagClass("polygon",
                                baseclass = "EagleFilePart",
-                               attrs=[Attr("width", required=True),
-                                      layerAttr,
-                                      Attr("spacing", required=False),
+                               attrs=[widthAttr( required=True),
+                                      layerAttr(required=True),
+                                      spacingAttr(required=False),
                                       Attr("pour", required=False),
-                                      Attr("isolate", required=False),
-                                      Attr("orphans", required=False),
-                                      Attr("thermals", required=False),
-                                      Attr("rank", required=False)],
+                                      isolateAttr(required=False),
+                                      Attr("orphans",
+                                           vtype="bool",
+                                           required=False),
+                                      Attr("thermals", 
+                                           vtype="bool",
+                                           required=False),
+                                      Attr("rank", 
+                                           vtype="int",
+                                           required=False)],
                                sections = [List("vertices", "./vertex")])
 
 
 
     tags["vertex"] = TagClass("vertex",
                               baseclass = "EagleFilePart",
-                              attrs=[xAttr,
-                                     yAttr,
-                                     Attr("curve", required=False)])
+                              attrs=[dimensionAttr("x",True),
+                                     dimensionAttr("y",True),
+                                     Attr("curve", 
+                                          vtype="float",
+                                          required=False)])
 
 
 
     tags["pin"] = TagClass("pin",
                            baseclass = "EagleFilePart",
-                           attrs=[nameAttr,
-                                  xAttr,
-                                  yAttr,
-                                  Attr("visible", required=False),
+                           attrs=[nameAttr(),
+                                  dimensionAttr("x",True),
+                                  dimensionAttr("y",True),
+                                  Attr("visible", 
+                                       required=False),
                                   Attr("length", required=False),
                                   Attr("direction", required=False),
                                   Attr("function", required=False),
-                                  Attr("swaplevel", required=False),
+                                  Attr("swaplevel", 
+                                       vtype="int",
+                                       required=False),
                                   rotAttr])
 
 
@@ -633,7 +714,7 @@ if __name__ == "__main__":
     tags["part"] = TagClass("part",
                             baseclass="EagleFilePart",
                             customchild=True,
-                            attrs=[nameAttr,
+                            attrs=[nameAttr(),
                                    Attr("library", required=True),
                                    Attr("deviceset", required=True),
                                    Attr("device", required=True),
@@ -646,9 +727,11 @@ if __name__ == "__main__":
 
     tags["port"] = TagClass("port",
                             baseclass = "EagleFilePart",
-                            attrs=[nameAttr,
-                                   Attr("side", required=True),
-                                   Attr("coord", required=True),
+                            attrs=[nameAttr(),
+                                   Attr("side", 
+                                        vtype="int",
+                                        required=True),
+                                   Attr("dimension", required=True),
                                    Attr("direction", required=False)])
 
 
@@ -657,9 +740,9 @@ if __name__ == "__main__":
                                 baseclass = "EagleFilePart",
                                 attrs=[Attr("part", required=True),
                                        Attr("gate", required=True),
-                                       xAttr,
-                                       yAttr,
-                                       Attr("smashed", required=False),
+                                       dimensionAttr("x",True),
+                                       dimensionAttr("y",True),
+                                       smashedAttr,
                                        rotAttr],
                                 sections= [Map("attributes", "./attribute", requireTag=True)])
 
@@ -667,21 +750,25 @@ if __name__ == "__main__":
 
     tags["label"] = TagClass("label",
                              baseclass = "EagleFilePart",
-                             attrs=[xAttr,
-                                    yAttr,
-                                    Attr("size", required=True),
-                                    layerAttr,
+                             attrs=[dimensionAttr("x",True),
+                                    dimensionAttr("y",True),
+                                    sizeAttr(required=True),
+                                    layerAttr(required=True),
                                     Attr("font", required=False),
-                                    Attr("ratio", required=False),
+                                    Attr("ratio",
+                                         vtype="int",
+                                          required=False),
                                     rotAttr,
-                                    Attr("xref", required=False)])
+                                    Attr("xref", 
+                                         vtype="bool",
+                                         required=False)])
 
 
 
     tags["junction"] = TagClass("junction",
                                 baseclass = "EagleFilePart",
-                                attrs=[xAttr,
-                                       yAttr])
+                                attrs=[dimensionAttr("x",True),
+                                       dimensionAttr("y",True)])
 
 
 
@@ -696,7 +783,7 @@ if __name__ == "__main__":
 
     tags["technology"] = TagClass("technology",
                                   baseclass = "EagleFilePart",
-                                  attrs=[nameAttr],
+                                  attrs=[nameAttr()],
                                   sections=[Map("attributes", "./attribute", requireTag=True)])
 
 
@@ -704,20 +791,20 @@ if __name__ == "__main__":
     tags["attribute"] = TagClass("attribute",
                                  baseclass = "EagleFilePart",
                                  customchild = True,
-                                 attrs=[nameAttr,
+                                 attrs=[nameAttr(),
                                         Attr("value", required=False),
-                                        Attr("x", required=False),
-                                        Attr("y", required=False),
-                                        Attr("size", required=False),
-                                        Attr("layer", required=False),
+                                        dimensionAttr("x", required=False),
+                                        dimensionAttr("y", required=False),
+                                        sizeAttr(required=False),
+                                        layerAttr(required=False),
                                         Attr("font", required=False),
-                                        Attr("ratio", required=False),
+                                        Attr("ratio",
+                                         vtype="int",
+                                          required=False),
                                         rotAttr,
                                         Attr("display", required=False),
                                         Attr("constant",
-                                             type="ConstantAttr",
-                                             parse="parse_constant",
-                                             unparse="unparse_constant",
+                                             vtype="constant_bool",
                                              required=False)])
 
 
@@ -748,14 +835,16 @@ if __name__ == "__main__":
 
     tags["setting"] = TagClass("setting",
                                baseclass = "EagleFilePart",
-                               attrs=[Attr("alwaysvectorfont", required=False),
+                               attrs=[Attr("alwaysvectorfont", 
+                                           vtype="bool",
+                                           required=False),
                                       Attr("verticaltext", required=False)])
 
 
 
     tags["designrules"] = TagClass("designrules",
                                    baseclass = "EagleFilePart",
-                                   attrs=[nameAttr],
+                                   attrs=[nameAttr()],
                                    sections=[List("description", "./description", requireTag=True),
                                              Map("params", "./param")])
 
@@ -763,13 +852,21 @@ if __name__ == "__main__":
 
     tags["grid"] = TagClass("grid",
                             baseclass = "EagleFilePart",
-                            attrs=[Attr("distance", required=False),
+                            attrs=[Attr("distance",
+                                        vtype="float",
+                                        required=False),
                                    Attr("unitdist", required=False),
                                    Attr("unit", required=False),
                                    Attr("style", required=False),
-                                   Attr("multiple", required=False),
-                                   Attr("display", required=False),
-                                   Attr("altdistance", required=False),
+                                   Attr("multiple", 
+                                         vtype="int",
+                                         required=False),
+                                   Attr("display",
+                                        vtype="bool",
+                                        required=False),
+                                   Attr("altdistance",
+                                        vtype="float",
+                                        required=False),
                                    Attr("altunitdist", required=False),
                                    Attr("altunit", required=False)])
 
@@ -778,20 +875,28 @@ if __name__ == "__main__":
     tags["layer"] = TagClass("layer",
                              baseclass = "EagleFilePart",
                              attrs=[Attr("number", required=True),
-                                    nameAttr,
-                                    Attr("color", required=True),
-                                    Attr("fill", required=True),
-                                    Attr("visible", required=False),
-                                    Attr("active", required=False)])
+                                    nameAttr(),
+                                    Attr("color", 
+                                         vtype="int",
+                                         required=True),
+                                    Attr("fill", 
+                                         vtype="int",
+                                         required=True),
+                                    Attr("visible", 
+                                         vtype="bool",
+                                         required=False),
+                                    Attr("active", 
+                                         vtype="bool",
+                                         required=False)])
 
 
 
     tags["class"] = TagClass("class",
                              baseclass = "EagleFilePart",
                              attrs=[Attr("number", required=True),
-                                    nameAttr,
-                                    Attr("width", required=False),
-                                    Attr("drill", required=False)],
+                                    nameAttr(),
+                                    widthAttr(required=False),
+                                    drillAttr(required=False)],
                              sections=[Map("clearances", "./clearance", mapkey="netclass")])
 
 
@@ -802,7 +907,7 @@ if __name__ == "__main__":
                                              accessorName = "netclass",
                                              xmlName="class",
                                              required=True),
-                                        Attr("value", required=False)])
+                                        dimensionAttr("value", required=False)])
 
 
 
@@ -815,14 +920,14 @@ if __name__ == "__main__":
 
     tags["param"] = TagClass("param",
                              baseclass = "EagleFilePart",
-                             attrs=[nameAttr,
+                             attrs=[nameAttr(),
                                     Attr("value", required=True)])
 
 
 
     tags["pass"] = TagClass("pass",
                             baseclass = "EagleFilePart",
-                            attrs=[nameAttr,
+                            attrs=[nameAttr(),
                                    Attr("refer", required=False),
                                    Attr("active", required=False)],
                             sections=[Map("params", "./param")])
@@ -867,7 +972,8 @@ if __name__ == "__main__":
     tags["eagleBoard"] = TagClass("eagle",
                                   classname="BoardFile",
                                   baseclass="EagleFile",
-                                  attrs=[Attr("version", required=True)],
+                                  attrs=[Attr("version",
+                                              required=True)],
                                   sections=[List("settings", "./drawing/settings/setting",requireTag=True),
                                             Singleton("grid", "./drawing/grid"),
                                             # EagleFile implements layer accessors

@@ -8,7 +8,7 @@ test: build $(TARGETS)  eagleDTD.py
 	./checkEagle.py --file test2.sch Xperimental_Trinket_Pro_small_parts_power_breakout.sch
 
 doc: HighEagle.py
-	#$(MAKE) -C doc html
+	$(MAKE) -C doc html
 
 eagleDTD.py: eagle-tweaked.dtd
 	echo DTD=\"\"\" > $@

@@ -246,15 +246,12 @@ class TagClass:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a set of classes for manipulating eagle files")
-    parser.add_argument("--in", required=True,  type=str, nargs=1, dest='infile', help="tag definition file")
     parser.add_argument("--out", required=True,  type=str, nargs=1, dest='outfile', help="python output")
     args = parser.parse_args()
 
     log.basicConfig(format="%(levelname)s: %(message)s", level=log.DEBUG)
     log.info("Verbose output.")
 
-    # Load attribute information from a file that's generated from the DTD
-    spec = open(args.infile[0], "r")
     tags = {}
 
     layerAttr = Attr("layer",

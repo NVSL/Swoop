@@ -20,7 +20,7 @@ class HighEagleError (Exception):
 class EagleFilePart(object):
     """Base class for all eagle tag objects.  It provides fallback implementations
     of core features, facilities for navagating the part tree, and provides the
-    "parent" attribute.
+    :code:`parent` attribute.
 
     """
     
@@ -28,6 +28,12 @@ class EagleFilePart(object):
         self.parent = None
 
     def get_file(self):
+        """
+        Get the :class:`EagleFile` containing this object.
+
+        :rtype: :class:`EagleFile`
+
+        """
         r = self.get_root()
         if isinstance(r, EagleFile):
             return r
@@ -36,7 +42,9 @@ class EagleFilePart(object):
 
     def get_parent(self):
         """
-        Get this objects parent
+        Get this object's parent.
+
+        :rtype: :class:`EagleFilePart`
         """
         return self.parent
 
@@ -44,18 +52,26 @@ class EagleFilePart(object):
     def from_et (cls, et):
         """
         Parse the part from an Element Tree
+
+        :rtype: :class:`EagleFilePart`
         """
         raise NotImplementedError()
     
     def get_et ():
         """
-        Generate an element tree that represents the EFP.
+        Generate an element tree that represents the :code:`EagleFilePart`.
+
+        :rtype: :class:`etree.ElementTree`
+
         """
         raise NotImplementedError()
 
     def get_root(self):
         """ 
-        Find the root of this EFP tree
+        Find the root of this :class:`EagleFilePart` tree.
+
+        :rtype: :class:`EagleFilePart`
+
         """
         if self.get_parent() is not None:
             return self.get_parent().get_root()
@@ -64,19 +80,26 @@ class EagleFilePart(object):
 
     def clone(self):
         """
-        Clone the EagleFilePart.  It should be identical to the orginial, except that the parent should be None
+        Clone the :class:`EagleFilePart`.  It should be identical to the orginial, except that the parent should be :code:`None`.
+
+        :rtype: :class:`EagleFilePart`
         """
         raise NotImplementedError()
 
     def get_children(self):
         """
-        Return a list of all the EFP children of this EFP
+        Return a list of all the :code:`EagleFilePart` children of this :code:`EagleFilePart`
+
+        :rtype: List of :class:`EagleFilePart`
+
         """
         raise NotImplementedError()
 
     def check_sanity(self):
         """
-        Perform a (recursive) sanity check on this EFP
+        Perform a (recursive) sanity check on this :code:`EagleFilePart`
+        
+        :rtype: :code:`None`
         """
         for i in self.get_children():
             #print "."
@@ -86,13 +109,16 @@ class EagleFilePart(object):
 
 class EagleFile(EagleFilePart):
     """
-    Base class for eagle files.  Handles opening, parsing, validation, associated errors, writing, and layers.
+    Base class for Eagle files.  Handles opening, parsing, validation, associated errors, writing, and layers.
     """
 
     # A validator for element tree representations of eagle files.
     DTD = ET.DTD(StringIO.StringIO(eagleDTD.DTD))
 
     def __init__ (self):
+        """
+        Construct an empty :class:`EagleFile`.
+        """
         EagleFilePart.__init__(self)
         self.filename= None
         self.root = None
@@ -104,6 +130,8 @@ class EagleFile(EagleFilePart):
     def validate(self):
         """
         Check that this file conforms to the eagle DTD. Return True, if it does, False otherwise.
+
+        :rtype: Bool
         """
         et = self.get_et()
         v = EagleFile.DTD.validate(et)
@@ -124,7 +152,11 @@ class EagleFile(EagleFilePart):
     @staticmethod
     def from_file (filename, bestEffort = True):
         """
-        Loads a Eagle file from a .sch, .lbr, or .brd file.  If bestEffort is True, load the file even if it doesn't conform to the DTD.
+        Loads a Eagle file from a .sch, .lbr, or .brd file. 
+
+        :param bestEffort: If :code:`True`, load the file even if it doesn't conform to the DTD.
+        
+        :rtype: :class:`BoardFile`, :class:`LibraryFile`, or :class:`SchematicFile`
         """
         try:
             tree = ET.parse(filename)
@@ -151,7 +183,7 @@ class EagleFile(EagleFilePart):
         ef.filename = filename
         ef.root = root
         ef.tree = tree
-
+        #ET.dump(ef.root)
         ef.check_sanity()
         return ef
 
@@ -166,6 +198,9 @@ class EagleFile(EagleFilePart):
         """
         Exports the Schematic to an EAGLE schematic file.
         
+        :param filename: Filename for output.
+        
+        :rtype: :code:`None`
         """
 
         header="""<?xml version="1.0" encoding="utf-8"?>
@@ -182,7 +217,12 @@ class EagleFile(EagleFilePart):
 
     def add_layer (self, layer):
         """
-        Add a layer
+        Add a layer to this file.
+        
+        :param layer: The :class:`Layer` to add.
+
+        :rtype: :code:`None`
+
         """
         assert isinstance(layer, Layer)
         #print str(self) +" " + str(int(layer.number))
@@ -193,12 +233,17 @@ class EagleFile(EagleFilePart):
     def get_layers(self):
         """
         Get a map of names to Layer objects
+        
+        :rtype: Map of :code:`EagleFilePart` keyed by layer name.
+
         """
         return self.layersByName
 
     def get_layersByNumber(self):
         """
-        Get a map of numbers to Layer objects
+        Get a map of numbers to Layer objects.
+
+        :rtype: Map of :code:`EagleFilePart` keyed by layer number.
         """
         return self.layers
 
@@ -229,7 +274,9 @@ class EagleFile(EagleFilePart):
 
     def parse_layer_number(self, num):
         """ 
-        Give a layer number, return the name.  Specifically for use in parsing.  You probably shouldn't call this.  Use layer_number_to_name instead.
+        Give a layer number, return the name.  Specifically for use in parsing.  You probably shouldn't call this.  Use :func:`layer_number_to_name` instead.
+
+        :rtype: :class:`Layer` 
         """
         if num is None:
             return None
@@ -237,7 +284,9 @@ class EagleFile(EagleFilePart):
 
     def unparse_layer_name(self, name):
         """ 
-        Give a layer number, return the name.  Specifically for use in parsing.  You probably shouldn't call this.  Use layer_name_to_number instead.
+        Give a layer number, return the name.  Specifically for use in parsing.  You probably shouldn't call this.  Use :func:`layer_name_to_number` instead.
+        
+        :rtype: :class:`Layer` 
         """
         if name is None:
             return None
@@ -246,6 +295,8 @@ class EagleFile(EagleFilePart):
     def layer_number_to_name(self, num):
         """
         Given a layer number, return the name.
+
+        :rtype: :class:`Layer` 
         """
         n = int(num)
         if n not in self.layers:
@@ -255,6 +306,8 @@ class EagleFile(EagleFilePart):
     def layer_name_to_number(self, name):
         """
         Given a layer name, return the number.
+
+        :rtype: :class:`Layer` 
         """
         #print type(name)
         #print name
@@ -265,7 +318,11 @@ class EagleFile(EagleFilePart):
 
     def remove_layer(self, layer):
         """
-        Remove a layer
+        Remove a layer.
+        
+        :param layer: :class:`Layer` object, layer name, or layer number that should be deleted.
+        
+        :rtype: :code:`None`
         """
         if type(layer) is str:
             l = self.layersByName[layer]
@@ -284,12 +341,20 @@ class EagleFile(EagleFilePart):
     #     raise NotImplementedError("Manifest for " + str(type(self)))
 
     def find_library_by_name(self, l):
+        """
+        Lookup a library by name and return it.
+
+        :param l: Library name.
+        :rtype: :class:`Library` or :code:`None` if the library is not present.
+        """
         return self.libraries.get(l)
 
     
 def smartAddSubTags(root, path):
     """
     Add tags as need to create a container for the contents of an xpath.
+
+    :rtype: :code:`None`
     """
     pathSegments = path.split("|")[0].replace("./","").split("/")
     target = root
@@ -323,17 +388,24 @@ classMap = {}
 #{%endif%}
 
 class {{classname}}({{tag.baseclass}}):
+    """
+    Class representing the contents of a <{{tag.tag}}> in Eagle files.
+    """
     def __init__(self,
-                 #{%for a in tag.attrs.values() %}
+                 #{%for a in tag.attrs %}
                  {{a.name}}=None,
                  #{%endfor%}
                  #{%for l in tag.sections %}
                  {{l.name}}=None,
                  #{%endfor%}
                 ):
+        """
+        Construct an empty :class:`{{classname}}` object.
+        """
+
         {{tag.baseclass}}.__init__(self)
         
-        #{%for a in tag.attrs.values() %}
+        #{%for a in tag.attrs %}
         #if {{a.name}} is not None:
         self.{{a.name}} = {{a.name}}
         #{%if a.required %}
@@ -369,6 +441,10 @@ class {{classname}}({{tag.baseclass}}):
     def from_et(cls,root,parent=None):
         """
         Create a {{tag.classname}} from a {{tag.tag}} element.
+        
+        :param root: The element tree tree to parse.
+        :param parent: :class:`EagleFilePart` that should hold the resulting :class:`EagleFilePart`
+        :rtype: :class:`{{tag.classname}}`
         """
         
         if root.tag != "{{tag.tag}}":
@@ -376,7 +452,7 @@ class {{classname}}({{tag.baseclass}}):
 
         ## Call the constructor
         n = cls(
-            #{%for a in tag.attrs.values()%}
+            #{%for a in tag.attrs%}
             #{%if a.parse != "" %}
             {{a.name}}={{a.parse}}(root.get("{{a.xmlName}}")),
             #{%else%}
@@ -384,13 +460,23 @@ class {{classname}}({{tag.baseclass}}):
             #{%endif%}
             #{%endfor%}
         )
+        #print "getting {{tag.tag}}"
+        #{%for a in tag.attrs%}
+        #{%if a.parse != "" %}
+        #print "got {{a.name}} {{a.xmlName}}= " + str({{a.parse}}(root.get("{{a.xmlName}}")))
+        #print n.{{a.name}}
+        #{%else%}
+        #print "got {{a.name}} {{a.xmlName}}= " + str(root.get("{{a.xmlName}}"))
+        #{%endif%}
+        #print n.{{a.name}}
+        #{%endfor%}
         n.parent = parent
 
         ### populate the maps by searching for elements that match xpath and generating objects for them.
         
         #{%for m in tag.maps%}
         for c in root.xpath("{{m.xpath}}"):
-            n.add_{{m.adderName}}(classMap[c.tag].from_et(c, n))
+            n.add_{{m.accessorName}}(classMap[c.tag].from_et(c, n))
             #n.{{m.name}}[c.get("name")] =  classMap[c.tag].from_et(c, n)
             
         #{%endfor%}
@@ -399,7 +485,7 @@ class {{classname}}({{tag.baseclass}}):
 
         #{%for l in tag.lists %}
         for c in root.xpath("{{l.xpath}}"):
-            n.add_{{l.adderName}}(classMap[c.tag].from_et(c,n))
+            n.add_{{l.accessorName}}(classMap[c.tag].from_et(c,n))
             #n.{{l.name}} = [classMap[c.tag].from_et(c,n) for 
         #{%endfor%}
 
@@ -408,7 +494,7 @@ class {{classname}}({{tag.baseclass}}):
         #{%for s in tag.singletons %}
         x = root.xpath("{{s.xpath}}")
         if len(x) is not 0:
-            n.set_{{s.adderName}}(classMap[x[0].tag].from_et(x[0],n))
+            n.set_{{s.accessorName}}(classMap[x[0].tag].from_et(x[0],n))
         #{%endfor%}
 
         ### And, finally, if the objects wants the text from the tag.
@@ -416,18 +502,29 @@ class {{classname}}({{tag.baseclass}}):
         #{%if tag.preserveTextAs != "" %}
         n.{{tag.preserveTextAs}} = root.text
         #{% endif %}
+
+        #{%for a in tag.attrs%}
+        #{%if a.parse != "" %}
+        #print "got {{a.name}}= " + str({{a.parse}}(root.get("{{a.xmlName}}")))
+        #{%else%}
+        #print "got {{a.name}}= " + str(root.get("{{a.xmlName}}"))
+        #{%endif%}
+        #{%endfor%}
         return n
 
 
     def get_et(self):
         """
-        Generate a {{tag.tag}}-based element tree for a {{tag.classname}}.
+        Generate a <{{tag.tag}}> element tree for a :class:`{{tag.classname}}`.
+        
+        :rtype:  :class:`ElementTree`.
+        
         """
         r = ET.Element("{{tag.tag}}")
 
         ### Set the tag attributes 
         
-        #{%for a in tag.attrs.values()%}
+        #{%for a in tag.attrs%}
 
         ## Unparse the values.
 
@@ -436,6 +533,10 @@ class {{classname}}({{tag.baseclass}}):
         #{%else%}
         v = self.{{a.name}}
         #{%endif%}
+        
+        #{%for a in tag.attrs%}
+        #print "setting {{a.xlName}}= " + str(v)
+        #{%endfor%}
 
         ## For required attributes None becomes "".  For optional attributes, we just leave the attribute out.
         if v is not None:
@@ -494,18 +595,20 @@ class {{classname}}({{tag.baseclass}}):
 
     def clone(self):
         """
-        Recursively clone this {{tag.classname}}.  It will be identical to the original, but it's parent will None.
+        Recursively clone this :code:`{{tag.classname}}`.  It will be identical to the original, but it's parent will :code:`None`.
+        
+        :rtype: :class:`{{tag.classname}}`
         """
         n = copy.copy(self)
         #{%for m in tag.maps%}
         n.{{m.name}} = {}
         for x in self.{{m.name}}.values():
-            n.add_{{m.adderName}}(x.clone())
+            n.add_{{m.accessorName}}(x.clone())
         #{%endfor%}
         #{%for l in tag.lists %}
         n.{{l.name}} = []
         for x in self.{{l.name}}:
-            n.add_{{l.adderName}}(x.clone())
+            n.add_{{l.accessorName}}(x.clone())
         #{%endfor%}
         #{%for s in tag.singletons %}
         if n.{{s.name}} is not None:
@@ -516,14 +619,17 @@ class {{classname}}({{tag.baseclass}}):
 
     ### Getters/Setters for attribute values
 
-    #{%for a in tag.attrs.values()%}
+    #{%for a in tag.attrs%}
     def get_{{a.accessorName}}(self):
-        """ Return the value of {{a.name}} for this {{tag.classname}}.  This corresponds to the {{a.name}} attribute of a {{tag.tag}} in an Eagle file.
+        """ Return the value of :code:`{{a.name}}` for this :class:`{{tag.classname}}`.  This corresponds to the :code:`{{a.name}}` attribute of a :code:`<{{tag.tag}}>` in an Eagle file.
+        
+        :rtype: :code:`str`
         """
         return self.{{a.name}}
 
     def set_{{a.accessorName}}(self,v):
-        """ Set the value of {{a.name}} for this {{tag.classname}}.  This corresponds to the {{a.name}} attribute of a {{tag.tag}} in an Eagle file.
+        """ Set the value of :code:`{{a.name}}` for this  :class:`{{tag.classname}}`.  This corresponds to the :code:`{{a.name}}` attribute of a :code:`<{{tag.tag}}>` in an Eagle file.
+        :rtype: :code:`None`
         """
         self.{{a.name}} = v
     #{%endfor%}
@@ -532,20 +638,25 @@ class {{classname}}({{tag.baseclass}}):
     
     #{%for l in tag.lists%}
     #{%if not l.suppressAccessors %}
-    def add_{{l.adderName}}(self, s):
-        """ Add a {{l.addrName}} to this {{tag.classname}}.
+    def add_{{l.accessorName}}(self, s):
+        """ Add a :code:`{{l.accessorName}}` to this :class:`{{tag.classname}}`.
+        :rtype: :code:`None`
         """
         self.{{l.name}}.append(s)
         s.parent = self
-    def get_nth_{{l.adderName}}(self, n):
-        """ get then nth {{l.addrName}} from  this {{tag.classname}}.
+    def get_nth_{{l.accessorName}}(self, n):
+        """ get then nth :code:`{{l.accessorName}}` from  this  :class:`{{tag.classname}}`.
         """
         return self.{{l.name}}[n]
     def get_{{l.name}}(self):
-        """ get then list of {{l.addrName}} from this {{tag.classname}}.
+        """ get then list of :code:`{{l.accessorName}}` from this  :class:`{{tag.classname}}`.
         """
         return self.{{l.name}}
     def clear_{{l.name}}(self):
+        """
+        Remove all the :code:`{{l.accessorName}}`s from this :class:`{{tag.classname}}`.
+        :rtype: :code:`None`
+        """
         for efp in self.{{l.name}}:
             efp.parent = None
         self.{{l.name}} = []
@@ -559,16 +670,16 @@ class {{classname}}({{tag.baseclass}}):
 
     #{%for l in tag.singletons%}
     #{%if not l.suppressAccessors %}
-    def set_{{l.adderName}}(self, s):
-        """ Set {{l.adderName}} for this {{tag.classname}}.
+    def set_{{l.accessorName}}(self, s):
+        """ Set {{l.accessorName}} for this  :class:`{{tag.classname}}`.
         """
         if self.{{l.name}} is not None:
             self.{{l.name}}.parent = None
         self.{{l.name}} = s
         self.{{l.name}}.parent = self
 
-    def get_{{l.adderName}}(self):
-        """ Get {{l.adderName}} from this {{tag.classname}}.
+    def get_{{l.accessorName}}(self):
+        """ Get {{l.accessorName}} from this  :class:`{{tag.classname}}`.
         """
         return self.{{l.name}}
     #{%endif%}
@@ -577,23 +688,39 @@ class {{classname}}({{tag.baseclass}}):
     ### Add, lookup, and get for maps
     #{%for m in tag.maps%}
     #{%if not m.suppressAccessors %}
-    def add_{{m.adderName}}(self, s):
-        """ Add a {{m.addrName}} to this {{tag.classname}}.
+    def add_{{m.accessorName}}(self, s):
+        """ Add a {{m.accessorName}} to this  :class:`{{tag.classname}}`.
         """
         self.{{m.name}}[s.{{m.mapkey}}] = s
         s.parent = self
 
-    def get_{{m.adderName}}(self, key):
-        """ Get the {{m.addrName}} name @key from this {{tag.classname}}.
+    def get_{{m.accessorName}}(self, key):
+        """ Find the {{m.accessorName}} key :code:`key` from this :class:`{{tag.classname}}`.
+        
+        :rtype: :class:`EagleFilePart` or :code:`None`, if there is no such item.
         """
         return self.{{m.name}}[key]
 
     def get_{{m.name}}(self):
-        """ Get map of {{m.addrName}}s from this {{tag.classname}}.
+        """ Get map of :code:`{{m.accessorName}}`s from this  :class:`{{tag.classname}}`.
         """
         return self.{{m.name}}
 
-    def remove_{{m.adderName}}(self, efp):
+    def clear_{{m.name}}(self):
+        """
+        Remove all the :code:`{{m.accessorName}}`s from this :class:`{{tag.classname}}`.
+        """
+        for efp in self.{{m.name}}.values():
+            efp.parent = None
+        self.{{m.name}} = {}
+
+    def remove_{{m.accessorName}}(self, efp):
+        """
+        Remove a :code:`{{m.accessorName}}`s from this :class:`{{tag.classname}}`.
+        
+        :param efp: Item to remove.
+
+        """
         del self.{{m.name}}[efp.{{m.mapkey}}]
         efp.parent = None
     #{%endif%}
@@ -602,7 +729,9 @@ class {{classname}}({{tag.baseclass}}):
     
     def get_children(self):
         """
-        Get all the children
+        Get all the children of this :class:`EagleFilePart`.
+        
+        :rtype: List of :class:`EagleFilePart`
         """
         r = []
 
@@ -615,9 +744,13 @@ class {{classname}}({{tag.baseclass}}):
         #{%endfor%}
         return r
 
-    def dump(self, indent=""):
+    def dump(self, indent="", increment="   "):
         """
-        Debug dump.
+        Recursive debug dump.
+        
+        :param indent:  Indentation string.  The output will be indented by this much.
+        :param increment: This will be appendeded to :code:`indent` on recursive invocations.
+
         """
         print indent + str(self.__class__.__name__)
         for c in self.get_children():
@@ -644,14 +777,14 @@ class Part (Base_Part):
                  variants=None,
              ):
         Base_Part.__init__(self,
-                           name,
-                           deviceset,
-                           value,
-                           library,
-                           device,
-                           technology,
-                           attributes,
-                           variants)
+                           name=name,
+                           deviceset=deviceset,
+                           value=value,
+                           library=library,
+                           device=device,
+                           technology=technology,
+                           attributes=attributes,
+                           variants=variants)
 
     # def is_child(self, f):
     #     if f == "schematic":
@@ -666,7 +799,7 @@ class Part (Base_Part):
             assert self.find_library() is not None
         except Exception as e:
             raise HighEagleError("Library '" + self.library +  "' missing for " + str(self.name))
-
+        
         try:
             assert self.find_deviceset() is not None
         except Exception as e:
@@ -774,17 +907,17 @@ class Attribute (Base_Attribute):
                  in_library=True
                 ):
         Base_Attribute.__init__(self,
-                                layer,
-                                ratio,
-                                name,
-                                value,
-                                y,
-                                x,
-                                constant,
-                                font,
-                                rot,
-                                display,
-                                size)
+                                layer=layer,
+                                ratio=ratio,
+                                name=name,
+                                value=value,
+                                y=y,
+                                x=x,
+                                constant=constant,
+                                font=font,
+                                rot=rot,
+                                display=display,
+                                size=size)
         self.in_library = in_library
 
 

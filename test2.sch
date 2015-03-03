@@ -52051,7 +52051,7 @@ MHz</text>
       </classes>
       <parts>
         <part name="R1_3" library="PickerDesign" deviceset="GENERIC-RESISTOR_" device="" technology="" value="90 +/- 10%"/>
-        <part name="LED1_3" library="Components" deviceset="RGBLED_CA" device="-5MM" technology="" value="None">
+        <part name="LED1_3" library="Components" deviceset="RGBLED_CA" device="-5MM" technology="" value="">
           <attribute name="LUMENS" value=""/>
         </part>
         <part name="R2_3" library="PickerDesign" deviceset="GENERIC-RESISTOR_" device="" technology="" value="100000000000000"/>

@@ -46,6 +46,14 @@ def compareEagleElementTrees(orig, new):
             log.warning("Tag count mismatch for '" + i + "': orig=" + str(origTags[i]) + "; new=" + str(newTags[i]))
             mismatches = mismatches + 1
 
+    if mismatches != 0:
+        for i in origTags:
+            print i + ": " + str(newTags[i]) + " " + str(origTags[i]) + " " + str(int(newTags[i]) - int(origTags[i]))
+        
+        for i in origAttrs:
+            print i + ": " + str(newAttrs[i]) + " " + str(origAttrs[i]) + " " + str(int(newAttrs[i]) - int(origAttrs[i]))
+        
+                
     return mismatches
 
 

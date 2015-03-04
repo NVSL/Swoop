@@ -6,14 +6,20 @@
 Welcome to HighEagle's documentation!
 =====================================
 
+.. automodule:: HighEagle
+
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
-   HighEagle
+   CoreClasses
+   BoardClasses
+   SchematicClasses
+   LibraryClasses
+   UtilityClasses
+   Exceptions
    CodeGen
-
 
 Indices and tables
 ==================

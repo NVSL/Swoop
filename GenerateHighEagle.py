@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-""".. module:: GenerateHighEagle
+"""
+.. module:: GenerateHighEagle
 
 .. moduleauthor:: Steven Swanson (swanson@cs.ucsd.edu)
 
@@ -26,7 +27,7 @@ tree is an instance of :class:`SchematicFile`, :class:`BoardFile`, or :class:`Li
 are subclasses of :class:`EagleFile`.
 
 Each :class:`EagleFilePart` contains one or more attributes and one or more
-'collections' (i.e., lists, maps, or singletons) of :class:`EagleFilePart`s.  For
+'collections' (i.e., lists, maps, or singletons) of :class:`EagleFilePart` objects.  For
 instance, :class:`SchematicFile` contains a collection that maps library names to
 :class:`Library` objects, a list of :class:`Sheet` objects, and a singleton :class:`Description`
 instance.
@@ -80,7 +81,7 @@ import jinja2 as J2
 import argparse
 import logging as log
 import copy
-
+import re
 
 class Attr:
     """
@@ -129,12 +130,18 @@ class Attr:
         else:
             self.parse = parse
 
+def initialCap(a):
+        t = a[0].upper() + a[1:]
+        return t
+
+def rstClassify(x):
+    return ":class:`" + x + "`"
 
 class Collection:
     """
     Base class for collections.
     """
-    def __init__(self, name, xpath, accessorName=None, suppressAccessors=False, requireTag=False):
+    def __init__(self, name, xpath, accessorName=None, suppressAccessors=False, requireTag=False, containedTypes=None):
         """Create a class describing an attribute.
 
         :param name: The collection's name.  This will be used as the name of the member in the the :code:`EagleFilePart`.
@@ -155,12 +162,23 @@ class Collection:
 
         self.suppressAccessors = suppressAccessors
         self.requireTag = requireTag
+        if containedTypes is None:
+            self.containedTypes = [self.accessorName]
+        else:
+            self.containedTypes = containedTypes
+
+    def get_contained_type_list_doc_string(self, conjunction="or"):
+        if len(self.containedTypes) == 1:
+            return rstClassify(initialCap(self.containedTypes[0]))
+        else:
+            return ", ".join(map(rstClassify , map(initialCap,self.containedTypes[0:-1]))) + " " + conjunction + " " + rstClassify(initialCap(self.containedTypes[-1]))
+                                                                                                                 
 
 class Map(Collection):
     """
     Collection that maps strings to items
     """
-    def __init__(self, name, xpath, accessorName=None, suppressAccessors=False, requireTag=False, mapkey=None):
+    def __init__(self, name, xpath, accessorName=None, suppressAccessors=False, requireTag=False, mapkey=None, containedTypes=None):
         """Create a Map object.
         
         See the documentation for :class:`Collection` for the parameters.  There is one additional parameter:
@@ -168,36 +186,36 @@ class Map(Collection):
         :param mapkey:  This is the attribute of the contained elements that will be used as the index in the map.
 
         """
-        Collection.__init__(self,name, xpath, accessorName,  suppressAccessors, requireTag)
+        Collection.__init__(self,name, xpath, accessorName,  suppressAccessors, requireTag, containedTypes)
         self.type = "Map"
         if mapkey is None:
             self.mapkey = "name"
         else:
             self.mapkey = mapkey
-
+        
 
 class List(Collection):
     """
     Collection that is an ordered list
     """
-    def __init__(self, name, xpath, accessorName=None, suppressAccessors=False, requireTag=False):
+    def __init__(self, name, xpath, accessorName=None, suppressAccessors=False, requireTag=False, containedTypes=None):
         """Create a List object.
         
         See the documentation for :class:`Collection` for the parameters. 
         """
-        Collection.__init__(self,name, xpath, accessorName,suppressAccessors, requireTag)
+        Collection.__init__(self,name, xpath, accessorName,suppressAccessors, requireTag, containedTypes)
         self.type = "List"
 
 class Singleton(Collection):
     """
     Collection with a single element
     """
-    def __init__(self, name, xpath, accessorName=None,  suppressAccessors=False, requireTag=False):
+    def __init__(self, name, xpath, accessorName=None,  suppressAccessors=False, requireTag=False,containedTypes=None):
         """Create a Singleton object.
         
         See the documentation for :class:`Collection` for the parameters. 
         """
-        Collection.__init__(self,name, xpath, accessorName,  suppressAccessors, requireTag)
+        Collection.__init__(self,name, xpath, accessorName,  suppressAccessors, requireTag, containedTypes)
         self.type = "Singleton"
 
 class TagClass:
@@ -245,10 +263,9 @@ class TagClass:
     def get_map_names(self):
         return [x.name for x in self.maps]
     def get_tag_initial_cap(self):
-        t = self.tag
-        t = t[0].upper() + t[1:]
-        return t
+        return initialCap(self.tag)
 
+    
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a set of classes for manipulating eagle files")
@@ -340,7 +357,9 @@ if __name__ == "__main__":
                                baseclass = "EagleFilePart",
                                attrs=[nameAttr()],
                                sections=[Singleton("description", "./description", requireTag=True),
-                                         List("drawing_elements","./polygon|./wire|./text|./dimension|./circle|./rectangle|./frame|./hole"),
+                                         List("drawing_elements","./polygon|./wire|./text|./dimension|./circle|./rectangle|./hole|./frame",
+                                              containedTypes=["polygon","wire","text","dimension","circle","rectangle","hole", "frame"],
+                                              accessorName="drawing_element"),
                                          Map("pads", "./pad"),
                                          Map("smds", "./smd")])
 
@@ -348,7 +367,9 @@ if __name__ == "__main__":
                               baseclass = "EagleFilePart",
                               attrs=[nameAttr()],
                               sections=[Singleton("description", "./description", requireTag=True),
-                                        List("drawing_elements","./polygon|./wire|./text|./dimension|./circle|./rectangle|./frame|./hole"),
+                                        List("drawing_elements","./polygon|./wire|./text|./dimension|./circle|./rectangle|./frame|./hole",
+                                             containedTypes=["polygon","wire","text","dimension","circle","rectangle","hole"],
+                                             accessorName="drawing_element"),
                                         Map("pins", "./pin")])
 
     tags["deviceset"] = TagClass("deviceset",
@@ -944,7 +965,10 @@ if __name__ == "__main__":
                              baseclass = "EagleFilePart",
                              attrs=[],
                              sections =[Singleton("description", "./description", requireTag=True),
-                                        List("plain_elements", "./plain/polygon|./plain/wire|./plain/text|./plain/dimension|./plain/circle|./plain/rectangle|./plain/frame|./plain/hole", requireTag=True),
+                                        List("plain_elements", "./plain/polygon|./plain/wire|./plain/text|./plain/dimension|./plain/circle|./plain/rectangle|./plain/frame|./plain/hole",
+                                             containedTypes=["polygon","wire","text","dimension","circle","rectangle","frame","hole"],
+                                             accessorName="plain_element",
+                                             requireTag=True),
                                         Map("moduleinsts", "./moduleinsts/moduleinst"),
                                         List("instances", "./instances/instance", requireTag=True),
                                         Map("busses", "./busses/bus", requireTag=True),
@@ -980,7 +1004,10 @@ if __name__ == "__main__":
                                             Map("layers", "./drawing/layers/layer",suppressAccessors=True, mapkey="number"),
                                             Singleton("description", "./drawing/board/description", requireTag=True),
                                             # We keep all the drawing elements in one container
-                                            List("plain_elements", "./drawing/board/plain/polygon|./drawing/board/plain/wire|./drawing/board/plain/text|./drawing/board/plain/dimension|./drawing/board/plain/circle|./drawing/board/plain/rectangle|./drawing/board/plain/frame|./drawing/board/plain/hole", requireTag=True),
+                                            List("plain_elements", "./drawing/board/plain/polygon|./drawing/board/plain/wire|./drawing/board/plain/text|./drawing/board/plain/dimension|./drawing/board/plain/circle|./drawing/board/plain/rectangle|./drawing/board/plain/frame|./drawing/board/plain/hole",
+                                                 containedTypes=["polygon","wire","text","dimension","circle","rectangle","frame","hole"],
+                                                 accessorName="plain_element",
+                                                 requireTag=True),
                                             Map("libraries", "./drawing/board/libraries/library", requireTag=True),                              
                                             Map("attributes", "./drawing/board/attributes/attribute", requireTag=True),                              
                                             Map("variantdefs", "./drawing/board/variantdefs/variantdef", requireTag=True),
@@ -1027,5 +1054,11 @@ if __name__ == "__main__":
     template = env.get_template('HighEagle.jinja.py')
 
     f = open(args.outfile[0], "w")
-    f.write(template.render(tags=tags.values()))
 
+    out = template.render(tags=tags.values())
+    lines = out.split("\n")
+
+    for l in lines:
+        if not re.match("^\s*#\s*$", l):
+            f.write(l)
+            f.write("\n")

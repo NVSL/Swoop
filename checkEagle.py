@@ -48,10 +48,12 @@ def compareEagleElementTrees(orig, new):
 
     if mismatches != 0:
         for i in origTags:
-            print i + ": " + str(newTags[i]) + " " + str(origTags[i]) + " " + str(int(newTags[i]) - int(origTags[i]))
+            if int(newTags[i]) - int(origTags[i]) != 0:
+                print i + ": " + str(newTags[i]) + " " + str(origTags[i]) + " " + str(int(newTags[i]) - int(origTags[i]))
         
         for i in origAttrs:
-            print i + ": " + str(newAttrs[i]) + " " + str(origAttrs[i]) + " " + str(int(newAttrs[i]) - int(origAttrs[i]))
+            if int(newAttrs[i]) - int(origAttrs[i]) != 0:
+                print i + ": " + str(newAttrs[i]) + " " + str(origAttrs[i]) + " " + str(int(newAttrs[i]) - int(origAttrs[i]))
         
                 
     return mismatches

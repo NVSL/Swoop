@@ -1,4 +1,6 @@
-""".. module:: HighEagle
+"""
+
+.. module:: HighEagle
 
 .. moduleauthor:: Steven Swanson (swanson@cs.ucsd.edu)
 

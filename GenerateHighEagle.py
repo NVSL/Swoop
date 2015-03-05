@@ -65,15 +65,8 @@ element tree to :class:`EagleFileParts`, the :code:`get_et()` method for the rev
 conversion, a :code:`clone()` function for copying :class:`EagleFileParts`, and accessors for
 attributes (:code:`get_*()` and :code:`set_*()`) and collections (:code:`get_*()` and :code:`add_*()`).
 
-The jinja file also generates a python map called :code:`classMap`.  This map defines
-the mapping between tag names and EagleFilePart subclasses, and the :code:`from_et()`
-methods use this map to determine what kind of object to instantiate for a
-given tag.  My manipulating this map, you can extend classes the parser
-generates.  For instance, if you created the class :class:`CoolPart`(Part) (a subclass
-of :class:`Part` which represents a <part> tag in an eagle file), set classMap["part"]
-= :class:`CoolPart`, and then parse an :class:`EagleFile`, it will be populated with :class:`CoolPart`
-objects instead of :class:`Part` objects.  In this way, you can easily extend the
-library which additional functionality.
+Classes
+=======
 
 """
 

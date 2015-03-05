@@ -1,5 +1,0 @@
-HighEagle Documentation
------------------------
-
-.. automodule:: HighEagle
-

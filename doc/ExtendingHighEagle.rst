@@ -23,6 +23,6 @@ For instance if you wanted to add a :code:`set_location()` method to
             self.set_x(x)
             self.set_y(y)
 
-    HE.classMap["element"] MyElement
+    HE.classMap["element"] = MyElement
 
 

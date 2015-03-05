@@ -25,7 +25,7 @@ that can exist in an Eagle file.  Each subclass contains members that
 correspond to attributes of that element and the sub-elements it contains
 (subject to the flattening describe above).
 
-The classes that HighEagle IR uses fall into three categories:
+The classes that HighEagle IR uses fall into several categories:
 
  1. **The base class** :class:`EagleFilePart` is the baseclass for all other classes in the HighEagle IR.
 
@@ -495,40 +495,23 @@ class {{classname}}({{tag.baseclass}}):
     """
     Class representing the contents of a <{{tag.tag}}> in Eagle files.
     """
-    def __init__(self,
-                 #{%for a in tag.attrs %}
-                 {{a.name}}=None,
-                 #{%endfor%}
-                 #{%for l in tag.sections %}
-                 {{l.name}}=None,
-                 #{%endfor%}
-                ):
+    def __init__(self):
         """
         Construct an empty :class:`{{classname}}` object.
         """
-
         {{tag.baseclass}}.__init__(self)
         
         #{%for a in tag.attrs %}
-        self.{{a.name}} = {{a.name}}
+        self.{{a.name}}=None
         #{%endfor%}
-        
         #{%for l in tag.lists %}
-        if {{l.name}} is None:
-            self.{{l.name}} = []
-        else:
-            self.{{l.name}} = {{l.name}}
+        self.{{l.name}}=[]
         #{%endfor%}
-
         #{%for m in tag.maps %}
-        if {{m.name}} is None:
-            self.{{m.name}} = {}
-        else:
-            self.{{m.name}} = {{m.name}}
+        self.{{m.name}}={}
         #{%endfor%}
-
-        #{%for s in tag.singletons%}
-        self.{{s.name}} = {{s.name}}
+        #{%for s in tag.singletons %}
+        self.{{s.name}}=None
         #{%endfor%}
 
         #{%if tag.preserveTextAs != "" %}
@@ -549,11 +532,11 @@ class {{classname}}({{tag.baseclass}}):
             raise EagleFormatError("Tried to create {{tag.tag}} from " + root.tag)
 
         ## Call the constructor
-        n = cls(
-            #{%for a in tag.attrs%}
-            {{a.name}}={{a.parse}}(parent, "{{a.vtype}}", root.get("{{a.xmlName}}")),
-            #{%endfor%}
-        )
+        n = cls()
+        #{%for a in tag.attrs%}
+        n.{{a.name}}={{a.parse}}(parent, "{{a.vtype}}", root.get("{{a.xmlName}}"))
+        #{%endfor%}
+
         n.parent = parent
 
         ### populate the maps by searching for elements that match xpath and generating objects for them.
@@ -860,25 +843,8 @@ class Part (Base_Part):
     symbols, devices, etc. for a part.
 
     """
-    def __init__(self,
-                 name=None,
-                 deviceset=None,
-                 value=None,
-                 library=None,
-                 device=None,
-                 technology=None,
-                 attributes=None,
-                 variants=None,
-             ):
-        Base_Part.__init__(self,
-                           name=name,
-                           deviceset=deviceset,
-                           value=value,
-                           library=library,
-                           device=device,
-                           technology=technology,
-                           attributes=attributes,
-                           variants=variants)
+    def __init__(self):
+        Base_Part.__init__(self)
 
     # def is_child(self, f):
     #     if f == "schematic":
@@ -986,34 +952,9 @@ class Attribute (Base_Attribute):
     eagle files and they require different attributes in some cases.
 
     """
-    def __init__(self,
-                 layer=None,
-                 ratio=None,
-                 name=None,
-                 value=None,
-                 y=None,
-                 x=None,
-                 constant=None,
-                 font=None,
-                 rot=None,
-                 display=None,
-                 size=None,
-                 in_library=True
-                ):
-        Base_Attribute.__init__(self,
-                                layer=layer,
-                                ratio=ratio,
-                                name=name,
-                                value=value,
-                                y=y,
-                                x=x,
-                                constant=constant,
-                                font=font,
-                                rot=rot,
-                                display=display,
-                                size=size)
-        self.in_library = in_library
-
+    def __init__(self):
+        Base_Attribute.__init__(self)
+        self.in_library = False
 
     def __str__(self):
         return self.name + " = '" + self.value + "' [const=" + str(self.constant) + ";lib=" + str(self.from_library) +"]";

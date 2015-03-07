@@ -683,9 +683,11 @@ class {{classname}}({{tag.baseclass}}):
 
         :param v: :class:`EagleFilePart` to set.
 
-        :rtype: :code:`None`
+        :rtype: :code:`self`
         """
         self.{{a.name}} = v
+        return self
+
     #{%endfor%}
 
     ### Adder/getter/lookup for lists
@@ -696,10 +698,12 @@ class {{classname}}({{tag.baseclass}}):
         """ Add a {{l.get_contained_type_list_doc_string()}} to the :code:`{{l.name}}` of this :class:`{{tag.classname}}`.
 
         :param s: The {{l.get_contained_type_list_doc_string("or")}} to add.
-        :rtype: :code:`None`
+        :rtype: :code:`self`
         """
         self.{{l.name}}.append(s)
         s.parent = self
+        return self
+
     def get_nth_{{l.accessorName}}(self, n):
         """ get then nth {{l.get_contained_type_list_doc_string("or")}} object from the :code:`{{l.name}}` of this :class:`{{tag.classname}}`.
         
@@ -708,6 +712,7 @@ class {{classname}}({{tag.baseclass}}):
         :rtype: {{l.get_contained_type_list_doc_string()}} object
         """
         return self.{{l.name}}[n]
+
     def get_{{l.name}}(self):
         """ Get the :code:`{{l.name}}` from this :class:`{{tag.classname}}`.
 
@@ -718,52 +723,31 @@ class {{classname}}({{tag.baseclass}}):
         """
         Remove all the {{l.get_contained_type_list_doc_string("and")}} objects from they :code:`{{l.name}}` of this :class:`{{tag.classname}}`.
 
-        :rtype: :code:`None`
+        :rtype: :code:`self`
         """
         for efp in self.{{l.name}}:
             efp.parent = None
         self.{{l.name}} = []
-        
+        return self
+    
     #{%else%}
     # {{l.name}} accessor supressed
     #{%endif%}
     #{%endfor%}
 
-    ### Getter/Setter for singletons.
-
-    #{%for l in tag.singletons%}
-    #{%if not l.suppressAccessors %}
-    def set_{{l.accessorName}}(self, s):
-        """ Set the {{l.get_contained_type_list_doc_string()}} for this  :class:`{{tag.classname}}`.
-
-        :param s: {{l.get_contained_type_list_doc_string()}} to set.
-        :rtype: :code:`None`
-        """
-        if self.{{l.name}} is not None:
-            self.{{l.name}}.parent = None
-        self.{{l.name}} = s
-        self.{{l.name}}.parent = self
-
-    def get_{{l.accessorName}}(self):
-        """ Get the {{l.accessorName}} from this :class:`{{tag.classname}}`.
-        
-        :rtype: {{l.get_contained_type_list_doc_string()}} object
-        """
-        return self.{{l.name}}
-    #{%endif%}
-    #{%endfor%}
-    
-    ### Add, lookup, and get for maps
+        ### Add, lookup, and get for maps
     #{%for m in tag.maps%}
     #{%if not m.suppressAccessors %}
     def add_{{m.accessorName}}(self, s):
         """ Add a {{m.get_contained_type_list_doc_string()}} to the :code:`{{m.name}}` of this :class:`{{tag.classname}}`.
 
         :param s: The {{m.get_contained_type_list_doc_string()}} to add.
-        :rtype: :code:`None`
+        :rtype: :code:`self`
         """
         self.{{m.name}}[s.{{m.mapkey}}] = s
         s.parent = self
+        return self
+
 
     def get_{{m.accessorName}}(self, key):
         """ Lookup and return a {{m.get_contained_type_list_doc_string("or")}} from the :code:`{{m.name}}` of  this :class:`{{tag.classname}}`.
@@ -785,11 +769,12 @@ class {{classname}}({{tag.baseclass}}):
         """
         Remove all the {{m.get_contained_type_list_doc_string("and")}} objects from the :code:`{{m.name}}` of this :class:`{{tag.classname}}`.
         
-        :rtype: :code:`None`
+        :rtype: :code:`self`
         """
         for efp in self.{{m.name}}.values():
             efp.parent = None
         self.{{m.name}} = {}
+        return self
 
     def remove_{{m.accessorName}}(self, efp):
         """
@@ -797,13 +782,41 @@ class {{classname}}({{tag.baseclass}}):
         
         :param efp: The {{m.get_contained_type_list_doc_string("or")}} object to remove.
 
-        :rtype: :code:`None`
+        :rtype: :code:`self`
         """
         del self.{{m.name}}[efp.{{m.mapkey}}]
         efp.parent = None
+        return self
     #{%endif%}
     #{%endfor%}
 
+
+    
+    ### Getter/Setter for singletons.
+
+    #{%for l in tag.singletons%}
+    #{%if not l.suppressAccessors %}
+    def set_{{l.accessorName}}(self, s):
+        """ Set the {{l.get_contained_type_list_doc_string()}} for this  :class:`{{tag.classname}}`.
+
+        :param s: {{l.get_contained_type_list_doc_string()}} to set.
+        :rtype: :code:`self`
+        """
+        if self.{{l.name}} is not None:
+            self.{{l.name}}.parent = None
+        self.{{l.name}} = s
+        self.{{l.name}}.parent = self
+        return self
+
+    def get_{{l.accessorName}}(self):
+        """ Get the {{l.accessorName}} from this :class:`{{tag.classname}}`.
+        
+        :rtype: {{l.get_contained_type_list_doc_string()}} object
+        """
+        return self.{{l.name}}
+    #{%endif%}
+    #{%endfor%}
+    
     
     def get_children(self):
         """
@@ -913,6 +926,8 @@ class Part (Base_Part):
             self.deviceset = deviceset
         if device is not None:
             self.device = device
+        return self
+
         
     def get_package(self):
         """
@@ -925,6 +940,7 @@ class Part (Base_Part):
         else:
             package = None
         return package
+    
 
     # def get_library_attributes(self):
     #     """
@@ -934,10 +950,14 @@ class Part (Base_Part):
 
     def set_attribute(self,name, value):
         if name in self.attributes:
-            self.attributes[name].value = value
+            self.attributes[name].set_value(value)
         else:
-            n = Attribute(name=name, value=value, in_library=False)
-            self.add_attribute(n)
+            self.add_attribute(Attribute().
+                               set_name(name).
+                               set_value(value).
+                               set_in_library(False))
+        return self
+
 
     # def get_attribute(self,name):
     #     return self.attributes.get(name).value
@@ -980,7 +1000,14 @@ class Attribute (Base_Attribute):
 
         n.in_library = from_library
         return n
-        
+
+    def set_in_library(self, v):
+        self.in_library = v
+        return self
+    
+    def get_in_libbrary(self):
+        return self.in_library()
+
     def get_et (self):
         n = Base_Attribute.get_et(self)
         
@@ -1002,17 +1029,18 @@ classMap["attribute"] = Attribute
 def convertToExternal(self):
     if len(self.get_devices()) > 0:
         d = self.get_devices().values()[0]
-        for i in self.get_devices().values():
-            self.remove_device(i)
-        d.name = ""
-        d.package = "_EXTERNAL_"
-        d.clear_connects()
+        self.clear_devices()
+        d.set_name("").set_package("_EXTERNAL_").clear_connects()
     else:
-        d = Device(name="", package="_EXTERNAL_", technologies=[Technology(name="")])
-
+        d = (Device().
+             set_name("").
+             set_package("_EXTERNAL_").
+             add_technology(Technology().
+                            set_name("")))
     self.add_device(d)
+
     for t in d.get_technologies().values():
-        t.add_attribute(Attribute(name="_EXTERNAL_"))
+        t.add_attribute(Attribute().set_name("_EXTERNAL_"))
 
 setattr(Deviceset, "convertToExternal", convertToExternal)
         

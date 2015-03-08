@@ -756,7 +756,7 @@ class {{classname}}({{tag.baseclass}}):
 
         :rtype: A {{m.get_contained_type_list_doc_string()}} object or :code:`None`, if there is no such item.
         """
-        return self.{{m.name}}[key]
+        return self.{{m.name}}.get(key)
 
     def get_{{m.name}}(self):
         """ Get the :code:`{{m.name}}` map of {{m.get_contained_type_list_doc_string("or")}} objects for this :class:`{{tag.classname}}`.
@@ -1030,11 +1030,11 @@ def convertToExternal(self):
     if len(self.get_devices()) > 0:
         d = self.get_devices().values()[0]
         self.clear_devices()
-        d.set_name("").set_package("_EXTERNAL_").clear_connects()
+        d.set_name("").set_package(None).clear_connects()
     else:
         d = (Device().
              set_name("").
-             set_package("_EXTERNAL_").
+             set_package(None).
              add_technology(Technology().
                             set_name("")))
     self.add_device(d)

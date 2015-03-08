@@ -134,8 +134,8 @@ def mergeLayers(src, dst, force=False):
                         pass
                 else:
                     raise HE.HighEagleError("Layer mismatch: " +
-                                            src.filename + " <" + str(srcLayer.number) + ", '" + srcLayer.name +"'>; " +
-                                            dst.filename +" = <" + str(dstLayer.number) + ", '" + dstLayer.name +"'>;")
+                                            str(src.filename) + " <" + str(srcLayer.number) + ", '" + str(srcLayer.name) +"'>; " +
+                                            str(dst.filename) +" = <" + str(dstLayer.number) + ", '" + str(dstLayer.name) +"'>;")
         if srcLayer.name not in dst.get_layers():
             dst.add_layer(srcLayer.clone())
         
@@ -146,6 +146,7 @@ def normalizeLayers(ef, layers, force=False):
     force == True, overwrite layers in ef with layers.
 
     """
+
     for i in ScanLayersVisitor(ef).go().getUnusedLayers():
         #print "removed " + str(i)
         ef.remove_layer(i)

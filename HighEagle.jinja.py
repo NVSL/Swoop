@@ -571,6 +571,12 @@ class {{classname}}({{tag.baseclass}}):
 
         return n
 
+    def sortkey(self):
+        r = ""
+        #{% for a in tag.attrs %}
+        r = r + str(self.{{a.name}})
+        #{% endfor %}
+        return r
 
     def get_et(self):
         """
@@ -619,17 +625,17 @@ class {{classname}}({{tag.baseclass}}):
 
         if len(self.{{l.name}}) is not 0:
             target = smartAddSubTags(r, "{{l.xpath}}")
-            target.extend([i.get_et() for i in self.{{l.name}}])
+            target.extend([i.get_et() for i in sorted(self.{{l.name}},key=lambda x: x.sortkey())])
         #{%elif l.type == "Map" %}
 
         ## add a map.
         
         if len(self.{{l.name}}) is not 0:
             target = smartAddSubTags(r, "{{l.xpath}}")
-            target.extend([i.get_et() for i in self.{{l.name}}.values()])
+            target.extend([i.get_et() for i in sorted(self.{{l.name}}.values(),key=lambda x: x.sortkey())])
         #{%else%}
 
-        ## or add a map.
+        ## or add a singleton.
         
         if self.{{l.name}} is not None:
             target = smartAddSubTags(r, "{{l.xpath}}")

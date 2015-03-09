@@ -3,7 +3,7 @@ Classes for Library Files (.lbr)
 
 .. currentmodule:: HighEagle
 
-.. autoclass:: LibraryFile:
+.. autoclass:: LibraryFile
    :members:
 .. autoclass:: Library
    :members:

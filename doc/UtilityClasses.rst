@@ -8,7 +8,7 @@ attributes, drawn elements, documentation, and other information.
 
 .. autoclass:: Base_Attribute
    :members:
-.. autoclass:: Attribute:
+.. autoclass:: Attribute
    :members:
 .. autoclass:: Text
    :members:

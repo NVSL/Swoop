@@ -22,7 +22,8 @@ Contents:
    Exceptions
    ExtendingHighEagle
    CodeGen
-
+   EagleTools
+   
 Indices and tables
 ==================
 

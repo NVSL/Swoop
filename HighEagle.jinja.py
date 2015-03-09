@@ -159,7 +159,13 @@ class EagleFilePart(object):
             i.check_sanity()
 
 def parseByType(efp, attrType, s):
-    if s is not None:
+
+    if attrType == "None_is_empty_string":
+        if s is None:
+            r = ""
+        else:
+            r = s
+    elif s is not None:
         if attrType == "str":
             r = s
         elif attrType == "int":
@@ -187,7 +193,12 @@ def parseByType(efp, attrType, s):
     return r
 
 def unparseByType(efp, attrType, v):
-    if v is not None:
+    if attrType == "None_is_empty_string":
+        if v == "":
+            r = None
+        else:
+            r = v
+    elif v is not None:
         if attrType == "str":  # Doing nothing to strings lets us handle weird
                                # unicode characters.
             r = v 
@@ -248,7 +259,7 @@ class EagleFile(EagleFilePart):
         if not v:
             log.warning("Eagle file opened as '" + str(self.filename) +"' is invalid: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
         else:
-            log.info("Eagle file opened as '" + self.filename +"' parsed to valid Eagle data.")
+            log.info("Eagle file opened as '" + str(self.filename) +"' parsed to valid Eagle data.")
 
         for t in et.findall(".//*"):
             for a in t.attrib.values():
@@ -286,7 +297,7 @@ class EagleFile(EagleFilePart):
         elif filename[-4:] == ".brd":
             ef = BoardFile.from_et(root, None)
         elif filename[-4:] == ".lbr":
-            ef = LibraryFile.from_et(root, None)
+            ef = LibraryFile.from_et(root, None, filename)
         else:
             raise HighEagleError("Unknown file suffix: '" + filename[-4:] + "'")
         ef.filename = filename
@@ -388,21 +399,12 @@ class EagleFile(EagleFilePart):
     #             raise HighEagleError("Can't find layer '" + l.name +"' in this file")
 
     def parse_layer_number(self, num):
-        """ 
-        Give a layer number, return the name.  Specifically for use in parsing.  You probably shouldn't call this.  Use :func:`layer_number_to_name` instead.
 
-        :rtype: :class:`Layer` 
-        """
         if num is None:
             return None
         return self.layer_number_to_name(num)
 
     def unparse_layer_name(self, name):
-        """ 
-        Give a layer number, return the name.  Specifically for use in parsing.  You probably shouldn't call this.  Use :func:`layer_name_to_number` instead.
-        
-        :rtype: :class:`Layer` 
-        """
         if name is None:
             return None
         return self.layer_name_to_number(name)
@@ -520,39 +522,51 @@ class {{classname}}({{tag.baseclass}}):
         self.{{tag.preserveTextAs}} = ""
         #{%endif%}
 
+        
     @classmethod
     def from_et(cls,root,parent):
         """
-        Create a {{tag.classname}} from a {{tag.tag}} element.
+        Create a :class:`{{tag.classname}}` from a :code:`{{tag.tag}}` element.
         
         :param root: The element tree tree to parse.
         :param parent: :class:`EagleFilePart` that should hold the resulting :class:`EagleFilePart`
         :rtype: :class:`{{tag.classname}}`
         """
+        ## Call the constructor
+        n = cls()
+        n.init_from_et(root,parent)
+        return n
+            
+    def init_from_et(self, root, parent):
+        """
+        Initialized a :class:`{{tag.classname}}` from a :code:`{{tag.tag}}` element.  This is useful if you have a subclass of :class:`{{tag.classname}}` .
         
+        :param root: The element tree tree to parse.
+        :param parent: :class:`EagleFilePart` that will become the parent of :code:`this` .
+        :rtype: :class:`{{tag.classname}}`
+        """
+            
         if root.tag != "{{tag.tag}}":
             raise EagleFormatError("Tried to create {{tag.tag}} from " + root.tag)
 
-        ## Call the constructor
-        n = cls()
         #{%for a in tag.attrs%}
-        n.{{a.name}}={{a.parse}}(parent, "{{a.vtype}}", root.get("{{a.xmlName}}"))
+        self.{{a.name}}={{a.parse}}(parent, "{{a.vtype}}", root.get("{{a.xmlName}}"))
         #{%endfor%}
 
-        n.parent = parent
+        self.parent = parent
 
         ### populate the maps by searching for elements that match xpath and generating objects for them.
         
         #{%for m in tag.maps%}
         for c in root.xpath("{{m.xpath}}"):
-            n.add_{{m.accessorName}}(classMap[c.tag].from_et(c, n))
+            self.add_{{m.accessorName}}(classMap[c.tag].from_et(c, self))
         #{%endfor%}
 
         ### Do the same for the lists
 
         #{%for l in tag.lists %}
         for c in root.xpath("{{l.xpath}}"):
-            n.add_{{l.accessorName}}(classMap[c.tag].from_et(c,n))
+            self.add_{{l.accessorName}}(classMap[c.tag].from_et(c,self))
         #{%endfor%}
 
         ### And the singletons
@@ -560,23 +574,26 @@ class {{classname}}({{tag.baseclass}}):
         #{%for s in tag.singletons %}
         x = root.xpath("{{s.xpath}}")
         if len(x) is not 0:
-            n.set_{{s.accessorName}}(classMap[x[0].tag].from_et(x[0],n))
+            self.set_{{s.accessorName}}(classMap[x[0].tag].from_et(x[0],self))
         #{%endfor%}
 
         ### And, finally, if the objects wants the text from the tag.
         
         #{%if tag.preserveTextAs != "" %}
-        n.{{tag.preserveTextAs}} = root.text
+        self.{{tag.preserveTextAs}} = root.text
         #{% endif %}
 
-        return n
 
     def sortkey(self):
+        #{% if tag.dontsort %}
+        return ""
+        #{%else%}
         r = ""
         #{% for a in tag.attrs %}
         r = r + str(self.{{a.name}})
         #{% endfor %}
         return r
+        #{% endif %}
 
     def get_et(self):
         """
@@ -625,6 +642,7 @@ class {{classname}}({{tag.baseclass}}):
 
         if len(self.{{l.name}}) is not 0:
             target = smartAddSubTags(r, "{{l.xpath}}")
+            # add them in sorted order.  This gives us a simple canonicalization that makes it feasible to use diff to compare files.
             target.extend([i.get_et() for i in sorted(self.{{l.name}},key=lambda x: x.sortkey())])
         #{%elif l.type == "Map" %}
 
@@ -632,6 +650,7 @@ class {{classname}}({{tag.baseclass}}):
         
         if len(self.{{l.name}}) is not 0:
             target = smartAddSubTags(r, "{{l.xpath}}")
+            # add them in sorted order.  This gives us a simple canonicalization that makes it feasible to use diff to compare files.
             target.extend([i.get_et() for i in sorted(self.{{l.name}}.values(),key=lambda x: x.sortkey())])
         #{%else%}
 
@@ -935,7 +954,7 @@ class Part (Base_Part):
         return self
 
         
-    def get_package(self):
+    def find_package(self):
         """
         Get the library entry for this part
         """
@@ -987,9 +1006,11 @@ class Attribute (Base_Attribute):
     def __str__(self):
         return self.name + " = '" + self.value + "' [const=" + str(self.constant) + ";lib=" + str(self.from_library) +"]";
 
+
     @classmethod
     def from_et (cls, attribute_root, parent):
-        n = Base_Attribute.from_et(attribute_root, parent)
+        n = Attribute()
+        n.init_from_et(attribute_root, parent)
         
         if attribute_root.getparent().tag == "technology":
             from_library = True;
@@ -1050,35 +1071,22 @@ def convertToExternal(self):
 
 setattr(Deviceset, "convertToExternal", convertToExternal)
         
-# class LibraryFile(Base_LibraryFile):
-#     """ 
-    
-#     def __init__(self,
-#                  version=None,
-#                  settings=None,
-#                  grid=None,
-#                  layers=None,
-#                  library=None,
-#                  compatibility=None
-#                 ):
-#         Base_LibraryFile.__init__(self,
-#                                   version,
-#                                   settings,
-#                                   grid,
-#                                   layers,
-#                                   library,
-#                                   compatibility)
-#     @classmethod
-#     def from_et (cls, et, filename):
-#         """
-#         Loads a Library file from an ElementTree.Element representation.
-#         """
-#         r = Base_LibraryFile.from_et(et)
-#         #if r.get_library().name is None:
-#         #r.get_library().set_name(os.path.basename(filename)[:-4])
-#         return r
+class LibraryFile(Base_LibraryFile):
+    def __init__(self):
+        Base_LibraryFile.__init__(self)
 
-#     # def get_library_copy(self):
-#     #     return copy.deepcopy(self.library)
+    @staticmethod
+    def from_et (et, parent, filename):
+        """
+        Loads a Library file from an ElementTree.Element representation.
+        """
+        r = Base_LibraryFile.from_et(et, parent)
+        if r.get_library().name is None:
+            r.get_library().set_name(os.path.basename(filename)[:-4])
+        return r
+
+    # def get_library_copy(self):
+    #     return copy.deepcopy(self.library)
 
     
+#print classMap

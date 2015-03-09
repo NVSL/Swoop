@@ -3,7 +3,7 @@ Classes for Schematic Files (.sch)
 
 .. currentmodule:: HighEagle
 
-.. autoclass:: SchematicFile:
+.. autoclass:: SchematicFile
    :members:
 .. autoclass:: Sheet
    :members:

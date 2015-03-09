@@ -134,7 +134,7 @@ class Collection:
     """
     Base class for collections.
     """
-    def __init__(self, name, xpath, accessorName=None, suppressAccessors=False, requireTag=False, containedTypes=None):
+    def __init__(self, name, xpath, accessorName=None, suppressAccessors=False, requireTag=False, containedTypes=None, dontsort=False):
         """Create a class describing an attribute.
 
         :param name: The collection's name.  This will be used as the name of the member in the the :code:`EagleFilePart`.
@@ -153,6 +153,7 @@ class Collection:
         else:
             self.accessorName = accessorName
 
+        
         self.suppressAccessors = suppressAccessors
         self.requireTag = requireTag
         if containedTypes is None:
@@ -222,13 +223,25 @@ class TagClass:
                  customchild=False,
                  preserveTextAs=None,
                  attrs=None,
-                 sections=None
+                 sections=None,
+                 dontsort=False
     ):
+        """
+        :param tag: The name of the tag this class is for.
+        :param baseclass: The base class to inherit from.
+        :param customchild: We will define a child class to implement extra functions, so name the class ``Base_tag`` instead of ``tag``
+        :param preserveTextAs: Preserve the text content of the tag in a variable with this name.
+        :param attrs: A list of :class:`Attr` objects specifying attributes for the class.
+        :param sections: A list of :class:`List`, :class:`Map`, and :class:`Singleton` objects that this class should contain.
+        :param dontsort: Don't sort these elements in collections (i.e., order matters)
+
+        """
         if sections is None:
             self.sections = []
         else:
             self.sections = sections
 
+        self.dontsort = dontsort
         self.tag = tag
         self.attrs = attrs
         self.lists = []
@@ -394,7 +407,7 @@ if __name__ == "__main__":
                            baseclass = "EagleFilePart",
                            attrs=[nameAttr(),
                                   Attr("netclass",
-                                       accessorName = "netclass",
+                                       accessorName = "class",
                                        xmlName="class",
                                        required=False)],
                            sections = [List("segments", "./segment")])
@@ -405,7 +418,7 @@ if __name__ == "__main__":
                               baseclass = "EagleFilePart",
                               attrs=[nameAttr(),
                                      Attr("netclass",
-                                          accessorName = "netclass",
+                                          accessorName = "class",
                                           xmlName="class",
                                           required=False),
                                      Attr("airwireshidden", 
@@ -449,7 +462,8 @@ if __name__ == "__main__":
                                            vtype="bool",
                                            required=False),
                                       Attr("value", required=False),
-                                      Attr("technology", required=False)])
+                                      Attr("technology",
+                                           required=True)])
 
 
 
@@ -642,7 +656,7 @@ if __name__ == "__main__":
 
     tags["element"] = TagClass("element",
                                baseclass = "EagleFilePart",
-                               customchild = True,
+                               #customchild = True,
                                attrs=[nameAttr(),
                                       Attr("library", required=True),
                                       Attr("package", required=True),
@@ -657,10 +671,12 @@ if __name__ == "__main__":
                                              required=False),
                                       smashedAttr,
                                       rotAttr],
-                               # Everywhere else we keep attributes in maps,
-                               # but this is list because these are actually
-                               # drawn on the board.
-                               sections = [List("attributes", "./attribute", requireTag=True)])
+                               # I'm not sure if this should be a Map or a
+                               # List. There's a board in our test suite that
+                               # has two instances of the same attributes. But
+                               # what I generate boards like that myself, Eagle
+                               # throws an error.  So it's a map for now.
+                               sections = [Map("attributes", "./attribute", requireTag=True)])
 
 
 
@@ -699,6 +715,7 @@ if __name__ == "__main__":
 
 
     tags["vertex"] = TagClass("vertex",
+                              dontsort=True,
                               baseclass = "EagleFilePart",
                               attrs=[dimensionAttr("x",True),
                                      dimensionAttr("y",True),
@@ -732,7 +749,9 @@ if __name__ == "__main__":
                                    Attr("library", required=True),
                                    Attr("deviceset", required=True),
                                    Attr("device", required=True),
-                                   Attr("technology", required=False),
+                                   Attr("technology",
+                                        required=False,
+                                        vtype="None_is_empty_string"),
                                    Attr("value", required=False)],
                             sections=[Map("attributes", "./attribute", requireTag=True),
                                       Map("variants", "./variant")])
@@ -918,7 +937,7 @@ if __name__ == "__main__":
     tags["clearance"] = TagClass("clearance",
                                  baseclass = "EagleFilePart",
                                  attrs=[Attr("netclass",
-                                             accessorName = "netclass",
+                                             accessorName = "class",
                                              xmlName="class",
                                              required=True),
                                         dimensionAttr("value", required=False)])
@@ -1036,6 +1055,7 @@ if __name__ == "__main__":
     tags["eagleLibrary"] = TagClass("eagle",
                                     classname="LibraryFile",
                                     baseclass="EagleFile",
+                                    customchild=True,
                                     attrs=[Attr("version", required=True)],
                                     sections=[List("settings", "./drawing/settings/setting", requireTag=True),
                                               Singleton("grid", "./drawing/grid"),

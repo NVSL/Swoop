@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import argparse
 from EagleUtil import *
-from HighEagle import *
+from Swoop import *
 import sys
 import re
 import shutil
@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     m = re.match("(.*\.(lbr|sch|pcb))(:(.+))?", args.src[0])
     if m is None:
-        raise HighEagleError("Unparsable file name: '" + args.src[0] + "'")
+        raise SwoopError("Unparsable file name: '" + args.src[0] + "'")
 
     f = m.group(1)
     srcLib = m.group(4)
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     m = re.match("(.*\.(lbr|sch|pcb))(:(.+))?", args.dst[0])
 
     if m is None:
-        raise HighEagleError("Unparsable file name: '" + args.dst[0] + "'")
+        raise SwoopError("Unparsable file name: '" + args.dst[0] + "'")
 
     f = m.group(1)
     dstLibName = m.group(4)
@@ -58,7 +58,7 @@ if __name__ == "__main__":
     elif isinstance(dst, LibraryFile):
         dstLib = dst.get_library()
     else:
-        raise HighEagleError("Unknown type returned from EagleFile.from_file()")
+        raise SwoopError("Unknown type returned from EagleFile.from_file()")
 
     for i in srcLib.symbols.values():
         dstLib.add_symbol(i.clone())

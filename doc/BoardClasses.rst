@@ -1,7 +1,7 @@
 Classes for Board Files (.brd)
 ==============================
 
-.. currentmodule:: HighEagle
+.. currentmodule:: Swoop
 
 .. autoclass:: BoardFile
    :members:

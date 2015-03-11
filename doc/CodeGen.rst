@@ -1,6 +1,6 @@
-HighEagle IR Code Generation
+Swoop IR Code Generation
 ============================
 
-.. automodule:: GenerateHighEagle
+.. automodule:: GenerateSwoop
    :members:
 

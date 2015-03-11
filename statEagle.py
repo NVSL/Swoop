@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import HighEagle as HE
+import Swoop as HE
 import argparse
 
 if __name__ == "__main__":

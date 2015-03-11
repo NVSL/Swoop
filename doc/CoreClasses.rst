@@ -2,11 +2,11 @@ Core Classes
 ===============
 
 
-These are the core base classes for HighEagle IR.
+These are the core base classes for Swoop IR.
 
 .. toctree::
 
-.. currentmodule:: HighEagle
+.. currentmodule:: Swoop
 
 .. autoclass:: EagleFilePart
    :members:

@@ -1,7 +1,7 @@
 Classes for Library Files (.lbr)
 ================================
 
-.. currentmodule:: HighEagle
+.. currentmodule:: Swoop
 
 .. autoclass:: LibraryFile
    :members:

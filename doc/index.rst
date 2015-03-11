@@ -1,12 +1,12 @@
-.. HighEagle documentation master file, created by
+.. Swoop documentation master file, created by
    sphinx-quickstart on Mon Mar  2 13:27:25 2015.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-HighEagle IR
+Swoop IR
 =====================================
 
-.. automodule:: HighEagle
+.. automodule:: Swoop
 
 Contents:
 
@@ -20,7 +20,7 @@ Contents:
    LibraryClasses
    UtilityClasses
    Exceptions
-   ExtendingHighEagle
+   ExtendingSwoop
    CodeGen
    EagleTools
    

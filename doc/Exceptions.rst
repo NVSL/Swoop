@@ -1,9 +1,9 @@
 Exceptions
 ==========
 
-HighEagle IR defines two exception classes.
+Swoop IR defines two exception classes.
 
-.. currentmodule:: HighEagle
+.. currentmodule:: Swoop
 
 .. autoclass:: EagleFormatError
-.. autoclass:: HighEagleError
+.. autoclass:: SwoopError

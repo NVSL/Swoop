@@ -1,13 +1,13 @@
 
-default: build test HighEagle.py doc
+default: build test Swoop.py doc
 
-build: eagleDTD.py HighEagle.py
+build: eagleDTD.py Swoop.py
 
 test: build $(TARGETS)  eagleDTD.py
-	#	python ./HighEagleTest.py --layers NVSLLayers.lbr
+	#	python ./SwoopTest.py --layers NVSLLayers.lbr
 	./checkEagle.py --file test2.sch Xperimental_Trinket_Pro_small_parts_power_breakout.sch
 
-doc: HighEagle.py
+doc: Swoop.py
 	$(MAKE) -C doc html
 
 eagleDTD.py: eagle-tweaked.dtd
@@ -15,8 +15,8 @@ eagleDTD.py: eagle-tweaked.dtd
 	cat $< >> $@
 	echo \"\"\" >> $@
 
-HighEagle.py: HighEagle.jinja.py GenerateHighEagle.py
-	python GenerateHighEagle.py --out $@
+Swoop.py: Swoop.jinja.py GenerateSwoop.py
+	python GenerateSwoop.py --out $@
 
 #tag-summary.dat: eagle-tweaked.dtd Makefile
 #	cat $< | perl -ne 's/ +/ /g; s/\n/,/g;s/>/>\n/g;print' | perl -ne 's/^,*\s*</</g;s/, >/>/g;s/\%\w+;//g;print' | grep ATTLIST | perl -ne 's/!ATTLIST //g; s/"\w*"/OPTIONAL/g; s/#//g; s/<|>//g; s/,/:/; print'  > $@
@@ -27,7 +27,7 @@ HighEagle.py: HighEagle.jinja.py GenerateHighEagle.py
 clean:
 	rm -rf eagleDTD.py
 	rm -rf *.broken.xml
-	rm -rf HighEagleBaseClasses.py EagleUtilBase.py EagleUsefulSkeleton.py
-	rm -rf HighEagle.py
+	rm -rf SwoopBaseClasses.py EagleUtilBase.py EagleUsefulSkeleton.py
+	rm -rf Swoop.py
 	rm -rf tag-summary.dat
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import HighEagle as HE
+import Swoop as HE
 import argparse
 import shutil
 from lxml import etree as ET
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     parser.add_argument("--scrubbed-suffix", required=False,  type=str, nargs=1, dest='scrubSuffix', help="Suffix for scrubbed output files.  The empty string to overwrite input.")
     parser.add_argument("-v", required=False, action='store_true', dest='verbose', help="Be verbose")
     parser.add_argument("-q", required=False, action='store_true', dest='quiet', help="Be silent")
-    parser.add_argument("--internal-check", required=False, action='store_true', dest='internalCheck', help="Do checks on HighEagle internals")
+    parser.add_argument("--internal-check", required=False, action='store_true', dest='internalCheck', help="Do checks on Swoop internals")
     parser.add_argument("--stop-on-error", required=False, action='store_true', dest='stopOnError', help="Stop on first error.")
     parser.add_argument("--crash-on-error", required=False, action='store_true', dest='crashOnError', help="Don't catch exceptions.")
 
@@ -124,7 +124,7 @@ if __name__ == "__main__":
                 traceback.print_tb(tb)
                 raise e
             if not args.quiet:
-                print "HighEagle error: " + str(e)
+                print "Swoop error: " + str(e)
                 
         if args.stopOnError and failed + internalError != 0:
             break

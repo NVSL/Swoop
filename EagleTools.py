@@ -1,5 +1,5 @@
-from HighEagle import EagleFile
-import HighEagle as HE
+from Swoop import EagleFile
+import Swoop as HE
 
 class EaglePartVisitor(object):
     """A visitor utility class for :class:`EagleFile` objects.  
@@ -43,7 +43,7 @@ class EaglePartVisitor(object):
 
     .. code-block:: python
 
-        from HighEagle import *
+        from Swoop import *
         from EagleTools import *
         ef = EagleFile.from_file(my_file)
         c = Counter(ef)
@@ -234,7 +234,7 @@ def mergeLayers(src, dst, force=False):
 
     :param src: The :class:`EagleFile` to update.
     :param dst:  The :class:`EagleFile` to draw layers from.
-    :param force:  If :code:`True` overwrite the layers.  Otherwise, throw an :class:`HighEagleError` on conflict.
+    :param force:  If :code:`True` overwrite the layers.  Otherwise, throw an :class:`SwoopError` on conflict.
 
     """
     for srcLayer in src.get_layers().values():
@@ -247,7 +247,7 @@ def mergeLayers(src, dst, force=False):
                     except:
                         pass
                 else:
-                    raise HE.HighEagleError("Layer mismatch: " +
+                    raise HE.SwoopError("Layer mismatch: " +
                                             str(src.filename) + " <" + str(srcLayer.number) + ", '" + str(srcLayer.name) +"'>; " +
                                             str(dst.filename) +" = <" + str(dstLayer.number) + ", '" + str(dstLayer.name) +"'>;")
         if srcLayer.name not in dst.get_layers():
@@ -261,7 +261,7 @@ def normalizeLayers(ef, layers, force=False):
 
     :param ef: The :class:`EagleFile` to update.
     :param layers:  The :class:`EagleFile` to draw layers from.
-    :param force:  If :code:`True` overwrite the layers.  Otherwise, throw an :class:`HighEagleError` on conflict.
+    :param force:  If :code:`True` overwrite the layers.  Otherwise, throw an :class:`SwoopError` on conflict.
 
     """
 

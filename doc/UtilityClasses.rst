@@ -4,7 +4,7 @@ Utility Classes
 These classes are used across .brd, .sch, and .lbr files. They represent Eagle
 attributes, drawn elements, documentation, and other information.
 
-.. currentmodule:: HighEagle
+.. currentmodule:: Swoop
 
 .. autoclass:: Base_Attribute
    :members:

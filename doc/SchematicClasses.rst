@@ -1,7 +1,7 @@
 Classes for Schematic Files (.sch)
 ==================================
 
-.. currentmodule:: HighEagle
+.. currentmodule:: Swoop
 
 .. autoclass:: SchematicFile
    :members:

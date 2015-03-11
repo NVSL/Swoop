@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 """
-.. module:: GenerateHighEagle
+.. module:: GenerateSwoop
 
 .. moduleauthor:: Steven Swanson (swanson@cs.ucsd.edu)
 
-GenerateHighEagle.py generates the file HighEagle.py, which contains a set
+GenerateSwoop.py generates the file Swoop.py, which contains a set
 of python classes for manipulating eagle files.  The process relies on two
 bodies of information.
 
@@ -17,7 +17,7 @@ bodies of information.
     This file describes a collections of classes that represent a "flattened"
     version of the XML format described in the Eagle DTD.
 
-2.  The contents of HighEagle.jinja.py.  This contains the template code for
+2.  The contents of Swoop.jinja.py.  This contains the template code for
     the classes, a base class for all the classes, and a class to represent
     eagle files, EagleFile.
 
@@ -59,7 +59,7 @@ expression for :class:`Map`, :class:`List`, or :class:`Singleton` will end up in
 xpath expressions get passed the constructors for the :class:`Map`, :class:`List`, and :class:`Singleton`.
 
 The final stage is to generate the code.  We use the jinja templating system
-for this.  HighEagle.jinja.py contains templates for the :class:`EagleFilePart` subclasses.
+for this.  Swoop.jinja.py contains templates for the :class:`EagleFilePart` subclasses.
 It generates code for the constructor, the :code:`from_et()` method to convert for
 element tree to :class:`EagleFileParts`, the :code:`get_et()` method for the reverse
 conversion, a :code:`clone()` function for copying :class:`EagleFileParts`, and accessors for
@@ -87,8 +87,8 @@ class Attr:
         :param name: The attribute's name.  This is the name used for the member of the :class:`EagleFilePart` object.  For example :code:`foo.netclass` (since :code:`class` clashes with a the Python :code:`class` reserved word.
         :param require: Is the attribute required?
         :param parse: String used to parse to attribute value.  It will be invoked as :code:`parse(x)` where :code:`x` is the contents of the XML attribute.
-        :param unparse: String used to unparse the attribute value while generating XML. It will be invoked as :code:`unparse(x)` where :code:`x` is :mod:`HighEagle`'s value for the attribute.  :code:'unparse(parse(x))` should be the identity function.
-        :param accessorName:This is the string that will appear in HighEagle API calls.  For example :code:`foo.get_class()`
+        :param unparse: String used to unparse the attribute value while generating XML. It will be invoked as :code:`unparse(x)` where :code:`x` is :mod:`Swoop`'s value for the attribute.  :code:'unparse(parse(x))` should be the identity function.
+        :param accessorName:This is the string that will appear in Swoop API calls.  For example :code:`foo.get_class()`
         :param xmlName:This is string used in the XML representation.  For example, :code:`class`.
 
         """
@@ -141,7 +141,7 @@ class Collection:
         :param xpath: XPath expression that matches all the tags that should be held in this collection.
         :param suppressAccessors:  If :code:`True`, don't generate accessor functions.
         :param requireTag: This the tag for this collection must appear in the output XML.  The tag that is inserted are the all-but-last tags of xpath expression. For example if :code:`xpath` is :code:`./foo/bar/baz`, the this will ensure that :code:`./foo/bar` exists.
-        :param accessorName:This is the string that will appear in HighEagle API calls.  For example :code:`foo.get_class()`.  By default, this is the last tag in the xpath.  For example if :code:`xpath` is :code:`foo/bar', the :code:`accessorName` will be :code:`bar`.
+        :param accessorName:This is the string that will appear in Swoop API calls.  For example :code:`foo.get_class()`.  By default, this is the last tag in the xpath.  For example if :code:`xpath` is :code:`foo/bar', the :code:`accessorName` will be :code:`bar`.
         :param xmlName: This is string used in the XML representation.  For example, :code:`class`.
 
         """
@@ -1064,7 +1064,7 @@ if __name__ == "__main__":
                                               Singleton("compatibility", "./compatibility")])
 
     env = J2.Environment(loader=J2.FileSystemLoader('.'))
-    template = env.get_template('HighEagle.jinja.py')
+    template = env.get_template('Swoop.jinja.py')
 
     f = open(args.outfile[0], "w")
 

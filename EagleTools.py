@@ -1,5 +1,5 @@
 from Swoop import EagleFile
-import Swoop as HE
+import Swoop
 
 class EaglePartVisitor(object):
     """A visitor utility class for :class:`EagleFile` objects.  
@@ -150,7 +150,7 @@ class ScanLayersVisitor(EaglePartVisitor):
             self.foundLayers.add(efp.layer)
 
     def Layer_pre(self, efp):
-        assert type(efp) == HE.Layer
+        assert type(efp) == Swoop.Layer
         self.definedLayers.add(efp.name)
         
     def getUsedLayers(self):
@@ -247,7 +247,7 @@ def mergeLayers(src, dst, force=False):
                     except:
                         pass
                 else:
-                    raise HE.SwoopError("Layer mismatch: " +
+                    raise Swoop.SwoopError("Layer mismatch: " +
                                             str(src.filename) + " <" + str(srcLayer.number) + ", '" + str(srcLayer.name) +"'>; " +
                                             str(dst.filename) +" = <" + str(dstLayer.number) + ", '" + str(dstLayer.name) +"'>;")
         if srcLayer.name not in dst.get_layers():
@@ -285,7 +285,7 @@ def rebuildBoardConnections(sch, brd):
     for name in netnames:
         sig =  brd.get_signal(name)
         if sig is None:
-            brd.add_signal(HE.Signal().
+            brd.add_signal(Swoop.Signal().
                            set_name(name).
                            set_airwireshidden(False).
                            set_class("0")) # We need to do something smarter here.
@@ -311,7 +311,7 @@ def rebuildBoardConnections(sch, brd):
                             #       get_pad())
                             assert pad is not None
                             
-                            brd.signals[name].add_contactref(HE.Contactref().
+                            brd.signals[name].add_contactref(Swoop.Contactref().
                                                              set_element(pinref.get_part()).
                                                              set_pad(pad))
 
@@ -328,7 +328,7 @@ def propagatePartToBoard(part, brd):
     :rtype: :code:`None`
 
     """
-    n =(HE.Element().
+    n =(Swoop.Element().
         set_name(part.get_name()).
         set_library(part.get_library()).
         set_package(part.

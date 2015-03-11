@@ -1,5 +1,5 @@
-Swoop IR Code Generation
-============================
+Building the Swoop Library
+==========================
 
 .. automodule:: GenerateSwoop
    :members:

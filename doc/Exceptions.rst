@@ -1,7 +1,7 @@
 Exceptions
 ==========
 
-Swoop IR defines two exception classes.
+Swoop defines two exception classes.
 
 .. currentmodule:: Swoop
 

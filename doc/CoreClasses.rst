@@ -1,8 +1,7 @@
 Core Classes
 ===============
 
-
-These are the core base classes for Swoop IR.
+These are the core base classes of Swoop.
 
 .. toctree::
 

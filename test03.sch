@@ -11,23 +11,27 @@
       <layer number="91" name="Top" color="4" fill="1" visible="no" active="no"/>
     </layers>
     <schematic>
+      <libraries/>
+      <attributes/>
+      <variantdefs/>
       <classes>
-        <class number="0" name="default" width="0" drill="0"/>
-        <class number="1" name="power" width="0.3048" drill="0"/>
+        <class number="0" name="default" width="0.0" drill="0.0"/>
+        <class number="1" name="power" width="0.3048" drill="0.0"/>
       </classes>
-
+      <parts/>
       <sheets>
         <sheet>
-
+          <plain/>
+          <instances/>
+          <busses/>
           <nets>
             <net name="DTR/RTS" class="0">
               <segment>
-                <pinref gate="G$1" part="FTDI" pin="6"/>
-                <pinref gate="G$1" part="C4" pin="2"/>
-                <wire x1="121.92" x2="88.9" y1="149.86" y2="149.86" width="0.1524" layer="91"/>
+                <pinref part="C4" gate="G$1" pin="2"/>
+                <pinref part="FTDI" gate="G$1" pin="6"/>
+                <wire x1="121.92" y1="149.86" x2="88.9" y2="149.86" width="0.1524" layer="91"/>
               </segment>
             </net>
-
           </nets>
         </sheet>
       </sheets>

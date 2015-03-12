@@ -28,14 +28,15 @@ class EaglePartVisitor(object):
     
     .. code-block:: python
 
-        class Counter(EaglePartVisitor):
+        class Counter(EagleTools.EaglePartVisitor):
             def __init__(self, root=None):
-                EaglePartVisitor.__init__(self,root)
+                EagleTools.EaglePartVisitor.__init__(self,root)
                 self.count = 0;
                 self.elementCount = 0
-            def default_pre(self):
+                self.layerCount = 0
+            def default_pre(self, efp):
                 self.count += 1
-            def Element_pre(self):
+            def Element_pre(self, e):
                 self.count += 1
                 self.elementCount += 1
     
@@ -115,22 +116,15 @@ class EaglePartVisitor(object):
         :rtype:  ``self``
         """
         if self.visitFilter(efp):
-            try:
-                pre = getattr(self,type(efp).__name__ + "_pre")
-                context = pre(efp)
-            except AttributeError:
-                context = self.default_pre(efp)
+            context = efp.accept_preorder_visitor(self)
 
         if self.decendFilter(efp):
             for e in efp.get_children():        
                 self.visit(e)
                 
         if self.visitFilter(efp):
-            try:
-                post = getattr(self,type(efp).__name__ + "_post")
-                post(efp,context)
-            except AttributeError:
-                self.default_post(efp,context)
+            context = efp.accept_postorder_visitor(self, context)
+
         return self
 
 class ScanLayersVisitor(EaglePartVisitor):

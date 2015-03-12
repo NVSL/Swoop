@@ -16,21 +16,21 @@
           <packages/>
           <symbols>
             <symbol name="GENERIC-RESISTOR_">
-              <pin name="1" x="-5.08" y="0" visible="off" length="short" direction="pas" function="none" swaplevel="1"/>
-              <pin name="2" x="5.08" y="0" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R180"/>
+              <pin name="1" x="-5.08" y="0.0" visible="off" length="short" direction="pas" function="none" swaplevel="1"/>
+              <pin name="2" x="5.08" y="0.0" visible="off" length="short" direction="pas" function="none" swaplevel="1" rot="R180"/>
             </symbol>
           </symbols>
           <devicesets>
             <deviceset name="GENERIC-RESISTOR_">
-              <description></description>
+              <description/>
               <gates>
-                <gate name="G$1" x="0" y="0" symbol="GENERIC-RESISTOR_"/>
+                <gate name="G$1" symbol="GENERIC-RESISTOR_" x="0.0" y="0.0"/>
               </gates>
               <devices>
                 <device name="">
                   <technologies>
                     <technology name="">
-                      <attribute constant="no" name="SIZE" value=""/>
+                      <attribute name="SIZE" value="" constant="no"/>
                     </technology>
                   </technologies>
                 </device>
@@ -39,18 +39,19 @@
           </devicesets>
         </library>
       </libraries>
+      <attributes/>
+      <variantdefs/>
       <parts>
-        <part name="R3_3" library="PickerDesign" deviceset="GENERIC-RESISTOR_" device="" technology="" value="160 +/- 10%"/>
+        <part name="R3_3" library="PickerDesign" deviceset="GENERIC-RESISTOR_" device="" value="160 +/- 10%"/>
       </parts>
       <sheets>
         <sheet>
           <plain/>
           <instances>
-            <instance gate="G$1" part="R3_3" x="81.28" y="48.26"/>
+            <instance part="R3_3" gate="G$1" x="81.28" y="48.26"/>
           </instances>
           <busses/>
-          <nets>
-          </nets>
+          <nets/>
         </sheet>
       </sheets>
     </schematic>

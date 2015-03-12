@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import Swoop as HE
+import Swoop
 import argparse
 import shutil
 import EagleTools
@@ -14,11 +14,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     if args.layers:
-        layers = HE.LibraryFile.from_file(args.layers[0])
+        layers = Swoop.LibraryFile.from_file(args.layers[0])
 
     for f in args.file:
 
-        ef = HE.EagleFile.from_file(f)
+        ef = Swoop.EagleFile.from_file(f)
 
         if args.layers:
             EagleTools.normalizeLayers(ef, layers, force=args.force)

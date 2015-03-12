@@ -693,6 +693,20 @@ class {{classname}}({{tag.baseclass}}):
         n.parent = None
         return n
 
+    def accept_preorder_visitor(self, visitor):
+        try:
+            pre = getattr(visitor, "{{tag.classname}}_pre")
+            return pre(self)
+        except AttributeError:
+            return visitor.default_pre(self)
+        
+    def accept_postorder_visitor(self, visitor, context):
+        try:
+            post = getattr(visitor, "{{tag.classname}}_post")
+            post(self,context)
+        except AttributeError:
+            visitor.default_post(self,context)
+        
     ### Getters/Setters for attribute values
 
     #{%for a in tag.attrs%}

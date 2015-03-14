@@ -1028,7 +1028,30 @@ class {{classname}}({{tag.baseclass}}):
         :rtype: List of {{l.get_contained_type_list_doc_string("and")}} objects
         """
         return self.{{l.name}}
-    
+
+    def clear_{{l.name}}(self):
+        """
+        Remove all the {{l.get_contained_type_list_doc_string("and")}} objects from the :code:`{{l.name}}` of this :class:`{{tag.classname}}`.
+        
+        :rtype: :code:`self`
+        """
+        for efp in self.{{l.name}}:
+            efp.parent = None
+        self.{{l.name}} = {}
+        return self
+
+    def remove_{{l.accessorName}}(self, efp):
+        """
+        Remove a {{l.get_contained_type_list_doc_string()}} from the :code:`{{l.name}}` of this :class:`{{tag.classname}}`.
+        
+        :param efp: The {{l.get_contained_type_list_doc_string("or")}} object to remove.
+
+        :rtype: :code:`self`
+        """
+        self.{{l.name}} = [x for x in self.{{l.name}} if x != efp]
+        efp.parent = None
+        return self
+
     #{%else%}
     # {{l.name}} accessor supressed
     #{%endif%}
@@ -1342,7 +1365,7 @@ classMap["attribute"] = Attribute
 # package.
 def convertToExternal(self):
     if len(self.get_devices()) > 0:
-        d = self.get_devices().values()[0]
+        d = self.get_devices()[0]
         self.clear_devices()
         d.set_name("").set_package(None).clear_connects()
     else:
@@ -1353,7 +1376,7 @@ def convertToExternal(self):
                             set_name("")))
     self.add_device(d)
 
-    for t in d.get_technologies().values():
+    for t in d.get_technologies():
         t.add_attribute(Attribute().set_name("_EXTERNAL_"))
 
 setattr(Deviceset, "convertToExternal", convertToExternal)

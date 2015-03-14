@@ -163,7 +163,7 @@ def rebuildBoardConnections(sch, brd):
         for pinref in (Swoop.Flock(sch).
                        get_sheets().
                        get_nets().
-                       filter_name(name).
+                       with_name(name).
                        get_segments().
                        get_pinrefs()):
 
@@ -171,12 +171,13 @@ def rebuildBoardConnections(sch, brd):
                 continue
 
             pad = (Swoop.Flock(sch).
-                   get_part(pinref.get_part()).
+                   get_parts().
+                   with_name(pinref.get_part()).
                    find_device().
                    get_connects().
-                   filter_gate(pinref.gate).
-                   filter_pin(pinref.pin).
-                   get_pad().unpack()[0])
+                   with_gate(pinref.gate).
+                   with_pin(pinref.pin).
+                   get_pad().first())
 
             assert pad is not None
 

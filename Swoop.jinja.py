@@ -161,7 +161,7 @@ class EagleFilePart(object):
                 raise SwoopError("Parent pointer mismatch.  Child = " + str(i) + "; child.parent = " + str(i.parent) + "; Parent = " + str(self) )
             i.check_sanity()
 
-    def filter_type(self,t):
+    def with_type(self,t):
         """
         Filter this :code:`EagleFilePart` object based on its type.  For use in combination with :class:`Flock` objects.
         
@@ -580,7 +580,17 @@ class Flock(object):
         :rtype:  List
         """
         return self.efps
-    
+
+    def first(self):
+        """
+        Return the first item in the :class:`Flock` object.  If the :class:`Flock` is empty, raise an :class:`IndexError` exception.
+        
+        :returns: The first item in the :class:`Flock`
+        :rtype:  Varies
+        :throws: :class:`IndexError`
+        """
+        return self.efps[0]
+
     def filter(self, func):
         """
         Filter the :class:`Flock`.  Similar to the builtin :code:`filter` method.
@@ -1011,7 +1021,23 @@ class {{classname}}({{tag.baseclass}}):
         return self
 
 
-    def filter_{{a.accessorName}}(self,v):
+    def with_{{a.accessorName}}(self,v):
+        """
+        Filter this :code:`EagleFilePart` object based on the value of :code:`{{a.name}}`.  For use in combination with :class:`Flock` objects.
+        
+        Return :code:`self` if one of the following is true:
+
+        1.  :code:`{{a.name}}` equals :code:`v`
+        2.  :code:`v` is callable and :code:`v(self.get_{{a.accessorName}}()` is :code:`True`
+
+        This is useful in combination with :class:`Flock` object.
+        
+        :param t: The value to check for or a callable object.
+        :returns: :code:`self` if the criteria above are met and :code:`None` otherwise. 
+        :rtype: :class:`EagelFilePart` or :code:`None`
+
+        """
+
         if type(v) in [str, int, float]:
             return self if self.{{a.name}} == v else None
         elif callable(v):

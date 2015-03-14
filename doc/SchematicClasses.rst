@@ -3,6 +3,9 @@ Classes for Schematic Files (.sch)
 
 .. currentmodule:: Swoop
 
+Classes
+-------
+
 .. autoclass:: SchematicFile
    :members:
 .. autoclass:: Sheet

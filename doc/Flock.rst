@@ -3,7 +3,7 @@ Flocks and Chains: Bulk Operations on :class:`EagleFilePart` Objects
 
 .. currentmodule:: Swoop
 
-Swoop provides `method chaining <http://en.wikipedia.org/wiki/Method_chaining>`-based interface for querying and iterating over
+Swoop provides `method chaining <http://en.wikipedia.org/wiki/Method_chaining>`_-based interface for querying and iterating over
 :class:`EagleFilePart` objects.  If you are familiar with JQuery or LINQ query
 language, then you have some experience with method-chaining interfaces.
 
@@ -91,6 +91,9 @@ length of all the airwires in board:
                                          map(lambda w: sqrt(((w.get_x1()-w.get_x2())**2 + (w.get_y1()-w.get_y2())**2))).
                                          reduce(lambda x,y:x + y)
 
+
+Classes
+-------
 
 .. autoclass:: Flock
    :members:

@@ -221,7 +221,7 @@ def unparseByType(efp, attrType, v):
             else:
                 r = None
         elif attrType == "layer_string":
-            r = efp.get_file().layer_name_to_number(v)
+            r = str(efp.get_file().layer_name_to_number(v))
         else:
             raise SwoopError("Unknown attr type '" + attrType + "'")
 

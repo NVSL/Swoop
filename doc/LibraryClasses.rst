@@ -3,6 +3,9 @@ Classes for Library Files (.lbr)
 
 .. currentmodule:: Swoop
 
+Classes
+-------
+
 .. autoclass:: LibraryFile
    :members:
 .. autoclass:: Library

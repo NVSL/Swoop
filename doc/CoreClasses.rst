@@ -7,6 +7,9 @@ These are the core base classes of Swoop.
 
 .. currentmodule:: Swoop
 
+Classes
+-------
+
 .. autoclass:: EagleFilePart
    :members:
 .. autoclass:: EagleFile

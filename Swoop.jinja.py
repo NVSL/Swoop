@@ -162,8 +162,28 @@ class EagleFilePart(object):
             i.check_sanity()
 
     def filter_type(self,t):
+        """
+        Filter this :code:`EagleFilePart` object based on its type.  For use in combination with :class:`Flock` objects.
+        
+        Return :code:`self` if self is an instance of type :code:`t` and :code:`None` otherwise.  This is useful in combination with :class:`Flock` object.
+        
+        :param t: The type to check for.
+        :returns: :code:`self` if self is an instance of type :code:`t` and :code:`None` otherwise. 
+        :rtype: :class:`EagelFilePart` or :code:`None`
+
+        """
         return self if isinstance(self, t) else None
 
+    def flock(self):
+        """
+        Create a a :class:`Flock` object containing this object.
+
+        :returns: :class:`Flock` object containing this object.
+        :rtype: :class:`Flock`
+
+        """
+        return Flock(self)
+    
 def parseByType(efp, attrType, s):
 
     if attrType == "None_is_empty_string":
@@ -508,6 +528,17 @@ def filter_list(l, match_type, attrs):
 
 
 class Flock(object):
+    """An ordered collection of (usually) :class:`EagleFilePart` objects.  Invoke
+    a method on a :class:`Flock` object, invokes the same method with the same
+    arguments on all the objects it holds.  The results are placed in a new
+    :class:`Flock` object that is returned.
+
+    :class:`Flock` objects also provide several utility functions for
+    accessing, filtering, mapping, and reducing their contents.
+
+    :class:`Flock` objects are iterable.
+
+    """
     def __init__(self, *args):
         r = []
         for i in args:
@@ -1037,7 +1068,7 @@ class {{classname}}({{tag.baseclass}}):
         """
         for efp in self.{{l.name}}:
             efp.parent = None
-        self.{{l.name}} = {}
+        self.{{l.name}} = []
         return self
 
     def remove_{{l.accessorName}}(self, efp):
@@ -1358,12 +1389,14 @@ classMap["attribute"] = Attribute
 
 #### Extra methods for DeviceSets
 
-# This converts the deviceset into an external device.  This means that it
-# has no associated package.  It can, however, have attributes, and those
-# are stored in the "" device.  You can't just delete all the packages,
-# since you'd lose the attributes.  This copies them from the first
-# package.
 def convertToExternal(self):
+    """
+    This converts the :class:`Deviceset` into an external deviceset.  This means that it
+    has no associated package.  It can, however, have attributes, and those
+    are stored in the "" device.  You can't just delete all the packages,
+    since you'd lose the attributes.  This copies them from the first
+    package.
+    """
     if len(self.get_devices()) > 0:
         d = self.get_devices()[0]
         self.clear_devices()
@@ -1376,8 +1409,7 @@ def convertToExternal(self):
                             set_name("")))
     self.add_device(d)
 
-    for t in d.get_technologies():
-        t.add_attribute(Attribute().set_name("_EXTERNAL_"))
+    Flock(d).get_technologies().add_attribute(Attribute().set_name("_EXTERNAL_"))
 
 setattr(Deviceset, "convertToExternal", convertToExternal)
         

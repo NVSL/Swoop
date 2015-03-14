@@ -150,8 +150,7 @@ def rebuildBoardConnections(sch, brd):
     
     """
     #sheets/*/net.name:
-    netnames = list(set(reduce(lambda x,y:x+y,[s.get_nets().keys() for s in sch.get_sheets()], [])))
-    for name in netnames:
+    for name in Swoop.Flock(sch).get_sheets().get_nets().get_name():
         sig =  brd.get_signal(name)
         if sig is None:
             brd.add_signal(Swoop.Signal().
@@ -160,29 +159,30 @@ def rebuildBoardConnections(sch, brd):
                            set_class("0")) # We need to do something smarter here.
         else:
             sig.clear_contactrefs()
-        #for n in sheets/*/net[name=name]/segment/pinref:
-        for sheet in sch.get_sheets():
-            for net in sheet.get_nets().values():
-                if net.name == name:
-                    for segment in net.get_segments():
-                        for pinref in segment.get_pinrefs():
 
-                            if sch.get_part(pinref.part).find_device().get_package() is None:
-                                continue
-                            
-                            for connect in sch.get_part(pinref.part).find_device().get_connects():
-                                if connect.gate == pinref.gate and connect.pin==pinref.pin:
-                                    pad = connect.get_pad()
-                            # pad =(sch.
-                            #       get_part(pinref.part).
-                            #       find_device().
-                            #       search_connects(gate=pinref.gate,pin=pinref.pin).
-                            #       get_pad())
-                            assert pad is not None
-                            
-                            brd.signals[name].add_contactref(Swoop.Contactref().
-                                                             set_element(pinref.get_part()).
-                                                             set_pad(pad))
+        for pinref in (Swoop.Flock(sch).
+                       get_sheets().
+                       get_nets().
+                       filter_name(name).
+                       get_segments().
+                       get_pinrefs()):
+
+            if sch.get_part(pinref.part).find_device().get_package() is None:
+                continue
+
+            pad = (Swoop.Flock(sch).
+                   get_part(pinref.get_part()).
+                   find_device().
+                   get_connects().
+                   filter_gate(pinref.gate).
+                   filter_pin(pinref.pin).
+                   get_pad().unpack()[0])
+
+            assert pad is not None
+
+            brd.get_signal(name).add_contactref(Swoop.Contactref().
+                                                set_element(pinref.get_part()).
+                                                set_pad(pad))
 
 def propagatePartToBoard(part, brd):
     """
@@ -208,13 +208,13 @@ def propagatePartToBoard(part, brd):
         set_x(0).
         set_y(0))
 
-    for a in part.find_technology().get_attributes().values():
+    for a in part.find_technology().get_attributes():
         n.add_attribute(a.clone().
                         set_display("off").
                         set_layer("Document").
                         set_in_library(False))
 
-    for a in part.get_attributes().values():
+    for a in part.get_attributes():
         n.add_attribute(a.clone().
                         set_display("off").
                         set_layer("Document"))                                        

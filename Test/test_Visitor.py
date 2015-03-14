@@ -3,9 +3,9 @@ import Swoop
 import EagleTools
 import os
 
-class Counter(EagleTools.EaglePartVisitor):
+class Counter(Swoop.EagleFilePartVisitor):
     def __init__(self, root=None):
-        EagleTools.EaglePartVisitor.__init__(self,root)
+        Swoop.EagleFilePartVisitor.__init__(self,root)
         self.count = 0;
         self.elementCount = 0
         self.layerCount = 0

@@ -19,6 +19,7 @@ Contents:
    SchematicClasses
    LibraryClasses
    UtilityClasses
+   Flock
    Exceptions
    ExtendingSwoop
    CodeGen

@@ -1,140 +1,15 @@
 from Swoop import EagleFile
 import Swoop
 
-class EaglePartVisitor(object):
-    """A visitor utility class for :class:`EagleFile` objects.  
 
-    The class traverses a subtree of :class:`EagleFilePart` objects in
-    depth-first order.  Subclasses can define *vistor* methods of the form
-    :code:`*X*_pre()` and :code:`*X*_post()` that will be called in pre-order
-    and post-order during the traversal.  If a subclass doesn't define a
-    particular an :class:`EagleFilePart` subclass, :meth:`default_pre` and
-    :meth:`default_pre` will be used instead.
-
-    Subclasses can also override :meth:`visitFilter` and
-    :meth:`decendFilter` to control which :class:`EagleFilePart` the visitor
-    invokes the visitor methods on and which :class:`EagleFilePart` the visitor
-    decends into.  By default, both visitor methods are called on all
-    :class:`EagleFilePart` objects and in the visitor always decends.
-
-    The :meth:`go` method start execution.  It also returns :code:`self` so
-    you can easily apply accessor functions after execution.  You can also call
-    :meth:`visit` on an :class:`EagleFilePart` object to visit the subtree
-    underneath it
-
-    For example, here's a simple visitor that counts the total number of
-    :class:`EagleFileParts` in a file and, separately, the number of
-    :class:`Element` objects:
-    
-    .. code-block:: python
-
-        class Counter(EagleTools.EaglePartVisitor):
-            def __init__(self, root=None):
-                EagleTools.EaglePartVisitor.__init__(self,root)
-                self.count = 0;
-                self.elementCount = 0
-                self.layerCount = 0
-            def default_pre(self, efp):
-                self.count += 1
-            def Element_pre(self, e):
-                self.count += 1
-                self.elementCount += 1
-    
-    And you can use it like so:
-
-    .. code-block:: python
-
-        from Swoop import *
-        from EagleTools import *
-        ef = EagleFile.from_file(my_file)
-        c = Counter(ef)
-        print "The file has this many parts: " + str(c.go().count)
-        print "There are this many Elements: " + str(c.elementCount)
-
-    """
-
-    def __init__(self, root=None):
-        self.root = root
-
-    def go(self):
-        """
-        Start the visiting process.
-        
-        :rtype: :code:`self`
-        """
-        self.visit(self.root)
-        return self
-    
-    def visitFilter(self, e):
-        """Predicate that determines whether to call the visit functions on this
-        :class:`EagleFilePart`.  The default implementation returns ``True``.
-        
-        :param e: The :class:`EagleFilePart` to be visited.
-        :rtype:   ``Bool``
-
-        """
-        return True
-
-    def decendFilter(self, e):
-        """Predicate that determines whether to decend into the subtree rooted at ``e``.  The default implementation returns ``True``.
-        
-        :param e: The root :class:`EagleFilePart`.
-        :rtype:   ``Bool``
-
-        """
-        return True
-
-
-    def default_pre(self,e):
-        """Default pre-order visitor function.
-
-        This method can return a value that will be passed to the corresponding
-        post-order visitor function, making it easy to pass state between the
-        two.
-
-        The default implementation does nothing and returns ``None``
-        
-        :param e: The  :class:`EagleFilePart` being visited.
-        :rtype: Any
-
-        """
-        return None
-
-    def default_post(self,e, context):
-        """Default post-order visitor function.  The default implementation does nothing.
-        
-        :param e: The  :class:`EagleFilePart` being visited.
-        :param context: The value returned by corresponding pre-order visitor.
-        :rype: ``None``
-        """
-        pass
-
-    def visit(self, efp):
-        """ Run this visitor on the subtree rooted at ``efp``.
-        
-        :param efp: The :class:`EagleFilePart` at the root of the tree.
-        :rtype:  ``self``
-        """
-        if self.visitFilter(efp):
-            context = efp.accept_preorder_visitor(self)
-
-        if self.decendFilter(efp):
-            for e in efp.get_children():        
-                self.visit(e)
-                
-        if self.visitFilter(efp):
-            context = efp.accept_postorder_visitor(self, context)
-
-        return self
-
-class ScanLayersVisitor(EaglePartVisitor):
+class ScanLayersVisitor(Swoop.EagleFilePartVisitor):
     """A visitor to scan the file for all :class:`EagleFilePart` objects a
     :code:`layer` attribute and collected the names of all layers that are used
     somewhere in the file.
 
     """
     def __init__(self, efp):
-        EaglePartVisitor.__init__(self,efp)
+        Swoop.EagleFilePartVisitor.__init__(self,efp)
         self.foundLayers = set()
         self.definedLayers = set()
 
@@ -174,7 +49,7 @@ class ScanLayersVisitor(EaglePartVisitor):
         return list(self.definedLayers)
 
 
-class ScanLibraryReferences(EaglePartVisitor):
+class ScanLibraryReferences(Swoop.EagleFilePartVisitor):
     """A visitor to scan an :class:`EagleFile` object and identify all the library components (Libraries,
     Symbols, Packages, Devicesets, and Devices) that are referenced in the
     file.
@@ -182,7 +57,7 @@ class ScanLibraryReferences(EaglePartVisitor):
     """
     
     def __init__(self, efp):
-        EaglePartVisitor.__init__(self,efp)
+        Swoop.EagleFilePartVisitor.__init__(self,efp)
         self.usedEFPs = set()
         
     def Part_pre(self, efp):
@@ -209,10 +84,10 @@ class ScanLibraryReferences(EaglePartVisitor):
         return list(self.usedEFPs)
         
 
-class DumpVisitor(EaglePartVisitor):
+class DumpVisitor(Swoop.EagleFilePartVisitor):
 
     def __init__(self, efp):
-        EaglePartVisitor.__init__(self,efp)
+        Swoop.EagleFilePartVisitor.__init__(self,efp)
 
     def default_pre(self, efp):
         print "pre " + type(efp).__name__

@@ -150,7 +150,7 @@ def rebuildBoardConnections(sch, brd):
     
     """
     #sheets/*/net.name:
-    for name in Swoop.Flock(sch).get_sheets().get_nets().get_name():
+    for name in Swoop.From(sch).get_sheets().get_nets().get_name():
         sig =  brd.get_signal(name)
         if sig is None:
             brd.add_signal(Swoop.Signal().
@@ -160,7 +160,7 @@ def rebuildBoardConnections(sch, brd):
         else:
             sig.clear_contactrefs()
 
-        for pinref in (Swoop.Flock(sch).
+        for pinref in (Swoop.From(sch).
                        get_sheets().
                        get_nets().
                        with_name(name).
@@ -170,7 +170,7 @@ def rebuildBoardConnections(sch, brd):
             if sch.get_part(pinref.part).find_device().get_package() is None:
                 continue
 
-            pad = (Swoop.Flock(sch).
+            pad = (Swoop.From(sch).
                    get_parts().
                    with_name(pinref.get_part()).
                    find_device().

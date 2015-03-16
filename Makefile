@@ -1,12 +1,14 @@
 
-default: build test Swoop.py
+default: build
 
 build: eagleDTD.py Swoop.py
 
-test: build $(TARGETS)  eagleDTD.py
+.PHONY: test
+test: eagleDTD.py Swoop.py
 	python -m unittest discover
-	#	python ./SwoopTest.py --layers NVSLLayers.lbr
-	#	./checkEagle.py --file test2.sch Xperimental_Trinket_Pro_small_parts_power_breakout.sch
+
+#	#	python ./SwoopTest.py --layers NVSLLayers.lbr
+#	#	./checkEagle.py --file test2.sch Xperimental_Trinket_Pro_small_parts_power_breakout.sch
 
 .PHONY: doc
 doc: Swoop.py GenerateSwoop.py $(wildcard doc/*.rst)
@@ -29,7 +31,5 @@ Swoop.py: Swoop.jinja.py GenerateSwoop.py
 clean:
 	rm -rf eagleDTD.py
 	rm -rf *.broken.xml
-	rm -rf SwoopBaseClasses.py EagleUtilBase.py EagleUsefulSkeleton.py
 	rm -rf Swoop.py
-	rm -rf tag-summary.dat
 	$(MAKE) -C doc clean

@@ -1,5 +1,5 @@
-Flocks and Chains: Bulk Operations on :class:`EagleFilePart` Objects
-====================================================================
+Bulk Operations on :class:`EagleFilePart` Objects
+=================================================
 
 .. currentmodule:: Swoop
 
@@ -43,28 +43,28 @@ Working with Groups of :class:`EagelFilePart` Objects
 -----------------------------------------------------
 
 Searching for and iterating over :class:`EagelFilePart` objects that meet some
-criteria are common operations in Swoop.  The :class:`Flock` uses method
+criteria are common operations in Swoop.  The :class:`From` uses method
 chaining to make this easier and more succint.
 
-A :class:`Flock` object contains a list of objects (usually, but
+A :class:`From` object contains a list of objects (usually, but
 not necessarily, :class:`EagelFilePart` objects).  Calling a method on a
-:class:`Flock` object invokes the method on all the objects the :class:`Flock`
-object contains and returns a new :class:`Flock` object containing the results.
+:class:`From` object invokes the method on all the objects the :class:`From`
+object contains and returns a new :class:`From` object containing the results.
 
 If the method returns lists, the lists are concatenated.  If it return dicts,
 the values of the dicts are concatenated.  Singleton values are appended into list.
 If the method returns :code:`None`, the value is ignored.
 
-:class:`Flock` defines several helper methods as well.  For instance,
-:meth:`Flock.map` applies a function to item and returns a :class:`Flock` object
-containing the results and :meth:`Flock.sorted` returns a sorted :class:`Flock`.
+:class:`From` defines several helper methods as well.  For instance,
+:meth:`From.map` applies a function to item and returns a :class:`From` object
+containing the results and :meth:`From.sorted` returns a sorted :class:`From`.
 
 For instance, to print a list of all the packages in all the libraries of a file you could do:
 
 .. code-block:: python
 
    from Swoop import *
-   print "\n".join(Flock(EagleFile.from_file("foo.sch")).
+   print "\n".join(From(EagleFile.from_file("foo.sch")).
                    get_libraries().
 		   get_packages().
 		   get_name().
@@ -72,7 +72,7 @@ For instance, to print a list of all the packages in all the libraries of a file
 
 			     
 In addition, :class:`EagleFilePart` and its subclasses provide several methods
-built work with :class:`Flock` objects.  For example,
+built work with :class:`From` objects.  For example,
 :meth:`EagleFilePart.filter_type` returns :code:`self` if :code:`self` is a
 subclass of a give type.  And the :code:`filter_*` methods allow for filtering
 based on attribute values.)
@@ -84,7 +84,7 @@ length of all the airwires in board:
    
    from Swoop import *
    from math import * 
-   print "Total Airwire Length: " +  str(Flock(EagleFile.from_file("foo.brd")).
+   print "Total Airwire Length: " +  str(From(EagleFile.from_file("foo.brd")).
                                          get_signals().
                                          get_wires().
                                          filter_layer("Unrouted").
@@ -95,5 +95,5 @@ length of all the airwires in board:
 Classes
 -------
 
-.. autoclass:: Flock
+.. autoclass:: From
    :members:

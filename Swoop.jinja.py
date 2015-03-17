@@ -95,6 +95,15 @@ class EagleFilePart(object):
         else:
             return None
 
+    def get_class_for_tag(self, tag):
+        if self.get_file() is None:
+            raise NotImplementedError("Creation of children from file-less EFPs is not supported")
+        # print "---"
+        # print type(self.get_file()).__name__
+        # print type(self.get_file()).class_map["library"]
+        # print "+++"
+        return type(self.get_file()).class_map[tag]
+    
     def get_parent(self):
         """
         Get this object's parent.
@@ -255,15 +264,30 @@ def unparseByType(efp, attrType, v):
         r = None
     
     return r
-        
-            
+
+
+
 class EagleFile(EagleFilePart):
-    """
-    Base class for Eagle files.  Handles opening, parsing, validation, associated errors, writing, and layers.
+    """Base class for Eagle files.  Handles opening, parsing, validation, associated errors, writing, and layers.
+
+    This class also serves a factory class for :class:`EagleFilePart` objects.
+    Calling the :meth:`new_*()` methods on an :class:`EagleFile`, yields new
+    objects that include any Swoop extensions that have been applied.
+
     """
 
     # A validator for element tree representations of eagle files.
     DTD = ET.DTD(StringIO.StringIO(eagleDTD.DTD))
+
+    class_map = {}
+    boardFileType = None
+    schematicFileType = None
+    libraryFileType = None
+    
+    #{% for tag in tags %}
+    def new_{{tag.classname}}(self):
+        return type(self).class_map["{{tag.tag}}"]()
+    #{% endfor %}        
 
     def __init__ (self):
         """
@@ -276,6 +300,27 @@ class EagleFile(EagleFilePart):
         self.layers = {}
         self.layersByName = {}
 
+    @classmethod
+    def get_schematic_file_type(cls):
+        if cls.schematicFileType is None:
+            return SchematicFile
+        else:
+            return cls.schematicFileType
+
+    @classmethod
+    def get_board_file_type(cls):
+        if cls.boardFileType is None:
+            return BoardFile
+        else:
+            return cls.boardFileType
+        
+    @classmethod
+    def get_library_file_type(cls):
+        if cls.libraryFileType is None:
+            return LibraryFile
+        else:
+            return cls.libraryFileType
+        
         
     def validate(self):
         """
@@ -299,8 +344,8 @@ class EagleFile(EagleFilePart):
         
         return v
 
-    @staticmethod
-    def open(filename, bestEffort = True):
+    @classmethod
+    def open(cls,filename, bestEffort = True):
         """
         Loads a Eagle file from a .sch, .lbr, or .brd file.  A synonym for :meth:`EagleFile.from_file`
         
@@ -308,10 +353,10 @@ class EagleFile(EagleFilePart):
         :param bestEffort: If :code:`True`, load the file even if it doesn't conform to the DTD.        
         :returns: A new :class:`BoardFile`, :class:`LibraryFile`, or :class:`SchematicFile` object
         """
-        return EagleFile.from_file(filename, bestEffort)
+        return cls.from_file(filename, bestEffort)
 
-    @staticmethod
-    def from_file (filename, bestEffort = True):
+    @classmethod
+    def from_file (cls, filename, bestEffort = True):
         """
         Loads a Eagle file from a .sch, .lbr, or .brd file.  A synonym for :meth:`EagleFile.open`
 
@@ -334,11 +379,11 @@ class EagleFile(EagleFilePart):
                 raise EagleFormatError("Eagle file opened as '" + str(filename) +"' is invalid on disk: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
                 
         if filename[-4:] == ".sch":
-            ef = SchematicFile.from_et(root, None)
+            ef = cls.get_schematic_file_type().from_et(root, None)
         elif filename[-4:] == ".brd":
-            ef = BoardFile.from_et(root, None)
+            ef = cls.get_board_file_type().from_et(root, None)
         elif filename[-4:] == ".lbr":
-            ef = LibraryFile.from_et(root, None, filename)
+            ef = cls.get_library_file_type().from_et(root, None, filename)
         else:
             raise SwoopError("Unknown file suffix: '" + filename[-4:] + "'")
         ef.filename = filename
@@ -505,7 +550,54 @@ class EagleFile(EagleFilePart):
         """
         return self.libraries.get(l)
 
+def Mixin(mixin, prefix, base=EagleFile):
+    """Extend Swoop by adding a mixin to every class.
+
+    This function creates a new subclasses of every class Swoop uses to
+    represent an Eagle file (including the file types).  The names of the new
+    classes are prefixed with :code:`prefix` and they all inherit from the
+    original class and :code:`mixin`.
+
+    :param mixin: Mixin class.  Its constructor should take no arguments.
+    :param prefix: Prefix for the class name.  It'll be prepended to the names of all the Swoop classes.
+    :param base: Starting point for the extension.  This should either be :class:`Swoop.EagleFile` or a class returned by a previous call to this function.
+    :returns: A new subclass of :code:`base` that can be used just like :class:`EagleFile`
+    :rtype: A class.
+
+    """
+    def Extend(C, m, name):
+        class T(C,m):
+            class_map={}
+            def __init__(self):
+                C.__init__(self)
+                m.__init__(self)
+        T.__name__ = name
+        return T
+
+    n = Extend(base,mixin, prefix + base.__name__)
+    #print n.class_map.get("library")
+    for i in base.class_map:
+        n.class_map[i] = Extend(base.class_map[i], mixin, prefix + base.class_map[i].__name__)
+
+    n.boardFileType = Extend(base.get_board_file_type(),         mixin, prefix + base.get_board_file_type().__name__)
+    n.schematicFileType = Extend(base.get_schematic_file_type(), mixin, prefix + base.get_schematic_file_type().__name__)
+    n.libraryFileType = Extend(base.get_library_file_type(),     mixin, prefix + base.get_library_file_type().__name__)
+
+    n.boardFileType.class_map = copy.copy(n.class_map)
+    n.schematicFileType.class_map = copy.copy(n.class_map)
+    n.libraryFileType.class_map = copy.copy(n.class_map)
+
+    # print "there " + str(n)
+    # print "there " + str(n.boardFileType)
+    # print "there " + str(n.schematicFileType)
+    # print "there " + str(n.libraryFileType)
+    # print "there " + str(n.libraryFileType.class_map)
+    #print "here" + str(n.class_map.get("library"))
+    return n
+
+    
 def smartAddSubTags(root, path):
+
     """
     Add tags as need to create a container for the contents of an xpath.
 
@@ -835,8 +927,6 @@ class EagleFilePartVisitor(object):
 
         return self
 
-classMap = {}
-    
 
 #{% for tag in tags %}
 
@@ -910,14 +1000,14 @@ class {{classname}}({{tag.baseclass}}):
         
         #{%for m in tag.maps%}
         for c in root.xpath("{{m.xpath}}"):
-            self.add_{{m.accessorName}}(classMap[c.tag].from_et(c, self))
+            self.add_{{m.accessorName}}(self.get_class_for_tag(c.tag).from_et(c, self))
         #{%endfor%}
 
         ### Do the same for the lists
 
         #{%for l in tag.lists %}
         for c in root.xpath("{{l.xpath}}"):
-            self.add_{{l.accessorName}}(classMap[c.tag].from_et(c,self))
+            self.add_{{l.accessorName}}(self.get_class_for_tag(c.tag).from_et(c,self))
         #{%endfor%}
 
         ### And the singletons
@@ -925,7 +1015,7 @@ class {{classname}}({{tag.baseclass}}):
         #{%for s in tag.singletons %}
         x = root.xpath("{{s.xpath}}")
         if len(x) is not 0:
-            self.set_{{s.accessorName}}(classMap[x[0].tag].from_et(x[0],self))
+            self.set_{{s.accessorName}}(self.get_class_for_tag(x[0].tag).from_et(x[0],self))
         #{%endfor%}
 
         ### And, finally, if the objects wants the text from the tag.
@@ -1078,7 +1168,6 @@ class {{classname}}({{tag.baseclass}}):
         self.{{a.name}} = v
         return self
 
-
     def with_{{a.accessorName}}(self,v):
         """
         Filter this :code:`EagleFilePart` object based on the value of :code:`{{a.name}}`.  For use in combination with :class:`From` objects.
@@ -1101,8 +1190,37 @@ class {{classname}}({{tag.baseclass}}):
         elif callable(v):
             return self if v(self.{{a.name}}) else None
 
+
     #{%endfor%}
 
+    #{%if tag.preserveTextAs != "" %}
+    def with_{{tag.preserveTextAs}}(self,v):
+        """
+        Filter this :code:`EagleFilePart` object based on the value of :code:`{{tag.preserveTextAs}}`.  For use in combination with :class:`From` objects.
+        
+        Return :code:`self` if one of the following is true:
+
+        1.  :code:`{{tag.preserveTextAs}}` equals :code:`v`
+        2.  :code:`v` is callable and :code:`v(self.get_{{tag.preserveTextAs}}()` is :code:`True`
+
+        This is useful in combination with :class:`From` object.
+        
+        :param t: The value to check for or a callable object.
+        :returns: :code:`self` if the criteria above are met and :code:`None` otherwise. 
+        :rtype: :class:`EagelFilePart` or :code:`None`
+
+        """
+
+        if type(v) in [str, int, float]:
+            return self if self.{{tag.preserveTextAs}} == v else None
+        elif callable(v):
+            return self if v(self.{{tag.preserveTextAs}}) else None
+        else:
+            raise SwoopError("Illegal type passed to with_{{tag.preserveTextAs}}")
+    #{% endif %}
+
+
+    
     ### Adder/getter/lookup for lists
     
     #{%for l in tag.lists%}
@@ -1332,7 +1450,7 @@ class {{classname}}({{tag.baseclass}}):
         for c in self.get_children():
             c.dump(indent + "   ")
 
-classMap["{{tag.tag}}"] = {{classname}}
+EagleFile.class_map["{{tag.tag}}"] = {{classname}}
          
 #{% endfor %}
 
@@ -1450,7 +1568,7 @@ class Part (Base_Part):
     #     self.attributes[name].parent = None
     #     del self.attributes[name]
 
-classMap["part"] = Part
+EagleFile.class_map["part"] = Part
 
 
 class Attribute (Base_Attribute):
@@ -1503,7 +1621,7 @@ class Attribute (Base_Attribute):
 
         return n
 
-classMap["attribute"] = Attribute
+EagleFile.class_map["attribute"] = Attribute
 
 #### Extra methods for DeviceSets
 
@@ -1534,13 +1652,14 @@ setattr(Deviceset, "convertToExternal", convertToExternal)
 class LibraryFile(Base_LibraryFile):
     def __init__(self):
         Base_LibraryFile.__init__(self)
-
-    @staticmethod
-    def from_et (et, parent, filename):
+        
+    @classmethod
+    def from_et (cls,et, parent, filename):
         """
         Loads a Library file from an ElementTree.Element representation.
         """
-        r = Base_LibraryFile.from_et(et, parent)
+        r = cls()
+        r.init_from_et(et, parent)
         if r.get_library().name is None:
             r.get_library().set_name(os.path.basename(filename)[:-4])
         return r
@@ -1549,4 +1668,4 @@ class LibraryFile(Base_LibraryFile):
     #     return copy.deepcopy(self.library)
 
     
-#print classMap
+#print EagleFile.class_map

@@ -16,7 +16,7 @@ The Swoop data structures are also tree-structured and closely resemble the Eagl
 structure.  In many respects the Swoop is a straightforward conversion
 of the Eagle file format into Python objects, but the tree structure of the
 file formats has been flattened to make them easier to use.  For instance, in
-the eagle file layer defintions live in :code:`eagle/drawing/layers` and sheets
+the eagle file layer definitions live in :code:`eagle/drawing/layers` and sheets
 live in :code:`eagle/drawing/schematic/sheets`.  Our library "flattens" this
 hierarchy so that a :class:`SchematicFile` object has a map of layers and a list of
 sheets.

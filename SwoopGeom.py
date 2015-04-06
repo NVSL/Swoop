@@ -44,12 +44,25 @@ class GeometryMixin(object):
     def get_bounding_box(self):
         """
         Get the minimum bounding box enclosing this list of primitive elements
+        Does not account for wire widths (yet)
         """
+        def max_min(vertex_list, width=None):
+            max = np.maximum.reduce(vertex_list)
+            min = np.minimum.reduce(vertex_list)
+            if width is not None:
+                radius = np.array([width, width]) / 2.0
+                max += radius
+                min -= radius
+            return max,min
+
         if isinstance(self, Swoop.Polygon):
             vertices = [v.get_point() for v in self.get_vertices()]
-            return Rectangle.from_vertices(vertices)
+            return Rectangle(*max_min(vertices, self.get_width()))
         elif isinstance(self, Swoop.Wire):
-            return Rectangle.from_vertices([self.get_point(1), self.get_point(2)])
+            vertices = [self.get_point(1), self.get_point(2)]
+            return Rectangle(*max_min(vertices, self.get_width()))
+        elif isinstance(self, Swoop.Rectangle):
+            return Rectangle(self.get_point(1), self.get_point(2))
         elif isinstance(self, Swoop.Via) or isinstance(self, Swoop.Pad):
             #TODO: pads with funny shapes
             center = self.get_point()
@@ -153,6 +166,7 @@ class BoardFile(Swoop.From):
                 vertices.append(np2cgal( p1 - radius ))
                 self._elements.append(GeoElem(Polygon_2(vertices), wire))
 
+
     def draw_rect(self, rectangle, layer):
         swoop_rect = WithMixin.class_map["rectangle"]()
         swoop_rect.set_point(1, rectangle.bounds[0])
@@ -165,8 +179,8 @@ class BoardFile(Swoop.From):
         return Swoop.From([x.swoop_elem for x in self._elements if x.overlaps(query)])
 
 
-
-
+def from_file(filename):
+    return BoardFile(filename)
 
 
 

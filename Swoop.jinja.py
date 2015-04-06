@@ -691,6 +691,9 @@ class From(object):
     def __str__(self):
         return "From: " + str(self.efps)
 
+    def __repr__(self):
+        return self.__str__()
+
     def __getitem__(self,n):
         return self.efps[n]
 
@@ -800,6 +803,9 @@ class From(object):
             return reduce(func, self.efps)
         else:
             return reduce(func, self.efps, init)
+
+def from_file(filename):
+    return From(EagleFile.from_file(filename))
 
 class EagleFilePartVisitor(object):
     """A visitor utility class for :class:`EagleFile` objects.  

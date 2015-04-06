@@ -42,7 +42,7 @@ class TestSwoop(unittest.TestCase):
                          with_type(Swoop.Polygon).
                          get_vertices().
                          count(),
-                         18, "Fluient container search failure")
+                         18, "Fluent container search failure")
         
         
         self.assertEqual(len(t.

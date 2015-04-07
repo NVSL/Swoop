@@ -40,11 +40,60 @@ class GeometryMixin(object):
         getattr(self,"set_x" + i)(pt[0])
         getattr(self,"set_y" + i)(pt[1])
 
+    def _get_cgal_elem(self):
+        """
+        Get a cgal geometry element representing this object, if any
+        Width is only considered for Wire
+        """
+        if isinstance(self, Swoop.Rectangle):
+            verts = list(Rectangle(self.get_point(1), self.get_point(2)).vertices())
+            verts.reverse()     # put it in CCW order
+            if self.get_rot() is not None:
+                angle_obj = Dingo.Component.angle_match(self.get_rot())
+                angle = math.radians(angle_obj['angle'])
+                if angle_obj['mirrored']:
+                    angle *= -1
+                origin = (verts[0] + verts[1]) / 2.0    # midpoint
+                rmat = Rectangle.rotation_matrix(angle)
+                for i,v in enumerate(verts):
+                    verts[i] = np.dot(v - origin, rmat) + origin
+            return Polygon_2(map(np2cgal, verts))
+        elif isinstance(self, Swoop.Wire):
+            p1 = self.get_point(1)
+            p2 = self.get_point(2)
+            if self.get_width() is None:
+                return Segment_2(np2cgal(p1), np2cgal(p2))
+            else:
+                # Wire has width
+                # This is important to consider because wires can represent traces
+                # When doing a query, it is important we can pick up the trace
+                if p1[0] > p2[0]:
+                    p1,p2 = p2,p1   # p1 is the left endpoint
+                elif p1[0]==p2[0] and p1[1] > p2[1]:
+                    p1,p2 = p2,p1   # or the bottom
+
+                vec = (p2 - p1)
+                vec /= np.linalg.norm(vec)          # Normalize
+                radius = np.array(vec[1], -vec[0])
+                radius *= self.get_width()/2.0     # "Radius" of the wire, perpendicular to it
+
+                vertices = []
+                # Go around the vertices of the wire in CCW order
+                # This should give you a rotated rectangle
+                vertices.append(np2cgal( p1 + radius ))
+                vertices.append(np2cgal( p2 + radius ))
+                vertices.append(np2cgal( p2 - radius ))
+                vertices.append(np2cgal( p1 - radius ))
+                return Polygon_2(vertices)
+        elif isinstance(self, Swoop.Polygon):
+            return Polygon_2([np2cgal(v.get_point()) for v in self.vertices()])
+        else:
+            return None
 
     def get_bounding_box(self):
         """
         Get the minimum bounding box enclosing this list of primitive elements
-        Does not account for wire widths (yet)
+        More accurate than self_get_cgal_elem().bbox(), because it accounts for segment width
         """
         def max_min(vertex_list, width=None):
             max = np.maximum.reduce(vertex_list)
@@ -62,7 +111,9 @@ class GeometryMixin(object):
             vertices = [self.get_point(1), self.get_point(2)]
             return Rectangle(*max_min(vertices, self.get_width()))
         elif isinstance(self, Swoop.Rectangle):
-            return Rectangle(self.get_point(1), self.get_point(2))
+            #get_cgal_elem already handles rotation
+            bbox = self._get_cgal_elem().bbox()
+            return Rectangle.from_cgal_bbox(bbox)
         elif isinstance(self, Swoop.Via) or isinstance(self, Swoop.Pad):
             #TODO: pads with funny shapes
             center = self.get_point()
@@ -95,7 +146,6 @@ class GeoElem(object):
 
         #do_intersect only works with iso_rectangle, not bbox
         self.iso_rect = Iso_rectangle_2(bbox.xmin(), bbox.ymin(), bbox.xmax(), bbox.ymax())
-        self.rect = Rectangle.from_cgal_bbox(bbox)
 
     def overlaps(self, iso_rect_query):
         """
@@ -105,11 +155,13 @@ class GeoElem(object):
         :return: Bool
         """
         if isinstance(self.cgal_elem, Polygon_2):
+            #do_intersect does not work with Polygon_2 for some reason
             #Check bounding box intersection first, it's faster
             if do_intersect(self.iso_rect, iso_rect_query):
-                for edge in self.cgal_elem.edges():   #do_intersect does not work with Polygon_2 for some reason
+                for edge in self.cgal_elem.edges():
                     if do_intersect(edge, iso_rect_query):
                         return True
+            return False
         else:
             return do_intersect(self.cgal_elem, iso_rect_query)
 
@@ -131,7 +183,6 @@ class BoardFile(Swoop.From):
         :return:
         """
         # From needs this in order to work
-
         super(BoardFile, self).__init__(WithMixin.from_file(filename))
 
         # Tuples of (geometry element, swoop element)
@@ -139,32 +190,23 @@ class BoardFile(Swoop.From):
         self._elements = []
 
         #Add all the stuff in <signals>
+        #First wires
         for wire in self.get_signals().get_wires():
-            p1 = np.array([wire.get_x1(), wire.get_y1()])
-            p2 = np.array([wire.get_x2(), wire.get_y2()])
-            if p1[0] > p2[0]:
-                p1,p2 = p2,p1   # p1 is the left endpoint
-            elif p1[0]==p2[0] and p1[1] > p2[1]:
-                p1,p2 = p2,p1   # or the bottom
+            self._elements.append(GeoElem(wire._get_cgal_elem(), wire))
 
-            width = wire.get_width()
-            if width==0:    #No width, just a line segment
-                seg = Segment_2(Point_2(p1[0], p1[1]), Point_2(p2[0], p2[1]))
-                self._elements.append(GeoElem(seg, wire))
-            else:           #Has width
-                vec = (p2 - p1)
-                vec /= np.linalg.norm(vec)          # Normalize
-                radius = np.array(vec[1], -vec[0])
-                radius *= width/2.0     # "Radius" of the wire, perpendicular to it
+        #Then vias
+        for via in self.get_signals().get_vias():
+            #Circular kernel does not have python bindings yet...so just use bounding box
+            rect = via.get_bounding_box()
+            self._elements.append(GeoElem(Iso_rectangle_2(*rect.bounds_tuple), via))
 
-                vertices = []
-                # Go around the vertices of the wire in CCW order
-                # This should give you a rotated rectangle
-                vertices.append(np2cgal( p1 + radius ))
-                vertices.append(np2cgal( p2 + radius ))
-                vertices.append(np2cgal( p2 - radius ))
-                vertices.append(np2cgal( p1 - radius ))
-                self._elements.append(GeoElem(Polygon_2(vertices), wire))
+        # Then plain elements
+        for elem in self.get_plain_elements():
+            cgal_elem = elem._get_cgal_elem()
+            if cgal_elem is not None:
+                self._elements.append(GeoElem(cgal_elem, elem) )
+
+        #TODO: actual elements after handling mirroring and translation
 
 
     def draw_rect(self, rectangle, layer):
@@ -174,8 +216,12 @@ class BoardFile(Swoop.From):
         swoop_rect.set_layer(layer)
         self.add_plain_element(swoop_rect)
 
-    def get_overlapping(self, rectangle):
-        query = Iso_rectangle_2(*rectangle.bounds_tuple)
+    def get_overlapping(self, rectangle_or_xmin, ymin=None, xmax=None, ymax=None):
+        if isinstance(rectangle_or_xmin, Rectangle):
+            query = Iso_rectangle_2(*rectangle_or_xmin.bounds_tuple)
+        else:
+            query = Iso_rectangle_2(rectangle_or_xmin, ymin, xmax, ymax)
+
         return Swoop.From([x.swoop_elem for x in self._elements if x.overlaps(query)])
 
 

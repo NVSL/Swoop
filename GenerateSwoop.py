@@ -229,6 +229,7 @@ class TagClass:
                  preserveTextAs=None,
                  attrs=None,
                  sections=None,
+                 sortattr=None,
                  dontsort=False
     ):
         """
@@ -249,6 +250,7 @@ class TagClass:
         self.dontsort = dontsort
         self.tag = tag
         self.attrs = attrs
+        self.sortattr = sortattr
         self.lists = []
         self.maps = []
         self.baseclass = baseclass
@@ -903,6 +905,7 @@ tags["grid"] = TagClass("grid",
 
 tags["layer"] = TagClass("layer",
                          baseclass = "EagleFilePart",
+                         sortattr="number",
                          attrs=[Attr("number",
                                      vtype="int",
                                      required=True),

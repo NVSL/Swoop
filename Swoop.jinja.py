@@ -1034,6 +1034,8 @@ class {{classname}}({{tag.baseclass}}):
     def sortkey(self):
         #{% if tag.dontsort %}
         return ""
+        #{%elif tag.sortattr != None %}
+        return self.{{tag.sortattr}};
         #{%else%}
         r = ""
         #{% for a in tag.attrs %}

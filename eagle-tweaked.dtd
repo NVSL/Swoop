@@ -208,7 +208,7 @@
           y3            %Coord;        #REQUIRED
           layer         %Layer;        #REQUIRED
           dtype         %DimensionType; "parallel"
-          width         %Dimension;    #REQUIRED
+          width         %Dimension;    "0.13"
           extwidth      %Dimension;    "0"
           extlength     %Dimension;    "0"
           extoffset     %Dimension;    "0"
@@ -218,6 +218,7 @@
           precision     %Int;          "2"
           visible       %Bool;         "no"
           >
+	  <!-- SS:  made 'width' not required since eagle doesn't always include it.  The default is 0.13mm.  -->
 
 <!ELEMENT text (#PCDATA)>
 <!ATTLIST text

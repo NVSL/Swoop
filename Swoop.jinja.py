@@ -694,6 +694,9 @@ class From(object):
     def __repr__(self):
         return self.__str__()
 
+    def __len__(self):
+        return len(self.efps)
+
     def __getitem__(self,n):
         return self.efps[n]
 

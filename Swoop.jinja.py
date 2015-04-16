@@ -113,6 +113,12 @@ class EagleFilePart(object):
         return self.parent
 
     def detach(self):
+        """
+        Remove this :class:'EagleFilePart` from its parent.
+        :returns: :code:`self`
+        :rtype: :class:`EagleFilePart`
+        
+        """
         self.parent.remove_child(self)
         return self
     
@@ -121,7 +127,6 @@ class EagleFilePart(object):
         """
         Parse the part from an Element Tree
 
-        :rtype: :class:`EagleFilePart`
         """
         raise NotImplementedError()
     

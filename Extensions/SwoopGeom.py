@@ -1,4 +1,4 @@
-
+# coding=utf-8
 
 import Swoop
 from Rectangle import Rectangle
@@ -28,6 +28,54 @@ def isinstance_any(object, list):
             return True
     return False
 
+
+def angle_normalize(radians):
+    return math.fmod(math.fmod(radians,2*pi)+2*pi,2*pi)
+
+def arc_bounding_box(p1, p2, theta):
+    """
+    Bounding box of the semicircular arc sweeping an angle theta from point p1 to p2
+    :param p1: numpy point, start of arc
+    :param p2: numpy point, end of arc
+    :param theta: angle (in radians), angle swept to the arc
+    :return: Rectangle
+    """
+    assert -2*pi <= theta <= 2*pi, "Invalid radians angle"
+
+    wire_vector = p2 - p1
+
+    # Some magic using the law of sines
+    arc_radius = abs(np.linalg.norm(wire_vector) * math.cos(theta/2.0)/math.sin(theta))
+
+    # Rotate the vector p1-c by theta and you get p2-c
+    # This code exploits that and solves for c (center)
+    # Used Maple code generation
+    p1x,p1y = p1[0],p1[1]
+    p2x,p2y = p2[0],p2[1]
+    center = np.array([
+        (p1x - math.cos(theta) * p1x - math.cos(theta) * p2x +
+         math.sin(theta) * p1y - p2y * math.sin(theta) + p2x) / (0.2e1 - 0.2e1 * math.cos(theta)),
+
+        (p1y - math.cos(theta) * p1y - math.cos(theta) * p2y -
+         math.sin(theta) * p1x + math.sin(theta) * p2x + p2y) / (0.2e1 - 0.2e1 * math.cos(theta))
+    ])
+
+    # Convert all rotations to CCW
+    # p1 sweeps positive theta to get to p2
+    if theta < 0:
+        p1,p2 = p2,p1
+        theta = abs(theta)
+
+    vertices = [p1, p2]
+    v1 = p1 - center
+    p1_angle = math.atan2(v1[1],v1[0])     # angle of vector (p1-c)
+    for test_angle in [0, pi/2.0, pi, 3*pi/2]:
+        # 'rotate' (p1-c) to test angle
+        # If rotation was less than theta, this is inside the arc sweep
+        if 0 < angle_normalize(test_angle - p1_angle) < theta:
+            vertices.append(np.array([center[0] + arc_radius*math.cos(test_angle),
+                                      center[1] + arc_radius*math.sin(test_angle)]))
+    return Rectangle.from_vertices(vertices)
 
 class GeometryMixin(object):
     def get_point(self, i=None):
@@ -114,50 +162,15 @@ class GeometryMixin(object):
             vertices = [v.get_point() for v in self.get_vertices()]
             return Rectangle(*max_min(vertices, self.get_width()))
         elif isinstance(self, Swoop.Wire):
-            vertices = [self.get_point(1), self.get_point(2)]
             if self.get_curve() is not None:
-                # PUT ON YOUR MATH HATS
-                # HERE WE GO
-
                 theta = math.radians(self.get_curve()) # angle swept by arc
                 theta = math.fmod(theta, 2*math.pi)
                 p1 = self.get_point(1)  # 2 points on the circle
                 p2 = self.get_point(2)
-                wire_vector = p2 - p1
-
-                # Some magic using the law of sines
-                arc_radius = abs(np.linalg.norm(wire_vector) * math.cos(theta/2.0)/math.sin(theta))
-
-                # Rotate the vector p1-c by theta and you get p2-c
-                # This code exploits that and solves for c (center)
-                # Thank you Maple code generation
-                center = np.array([
-                    (math.cos(theta) * p1[1] / 0.2e1 - math.cos(theta) * p2[1] / 0.2e1 +
-                     math.sin(theta) * p1[0] / 0.2e1 + math.sin(theta) * p2[0] / 0.2e1 +
-                     p1[1] / 0.2e1 - p2[1] / 0.2e1) / math.sin(theta),
-
-                    -(math.cos(theta) * p1[0] / 0.2e1 - math.cos(theta) * p2[0] / 0.2e1 -
-                      math.sin(theta) * p1[1] / 0.2e1 - p2[1] * math.sin(theta) / 0.2e1 +
-                      p1[0] / 0.2e1 - p2[0] / 0.2e1) / math.sin(theta)
-                ])
-
-                # Convert all rotations to CCW
-                # p1 sweeps positive theta to get to p2
-                if theta < 0:
-                    p1,p2 = p2,p1
-                    theta = abs(theta)
-
-                v1 = p1 - center
-                angle = math.atan2(v1[1],v1[0])     # angle of vector (p1-c)
-                for test_angle in [0, pi/2.0, pi, -pi/2.0]:
-                    # 'rotate' (p1-c) to test angle
-                    # If rotation was less than theta, this is inside the arc sweep
-                    if 0 < (test_angle - angle) < theta:
-                        vertices.append(np.array([center[0] + arc_radius*math.cos(test_angle),
-                                                  center[1] + arc_radius*math.sin(test_angle)]))
-
-
-            return Rectangle(*max_min(vertices, self.get_width()), check=False)
+                return arc_bounding_box(p1, p2, theta).pad(self.get_width() / 2.0)
+            else:
+                vertices = [self.get_point(1), self.get_point(2)]
+                return Rectangle(*max_min(vertices, self.get_width()), check=False)
         elif isinstance(self, Swoop.Rectangle):
             #get_cgal_elem already handles rotation
             bbox = self._get_cgal_elem().bbox()
@@ -175,24 +188,44 @@ class GeometryMixin(object):
                     diameter = self.get_drill()*1.5
             else:
                 diameter = self.get_diameter()
-
             radius = diameter/2.0 * np.ones(2)
-            if self.get_shape() in ['long', 'offset']:
-                #TODO: end caps are round
-                radius[0] *= 2.0  # long pads have double width
-            rect = Rectangle(center - radius, center + radius)
-            if self.get_shape() == 'offset':
-                # Shift to the right by radius
-                # From the left, it's r(center)rrr
-                rect.move(np.array([diameter / 2.0, 0.0]))
 
+            angle = 0.0
             if isinstance(self, Swoop.Pad) and self.get_rot() is not None:
-                angle = Dingo.Component.angle_match(self.get_rot())
-                if angle['mirrored']:
-                    angle['angle'] = 180.0 - angle['angle']
-                rect.rotate(angle['angle'], origin=center)
+                angle_m = Dingo.Component.angle_match(self.get_rot())
+                angle = angle_m['angle']
+                if angle_m['mirrored']:
+                    angle = 180.0 - angle
+            rotate_matrix = Rectangle.rotation_matrix(math.radians(angle))
 
-            return rect
+            if self.get_shape() in ['long', 'offset']:
+                # This is basically a square pad with 180º arc endcaps
+                if self.get_shape()=='offset':
+                    center[0] += diameter/2.0   # Center is offset to the left, correct it
+                rect = Rectangle(center - radius, center + radius)
+                verts = list(rect.vertices())
+                verts = map(lambda v: rotate_matrix.dot(v - center) + center, verts)
+                left_cap = arc_bounding_box(verts[0], verts[3], pi)
+                right_cap = arc_bounding_box(verts[2], verts[1], pi)
+
+                rect = Rectangle.union(rect, left_cap)
+                rect = Rectangle.union(rect, right_cap)
+                return rect
+            elif self.get_shape()=='octagon':
+                vertex = np.array([diameter/2.0,
+                                   diameter/2.0 * math.tan(2*pi / 16 )])
+                vertex = rotate_matrix.dot(vertex)
+                vertices = []
+                rot = Rectangle.rotation_matrix(2*pi/8)
+                for i in xrange(8):
+                    vertices.append(vertex.copy() + center)
+                    vertex = rot.dot(vertex)
+                return Rectangle.from_vertices(vertices, check=True)
+            else:
+                rect = Rectangle(center - radius, center + radius)
+                if self.get_shape()=='square':
+                    rect.rotate(angle,origin=center)
+                return rect
 
         elif isinstance(self, Swoop.Smd):
             center = self.get_point()

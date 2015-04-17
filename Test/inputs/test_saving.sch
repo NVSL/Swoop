@@ -1036,13 +1036,28 @@ Groups of components that insist on having their own PCB. Usually requires heade
 <pad name="P$1" x="2" y="1" drill="2" shape="offset"/>
 </package>
 <package name="TEST-PAD2">
-<pad name="P$1" x="0" y="0" drill="1" shape="long" rot="R45"/>
+<pad name="P$1" x="0" y="0" drill="1" shape="long"/>
 </package>
 <package name="TEST-PAD3">
 <pad name="P$1" x="0" y="1.27" drill="2" shape="square"/>
 </package>
 <package name="TEST-PAD-ROUND">
 <pad name="P$1" x="0" y="0" drill="1"/>
+</package>
+<package name="TEST-ARC3">
+<wire x1="-1" y1="2" x2="-1" y2="-2" width="0.127" layer="21" curve="180"/>
+</package>
+<package name="TEST-PAD-ROT">
+<pad name="P$1" x="1" y="1" drill="1" shape="long" rot="R20"/>
+</package>
+<package name="TEST-PAD-OCT">
+<pad name="P$1" x="0" y="0" drill="2" diameter="4" shape="octagon" rot="R10"/>
+</package>
+<package name="TEST-PAD-SQUARE-ROT">
+<pad name="P$1" x="1" y="1" drill="1" shape="square" rot="R170"/>
+</package>
+<package name="TEST-PAD-OCT2">
+<pad name="P$1" x="0" y="0" drill="2" diameter="4" shape="octagon"/>
 </package>
 </packages>
 <symbols>
@@ -1111,6 +1126,66 @@ Groups of components that insist on having their own PCB. Usually requires heade
 </device>
 </devices>
 </deviceset>
+<deviceset name="TEST-ARC3">
+<gates>
+<gate name="G$1" symbol="TEST" x="-5.08" y="2.54"/>
+</gates>
+<devices>
+<device name="" package="TEST-ARC3">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="TEST-PAD-ROT">
+<gates>
+<gate name="G$1" symbol="TEST" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="TEST-PAD-ROT">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="TEST-PAD-OCT">
+<gates>
+<gate name="G$1" symbol="TEST" x="0" y="2.54"/>
+</gates>
+<devices>
+<device name="" package="TEST-PAD-OCT">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="TEST-PAD-SQUARE-ROT">
+<gates>
+<gate name="G$1" symbol="TEST" x="-10.16" y="2.54"/>
+</gates>
+<devices>
+<device name="" package="TEST-PAD-SQUARE-ROT">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="TEST-PAD-OCT2">
+<gates>
+<gate name="G$1" symbol="TEST" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="TEST-PAD-OCT2">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
 </devicesets>
 </library>
 </libraries>
@@ -1131,6 +1206,11 @@ Groups of components that insist on having their own PCB. Usually requires heade
 <part name="TEST-PAD2" library="Swoop-Test-Packages" deviceset="TEST-PAD2" device=""/>
 <part name="TEST-PAD-SQUARE" library="Swoop-Test-Packages" deviceset="TEST-PAD3" device=""/>
 <part name="TEST-PAD-ROUND" library="Swoop-Test-Packages" deviceset="TEST-PAD-ROUND" device=""/>
+<part name="TEST-ARC3" library="Swoop-Test-Packages" deviceset="TEST-ARC3" device=""/>
+<part name="TEST-PAD-ROT" library="Swoop-Test-Packages" deviceset="TEST-PAD-ROT" device=""/>
+<part name="TEST-PAD-OCT" library="Swoop-Test-Packages" deviceset="TEST-PAD-OCT" device=""/>
+<part name="TEST-PAD-SQUARE-ROT" library="Swoop-Test-Packages" deviceset="TEST-PAD-SQUARE-ROT" device=""/>
+<part name="TEST-PAD-OCT2" library="Swoop-Test-Packages" deviceset="TEST-PAD-OCT2" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -1145,6 +1225,11 @@ Groups of components that insist on having their own PCB. Usually requires heade
 <instance part="TEST-PAD2" gate="G$1" x="157.48" y="35.56"/>
 <instance part="TEST-PAD-SQUARE" gate="G$1" x="157.48" y="30.48"/>
 <instance part="TEST-PAD-ROUND" gate="G$1" x="154.94" y="20.32"/>
+<instance part="TEST-ARC3" gate="G$1" x="144.78" y="76.2"/>
+<instance part="TEST-PAD-ROT" gate="G$1" x="167.64" y="7.62"/>
+<instance part="TEST-PAD-OCT" gate="G$1" x="134.62" y="15.24"/>
+<instance part="TEST-PAD-SQUARE-ROT" gate="G$1" x="167.64" y="71.12"/>
+<instance part="TEST-PAD-OCT2" gate="G$1" x="185.42" y="27.94"/>
 </instances>
 <busses>
 </busses>

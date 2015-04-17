@@ -1,17 +1,19 @@
 import unittest
 import os
 from os.path import join
-import SwoopGeom
 import Swoop
 from Rectangle import Rectangle
 import numpy as np
 import numpy.testing as npt
+import math
 
 WE_HAVE_CGAL = True
 try:
     import CGAL.CGAL_Kernel
+    import SwoopGeom
 except ImportError:
     WE_HAVE_CGAL = False
+
 
 def get_inp(filename):
     return join(os.path.dirname(os.path.realpath(__file__)), "inputs", filename)
@@ -44,17 +46,38 @@ class TestBoundingBoxes(unittest.TestCase):
         rect = board.get_element("TEST-ARC2").get_bounding_box()[0]
         self.assertEqual(rect, Rectangle( (122.93650, 77.73274), (131.06350, 82.06350)))
 
+        rect = SwoopGeom.arc_bounding_box(np.array([-1,2]), np.array([-1,-2]), math.pi)
+        self.assertEqual(rect, Rectangle((-3,-2),(-1,2)))
+
+        rect = board.get_element("TEST-ARC3").get_bounding_box()[0]
+        self.assertEqual(rect, Rectangle( (135.93650, 85.93650), (138.06350, 90.06350)))
+
         rect = board.get_element("TEST-PAD1").get_bounding_box()[0]
         self.assertEqual(rect,Rectangle( (124.50000, 87.50000), (130.50000, 90.50000)))
 
         rect = board.get_element("TEST-PAD2").get_bounding_box()[0]
-        # print rect.eagle_code()
+        self.assertEqual(rect, Rectangle( (116.50000, 89.25000), (119.50000, 90.75000)))
 
         rect = board.get_element("TEST-PAD-SQUARE").get_bounding_box()[0]
         self.assertEqual(rect, Rectangle( (117.50000, 73.77000), (120.50000, 76.77000)))
 
         rect = board.get_element("TEST-PAD-ROUND").get_bounding_box()[0]
         self.assertEqual(rect, Rectangle( (130.25000, 75.25000), (131.75000, 76.75000)))
+
+        rect = board.get_element("TEST-PAD-ROT").get_bounding_box()[0]
+        self.assertEqual(rect, Rectangle( (137.54523, 78.99348), (140.45477, 81.00652)))
+
+        rect = SwoopGeom.arc_bounding_box(np.array([-2,1]), np.array([1,-2]), math.pi)
+        self.assertEqual(rect, Rectangle( (-2.62132, -2.62132), (1.00000, 1.00000)))
+
+        rect = board.get_element("TEST-PAD-OCT").get_bounding_box()[0]
+        self.assertEqual(rect, Rectangle( (111.88653, 67.88653), (116.11347, 72.11347)))
+
+        rect = board.get_element("TEST-PAD-OCT2").get_bounding_box()[0]
+        self.assertEqual(rect, Rectangle( (124.00000, 70.00000), (128.00000, 74.00000)))
+
+        rect = board.get_element("TEST-PAD-SQUARE-ROT").get_bounding_box()[0]
+        self.assertEqual(rect, Rectangle( (118.13116, 82.13116), (119.86884, 83.86884)))
 
 
     def test_query(self):

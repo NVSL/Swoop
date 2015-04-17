@@ -61,7 +61,7 @@ The Class Map
 
 You can take finer-grain control over which classes Swoop uses by modifying the
 :code:`class_map` member of :class:`EagleFile` (or a derived class returned by
-:function:`Swoop.Mixin`).
+:func:`Swoop.Mixin`).
 
 The :code:`class_map` defines the mapping between tag names (as they appear in
 Eagle file) and :class:`EagleFilePart` subclasses.

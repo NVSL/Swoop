@@ -10,10 +10,6 @@ Classes
    :members:
 .. autoclass:: Base_Element
    :members:
-.. autoclass:: Base_Part
-   :members:
-.. autoclass:: Part
-   :members:
 .. autoclass:: Contactref
    :members:
 .. autoclass:: Pass

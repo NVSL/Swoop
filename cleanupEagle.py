@@ -55,23 +55,23 @@ def removeDeadEFPs(ef):
                     devices.add(d)
 
                 for g in ds.get_gates():
-                    symbols.discard(l.get_symbol(g.get_symbol()))
+                    symbols.discard(g.find_symbol())
 
                 for d in ds.get_devices():
                     if d.get_package() is not None:
-                        packages.discard(l.get_package(d.get_package()))
+                        packages.discard(d.find_package())
                         
         if isinstance(ef, Swoop.SchematicFile):
             for p in Swoop.From(ef).get_parts():
-                lib = ef.get_library(p.get_library())
+                lib = p.find_library()
                 libraries.discard(lib)
-                devicesets.discard(lib.get_deviceset(p.get_deviceset()))
-                devices.discard(lib.get_deviceset(p.get_deviceset()).get_device(p.get_device()))
+                devicesets.discard(p.find_deviceset())
+                devices.discard(p.find_device())
         elif isinstance(ef, Swoop.BoardFile):
             for p in Swoop.From(ef).get_elements():
-                lib = ef.get_library(p.get_library())
+                lib = p.find_library()
                 libraries.discard(lib)
-                packages.discard(lib.get_package(p.get_package()))
+                packages.discard(p.find_package())
         elif isinstance(ef, Swoop.LibraryFile):
             lib = ef.get_library();
             libraries.discard(lib)

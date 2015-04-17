@@ -24,6 +24,10 @@ Classes
    :members:
 .. autoclass:: Net
    :members:
+.. autoclass:: Base_Part
+   :members:
+.. autoclass:: Part
+   :members:
 .. autoclass:: Pin
    :members:
 .. autoclass:: Pinref

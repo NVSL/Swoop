@@ -86,7 +86,7 @@ class Attr:
     Class representing an attribute.
     
     """
-    def __init__(self, name, required=False, parse=None, unparse=None,vtype=None,accessorName=None,xmlName=None):
+    def __init__(self, name, required=False, parse=None, unparse=None,vtype=None,accessorName=None,xmlName=None, lookupEFP=None):
         """Create a class describing an attribute.
         
         :param name: The attribute's name.  This is the name used for the member of the :class:`EagleFilePart` object.  For example :code:`foo.netclass` (since :code:`class` clashes with a the Python :code:`class` reserved word.
@@ -95,7 +95,7 @@ class Attr:
         :param unparse: String used to unparse the attribute value while generating XML. It will be invoked as :code:`unparse(x)` where :code:`x` is :mod:`Swoop`'s value for the attribute.  :code:'unparse(parse(x))` should be the identity function.
         :param accessorName:This is the string that will appear in Swoop API calls.  For example :code:`foo.get_class()`
         :param xmlName:This is string used in the XML representation.  For example, :code:`class`.
-
+        :param lookupEFP: This is a tuple.  The first element is a type.  The second is a function that looks up an object of that type based on the value of this attribute.  Function should take two arguments, the current :class:`EagleFilePart` and the value of the attribute. 
         """
         self.name = name.replace("-", "_")
         if xmlName is None:
@@ -106,6 +106,10 @@ class Attr:
             #assert self.xmlName is not None
             #        print "Is " + str(self.name) + " == " + str(self.xmlName) +"?"
 
+        if lookupEFP is None:
+            self.lookupEFP = None
+        else:
+            self.lookupEFP = lookupEFP
 
         if vtype is None:
             self.vtype = "str"
@@ -390,7 +394,9 @@ tags["deviceset"] = TagClass("deviceset",
 tags["device"] = TagClass("device",
                           baseclass = "EagleFilePart",
                           attrs=[Attr("name", required=False),
-                                 Attr("package", required=False)],
+                                 Attr("package",
+                                      required=False,
+                                      lookupEFP=("Package", "lambda efp, key: efp.get_parent().get_parent().get_package(key)"))],
                           sections=[List("connects", "./connects/connect"),
                                     Map("technologies", "./technologies/technology")])
 
@@ -418,7 +424,8 @@ tags["signal"] = TagClass("signal",
                                  Attr("netclass",
                                       accessorName = "class",
                                       xmlName="class",
-                                      required=False),
+                                      required=False,
+                                      lookupEFP=("Class", "lambda efp, key: NotImplemented('class lookup from signal not implemented')")),
                                  Attr("airwireshidden", 
                                          vtype="bool",
                                          required=False)],
@@ -432,7 +439,9 @@ tags["signal"] = TagClass("signal",
 tags["moduleinst"] = TagClass("moduleinst",
                               baseclass = "EagleFilePart",
                               attrs=[nameAttr(),
-                                     Attr("module", required=True),
+                                     Attr("module",
+                                          required=True,
+                                          lookupEFP=("Module","lambda efp, key: NotImplemented('Module lookup not implemented')")),
                                      Attr("modulevariant", required=False),
                                      dimensionAttr("x",True),
                                      dimensionAttr("y",True),
@@ -448,8 +457,8 @@ tags["variantdef"] = TagClass("variantdef",
                               baseclass = "EagleFilePart",
                               attrs=[nameAttr(),
                                      Attr("current", 
-                                         vtype="bool",
-                                         required=False)])
+                                          vtype="bool",
+                                          required=False)])
 
 
 
@@ -468,7 +477,9 @@ tags["variant"] = TagClass("variant",
 tags["gate"] = TagClass("gate",
                         baseclass = "EagleFilePart",
                         attrs=[nameAttr(),
-                               Attr("symbol", required=True),
+                               Attr("symbol",
+                                    required=True,
+                                    lookupEFP=("Symbol", "lambda efp, key: efp.get_parent().get_parent().get_symbol(key)")),
                                dimensionAttr("x",True),
                                dimensionAttr("y",True),
                                Attr("addlevel", required=False),
@@ -656,17 +667,22 @@ tags["element"] = TagClass("element",
                            baseclass = "EagleFilePart",
                            #customchild = True,
                            attrs=[nameAttr(),
-                                  Attr("library", required=True),
-                                  Attr("package", required=True),
-                                  Attr("value", required=True),
+                                  Attr("library",
+                                       required=True,
+                                       lookupEFP=("Library", "lambda efp, key: efp.get_parent().get_library(key)")),
+                                  Attr("package",
+                                       required=True,
+                                       lookupEFP=("Package", "lambda efp, key: efp.find_library().get_package(key)")),
+                                  Attr("value",
+                                       required=True),
                                   dimensionAttr("x",True),
                                   dimensionAttr("y",True),
                                   Attr("locked",
-                                   vtype="bool",
-                                    required=False),
+                                       vtype="bool",
+                                       required=False),
                                   Attr("populate", 
-                                         vtype="bool",
-                                         required=False),
+                                       vtype="bool",
+                                       required=False),
                                   smashedAttr,
                                   rotAttr],
                            # I'm not sure if this should be a Map or a
@@ -744,10 +760,17 @@ tags["part"] = TagClass("part",
                         baseclass="EagleFilePart",
                         customchild=True,
                         attrs=[nameAttr(),
-                               Attr("library", required=True),
-                               Attr("deviceset", required=True),
-                               Attr("device", required=True),
+                               Attr("library",
+                                    lookupEFP=("Library", "lambda efp, key: efp.get_parent().get_library(key)"),
+                                    required=True),
+                               Attr("deviceset",
+                                    lookupEFP=("Deviceset", "lambda efp, key: efp.find_library().get_deviceset(key)"),
+                                    required=True),
+                               Attr("device",
+                                    lookupEFP=("Device", "lambda efp, key: efp.find_deviceset().get_device(key)"),
+                                    required=True),
                                Attr("technology",
+                                    lookupEFP=("Technology","lambda efp, key: efp.find_device().get_technology(key)"),
                                     required=False,
                                     vtype="None_is_empty_string"),
                                Attr("value", required=False)],
@@ -769,8 +792,12 @@ tags["port"] = TagClass("port",
 
 tags["instance"] = TagClass("instance",
                             baseclass = "EagleFilePart",
-                            attrs=[Attr("part", required=True),
-                                   Attr("gate", required=True),
+                            attrs=[Attr("part",
+                                        lookupEFP=("Part","lambda efp, key: NotImplemented('Lookup of part from instance not implemented.')"),
+                                        required=True),
+                                   Attr("gate",
+                                        lookupEFP=("Gate","lambda efp, key: NotImplemented('Lookup of gate from instance not implemented.')"),
+                                        required=True),
                                    dimensionAttr("x",True),
                                    dimensionAttr("y",True),
                                    smashedAttr,
@@ -805,9 +832,15 @@ tags["junction"] = TagClass("junction",
 
 tags["connect"] = TagClass("connect",
                            baseclass = "EagleFilePart",
-                           attrs=[Attr("gate", required=True),
-                                  Attr("pin", required=True),
-                                  Attr("pad", required=True),
+                           attrs=[Attr("gate",
+                                       lookupEFP=("Gate","lambda efp, key: NotImplemented('Lookup of gate from connect not implemented.')"),
+                                       required=True),
+                                  Attr("pin",
+                                       lookupEFP=("Pin","lambda efp, key: NotImplemented('Lookup of pin from connect not implemented.')"),
+                                       required=True),
+                                  Attr("pad",
+                                       lookupEFP=("Pad","lambda efp, key: NotImplemented('Lookup of pad from connect not implemented.')"),
+                                       required=True),
                                   Attr("route", required=False)])
 
 
@@ -842,16 +875,26 @@ tags["attribute"] = TagClass("attribute",
 
 tags["pinref"] = TagClass("pinref",
                           baseclass = "EagleFilePart",
-                          attrs=[Attr("part", required=True),
-                                 Attr("gate", required=True),
-                                 Attr("pin", required=True)])
+                          attrs=[Attr("part",
+                                      lookupEFP=("Part","lambda efp, key: NotImplemented('Lookup of part from pinref not implemented.')"),
+                                      required=True),
+                                 Attr("gate",
+                                      lookupEFP=("Gate","lambda efp, key: NotImplemented('Lookup of gate from pinref not implemented.')"),
+                                      required=True),
+                                 Attr("pin",
+                                      lookupEFP=("Pin", "lambda efp, key: NotImplemented('Lookup of pin from pinref not implemented.')"),
+                                      required=True)])
 
 
 
 tags["contactref"] = TagClass("contactref",
                               baseclass = "EagleFilePart",
-                              attrs=[Attr("element", required=True),
-                                     Attr("pad", required=True),
+                              attrs=[Attr("element",
+                                          lookupEFP=("Element","lambda efp, key: NotImplemented('Lookup of element from contactref not implemented.')"),
+                                          required=True),
+                                     Attr("pad",
+                                          lookupEFP=("Pad","lambda efp, key: NotImplemented('Lookup of pad from contactref not implemented.')"),
+                                          required=True),
                                      Attr("route", required=False),
                                      Attr("routetag", required=False)])
 
@@ -859,8 +902,12 @@ tags["contactref"] = TagClass("contactref",
 
 tags["portref"] = TagClass("portref",
                            baseclass = "EagleFilePart",
-                           attrs=[Attr("moduleinst", required=True),
-                                  Attr("port", required=True)])
+                           attrs=[Attr("moduleinst",
+                                       lookupEFP=("Moduleinst","lambda efp, key: NotImplemented('Lookup of moduleinst from portref not implemented.')"),
+                                       required=True),
+                                  Attr("port",
+                                       lookupEFP=("Port", "lambda efp, key: NotImplemented('Lookup of port from portref not implemented.')"),
+                                       required=True)])
 
 
 
@@ -940,6 +987,7 @@ tags["clearance"] = TagClass("clearance",
                              attrs=[Attr("netclass",
                                          accessorName = "class",
                                          xmlName="class",
+                                         lookupEFP=("Class","lambda efp, key: NotImplemented('Lookup of class from clearance not implemented.')"),
                                          required=True),
                                     dimensionAttr("value", required=False)])
 

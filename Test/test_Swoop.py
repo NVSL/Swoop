@@ -140,3 +140,24 @@ class TestSwoop(unittest.TestCase):
                          get_layers().
                          count(), 56, "Detach Error")
 
+    def test_Lookup(self):
+        sch = self.sch.clone()
+        brd = self.brd.clone()
+        self.assertTrue(isinstance(sch.get_nth_library(0).get_nth_deviceset(0).get_nth_gate(0).find_symbol(), Swoop.Symbol), "wrong type from find_symbol")
+        self.assertTrue(isinstance(brd.get_nth_library(0).get_nth_deviceset(2).get_nth_device(0).find_package(), Swoop.Package), "wrong type from find_package")
+        self.assertTrue(isinstance(brd.get_nth_element(0).find_library(), Swoop.Library), "wrong type from find_library")
+        self.assertTrue(isinstance(brd.get_nth_element(0).find_package(), Swoop.Package), "wrong type from find_package")
+        
+        self.assertTrue(isinstance(sch.get_nth_part(3).find_library(), Swoop.Library), "wrong type from find_library")
+        self.assertTrue(isinstance(sch.get_nth_part(3).find_deviceset(), Swoop.Deviceset), "wrong type from find_deviceset")
+        self.assertTrue(isinstance(sch.get_nth_part(3).find_device(), Swoop.Device), "wrong type from find_device")
+        self.assertTrue(isinstance(sch.get_nth_part(3).find_technology(), Swoop.Technology), "wrong type from find_technology")
+
+        threw = False
+        try:
+            sch.get_sheet(0).get_nth_instance(0).find_gate()
+        except:
+            threw = True
+
+        self.assertTrue(threw, "not implemented failed")
+        

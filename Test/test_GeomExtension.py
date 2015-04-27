@@ -79,6 +79,22 @@ class TestBoundingBoxes(unittest.TestCase):
         rect = board.get_element("TEST-PAD-SQUARE-ROT").get_bounding_box()[0]
         self.assertEqual(rect, Rectangle( (118.13116, 82.13116), (119.86884, 83.86884)))
 
+        print board.get_element("ARDUINO").get_package_moved().\
+            get_children().get_bounding_box().reduce(Rectangle.union).eagle_code()
+
+        arduino_package = board.get_element("ARDUINO").get_package_moved()[0]
+        arduino_package.set_name("TEST-PACKAGE")
+        lib = board.get_library("BOBs")[0]
+        lib.add_package(arduino_package)
+        elem = SwoopGeom.WithMixin.class_map["element"]()
+        elem.set_name("OUTPUT")
+        elem.set_library("BOBs")
+        elem.set_package("TEST-PACKAGE")
+        elem.set_x(0)
+        elem.set_y(0)
+        board.add_element(elem)
+        board.write("out.brd")
+
 
     def test_query(self):
         board = SwoopGeom.from_file(get_inp("test_saving.brd"))

@@ -78,6 +78,8 @@ def arc_bounding_box(p1, p2, theta):
     return Rectangle.from_vertices(vertices)
 
 class GeometryMixin(object):
+    #TODO: generic across any number of points
+    # e.g. 0 for vertex, circle, 0,1 for Rectangle, Wire, 0..(n-1) for Polygon
     def get_point(self, i=None):
         """
         Get a coordinate as a numpy array
@@ -89,10 +91,14 @@ class GeometryMixin(object):
         else:
             return np.array([getattr(self, "get_x")(), getattr(self, "get_y")()])
 
-    def set_point(self, i, pt):
-        i = str(i)
-        getattr(self,"set_x" + i)(pt[0])
-        getattr(self,"set_y" + i)(pt[1])
+    def set_point(self, pt, i=None):
+        if i is None:
+            getattr(self,"set_x")(pt[0])
+            getattr(self,"set_y")(pt[1])
+        else:
+            i = str(i)
+            getattr(self,"set_x" + i)(pt[0])
+            getattr(self,"set_y" + i)(pt[1])
 
     def _get_cgal_elem(self):
         """
@@ -273,6 +279,115 @@ class GeoElem(object):
         else:
             return do_intersect(self.cgal_elem, iso_rect_query)
 
+#TODO: less monkey patch chaos
+
+# Primitive drawing elements: Pad, Smd, Via, Rectangle, Wire, Polygon, Text?
+
+# Monkey patch Swoop to add move/rotate/mirror
+# I could do isinstance like before but I want an error if you call any of these on the wrong class
+def move_has_one_point(self, move_vector):
+    self.set_point(self.get_point() + move_vector)
+Swoop.Pad.move = move_has_one_point
+Swoop.Smd.move = move_has_one_point
+Swoop.Via.move = move_has_one_point
+Swoop.Text.move = move_has_one_point
+Swoop.Vertex.move = move_has_one_point
+Swoop.Circle.move = move_has_one_point
+
+def move_rectangle_wire(self, move_vector):
+    self.set_point(self.get_point(1) + move_vector, 1)
+    self.set_point(self.get_point(2) + move_vector, 2)
+Swoop.Rectangle.move = move_rectangle_wire
+Swoop.Wire.move = move_rectangle_wire
+
+def move_polygon(self, move_vector):
+    for v in self.get_vertices():
+        v.move(move_vector)
+Swoop.Polygon.move = move_polygon
+
+
+#Rotate
+def rotate_has_one_point(self, rotate_degrees):
+    rot_mtx = Rectangle.rotation_matrix(math.radians(rotate_degrees))
+    self.set_point(rot_mtx.dot(self.get_point()))
+Swoop.Vertex.rotate = rotate_has_one_point
+Swoop.Via.rotate = rotate_has_one_point
+Swoop.Circle.rotate = rotate_has_one_point
+
+def rotate_rot_attr(self, rotate_degrees):
+    rot = self.get_rot() or "R0"
+    angle = Dingo.Component.angle_match(rot)
+    angle['angle'] = (angle['angle'] + rotate_degrees) % 360
+    self.set_rot(Dingo.Component.angle_match_to_str(angle))
+
+# Change the rotation attribute, then move the part
+def rotate_has_rot_attr(self, rotate_degrees):
+    rotate_rot_attr(self, rotate_degrees)
+    rotate_has_one_point(self, rotate_degrees)
+Swoop.Rectangle.rotate = rotate_has_rot_attr
+Swoop.Pad.rotate = rotate_has_rot_attr
+Swoop.Smd.rotate = rotate_has_rot_attr
+Swoop.Text.rotate = rotate_has_rot_attr
+
+def rotate_two_points(self, rotate_degrees):
+    rot_mtx = Rectangle.rotation_matrix(math.radians(rotate_degrees))
+    self.set_point(rot_mtx.dot(self.get_point(1)), 1)
+    self.set_point(rot_mtx.dot(self.get_point(2)), 2)
+Swoop.Wire.rotate = rotate_two_points
+
+def rotate_rectangle(self, rotate_degrees):
+    rotate_rot_attr(self, rotate_degrees)
+    rotate_two_points(self, rotate_degrees)
+Swoop.Rectangle.rotate = rotate_rectangle
+
+
+def rotate_polygon(self, rotate_degrees):
+    for v in self.get_vertices():
+        v.rotate(rotate_degrees)
+Swoop.Polygon.rotate = rotate_polygon
+
+
+def mirror_rot_attr(self):
+    rot = self.get_rot() or "R0"
+    angle = Dingo.Component.angle_match(rot)
+    angle['mirrored'] = not angle['mirrored']
+    self.set_rot(Dingo.Component.angle_match_to_str(angle))
+
+def mirror_two_points(self):
+    if hasattr(self, "rot"):
+        mirror_rot_attr(self)
+    for i in [1,2]:
+        v = self.get_point(i)
+        v[0] *= -1
+        self.set_point(v, i)
+Swoop.Wire.mirror = mirror_two_points
+Swoop.Rectangle.mirror = mirror_two_points
+
+def mirror_polygon(self):
+    for v in self.get_vertices():
+        v.mirror()
+Swoop.Polygon.mirror = mirror_polygon
+
+def mirror_one_point(self):
+    if hasattr(self, "rot"):
+        mirror_rot_attr(self)
+    v = self.get_point()
+    v[0] *= -1
+    self.set_point(v)
+Swoop.Vertex.mirror = mirror_one_point
+Swoop.Circle.mirror = mirror_one_point
+Swoop.Via.mirror = mirror_one_point
+Swoop.Pad.mirror = mirror_one_point
+Swoop.Smd.mirror = mirror_one_point
+Swoop.Text.mirror = mirror_one_point
+
+
+def get_package_moved(self):
+    return self.package_moved
+Swoop.Element.get_package_moved = get_package_moved
+
+
+
 WithMixin = Swoop.Mixin(GeometryMixin, "geo")
 
 
@@ -317,6 +432,8 @@ class BoardFile(Swoop.From):
                 self._elements.append(GeoElem(cgal_elem, elem) )
 
         # The actual elements in <elements>
+        # Each element will be represented as a rotated rectangle
+        # The element's children, after translation and rotating, will be in the package_moved attribute
         for elem in self.get_elements():
             package = self.get_libraries().get_package(elem.get_package())
             rect = package.get_children().get_bounding_box().reduce(Rectangle.union)
@@ -330,10 +447,19 @@ class BoardFile(Swoop.From):
             # Convert rotated rectangle to polygon
             poly = []
             for v in rect.vertices_ccw():
-                vr = rotmatx.dot(v)
+                vr = rotmatx.dot(v)         # rotate before mirroring
                 if angle['mirrored']:
                     vr[0] *= -1
                 poly.append(np2cgal(vr + origin))
+
+            # Create a copy of the package with all the children rotated/moved
+            elem.package_moved = package[0].clone()
+            for package_elem in elem.package_moved.get_children():
+                package_elem.rotate(angle['angle'])
+                if angle['mirrored']:
+                    package_elem.mirror()
+                package_elem.move(origin)
+
 
             geom = GeoElem(Polygon_2(poly), elem)
             self._elements.append(geom)
@@ -343,8 +469,8 @@ class BoardFile(Swoop.From):
 
     def draw_rect(self, rectangle, layer):
         swoop_rect = WithMixin.class_map["rectangle"]()
-        swoop_rect.set_point(1, rectangle.bounds[0])
-        swoop_rect.set_point(2, rectangle.bounds[1])
+        swoop_rect.set_point(rectangle.bounds[0], 1)
+        swoop_rect.set_point(rectangle.bounds[1], 2)
         swoop_rect.set_layer(layer)
         self.add_plain_element(swoop_rect)
 

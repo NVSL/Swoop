@@ -232,13 +232,20 @@ class GeometryMixin(object):
                 if self.get_shape()=='square':
                     rect.rotate(angle,origin=center)
                 return rect
-
         elif isinstance(self, Swoop.Smd):
             center = self.get_point()
             radius = np.array([self.get_dx(), self.get_dy()]) / 2.0
             if self.get_rot() is not None:
                 angle = Dingo.Component.angle_match(self.get_rot())
                 radius = abs(Rectangle.rotation_matrix(math.radians(angle['angle'])).dot(radius))
+            return Rectangle(center - radius, center + radius)
+        elif isinstance(self, Swoop.Circle):
+            center = self.get_point()
+            radius = np.ones(2) * (self.get_radius() + self.get_width()/2.0)
+            return Rectangle(center - radius, center + radius)
+        elif isinstance(self, Swoop.Hole):
+            center = self.get_point()
+            radius = np.ones(2) * self.get_drill()/2.0
             return Rectangle(center - radius, center + radius)
         elif isinstance(self, Swoop.Element):
             # Element objects do not have enough information for the bounding box
@@ -293,6 +300,7 @@ Swoop.Via.move = move_has_one_point
 Swoop.Text.move = move_has_one_point
 Swoop.Vertex.move = move_has_one_point
 Swoop.Circle.move = move_has_one_point
+Swoop.Hole.move = move_has_one_point
 
 def move_rectangle_wire(self, move_vector):
     self.set_point(self.get_point(1) + move_vector, 1)
@@ -313,6 +321,7 @@ def rotate_has_one_point(self, rotate_degrees):
 Swoop.Vertex.rotate = rotate_has_one_point
 Swoop.Via.rotate = rotate_has_one_point
 Swoop.Circle.rotate = rotate_has_one_point
+Swoop.Hole.rotate = rotate_has_one_point
 
 def rotate_rot_attr(self, rotate_degrees):
     rot = self.get_rot() or "R0"
@@ -380,6 +389,7 @@ Swoop.Via.mirror = mirror_one_point
 Swoop.Pad.mirror = mirror_one_point
 Swoop.Smd.mirror = mirror_one_point
 Swoop.Text.mirror = mirror_one_point
+Swoop.Hole.mirror = mirror_one_point
 
 
 def get_package_moved(self):
@@ -389,7 +399,6 @@ Swoop.Element.get_package_moved = get_package_moved
 
 
 WithMixin = Swoop.Mixin(GeometryMixin, "geo")
-
 
 class BoardFile(Swoop.From):
     """
@@ -498,7 +507,10 @@ class BoardFile(Swoop.From):
 
 
 def from_file(filename):
-    return BoardFile(filename)
+    if filename.endswith(".brd"):
+        return BoardFile(filename)
+    else:
+        return Swoop.From(WithMixin.from_file(filename))
 
 
 

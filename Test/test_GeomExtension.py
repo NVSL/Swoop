@@ -79,6 +79,12 @@ class TestBoundingBoxes(unittest.TestCase):
         rect = board.get_element("TEST-PAD-SQUARE-ROT").get_bounding_box()[0]
         self.assertEqual(rect, Rectangle( (118.13116, 82.13116), (119.86884, 83.86884)))
 
+        rect= board.get_element("TEST-CIRCLE").get_bounding_box()[0]
+        self.assertEqual(rect, Rectangle( (132.72190, 49.88190), (152.03810, 69.19810)))
+
+        rect = board.get_element("TEST-HOLE").get_bounding_box()[0]
+        self.assertEqual(rect, Rectangle( (113.45000, 58.45000), (114.55000, 59.55000)))
+
         print board.get_element("ARDUINO").get_package_moved().\
             get_children().get_bounding_box().reduce(Rectangle.union).eagle_code()
 

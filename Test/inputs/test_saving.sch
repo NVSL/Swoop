@@ -1059,6 +1059,12 @@ Groups of components that insist on having their own PCB. Usually requires heade
 <package name="TEST-PAD-OCT2">
 <pad name="P$1" x="0" y="0" drill="2" diameter="4" shape="octagon"/>
 </package>
+<package name="TEST-CIRCLE">
+<circle x="-7.62" y="2.54" radius="9.1581" width="1" layer="21"/>
+</package>
+<package name="TEST-HOLE">
+<hole x="-1" y="1" drill="1.1"/>
+</package>
 </packages>
 <symbols>
 <symbol name="TEST">
@@ -1186,6 +1192,30 @@ Groups of components that insist on having their own PCB. Usually requires heade
 </device>
 </devices>
 </deviceset>
+<deviceset name="TEST-CIRCLE">
+<gates>
+<gate name="G$1" symbol="TEST" x="2.54" y="5.08"/>
+</gates>
+<devices>
+<device name="" package="TEST-CIRCLE">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="TEST-HOLE">
+<gates>
+<gate name="G$1" symbol="TEST" x="-5.08" y="2.54"/>
+</gates>
+<devices>
+<device name="" package="TEST-HOLE">
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
 </devicesets>
 </library>
 </libraries>
@@ -1211,6 +1241,8 @@ Groups of components that insist on having their own PCB. Usually requires heade
 <part name="TEST-PAD-OCT" library="Swoop-Test-Packages" deviceset="TEST-PAD-OCT" device=""/>
 <part name="TEST-PAD-SQUARE-ROT" library="Swoop-Test-Packages" deviceset="TEST-PAD-SQUARE-ROT" device=""/>
 <part name="TEST-PAD-OCT2" library="Swoop-Test-Packages" deviceset="TEST-PAD-OCT2" device=""/>
+<part name="TEST-CIRCLE" library="Swoop-Test-Packages" deviceset="TEST-CIRCLE" device=""/>
+<part name="TEST-HOLE" library="Swoop-Test-Packages" deviceset="TEST-HOLE" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -1230,6 +1262,8 @@ Groups of components that insist on having their own PCB. Usually requires heade
 <instance part="TEST-PAD-OCT" gate="G$1" x="134.62" y="15.24"/>
 <instance part="TEST-PAD-SQUARE-ROT" gate="G$1" x="167.64" y="71.12"/>
 <instance part="TEST-PAD-OCT2" gate="G$1" x="185.42" y="27.94"/>
+<instance part="TEST-CIRCLE" gate="G$1" x="129.54" y="38.1"/>
+<instance part="TEST-HOLE" gate="G$1" x="139.7" y="53.34"/>
 </instances>
 <busses>
 </busses>

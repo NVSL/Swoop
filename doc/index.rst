@@ -24,6 +24,7 @@ Contents:
    ExtendingSwoop
    CodeGen
    EagleTools
+   Examples
    
 Indices and tables
 ==================

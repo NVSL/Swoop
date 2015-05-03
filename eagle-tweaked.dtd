@@ -442,9 +442,11 @@
           rot           %Rotation;     "R0"
           display       %AttributeDisplay; "value"
           constant      %Bool;         "no"
+	  align         %Align;        "center-left"
           >
           <!-- display: Only in <element> or <instance> context -->
           <!-- constant:Only in <device> context -->
+          <!-- SS: Added align because Eagle does that sometimes.  Default is a guess-->
 
 <!ELEMENT pinref EMPTY>
 <!ATTLIST pinref

@@ -863,10 +863,11 @@ tags["attribute"] = TagClass("attribute",
                                     layerAttr(required=False),
                                     Attr("font", required=False),
                                     Attr("ratio",
-                                     vtype="int",
-                                      required=False),
+                                         vtype="int",
+                                         required=False),
                                     rotAttr,
                                     Attr("display", required=False),
+                                    Attr("align", required=False), # SS: not in the standard DTD
                                     Attr("constant",
                                          vtype="constant_bool",
                                          required=False)])

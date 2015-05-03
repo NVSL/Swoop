@@ -732,6 +732,22 @@ class From(object):
             return From(r)
         return wrapper
 
+    def add(self, l):
+        """
+        Merge the contents of :code:`l` into this :class`From` object.
+
+        :param l: Python list of :class:`EagleFilePart` objects, a :class:`From` object, or an :class:`EagleFilePart` object.
+        :returns: This :class:`From` object with the new items added.
+        :rtype: :class:`From` 
+        """
+        if type(l) is list:
+            self.efps += i
+        elif type(l) == From:
+            self.efps += l.efps
+        else:
+            self.efps += [l]
+        return self
+
     def unpack(self):
         """
         Return the contents of the :class:`From` object as a list.

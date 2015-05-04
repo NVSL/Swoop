@@ -4,7 +4,6 @@ import Swoop
 import argparse
 import shutil
 import SwoopTools
-import GadgetronConfig
 import sys
 
 def removeDeadEFPs(ef):

@@ -2,7 +2,6 @@ import unittest
 import os
 from os.path import join
 import Swoop
-from Rectangle import Rectangle
 import numpy as np
 import numpy.testing as npt
 import math
@@ -11,6 +10,7 @@ WE_HAVE_CGAL = True
 try:
     import CGAL.CGAL_Kernel
     import SwoopGeom
+    from Rectangle import Rectangle
 except ImportError:
     WE_HAVE_CGAL = False
 

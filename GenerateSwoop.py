@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-""".. module:: GenerateSwoop
+"""
+.. module:: GenerateSwoop
 
 .. moduleauthor:: Steven Swanson (swanson@cs.ucsd.edu)
 
@@ -67,7 +68,7 @@ attributes (:code:`get_*()` and :code:`set_*()`) and collections (:code:`get_*()
 Generating Extension to Swoop
 =============================
 
-You can also port :module:`GenerateSwoop` as a module.  In this case, it
+You can also import :code:`GenerateSwoop` as a module.  In this case, it
 exposes the a map called :code:`tag` that maps Eagle file XML tag names to
 :class:`Tag` objects.  You can then use this information however you would like
 to generate extensions to :module:`Swoop`.
@@ -272,7 +273,9 @@ class TagClass:
             self.preserveTextAs = ""
         else:
             self.preserveTextAs = preserveTextAs
-            
+
+        self.hasCollections = (len(self.maps) + len(self.lists) + len(self.singletons) > 0)
+        
     def get_attr_names(self):
         return [x for x in self.attrs]
     def get_list_names(self):

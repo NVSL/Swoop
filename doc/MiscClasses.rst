@@ -1,59 +1,99 @@
-Utility Classes
-===============
+Miscellaneous Classes
+=====================
 
 These classes are used across .brd, .sch, and .lbr files. They represent Eagle
 attributes, drawn elements, documentation, and other information.
 
 .. currentmodule:: Swoop
-
-Classes
--------
-
-.. autoclass:: Base_Attribute
-   :members:
+         
+Attribute
+--------------
 .. autoclass:: Attribute
-   :members:
+
+Text
+----
 .. autoclass:: Text
-   :members:
+
+Wire
+--------------
 .. autoclass:: Wire
-   :members:
+
+Polygon
+--------------
 .. autoclass:: Polygon
-   :members:
+
+Rectangle
+--------------
 .. autoclass:: Rectangle
-   :members:
+
+Vertex
+--------------
 .. autoclass:: Vertex
-   :members:
+
+Circle
+--------------
 .. autoclass:: Circle
-   :members:
+
+Class
+--------------
 .. autoclass:: Class
-   :members:
+
+Approved
+--------------
 .. autoclass:: Approved
-   :members:
+
+Clearance
+--------------
 .. autoclass:: Clearance
-   :members:
+
+Compatibility
+--------------
 .. autoclass:: Compatibility
-   :members:
+
+Description
+--------------
 .. autoclass:: Description
-   :members:
+
+Designrules
+--------------
 .. autoclass:: Designrules
-   :members:
+
+Dimension
+--------------
 .. autoclass:: Dimension
-   :members:
+
+Grid
+--------------
 .. autoclass:: Grid
-   :members:
+
+Hole
+--------------
 .. autoclass:: Hole
-   :members:
+
+Label
+--------------
 .. autoclass:: Label
-   :members:
+
+Note
+--------------
 .. autoclass:: Note
-   :members:
+
+Param
+--------------
 .. autoclass:: Param
-   :members:
+
+Setting
+--------------
 .. autoclass:: Setting
-   :members:
+
+Technology
+--------------
 .. autoclass:: Technology
-   :members:
+
+Variant
+--------------
 .. autoclass:: Variant
-   :members:
+
+Variantdef
+--------------
 .. autoclass:: Variantdef
-   :members:

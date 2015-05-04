@@ -3,33 +3,38 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Swoop IR
-=====================================
+Swoop: A Python Library for Eagle PCB Design Files
+==================================================
+
+Introduction
+------------
 
 .. automodule:: Swoop
-
-Contents:
+   :no-members:
+   :no-show-inheritance:
+   :no-inherited-members:
+      
+Contents
+--------
 
 .. toctree::
    :maxdepth: 1
 
    Installation
-   CoreClasses
+   EFP
+   EagleFile
    BoardClasses
    SchematicClasses
    LibraryClasses
-   UtilityClasses
-   Flock
+   MiscClasses
+   From
    Exceptions
    ExtendingSwoop
-   CodeGen
-   EagleTools
+   SwoopTools
    Examples
-   
-Indices and tables
-==================
+   CodeGen
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+Index
+-----
 
+:ref:`genindex`

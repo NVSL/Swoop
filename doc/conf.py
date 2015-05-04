@@ -37,6 +37,8 @@ extensions = [
     'sphinx.ext.viewcode',
 ]
 
+autodoc_default_flags= ['members', 'show-inheritance']#,'inherited-members']
+
 def skip(app, what, name, obj, skip, options):
     if name == "__init__":
         return False
@@ -113,7 +115,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = 'alabaster'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

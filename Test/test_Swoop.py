@@ -161,3 +161,14 @@ class TestSwoop(unittest.TestCase):
 
         self.assertTrue(threw, "not implemented failed")
         
+    def test_Write(self):
+        import StringIO
+        output = StringIO.StringIO()
+        self.sch.write(output)
+        try:
+            self.sch.write(output)
+            self.assertTrue(True, "write to string failed")
+        except e:
+            self.assertTrue(False, "write to string failed")
+            raise e
+        

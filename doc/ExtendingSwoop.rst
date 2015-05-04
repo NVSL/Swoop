@@ -11,7 +11,7 @@ objects.
 Mixins
 ------
 
-The second mechanism is mixins.  A mixin is as class that provides some
+The first mechanism is mixins.  A mixin is as class that provides some
 additional functionality for each :class:`EagleFilePart` that Swoop creates.
 When you extend Swoop using a mixin, you create a new subclass of each
 :class:`EagleFilePart` class that Swoop uses (e.g., :class:`Library`,
@@ -20,7 +20,7 @@ original class and the mixin in class.
 
 The :meth:`Swoop.Mixin` function generates all theses classes automatically.
 
-For instance, to a set of arbitrary attributes to each object, you could do this:
+For instance, to add a set of arbitrary attributes to each object, you could do this:
 
 .. code-block:: python
 
@@ -38,7 +38,7 @@ For instance, to a set of arbitrary attributes to each object, you could do this
     sch = AttrEagleFile.open("test.sch")
     sch.get_library("A_LIBARRY").get_symbol("GOOD_SYMBOL").set_attr("good?", "yes!")
 
-This create a bunch of new classes including :class:`AttrPackage`,
+This creates a bunch of new classes including :class:`AttrPackage`,
 :class:`AttrLibraryFile`, and :class:`AttrWire`.  The :class:`AttrEagleFile`
 object that :meth:`AttrEagleFile.open()` returns is made of solely of these new
 :class:`Attr*` objects.
@@ -55,6 +55,11 @@ You can compose extensions as well:
     
     sch2 = WalkerAttrEagleFile.open("test.sch")
     sch2.get_library("A_LIBARRY").get_symbol("GOOD_SYMBOL").do_it()
+    sch2.get_library("A_LIBARRY").get_symbol("GOOD_SYMBOL").set_attr("good?", "yes!")
+
+
+.. autofunction:: Swoop.Mixin
+   
 
 The Class Map
 -------------
@@ -84,8 +89,3 @@ For instance if you wanted to add a :code:`set_location()` method to
 
 If you later extend :class:`EagleFile` using :meth:`Swoop.Mixin`, the mixin will be applied to :class:`MyElement`.
 
-Functions
----------
-
-.. autofunction:: Swoop.Mixin
-   

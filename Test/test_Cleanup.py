@@ -4,9 +4,9 @@ import EagleTools
 import os
 import re
 import math
-from cleanupEagle import main
 
 from Swoop import *
+from bin.cleanupEagle import main
 
 
 class TestCleanup(unittest.TestCase):

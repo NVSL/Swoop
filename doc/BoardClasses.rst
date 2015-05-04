@@ -1,20 +1,31 @@
 Classes for Board Files (.brd)
 ==============================
 
+These classes are used only within Eagle board files (.brd).
+
 .. currentmodule:: Swoop
 
-Classes
--------
 
+BoardFile
+--------------
 .. autoclass:: BoardFile
-   :members:
-.. autoclass:: Base_Element
-   :members:
+
+Element
+--------------
+.. autoclass:: Element
+
+Contactref
+--------------
 .. autoclass:: Contactref
-   :members:
+
+Pass
+--------------
 .. autoclass:: Pass
-   :members:
+
+Signal
+--------------
 .. autoclass:: Signal
-   :members:
+
+Via
+--------------
 .. autoclass:: Via
-   :members:

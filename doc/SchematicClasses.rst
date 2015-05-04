@@ -1,42 +1,73 @@
 Classes for Schematic Files (.sch)
 ==================================
 
+These classes are used only within Eagle schematic files (.sch).
+
 .. currentmodule:: Swoop
 
-Classes
--------
 
+
+SchematicFile
+--------------
 .. autoclass:: SchematicFile
-   :members:
+
+Sheet
+--------------
 .. autoclass:: Sheet
-   :members:
+
+Instance
+--------------
 .. autoclass:: Instance
-   :members:
+
+Bus
+--------------
 .. autoclass:: Bus
-   :members:
+
+Frame
+--------------
 .. autoclass:: Frame
-   :members:
+
+Junction
+--------------
 .. autoclass:: Junction
-   :members:
+
+Module
+--------------
 .. autoclass:: Module
-   :members:
+
+Moduleinst
+--------------
 .. autoclass:: Moduleinst
-   :members:
+
+Net
+--------------
 .. autoclass:: Net
-   :members:
-.. autoclass:: Base_Part
-   :members:
+
+
+Part
+--------------
 .. autoclass:: Part
-   :members:
+
+Pin
+--------------
 .. autoclass:: Pin
-   :members:
+
+Pinref
+--------------
 .. autoclass:: Pinref
-   :members:
+
+Port
+--------------
 .. autoclass:: Port
-   :members:
+
+Portref
+--------------
 .. autoclass:: Portref
-   :members:
+
+Schematic
+--------------
 .. autoclass:: Schematic
-   :members:
+
+Segment
+--------------
 .. autoclass:: Segment
-   :members:

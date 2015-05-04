@@ -1,28 +1,52 @@
 Classes for Library Files (.lbr)
 ================================
 
+These classes are used only within Eagle library files (.lbr) and in the
+libraries that are included in both .sch and .brd files.
+
+If you are new to Swoop and trying to understand how these data structures map
+onto items in Eagle, it is useful to know that :class:`DeviceSet` corresponds
+to what the Eagle GUI calls a "Device" and :class:`Device` corresponds to what
+the GUI calls a "Variant"
+
 .. currentmodule:: Swoop
 
-Classes
--------
+LibraryFile
+----------------
+.. autoclass:: Base_LibraryFile
 
-.. autoclass:: LibraryFile
-   :members:
+Library
+--------------
 .. autoclass:: Library
-   :members:
+
+Package
+--------------
 .. autoclass:: Package
-   :members:
+
+Symbol
+--------------
 .. autoclass:: Symbol
-   :members:
+
+Deviceset
+--------------
 .. autoclass:: Deviceset
-   :members:
+
+Device
+--------------
 .. autoclass:: Device
-   :members:
+
+Connect
+--------------
 .. autoclass:: Connect
-   :members:
+
+Gate
+--------------
 .. autoclass:: Gate
-   :members:
+
+Pad
+--------------
 .. autoclass:: Pad
-   :members:
+
+Smd
+--------------
 .. autoclass:: Smd
-   :members:

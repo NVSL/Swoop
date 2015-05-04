@@ -1116,20 +1116,14 @@ tags["eagleLibrary"] = TagClass("eagle",
                                           Singleton("library", "./drawing/library"),
                                           Singleton("compatibility", "./compatibility")])
 
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Generate a set of classes for manipulating eagle files")
-    parser.add_argument("--out", required=True,  type=str, nargs=1, dest='outfile', help="python output")
-    args = parser.parse_args()
-
+def main(filename):
     log.basicConfig(format="%(levelname)s: %(message)s", level=log.DEBUG)
     log.info("Verbose output.")
-
 
     env = J2.Environment(loader=J2.FileSystemLoader('.'))
     template = env.get_template('Swoop.jinja.py')
 
-    f = open(args.outfile[0], "w")
+    f = open(filename, "w")
 
     out = template.render(tags=tags.values())
     lines = out.split("\n")
@@ -1138,3 +1132,10 @@ if __name__ == "__main__":
         if not re.match("^\s*#\s*$", l):
             f.write(l)
             f.write("\n")
+    
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Generate a set of classes for manipulating eagle files")
+    parser.add_argument("--out", required=True,  type=str, nargs=1, dest='outfile', help="python output")
+    args = parser.parse_args()
+    main(args.outfile[0])

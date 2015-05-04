@@ -886,7 +886,7 @@ class EagleFilePartVisitor(object):
     .. code-block:: python
 
         from Swoop import *
-        from EagleTools import *
+        from SwoopTools import *
         ef = EagleFile.from_file(my_file)
         c = Counter(ef)
         print "The file has this many parts: " + str(c.go().count)

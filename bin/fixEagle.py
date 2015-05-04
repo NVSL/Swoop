@@ -3,7 +3,7 @@
 import Swoop
 import argparse
 import shutil
-import EagleTools
+import SwoopTools
 import GadgetronConfig
 
 if __name__ == "__main__":

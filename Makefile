@@ -4,7 +4,7 @@ default: build
 build: eagleDTD.py Swoop.py
 
 .PHONY: test
-test: eagleDTD.py Swoop.py
+test: clean eagleDTD.py Swoop.py
 	python -m unittest discover
 
 #	#	python ./SwoopTest.py --layers NVSLLayers.lbr

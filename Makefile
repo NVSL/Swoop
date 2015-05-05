@@ -37,7 +37,7 @@ release:
 	svn commit -m "Commit before release"
 	python setup.py sdist upload
 
-Swoop.py: Swoop.jinja.py GenerateSwoop.py
+Swoop.py: Swoop.py.jinja GenerateSwoop.py
 	python GenerateSwoop.py --out $@
 
 #tag-summary.dat: eagle-tweaked.dtd Makefile

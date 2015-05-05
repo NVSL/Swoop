@@ -1,6 +1,5 @@
-from distutils.core import setup
+from setuptools import setup
 from setuptools.command.install import install
-import GenerateSwoop
 import os
 import sys
 
@@ -11,6 +10,7 @@ import argparse
 class BuildSwoop(install):
 
     def run(self):
+        import GenerateSwoop
         dtd = open("eagleDTD.py", "w")
         if os.environ.get("EAGLE_DTD") is not None:
             os.system("patch " + os.environ["EAGLE_DTD"] + " eagle.dtd.diff -o eagle-swoop.dtd")
@@ -18,7 +18,9 @@ class BuildSwoop(install):
             dtd.write(open("eagle-swoop.dtd").read())
             dtd.write('"""')
         else:
+            sys.stderr.write("===================================================")
             sys.stderr.write("Missing eagle DTD.  Validation will not take place.")
+            sys.stderr.write("===================================================")
             dtd.write("DTD=None")
 
         dtd.close()
@@ -27,7 +29,7 @@ class BuildSwoop(install):
 
 
 setup(name='Swoop',
-      version='0.2',
+      version='0.2.1rc7',
       description="Swoop is a Python library for working with CadSoft Eagle files.",
       long_description="""Swoop is a library of Python objects for representing and manipulating
 Cadsoft Eagle board, schematic, and library files used in designing printed
@@ -41,8 +43,14 @@ Swoop was created by the `NVSL <http://nvsl.ucsd.edu/>`_ at  `UCSD <http://www.u
       author="NVSL, University of California San Diego",
       author_email="swanson@cs.ucsd.edu",
       url="http://nvsl.ucsd.edu/Swoop/",
-      py_modules=["CleanupEagle", "eagleDTD", "GenerateSwoop", "Swoop", "SwoopTools"],
-      requires=["lxml (>=3.4.2)", "jinja2 (>=2.7.3)", "Sphinx (>=1.3.1)"],
+      py_modules=["CleanupEagle", "eagleDTD", "GenerateSwoop", "SwoopTools", "Swoop"],
+      #packages = ["Swoop"],
+      #package_dir={'Swoop' : '.'},
+      #package_data={"Swoop" : ["Swoop.py.jinja", "eagle.dtd.diff"]},
+#      requires=["lxml", "Jinja2", "Sphinx"],
+      install_requires=["lxml>=3.4.2", "Jinja2>=2.7.3", "Sphinx>=1.3.1"],
+#      install_requires=["Jinja2", "lxml"],
+      include_package_data=True,
       scripts=["bin/checkEagle.py", "bin/fixEagle.py", "bin/cleanupEagle.py", "bin/mergeLibrary.py"],
       cmdclass={'install': BuildSwoop}
       )

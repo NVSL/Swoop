@@ -279,7 +279,7 @@ class EagleFile(EagleFilePart):
     """
 
     # A validator for element tree representations of eagle files.
-    DTD = ET.DTD(StringIO.StringIO(eagleDTD.DTD))
+    DTD = None if eagleDTD.DTD is None else ET.DTD(StringIO.StringIO(eagleDTD.DTD)) 
 
     class_map = {}
     boardFileType = None
@@ -331,7 +331,11 @@ class EagleFile(EagleFilePart):
         :rtype: Bool
         """
         et = self.get_et()
-        v = EagleFile.DTD.validate(et)
+        if EagleFile.DTD is not None:
+            v = EagleFile.DTD.validate(et)
+        else:
+            log.warning("Can't validate Swoop tree.  DTD is missing.")
+            v = True;
         
         if not v:
             log.warning("Eagle file opened as '" + str(self.filename) +"' is invalid: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
@@ -373,7 +377,12 @@ class EagleFile(EagleFilePart):
         
         root = tree.getroot()
 
-        v = EagleFile.DTD.validate(root)
+        if EagleFile.DTD is not None:
+            v = EagleFile.DTD.validate(root)
+        else:
+            log.warning("Can't validate input file.  DTD is missing.")
+            v = True;
+
         if not v:
             if bestEffort:
                 log.warning("Eagle file opened as '" + str(filename) +"' is invalid on disk: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))

@@ -14,10 +14,23 @@ test: clean eagleDTD.py Swoop.py
 doc: Swoop.py GenerateSwoop.py $(wildcard doc/*.rst)
 	$(MAKE) -C doc html
 
-eagleDTD.py: eagle-tweaked.dtd
-	echo DTD=\"\"\" > $@
-	cat $< >> $@
-	echo \"\"\" >> $@
+.PHONY: diff
+diff: 
+	if [ -e "$$EAGLE_DTD" ]; then diff $$EAGLE_DTD eagle-swoop.dtd > eagle.dtd.diff; true; else echo "Can't diff against missing Eagle DTD"; fi
+
+eagle-swoop.dtd: eagle.dtd.diff
+	if [ -e "$$EAGLE_DTD" ]; then patch $(EAGLE_DTD) $< -o $@; true; else echo "Can't patch missing Eagle DTD"; echo > $@; fi
+
+eagleDTD.py: eagle-swoop.dtd
+	@if [ -e "$$EAGLE_DTD" ]; then \
+	   echo DTD=\"\"\" > $@;\
+	   cat $< >> $@;\
+	   echo \"\"\" >> $@;\
+	   echo "Validation enabled"; \
+	else\
+	   echo DTD=None > $@;\
+	   echo "Validation disabled"; \
+	fi
 
 Swoop.py: Swoop.jinja.py GenerateSwoop.py
 	python GenerateSwoop.py --out $@

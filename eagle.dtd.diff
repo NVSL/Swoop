@@ -1,0 +1,26 @@
+13a14,18
+> 
+>   Gadgetron: We've made two changes: The name on the <library> in a library file
+>   is optional because many libraries lack it, and we added minversion
+>   to <note> because many files have it.
+> 
+61a67
+>           minversion       %Real;         #REQUIRED
+71c77
+<           name          %String;       #REQUIRED
+---
+>           name          %String;       "" 
+74c80
+< 
+---
+> 	  <!--#REQUIRED-->
+205c211
+<           width         %Dimension;    #REQUIRED
+---
+>           width         %Dimension;    "0.13"
+214a221
+> 	  <!-- SS:  made 'width' not required since eagle doesn't always include it.  The default is 0.13mm (at least in version -->
+437a445
+> 	  align         %Align;        "center-left"
+440a449
+>           <!-- SS: Added align because Eagle does that sometimes.  Default is a guess-->

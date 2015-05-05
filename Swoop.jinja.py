@@ -869,9 +869,9 @@ class EagleFilePartVisitor(object):
     
     .. code-block:: python
 
-        class Counter(EagleTools.EagleFilePartVisitor):
+        class Counter(SwoopTools.EagleFilePartVisitor):
             def __init__(self, root=None):
-                EagleTools.EagleFilePartVisitor.__init__(self,root)
+                SwoopTools.EagleFilePartVisitor.__init__(self,root)
                 self.count = 0;
                 self.elementCount = 0
                 self.layerCount = 0

@@ -32,6 +32,11 @@ eagleDTD.py: eagle-swoop.dtd
 	   echo "Validation disabled"; \
 	fi
 
+.PHONY: release
+release:
+	svn commit -m "Commit before release"
+	python setup.py sdist upload
+
 Swoop.py: Swoop.jinja.py GenerateSwoop.py
 	python GenerateSwoop.py --out $@
 

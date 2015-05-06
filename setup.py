@@ -1,6 +1,7 @@
 from setuptools import setup
 from setuptools.command.install import install
 import os
+from codecs import open
 import sys
 
 #import argparse
@@ -27,18 +28,18 @@ class BuildSwoop(install):
         GenerateSwoop.main("Swoop.py")
         install.run(self)
 
-setup(name='Swoop',
-      version='0.3.0a2',
-      description="Swoop is a Python library for working with CadSoft Eagle files.",
-      long_description="""Swoop is a library of Python objects for representing and manipulating
-Cadsoft Eagle board, schematic, and library files used in designing printed
-circuit boards (PCBs).  It parses an input Eagle file, creates a internal
-representation data structure that represents the file's contents,
-provides accessors and mutators to query, read, and modify those contents, and
-generates valid Eagle files as output.
+here = os.path.abspath(os.path.dirname(__file__))
 
-Swoop was created by the `NVSL <http://nvsl.ucsd.edu/>`_ at  `UCSD <http://www.ucsd.edu/>`_ as part of the  `Gadgetron project <http://nvsl.ucsd.edu/index.php?path=projects/gadget>`_. 
-      """,
+with open(os.path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
+    long_description = f.read()
+
+with open(os.path.join(here, 'VERSION.txt'), encoding='utf-8') as f:
+    version = f.read()
+
+setup(name='Swoop',
+      version=version,
+      description="Swoop is a Python library for working with CadSoft Eagle files.",
+      long_description=long_description,
       classifiers=[
           "Development Status :: 4 - Beta",
           "Intended Audience :: Science/Research",

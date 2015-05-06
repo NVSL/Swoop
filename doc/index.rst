@@ -13,7 +13,9 @@ Introduction
    :no-members:
    :no-show-inheritance:
    :no-inherited-members:
-      
+
+This is the documentation for Swoop |release|.
+
 Contents
 --------
 

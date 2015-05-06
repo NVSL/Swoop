@@ -2,12 +2,12 @@ import unittest
 import os
 from os.path import join
 import Swoop
-import numpy as np
-import numpy.testing as npt
 import math
 
 WE_HAVE_CGAL = True
 try:
+    import numpy as np
+    import numpy.testing as npt
     import CGAL.CGAL_Kernel
     import SwoopGeom
     from Rectangle import Rectangle

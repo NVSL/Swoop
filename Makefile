@@ -33,7 +33,7 @@ eagleDTD.py: eagle-swoop.dtd
 	fi
 
 .PHONY: release
-release:
+release: default doc
 	svn commit -m "Commit before release"
 	python setup.py sdist upload
 

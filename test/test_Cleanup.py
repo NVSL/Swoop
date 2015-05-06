@@ -8,7 +8,6 @@ import math
 from Swoop import *
 from bin.cleanupEagle import main
 
-
 class TestCleanup(unittest.TestCase):
 
     def setUp(self):

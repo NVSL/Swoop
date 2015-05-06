@@ -7,29 +7,29 @@ as longer examples of how to use Swoop to do useful things to Eagle files.
 
 ScanLayerVisitor
 ----------------
-.. autoclass:: EagleTools.ScanLayersVisitor
+.. autoclass:: SwoopTools.ScanLayersVisitor
    :no-inherited-members:
    
 ScanLibraryReferences
 ----------------------
-.. autoclass:: EagleTools.ScanLibraryReferences
+.. autoclass:: SwoopTools.ScanLibraryReferences
    :no-inherited-members:
 
 mergeLayers
 -----------
-.. autofunction:: EagleTools.mergeLayers
+.. autofunction:: SwoopTools.mergeLayers
 	      
 normalizeLayers
 ----------------
-.. autofunction:: EagleTools.normalizeLayers
+.. autofunction:: SwoopTools.normalizeLayers
 	      
 rebuildBoardConnections
 -----------------------
-.. autofunction:: EagleTools.rebuildBoardConnections
+.. autofunction:: SwoopTools.rebuildBoardConnections
 
 propagatePartToBoard
 --------------------
-.. autofunction:: EagleTools.propagatePartToBoard
+.. autofunction:: SwoopTools.propagatePartToBoard
 
 removeDeadEFPs
 --------------

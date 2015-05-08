@@ -9,7 +9,7 @@ Swoop: A Python Library for Eagle PCB Design Files
 Introduction
 ------------
 
-.. automodule:: Swoop
+.. automodule:: Swoop.Swoop
    :no-members:
    :no-show-inheritance:
    :no-inherited-members:

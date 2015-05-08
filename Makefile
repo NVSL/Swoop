@@ -18,6 +18,10 @@ test:
 doc: build $(wildcard doc/*.rst)
 	$(MAKE) -C doc html
 
+.PHONY: doczip
+doczip: doc
+	T=$$PWD; (cd doc/_build/html; zip -r $$T/Swoop-$$(cat $$T/VERSION.txt)-docs.zip *)
+
 .PHONY: diff
 diff: 
 	diff Swoop/eagle-7.2.0.dtd Swoop/eagle-swoop.dtd > Swoop/eagle.dtd.diff
@@ -26,6 +30,7 @@ diff:
 release: clean
 	svn commit -m "Commit before release $$(cat VERSION.txt)"
 	python setup.py sdist upload
+	$(MAKE) doczip
 
 clean:
 	rm -rf Swoop/eagleDTD.py

@@ -432,8 +432,8 @@ class BoardFile(Swoop.From):
 
     def draw_rect(self, rectangle, layer):
         swoop_rect = WithMixin.class_map["rectangle"]()
-        swoop_rect.set_point(rectangle.bounds[0], 1)
-        swoop_rect.set_point(rectangle.bounds[1], 2)
+        swoop_rect.set_point(rectangle.bounds[0], 0)
+        swoop_rect.set_point(rectangle.bounds[1], 1)
         swoop_rect.set_layer(layer)
         self.add_plain_element(swoop_rect)
 

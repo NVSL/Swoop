@@ -1,5 +1,4 @@
 from setuptools import setup
-#from setuptools.command.install import install
 from setuptools.command.build_py import build_py
 import os
 from codecs import open
@@ -14,17 +13,10 @@ class BuildSwoop(build_py):
     def run(self):
         import Swoop.GenerateSwoop
         dtd = open("Swoop/eagleDTD.py", "w")
-        if os.environ.get("EAGLE_DTD") is not None:
-            os.system("patch " + os.environ["EAGLE_DTD"] + " Swoop/eagle.dtd.diff -o Swoop/eagle-swoop.dtd")
-            dtd.write('DTD="""')
-            dtd.write(open("Swoop/eagle-swoop.dtd").read())
-            dtd.write('"""')
-        else:
-            sys.stderr.write("===========================================================")
-            sys.stderr.write("=== Missing eagle DTD.  Validation will not take place. ===")
-            sys.stderr.write("===========================================================")
-            dtd.write("DTD=None")
-
+        os.system("patch Swoop/eagle-7.2.0.dtd Swoop/eagle.dtd.diff -o Swoop/eagle-swoop.dtd")
+        dtd.write('DTD="""')
+        dtd.write(open("Swoop/eagle-swoop.dtd").read())
+        dtd.write('"""')
         dtd.close()
         Swoop.GenerateSwoop.main("Swoop/Swoop.py")
         build_py.run(self)
@@ -49,24 +41,28 @@ setup(name='Swoop',
           "Operating System :: POSIX :: Linux",
           "Operating System :: Unix",
           "Programming Language :: Python",
+          "Programming Language :: Python :: 2",
+          "Programming Language :: Python :: 2.7",
           "Topic :: Scientific/Engineering",
           "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
-          "Topic :: Software Development :: Embedded Systems",
           "Topic :: System",
           "Topic :: System :: Hardware",
       ],
       author="NVSL, University of California San Diego",
       author_email="swanson@cs.ucsd.edu",
       url="http://nvsl.ucsd.edu/Swoop/",
-      #py_modules=["CleanupEagle", "eagleDTD", "GenerateSwoop", "SwoopTools", "Swoop"],
       test_suite="test",
-      packages = ["Swoop"],
-      package_dir={'Swoop' : 'Swoop'},
-      package_data={"Swoop" : ["Swoop.py.jinja", "eagle.dtd.diff"]},
+      packages = ["Swoop", "Swoop.ext", "Swoop.tools"],
+      package_dir={
+          'Swoop' : 'Swoop',
+      },
+      package_data={
+          "" : ["*.rst"],
+          "Swoop" : ["Swoop/Swoop.py.jinja", "Swoop/eagle.dtd.diff", "Swoop/eagle.dtd"]
+      },
       install_requires=["lxml>=3.4.2",  "Sphinx>=1.3.1"],
       setup_requires=["Jinja2>=2.7.3"],
       include_package_data=True,
-      #scripts=["bin/checkEagle.py", "bin/fixEagle.py", "bin/cleanupEagle.py", "bin/mergeLibrary.py"],
       entry_points={
         'console_scripts': [
             'cleanupEagle = Swoop.tools.CleanupEagle:main',
@@ -75,6 +71,7 @@ setup(name='Swoop',
             'fixEagle = Swoop.tools.FixEagle:main'
             ]
         },
+      keywords = "PCB Eagle CAD printed circuit boards schematic electronics CadSoft",
       cmdclass={'build_py': BuildSwoop}
       )
 

@@ -11,8 +11,8 @@ build:
 	fi
 
 .PHONY: test
-test: clean build
-	python ./setup.py test
+test: 
+	python -m unittest discover test
 
 .PHONY: doc
 doc: build $(wildcard doc/*.rst)
@@ -23,15 +23,15 @@ diff:
 	diff Swoop/eagle-7.2.0.dtd Swoop/eagle-swoop.dtd > Swoop/eagle.dtd.diff
 
 .PHONY: release
-release: default doc
-	svn commit -m "Commit before release"
+release: clean
+	svn commit -m "Commit before release $$(cat VERSION.txt)"
 	python setup.py sdist upload
 
 clean:
 	rm -rf Swoop/eagleDTD.py
 	rm -rf test/inputs/*.broken.xml
 	rm -rf Swoop/Swoop.py
-	$(MAKE) -C doc clean
+	if [ -d doc ]; then $(MAKE) -C doc clean; fi
 	rm -rf *~
 	rm -rf .eggs
 	rm -rf Swoop.egg-info

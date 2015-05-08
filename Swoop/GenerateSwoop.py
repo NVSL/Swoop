@@ -71,7 +71,7 @@ Generating Extension to Swoop
 You can also import :code:`GenerateSwoop` as a module.  In this case, it
 exposes the a map called :code:`tag` that maps Eagle file XML tag names to
 :class:`Tag` objects.  You can then use this information however you would like
-to generate extensions to :module:`Swoop`.
+to generate extensions to Swoop.
 
 
 """

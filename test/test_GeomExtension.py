@@ -1,18 +1,18 @@
 import unittest
 import os
 from os.path import join
-import Swoop.ext.SwoopGeom as SwoopGeom
+import Swoop
 import math
 
-WE_HAVE_CGAL = True
+HAVE_DEPENDENCIES = True
 try:
     import numpy as np
     import numpy.testing as npt
     import CGAL.CGAL_Kernel
-    import Swoop.ext.SwoopGeom
+    import Swoop.ext.Geometry as SwoopGeom
     from Rectangle import Rectangle
 except ImportError:
-    WE_HAVE_CGAL = False
+    HAVE_DEPENDENCIES = False
 
 
 def get_inp(filename):
@@ -21,7 +21,7 @@ def get_inp(filename):
 def eagle_code(vert_list):
     return "poly " + " ".join(["({0} {1})".format(v[0],v[1]) for v in vert_list])
 
-@unittest.skipUnless(WE_HAVE_CGAL, "Need cgal bindings to run this")
+@unittest.skipUnless(HAVE_DEPENDENCIES, "Need numpy, CGAL python bindings, and Dingo's rectangle to run this")
 class TestBoundingBoxes(unittest.TestCase):
 
     def test_correct_shape(self):

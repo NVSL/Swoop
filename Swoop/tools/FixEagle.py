@@ -21,8 +21,7 @@ def main():
         ef = Swoop.EagleFile.from_file(f)
 
         if args.layers:
-            SwoopTools.normalizeLayers(ef, layers, force=args.force)
+            Swoop.tools.normalizeLayers(ef, layers, force=args.force)
             
-            #print SwoopTools.ScanLibraryReferences(ef).go().get_referenced_efps()
             
         ef.write(f)

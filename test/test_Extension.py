@@ -1,6 +1,6 @@
 import unittest
 import Swoop
-import SwoopTools
+import Swoop.tools
 import os
 import re
 import math

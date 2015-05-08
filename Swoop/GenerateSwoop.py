@@ -1121,7 +1121,7 @@ def main(filename):
     log.info("Verbose output.")
 
     env = J2.Environment(loader=J2.FileSystemLoader('.'))
-    template = env.get_template('Swoop.py.jinja')
+    template = env.get_template('Swoop/Swoop.py.jinja')
 
     f = open(filename, "w")
 

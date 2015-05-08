@@ -2,23 +2,17 @@ EagleFilePart and Its Subclasses
 =========================================
 .. currentmodule:: Swoop
 
-:class:`EagleFilePart` is the core of the Swoop.
+:class:`EagleFilePart` is the core of Swoop.
 
 Eagle files are stored as XML and are, therefore, tree-structured.  The
-Swoop data structures are also tree-structured and closely resemble the Eagle
-file's structure.  In many respects the Swoop is a straightforward conversion
-of the Eagle file format into Python objects, but the tree structure of the
+Swoop data structures are trees of :class:`EagleFilePart` objects that closely resemble the Eagle
+file's structure.  However, the tree structure of the
 file formats has been flattened to make them easier to use.  For instance, in
 the Eagle file layer definitions live in :code:`eagle/drawing/layers` and
-sheets live in :code:`eagle/drawing/schematic/sheets`.  Our library "flattens"
+sheets live in :code:`eagle/drawing/schematic/sheets`.  Swoop flattens
 this hierarchy so that a :class:`SchematicFile` object has a map of layers and
 a list of sheets.
 
-A Swoop object is a tree of :class:`EagleFilePart` objects.  There is
-one subclass of :class:`EagleFilePart` for each different type of XML elements
-that can exist in an Eagle file.  Each subclass contains members that
-correspond to attributes of that element and the sub-elements it contains
-(subject to the flattening describe above).
 
 The :class:`EagleFilePart` base class provides some simple functions for
 traversing and modifying the :class:`EagleFilePart` tree (i.e., getting the
@@ -26,9 +20,13 @@ parent and children and attaching and removing :class:`EagleFilePart` objects).
 
 There are subclasses of :class:`EagleFilePart` that represent all the component
 of an Eagle file, and each :class:`EagleFilePart` subclass corresponds to a XML
-tag in the Eagle file.  The nesting relationships between
-:class:`EagleFilePart` objects corresponds to the nesting with the file, but
-some container tags (e.g., :code:`<symbols>`) do not appear explictily.
+tag in the Eagle file.  There is
+one subclass of :class:`EagleFilePart` for each different XML elements
+that can exist in an Eagle file.  Each subclass contains members that
+correspond to attributes of that element and the sub-elements the element contains
+(subject to the flattening describe above).
+
+There are four broad categories of :class:`EagleFilePart` subclasses:
 
  1. **The base class** :class:`EagleFilePart` is the baseclass for all other classes in the Swoop.
 
@@ -38,34 +36,30 @@ some container tags (e.g., :code:`<symbols>`) do not appear explictily.
 
  4. **Leaf classes** These inlude :class:`Wire`, :class:`Smd`, :class:`Note` and many others that represent the basic building blocks of the Eagle files.
 
-Many of these subclasses contain multiple collections of sub-elements.  These
+The container subclasses contain multiple collections of sub-elements.  These
 collections are stored either lists or maps.  The order of the sub-elements in
 lists corresponds to their order in the Eagle file.  For maps, the key
 is usually the sub-element's :code:`name` attribute.  Subclasses may also
-contain singleton sub-elements and attribute (which correspond to attributes in
+contain singleton sub-elements and attributes (which correspond to attributes in
 the Eagle file format).
 
 The :class:`Symbol` class illustrates all of these possibilities.  It includes
 a singleton :class:`Description` sub-element, a list of :class:`DrawingElement`
-sub-elements, and a map matching pin names 
+sub-elements, and a map matching pin names to 
 :class:`Pin` sub-elements.  It also includes a single attribute called
 :code:`name`.
 
 Subclasses provide a variety of methods to access, modify, and query
 sub-elements and attributes.  These methods follow a consistent naming
-convention:
-
-Attributes and can be accessed or modified the methods end with :code:`_<attr>`
+convention.  Attributes and can be accessed or modified the methods end with :code:`_<attr>`
 where :code:`<attr>` is the attribute name.  Singletons accessors are similar.
-
 For lists and maps, the methods end with :code:`_<subelement>s` or
 :code:`_<subelement>` or where :code:`<subelement>` is the name of the list or
 map in question.  For instance, :meth:`Symbol.get_drawing_elements()` returns
 the drawing elements of the :class:`Symbol` object, and
 :meth:`Symbol.get_pin()` finds the :class:`Pin` object given its name.
 
-Each of the standard accessors is described below. For details on
-:class:`EagleFilePart` and the specific subclasses, see the documentation for
+Each of the standard accessors and mutators is described below after the documentation for :class:`EagleFilePart` itself.  For details on specific subclasses, see the documentation for
 those classes.
 
 EagleFilePart
@@ -87,8 +81,8 @@ Accessor Methods
 
    For some attributes.
    
-   Find the object refered to by this attribute.  This is similar ot :meth:`get_<attr>`, except it
-   returns the object instead of its name.
+   Find the object refered to by this attribute.  This is similar ot
+   :meth:`get_<attr>`, except it returns the object instead of its name.
 
    For example, consider these ways to query the libary that at :class:`Element` refers to:
 

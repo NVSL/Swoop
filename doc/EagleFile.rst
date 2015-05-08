@@ -15,10 +15,10 @@ of Eagle it supports (currently 6.5-7.2), by Swoop, or by a combination of the
 two.
 
 Second, Swoop should only output files that conform to a modified version of
-the DTD.  This modified DTD is provided with the Swoop distribution (file name
-:code:`Eagle-tweaked.dtd`).  It is based on the dtd that ships with Eagle, but
-it includes changes to accomodate files that we observe Eagle to produce in
-practice.  The changes are marked clearly in the file.
+the DTD.  This modified DTD is provided with the Swoop distribution.  It is
+based on the DTD that ships with Eagle, but it includes changes to accomodate
+files that we observe Eagle to produce in practice.  You can see the changes we
+have made by looking at :code:`eagle.dtd.diff` in the source distribution of Swoop.
 
 Swoop also aspires to produce output that specifies a valid Eagle schematic,
 library, or board.  This is challenging, since CadSoft doesn't publish a

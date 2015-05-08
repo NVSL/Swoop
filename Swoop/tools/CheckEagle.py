@@ -59,7 +59,7 @@ def compareEagleElementTrees(orig, new):
     return mismatches
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="Check whether eagle files are dtd conforming")
     parser.add_argument("--file", required=True,  type=str, nargs='+', dest='file', help="files to process")
     parser.add_argument("--scrubbed-suffix", required=False,  type=str, nargs=1, dest='scrubSuffix', help="Suffix for scrubbed output files.  The empty string to overwrite input.")

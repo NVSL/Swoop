@@ -1,53 +1,39 @@
-
 default: build
 
-build: eagleDTD.py Swoop.py
+.PHONY:build
+build: 
+	@if [ "$$USE_VENV." = "yes." ]; then\
+	  echo python ./setup.py build develop;\
+	  python ./setup.py build develop;\
+	else\
+	  echo python ./setup.py build;\
+	  python ./setup.py build;\
+	fi
 
 .PHONY: test
-test: clean eagleDTD.py Swoop.py
-	python -m unittest discover
-
-#	#	python ./SwoopTest.py --layers NVSLLayers.lbr
-#	#	./checkEagle.py --file test2.sch Xperimental_Trinket_Pro_small_parts_power_breakout.sch
+test: clean build
+	python ./setup.py test
 
 .PHONY: doc
-doc: Swoop.py GenerateSwoop.py $(wildcard doc/*.rst)
+doc: build $(wildcard doc/*.rst)
 	$(MAKE) -C doc html
 
 .PHONY: diff
 diff: 
-	if [ -e "$$EAGLE_DTD" ]; then diff $$EAGLE_DTD eagle-swoop.dtd > eagle.dtd.diff; true; else echo "Can't diff against missing Eagle DTD"; fi
-
-eagle-swoop.dtd: eagle.dtd.diff
-	if [ -e "$$EAGLE_DTD" ]; then patch $(EAGLE_DTD) $< -o $@; true; else echo "Can't patch missing Eagle DTD"; echo > $@; fi
-
-eagleDTD.py: eagle-swoop.dtd
-	@if [ -e "$$EAGLE_DTD" ]; then \
-	   echo DTD=\"\"\" > $@;\
-	   cat $< >> $@;\
-	   echo \"\"\" >> $@;\
-	   echo "Validation enabled"; \
-	else\
-	   echo DTD=None > $@;\
-	   echo "Validation disabled"; \
-	fi
+	diff Swoop/eagle-7.2.0.dtd Swoop/eagle-swoop.dtd > Swoop/eagle.dtd.diff
 
 .PHONY: release
 release: default doc
 	svn commit -m "Commit before release"
 	python setup.py sdist upload
 
-Swoop.py: Swoop.py.jinja GenerateSwoop.py
-	python GenerateSwoop.py --out $@
-
-#tag-summary.dat: eagle-tweaked.dtd Makefile
-#	cat $< | perl -ne 's/ +/ /g; s/\n/,/g;s/>/>\n/g;print' | perl -ne 's/^,*\s*</</g;s/, >/>/g;s/\%\w+;//g;print' | grep ATTLIST | perl -ne 's/!ATTLIST //g; s/"\w*"/OPTIONAL/g; s/#//g; s/<|>//g; s/,/:/; print'  > $@
-#	echo "sheet: \nsegment: \ncompatibility: " >> $@  # these two tags have no attributes
-
-
-
 clean:
-	rm -rf eagleDTD.py
-	rm -rf *.broken.xml
-	rm -rf Swoop.py
+	rm -rf Swoop/eagleDTD.py
+	rm -rf test/inputs/*.broken.xml
+	rm -rf Swoop/Swoop.py
 	$(MAKE) -C doc clean
+	rm -rf *~
+	rm -rf .eggs
+	rm -rf Swoop.egg-info
+	rm -rf build 
+	find . -name '*.pyc' | xargs rm -rf

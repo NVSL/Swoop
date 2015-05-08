@@ -1,12 +1,13 @@
 import unittest
-import Swoop
-import SwoopTools
+import Swoop.tools
 import os
 import re
 import math
 
+#from bin.cleanupEagle import main
 from Swoop import *
-from bin.cleanupEagle import main
+
+from Swoop.tools.CleanupEagle import main
 
 class TestCleanup(unittest.TestCase):
 

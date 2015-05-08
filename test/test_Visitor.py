@@ -1,6 +1,6 @@
 import unittest
 import Swoop
-import SwoopTools
+import Swoop.tools
 import os
 
 class Counter(Swoop.EagleFilePartVisitor):

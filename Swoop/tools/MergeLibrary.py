@@ -6,7 +6,7 @@ import sys
 import re
 import shutil
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="Merge library into an eagle file")
     parser.add_argument("--src", required=True,  type=str, nargs=1, dest='src', help="libraries to merge into the other file")
     parser.add_argument("--dst", required=True,  type=str, nargs=1, dest='dst', help="the other file (sch, lbr, or pcb)")

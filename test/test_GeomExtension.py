@@ -9,7 +9,7 @@ try:
     import numpy as np
     import numpy.testing as npt
     import CGAL.CGAL_Kernel
-    import SwoopGeom
+    import Swoop.ext.SwoopGeom
     from Rectangle import Rectangle
 except ImportError:
     WE_HAVE_CGAL = False

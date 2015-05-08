@@ -1,5 +1,6 @@
 from setuptools import setup
-from setuptools.command.install import install
+#from setuptools.command.install import install
+from setuptools.command.build_py import build_py
 import os
 from codecs import open
 import sys
@@ -8,15 +9,15 @@ import sys
 #parser = argparse.ArgumentParser(description="Fix eagle files to make them dtd conforming")
 #parser.add_argument("--dtd", required=True,  type=str, nargs=1, dest='dtd', help="Eagle dtd to use.")
 
-class BuildSwoop(install):
+class BuildSwoop(build_py):
 
     def run(self):
-        import GenerateSwoop
-        dtd = open("eagleDTD.py", "w")
+        import Swoop.GenerateSwoop
+        dtd = open("Swoop/eagleDTD.py", "w")
         if os.environ.get("EAGLE_DTD") is not None:
-            os.system("patch " + os.environ["EAGLE_DTD"] + " eagle.dtd.diff -o eagle-swoop.dtd")
+            os.system("patch " + os.environ["EAGLE_DTD"] + " Swoop/eagle.dtd.diff -o Swoop/eagle-swoop.dtd")
             dtd.write('DTD="""')
-            dtd.write(open("eagle-swoop.dtd").read())
+            dtd.write(open("Swoop/eagle-swoop.dtd").read())
             dtd.write('"""')
         else:
             sys.stderr.write("===========================================================")
@@ -25,8 +26,8 @@ class BuildSwoop(install):
             dtd.write("DTD=None")
 
         dtd.close()
-        GenerateSwoop.main("Swoop.py")
-        install.run(self)
+        Swoop.GenerateSwoop.main("Swoop/Swoop.py")
+        build_py.run(self)
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -59,15 +60,22 @@ setup(name='Swoop',
       url="http://nvsl.ucsd.edu/Swoop/",
       py_modules=["CleanupEagle", "eagleDTD", "GenerateSwoop", "SwoopTools", "Swoop"],
       test_suite="test",
-      #packages = ["Swoop"],
-      #package_dir={'Swoop' : '.'},
+      packages = ["Swoop"],
+      package_dir={'Swoop' : 'Swoop'},
       package_data={"Swoop" : ["Swoop.py.jinja", "eagle.dtd.diff"]},
-#      requires=["lxml", "Jinja2", "Sphinx"],
-      install_requires=["lxml>=3.4.2", "Jinja2>=2.7.3", "Sphinx>=1.3.1"],
-#      install_requires=["Jinja2", "lxml"],
+      install_requires=["lxml>=3.4.2",  "Sphinx>=1.3.1"],
+      setup_requires=["Jinja2>=2.7.3"],
       include_package_data=True,
-      scripts=["bin/checkEagle.py", "bin/fixEagle.py", "bin/cleanupEagle.py", "bin/mergeLibrary.py"],
-      cmdclass={'install': BuildSwoop}
+      #scripts=["bin/checkEagle.py", "bin/fixEagle.py", "bin/cleanupEagle.py", "bin/mergeLibrary.py"],
+      entry_points={
+        'console_scripts': [
+            'cleanupEagle = Swoop.tools.CleanupEagle:main',
+            'checkEagle = Swoop.tools.CheckEagle:main',
+            'mergeLibrary = Swoop.tools.MergeLibrary:main',
+            'fixEagle = Swoop.tools.FixEagle:main'
+            ]
+        },
+      cmdclass={'build_py': BuildSwoop}
       )
 
 

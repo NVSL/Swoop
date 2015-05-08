@@ -3,10 +3,10 @@
 import Swoop
 import argparse
 import shutil
-import SwoopTools
+import Swoop.tools
 import GadgetronConfig
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="Fix eagle files to make them dtd conforming")
     parser.add_argument("--file", required=True,  type=str, nargs='+', dest='file', help="files to process")
     parser.add_argument("--layers", required=False, default=[GadgetronConfig.config.GADGETRON_STANDARD_LAYERS],  type=str, nargs=1, dest='layers', help="Layers to use")

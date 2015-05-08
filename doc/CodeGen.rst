@@ -1,6 +1,6 @@
 Building the Swoop Library
 ==========================
 
-.. automodule:: GenerateSwoop
+.. automodule:: Swoop.GenerateSwoop
    :members:
 

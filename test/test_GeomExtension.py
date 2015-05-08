@@ -1,7 +1,7 @@
 import unittest
 import os
 from os.path import join
-import Swoop
+import Swoop.ext.SwoopGeom as SwoopGeom
 import math
 
 WE_HAVE_CGAL = True
@@ -85,21 +85,30 @@ class TestBoundingBoxes(unittest.TestCase):
         rect = board.get_element("TEST-HOLE").get_bounding_box()[0]
         self.assertEqual(rect, Rectangle( (113.45000, 58.45000), (114.55000, 59.55000)))
 
-        print board.get_element("ARDUINO").get_package_moved().\
-            get_children().get_bounding_box().reduce(Rectangle.union).eagle_code()
+        rect = board.get_element("TEST-POLYGON").get_package_moved().\
+            get_children().get_bounding_box().reduce(Rectangle.union)
+        self.assertEqual(rect, Rectangle( (99.33003, 23.26925), (134.14446, 45.35457)))
 
-        arduino_package = board.get_element("ARDUINO").get_package_moved()[0]
-        arduino_package.set_name("TEST-PACKAGE")
-        lib = board.get_library("BOBs")[0]
-        lib.add_package(arduino_package)
-        elem = SwoopGeom.WithMixin.class_map["element"]()
-        elem.set_name("OUTPUT")
-        elem.set_library("BOBs")
-        elem.set_package("TEST-PACKAGE")
-        elem.set_x(0)
-        elem.set_y(0)
-        board.add_element(elem)
-        board.write("out.brd")
+        rect = board.get_element("ARDUINO").get_package_moved().\
+            get_children().get_bounding_box().reduce(Rectangle.union)
+        self.assertEqual(rect, Rectangle( (65.44012, 15.95000), (91.43026, 66.66429)))
+
+        #
+        # arduino_package = board.get_element("ARDUINO").get_package_moved()[0]
+        # origin = board.get_element("ARDUINO").get_point()[0]
+        # for c in arduino_package.get_children():
+        #     c.move(-origin)
+        # arduino_package.set_name("TEST-PACKAGE")
+        # lib = board.get_library("BOBs")[0]
+        # lib.add_package(arduino_package)
+        # elem = SwoopGeom.WithMixin.class_map["element"]()
+        # elem.set_name("OUTPUT")
+        # elem.set_library("BOBs")
+        # elem.set_package("TEST-PACKAGE")
+        # elem.set_x(0)
+        # elem.set_y(0)
+        # board.add_element(elem)
+        # board.write("out.brd")
 
 
     def test_query(self):

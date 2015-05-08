@@ -80,25 +80,49 @@ def arc_bounding_box(p1, p2, theta):
 class GeometryMixin(object):
     #TODO: generic across any number of points
     # e.g. 0 for vertex, circle, 0,1 for Rectangle, Wire, 0..(n-1) for Polygon
-    def get_point(self, i=None):
+    def get_point(self, i=0):
         """
         Get a coordinate as a numpy array
         Ex: wire.get_point(1) would be (wire.get_x1(), wire.get_y1())
         """
-        if i is not None:
-            i = str(i)
-            return np.array([getattr(self, "get_x" + i)(), getattr(self, "get_y" + i)()])
+        if isinstance(self, Swoop.Polygon):
+            return self.get_nth_vertex(i).get_point()
         else:
-            return np.array([getattr(self, "get_x")(), getattr(self, "get_y")()])
+            if hasattr(self, "get_x") and hasattr(self, "get_y"):
+                return np.array([getattr(self, "get_x")(), getattr(self, "get_y")()])
+            else:
+                i = str(i + 1)
+                return np.array([getattr(self, "get_x" + i)(), getattr(self, "get_y" + i)()])
 
-    def set_point(self, pt, i=None):
-        if i is None:
-            getattr(self,"set_x")(pt[0])
-            getattr(self,"set_y")(pt[1])
+
+    def set_point(self, pt, i=0):
+        """
+        Set coordinate from a numpy array
+        """
+        if isinstance(self, Swoop.Polygon):
+            self.get_nth_vertex(i).set_point(pt)
         else:
-            i = str(i)
-            getattr(self,"set_x" + i)(pt[0])
-            getattr(self,"set_y" + i)(pt[1])
+            if hasattr(self, "get_x") and hasattr(self, "get_y"):
+                self.set_x(pt[0])
+                self.set_y(pt[1])
+            else:
+                i = str(i + 1)
+                getattr(self,"set_x" + i)(pt[0])
+                getattr(self,"set_y" + i)(pt[1])
+
+    def num_points(self):
+        if isinstance(self, Swoop.Polygon):
+            return len(self.get_vertices())
+        else:
+            if hasattr(self, "set_x") and hasattr(self, "set_y"):
+                return 1
+
+            i=0
+            while hasattr(self, "set_x" + str(i+1)) and hasattr(self, "set_y" + str(i+1)):
+                i += 1
+            assert i>0, "This has no points"
+            return i
+
 
     def _get_cgal_elem(self):
         """
@@ -106,8 +130,7 @@ class GeometryMixin(object):
         Width is only considered for Wire
         """
         if isinstance(self, Swoop.Rectangle):
-
-            verts = list(Rectangle(self.get_point(1), self.get_point(2), check=False).vertices_ccw())
+            verts = list(Rectangle(self.get_point(0), self.get_point(1), check=False).vertices_ccw())
             if self.get_rot() is not None:
                 angle_obj = Dingo.Component.angle_match(self.get_rot())
                 angle = math.radians(angle_obj['angle'])
@@ -119,8 +142,8 @@ class GeometryMixin(object):
                     verts[i] = np.dot(v - origin, rmat) + origin
             return Polygon_2(map(np2cgal, verts))
         elif isinstance(self, Swoop.Wire):
-            p1 = self.get_point(1)
-            p2 = self.get_point(2)
+            p1 = self.get_point(0)
+            p2 = self.get_point(1)
             if self.get_width() is None:
                 return Segment_2(np2cgal(p1), np2cgal(p2))
             else:
@@ -171,11 +194,11 @@ class GeometryMixin(object):
             if self.get_curve() is not None:
                 theta = math.radians(self.get_curve()) # angle swept by arc
                 theta = math.fmod(theta, 2*math.pi)
-                p1 = self.get_point(1)  # 2 points on the circle
-                p2 = self.get_point(2)
+                p1 = self.get_point(0)  # 2 points on the circle
+                p2 = self.get_point(1)
                 return arc_bounding_box(p1, p2, theta).pad(self.get_width() / 2.0)
             else:
-                vertices = [self.get_point(1), self.get_point(2)]
+                vertices = [self.get_point(0), self.get_point(1)]
                 return Rectangle(*max_min(vertices, self.get_width()), check=False)
         elif isinstance(self, Swoop.Rectangle):
             #get_cgal_elem already handles rotation
@@ -255,6 +278,41 @@ class GeometryMixin(object):
             return None
 
 
+    def move(self, move_vector):
+        for i in xrange(self.num_points()):
+            self.set_point(self.get_point(i) + move_vector, i)
+
+    def rotate(self, degrees):
+        rot_mtx = Rectangle.rotation_matrix(math.radians(degrees))
+        if isinstance(self, Swoop.Rectangle):
+            # Special case: you can't just rotate each vertex :(
+            origin = (self.get_point(0) + self.get_point(1)) / 2
+            new_origin = rot_mtx.dot(origin)
+            self.move(new_origin - origin)
+        else:
+            for i in xrange(self.num_points()):
+                self.set_point( rot_mtx.dot(self.get_point(i)), i)
+        if hasattr(self, "get_rot"):
+            rot = self.get_rot() or "R0"
+            angle = Dingo.Component.angle_match(rot)
+            angle['angle'] = (angle['angle'] + degrees) % 360
+            self.set_rot(Dingo.Component.angle_match_to_str(angle))
+
+    def mirror(self):
+        for i in xrange(self.num_points()):
+            v = self.get_point(i)
+            v[0] *= -1
+            self.set_point(v, i)
+
+        if hasattr(self, "get_rot"):
+            rot = self.get_rot() or "R0"
+            angle = Dingo.Component.angle_match(rot)
+            angle['mirrored'] = not angle['mirrored']
+            self.set_rot(Dingo.Component.angle_match_to_str(angle))
+        if hasattr(self, "get_curve") and self.get_curve() is not None:
+            self.set_curve( -self.get_curve() )
+
+
 class GeoElem(object):
     """
     A CGAL shape and a Swoop object
@@ -290,113 +348,10 @@ class GeoElem(object):
 
 # Primitive drawing elements: Pad, Smd, Via, Rectangle, Wire, Polygon, Text?
 
-# Monkey patch Swoop to add move/rotate/mirror
-# I could do isinstance like before but I want an error if you call any of these on the wrong class
-def move_has_one_point(self, move_vector):
-    self.set_point(self.get_point() + move_vector)
-Swoop.Pad.move = move_has_one_point
-Swoop.Smd.move = move_has_one_point
-Swoop.Via.move = move_has_one_point
-Swoop.Text.move = move_has_one_point
-Swoop.Vertex.move = move_has_one_point
-Swoop.Circle.move = move_has_one_point
-Swoop.Hole.move = move_has_one_point
-
-def move_rectangle_wire(self, move_vector):
-    self.set_point(self.get_point(1) + move_vector, 1)
-    self.set_point(self.get_point(2) + move_vector, 2)
-Swoop.Rectangle.move = move_rectangle_wire
-Swoop.Wire.move = move_rectangle_wire
-
-def move_polygon(self, move_vector):
-    for v in self.get_vertices():
-        v.move(move_vector)
-Swoop.Polygon.move = move_polygon
-
-
-#Rotate
-def rotate_has_one_point(self, rotate_degrees):
-    rot_mtx = Rectangle.rotation_matrix(math.radians(rotate_degrees))
-    self.set_point(rot_mtx.dot(self.get_point()))
-Swoop.Vertex.rotate = rotate_has_one_point
-Swoop.Via.rotate = rotate_has_one_point
-Swoop.Circle.rotate = rotate_has_one_point
-Swoop.Hole.rotate = rotate_has_one_point
-
-def rotate_rot_attr(self, rotate_degrees):
-    rot = self.get_rot() or "R0"
-    angle = Dingo.Component.angle_match(rot)
-    angle['angle'] = (angle['angle'] + rotate_degrees) % 360
-    self.set_rot(Dingo.Component.angle_match_to_str(angle))
-
-# Change the rotation attribute, then move the part
-def rotate_has_rot_attr(self, rotate_degrees):
-    rotate_rot_attr(self, rotate_degrees)
-    rotate_has_one_point(self, rotate_degrees)
-Swoop.Rectangle.rotate = rotate_has_rot_attr
-Swoop.Pad.rotate = rotate_has_rot_attr
-Swoop.Smd.rotate = rotate_has_rot_attr
-Swoop.Text.rotate = rotate_has_rot_attr
-
-def rotate_two_points(self, rotate_degrees):
-    rot_mtx = Rectangle.rotation_matrix(math.radians(rotate_degrees))
-    self.set_point(rot_mtx.dot(self.get_point(1)), 1)
-    self.set_point(rot_mtx.dot(self.get_point(2)), 2)
-Swoop.Wire.rotate = rotate_two_points
-
-def rotate_rectangle(self, rotate_degrees):
-    rotate_rot_attr(self, rotate_degrees)
-    rotate_two_points(self, rotate_degrees)
-Swoop.Rectangle.rotate = rotate_rectangle
-
-
-def rotate_polygon(self, rotate_degrees):
-    for v in self.get_vertices():
-        v.rotate(rotate_degrees)
-Swoop.Polygon.rotate = rotate_polygon
-
-
-def mirror_rot_attr(self):
-    rot = self.get_rot() or "R0"
-    angle = Dingo.Component.angle_match(rot)
-    angle['mirrored'] = not angle['mirrored']
-    self.set_rot(Dingo.Component.angle_match_to_str(angle))
-
-def mirror_two_points(self):
-    if hasattr(self, "rot"):
-        mirror_rot_attr(self)
-    for i in [1,2]:
-        v = self.get_point(i)
-        v[0] *= -1
-        self.set_point(v, i)
-Swoop.Wire.mirror = mirror_two_points
-Swoop.Rectangle.mirror = mirror_two_points
-
-def mirror_polygon(self):
-    for v in self.get_vertices():
-        v.mirror()
-Swoop.Polygon.mirror = mirror_polygon
-
-def mirror_one_point(self):
-    if hasattr(self, "rot"):
-        mirror_rot_attr(self)
-    v = self.get_point()
-    v[0] *= -1
-    self.set_point(v)
-Swoop.Vertex.mirror = mirror_one_point
-Swoop.Circle.mirror = mirror_one_point
-Swoop.Via.mirror = mirror_one_point
-Swoop.Pad.mirror = mirror_one_point
-Swoop.Smd.mirror = mirror_one_point
-Swoop.Text.mirror = mirror_one_point
-Swoop.Hole.mirror = mirror_one_point
-
 
 def get_package_moved(self):
     return self.package_moved
 Swoop.Element.get_package_moved = get_package_moved
-
-
 
 WithMixin = Swoop.Mixin(GeometryMixin, "geo")
 
@@ -473,7 +428,6 @@ class BoardFile(Swoop.From):
             geom = GeoElem(Polygon_2(poly), elem)
             self._elements.append(geom)
             elem._extension_geo_elem = geom
-
 
 
     def draw_rect(self, rectangle, layer):

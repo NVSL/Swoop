@@ -569,6 +569,22 @@ Groups of components that insist on having their own PCB. Usually requires heade
 <package name="TEST-HOLE">
 <hole x="-1" y="1" drill="1.1"/>
 </package>
+<package name="TEST-POLYGON">
+<polygon width="0.127" layer="21">
+<vertex x="-15.24" y="0"/>
+<vertex x="-3.81" y="-10.16"/>
+<vertex x="13.97" y="-7.62"/>
+<vertex x="14.605" y="8.89"/>
+<vertex x="0" y="8.255"/>
+<vertex x="5.715" y="0"/>
+<vertex x="-3.81" y="4.445"/>
+<vertex x="-5.715" y="-1.27"/>
+<vertex x="-12.065" y="6.985"/>
+<vertex x="-19.685" y="1.27"/>
+<vertex x="-17.145" y="-2.54"/>
+<vertex x="-15.24" y="2.54"/>
+</polygon>
+</package>
 </packages>
 </library>
 </libraries>
@@ -776,6 +792,7 @@ design rules under a new name.</description>
 <element name="TEST-PAD-OCT2" library="Swoop-Test-Packages" package="TEST-PAD-OCT2" value="TEST-PAD-OCT2" x="126" y="72"/>
 <element name="TEST-CIRCLE" library="Swoop-Test-Packages" package="TEST-CIRCLE" value="TEST-CIRCLE" x="150" y="57"/>
 <element name="TEST-HOLE" library="Swoop-Test-Packages" package="TEST-HOLE" value="TEST-HOLE" x="115" y="58"/>
+<element name="TEST-POLYGON" library="Swoop-Test-Packages" package="TEST-POLYGON" value="" x="119" y="34" rot="R10"/>
 </elements>
 <signals>
 <signal name="N$1">

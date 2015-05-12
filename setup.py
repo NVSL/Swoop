@@ -60,7 +60,7 @@ setup(name='Swoop',
           "" : ["*.rst"],
           "Swoop" : ["Swoop/Swoop.py.jinja", "Swoop/eagle.dtd.diff", "Swoop/eagle.dtd"]
       },
-      install_requires=["lxml>=3.4.2",  "Sphinx>=1.3.1"],
+      install_requires=["lxml>=3.4.2",  "Sphinx>=1.3.1", "numpy"],
       setup_requires=["Jinja2>=2.7.3"],
       include_package_data=True,
       entry_points={

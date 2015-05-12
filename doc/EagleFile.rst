@@ -11,7 +11,7 @@ Swoop and the Eagle File Format
 
 Swoop has two goals in terms of conformance to the Eagle file format.  The
 first is that Swoop should be able to read any Eagle file produced by a version
-of Eagle it supports (currently 6.5-7.2), by Swoop, or by a combination of the
+of Eagle it supports (currently 6.5-7.3), by Swoop, or by a combination of the
 two.
 
 Second, Swoop should only output files that conform to a modified version of

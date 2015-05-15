@@ -274,6 +274,15 @@ class GeometryMixin(object):
             # Element objects do not have enough information for the bounding box
             # That gets set in the constructor
             return self._extension_geo_elem.rect
+        elif isinstance(self, Swoop.Package):
+            rect = None
+            for c in self.get_children():
+                r = c.get_bounding_box()
+                if r is not None:
+                    if rect is None:
+                        rect = r
+                    rect = Rectangle.union(rect, r)
+            return rect
         else:
             return None
 

@@ -344,8 +344,6 @@ class GeoElem(object):
         else:
             return do_intersect(self.cgal_elem, iso_rect_query)
 
-#TODO: less monkey patch chaos
-
 # Primitive drawing elements: Pad, Smd, Via, Rectangle, Wire, Polygon, Text?
 
 

@@ -110,6 +110,17 @@ class TestBoundingBoxes(unittest.TestCase):
         # board.add_element(elem)
         # board.write("out.brd")
 
+    def test_bbox_after_filter(self):
+        board = SwoopGeom.from_file(get_inp("fp_bbox.brd"))
+        bbox = board.get_elements().get_package_moved().get_bounding_box()[0]
+        self.assertEqual(bbox, Rectangle( (-17.31000, -39.84350), (31.96520, -21.93650)))
+        tface = board.get_elements().\
+            get_package_moved().\
+            get_children().\
+            filtered_by(lambda p: hasattr(p,"layer") and p.layer=="tFaceplate").\
+            get_bounding_box()[0]
+        self.assertEqual(tface, Rectangle( (-17.00000, -38.00000), (-7.00000, -24.00000)))
+
 
     def test_query(self):
         board = SwoopGeom.from_file(get_inp("test_saving.brd"))

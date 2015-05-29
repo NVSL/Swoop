@@ -19,7 +19,7 @@ class TestSwoop(unittest.TestCase):
         #print self.brd.get_library("KoalaBuild").get_package("CAPC1608X90_HS").get_drawing_elements(type=Swoop.Wire)
         self.assertEqual(len([x for x in self.brd.get_library("KoalaBuild").get_package("CAPC1608X90_HS").get_drawing_elements() if isinstance(x,Swoop.Wire)]), 12, "Search failure")
         self.assertEqual(len(self.brd.get_library("KoalaBuild").get_package("CAPC1608X90_HS").get_smds()), 2, "Search failure")
-        
+
 
     def test_Fluent(self):
         t = Swoop.From(self.sch)
@@ -43,8 +43,8 @@ class TestSwoop(unittest.TestCase):
                          get_vertices().
                          count(),
                          18, "Fluent container search failure")
-        
-        
+
+
         self.assertEqual(len(t.
                              get_libraries().
                              get_package("CAPC1608X90_HS").

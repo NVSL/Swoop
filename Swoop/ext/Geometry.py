@@ -130,13 +130,14 @@ class GeometryMixin(object):
         Width is only considered for Wire
         """
         if isinstance(self, Swoop.Rectangle):
-            verts = list(Rectangle(self.get_point(0), self.get_point(1), check=False).vertices_ccw())
+            rect = Rectangle(self.get_point(0), self.get_point(1), check=False)
+            verts = list(rect.vertices_ccw())
             if self.get_rot() is not None:
                 angle_obj = Dingo.Component.angle_match(self.get_rot())
                 angle = math.radians(angle_obj['angle'])
                 if angle_obj['mirrored']:
                     angle *= -1
-                origin = (verts[0] + verts[1]) / 2.0    # midpoint
+                origin = rect.center()
                 rmat = Rectangle.rotation_matrix(angle)
                 for i,v in enumerate(verts):
                     verts[i] = np.dot(v - origin, rmat) + origin
@@ -366,7 +367,7 @@ class BoardFile(Swoop.From):
     """
     A wrapper around Swoop.BoardFile that adds some geometric methods
     """
-    def __init__(self, filename):
+    def __init__(self, filename, validate):
         """
         Completely overrides the parent constructor
 
@@ -379,7 +380,7 @@ class BoardFile(Swoop.From):
         """
         # From needs this in order to work
         # Call from_file in Swoop and get a Swoop.BoardFile
-        super(BoardFile, self).__init__(WithMixin.from_file(filename))
+        super(BoardFile, self).__init__(WithMixin.from_file(filename, validate=validate))
 
         # Tuples of (geometry element, swoop element)
         # Everything that you can see on the board
@@ -431,10 +432,15 @@ class BoardFile(Swoop.From):
                     package_elem.mirror()
                 package_elem.move(origin)
 
-
             geom = GeoElem(Polygon_2(poly), elem)
             self._elements.append(geom)
             elem._extension_geo_elem = geom
+
+        #Finally, the board outline
+        self.bbox = self.get_plain_elements().\
+            with_layer("Dimension").\
+            get_bounding_box().\
+            reduce(Rectangle.union)
 
 
     def draw_rect(self, rectangle, layer):
@@ -452,6 +458,9 @@ class BoardFile(Swoop.From):
 
         return Swoop.From([x.swoop_elem for x in self._elements if x.overlaps(query)])
 
+    def get_bounding_box(self):
+        return self.bbox
+
     def get_element_shape(self, elem_name):
         """
         Get the internal CGAL element associated with this element
@@ -467,11 +476,11 @@ class BoardFile(Swoop.From):
 
 
 
-def from_file(filename):
+def from_file(filename, validate=True):
     if filename.endswith(".brd"):
-        return BoardFile(filename)
+        return BoardFile(filename, validate)
     else:
-        return Swoop.From(WithMixin.from_file(filename))
+        return Swoop.From(WithMixin.from_file(filename, validate=validate))
 
 
 

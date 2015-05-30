@@ -367,7 +367,7 @@ class BoardFile(Swoop.From):
     """
     A wrapper around Swoop.BoardFile that adds some geometric methods
     """
-    def __init__(self, filename, validate):
+    def __init__(self, filename):
         """
         Completely overrides the parent constructor
 
@@ -380,7 +380,7 @@ class BoardFile(Swoop.From):
         """
         # From needs this in order to work
         # Call from_file in Swoop and get a Swoop.BoardFile
-        super(BoardFile, self).__init__(WithMixin.from_file(filename, validate=validate))
+        super(BoardFile, self).__init__(WithMixin.from_file(filename))
 
         # Tuples of (geometry element, swoop element)
         # Everything that you can see on the board
@@ -476,11 +476,11 @@ class BoardFile(Swoop.From):
 
 
 
-def from_file(filename, validate=True):
+def from_file(filename):
     if filename.endswith(".brd"):
-        return BoardFile(filename, validate)
+        return BoardFile(filename)
     else:
-        return Swoop.From(WithMixin.from_file(filename, validate=validate))
+        return Swoop.From(WithMixin.from_file(filename))
 
 
 

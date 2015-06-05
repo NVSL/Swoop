@@ -78,8 +78,11 @@ def arc_bounding_box(p1, p2, theta):
     return Rectangle.from_vertices(vertices)
 
 class GeometryMixin(object):
-    #TODO: generic across any number of points
-    # e.g. 0 for vertex, circle, 0,1 for Rectangle, Wire, 0..(n-1) for Polygon
+    def get_mirrored(self):
+        return hasattr(self, "get_rot") and \
+               self.get_rot() is not None and \
+               "M" in self.get_rot()
+
     def get_point(self, i=0):
         """
         Get a coordinate as a numpy array

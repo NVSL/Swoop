@@ -123,7 +123,6 @@ class GeometryMixin(object):
             i=0
             while hasattr(self, "set_x" + str(i+1)) and hasattr(self, "set_y" + str(i+1)):
                 i += 1
-            assert i>0, "This has no points"
             return i
 
 
@@ -173,7 +172,7 @@ class GeometryMixin(object):
                 vertices.append(np2cgal( p1 - radius ))
                 return Polygon_2(vertices)
         elif isinstance(self, Swoop.Polygon):
-            return Polygon_2([np2cgal(v.get_point()) for v in self.vertices()])
+            return Polygon_2([np2cgal(v.get_point()) for v in self.get_vertices()])
         else:
             return None
 

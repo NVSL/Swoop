@@ -56,4 +56,29 @@ Will yield something like this::
     [1.0, 0.8, 1.1, 1.3, 0.73, 0.7, 1.06]
     
 
+Compare the Length of a Differential Pair
+-----------------------------------------
+
+.. code-block:: python
+
+    from Swoop import *
+    from math import *
+    from operator import *
+
+    def length(w): # Doesn't handle curved wires
+        return sqrt((w.get_x1() - w.get_x2())**2 + (w.get_y1() - w.get_y2())**2)
+
+    f = From(EagleFile.open("foo.brd"))
+    p = (f.get_signals().
+          with_name("RF_P").
+          get_wires().
+          map(length).
+          reduce(add))
+    n = (f.get_signals().
+          with_name("RF_N").
+          get_wires().
+          map(length).
+          reduce(add))
+    print "Variation: " + str(p-n)
+
     

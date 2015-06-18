@@ -176,8 +176,16 @@ class Collection:
             return rstClassify(initialCap(self.containedTypes[0]))
         else:
             return ", ".join(map(rstClassify , map(initialCap,self.containedTypes[0:-1]))) + " " + conjunction + " " + rstClassify(initialCap(self.containedTypes[-1]))
-                                                                                                                 
 
+    def get_contained_type_list_string(self, conjunction="or"):
+        if len(self.containedTypes) == 1:
+            return initialCap(self.containedTypes[0])
+        else:
+            return ", ".join(map(initialCap,self.containedTypes[0:-1])) + " " + conjunction + " " + initialCap(self.containedTypes[-1])
+
+    def get_contained_type_list(self):
+        return map(initialCap,self.containedTypes)
+    
 class Map(Collection):
     """
     Collection that maps strings to items
@@ -379,7 +387,7 @@ tags["symbol"] = TagClass("symbol",
                           attrs=[nameAttr()],
                           sections=[Singleton("description", "./description", requireTag=True),
                                     List("drawing_elements","./polygon|./wire|./text|./dimension|./circle|./rectangle|./frame|./hole",
-                                         containedTypes=["polygon","wire","text","dimension","circle","rectangle","hole"],
+                                         containedTypes=["polygon","wire","text","dimension","circle","rectangle","hole","frame"],
                                          accessorName="drawing_element"),
                                     Map("pins", "./pin")])
 

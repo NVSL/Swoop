@@ -68,7 +68,8 @@ setup(name='Swoop',
             'cleanupEagle = Swoop.tools.CleanupEagle:main',
             'checkEagle = Swoop.tools.CheckEagle:main',
             'mergeLibrary = Swoop.tools.MergeLibrary:main',
-            'fixEagle = Swoop.tools.FixEagle:main'
+            'fixEagle = Swoop.tools.FixEagle:main',
+            'snapSchematic = Swoop.tools.SnapToGrid:main'
             ]
         },
       keywords = "PCB Eagle CAD printed circuit boards schematic electronics CadSoft",

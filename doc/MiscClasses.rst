@@ -6,6 +6,10 @@ attributes, drawn elements, documentation, and other information.
 
 .. currentmodule:: Swoop
          
+Base_Attribute
+--------------
+.. autoclass:: Base_Attribute
+
 Attribute
 --------------
 .. autoclass:: Attribute

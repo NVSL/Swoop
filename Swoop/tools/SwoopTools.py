@@ -221,3 +221,22 @@ def propagatePartToBoard(part, brd):
                         set_layer("Document"))                                        
     brd.add_element(n)
 
+def updateLibrary(eagleFile, library):
+    """
+    Add :code:`library` to :code'eagleFile', overwriting it if it's already
+    there.  If it's a schematic, it will add the whole library.  For boards, it
+    just adds the packages.
+
+    :param eagleFile: A :class:`SchematicFile` or :class:`BoardFile`.
+    :param library: The :class:`Library` to add.
+    :returns: Nothing
+
+    """
+    l = library.get_library().clone()
+
+    if isinstance(eagleFile, Swoop.BoardFile):
+        Swoop.From(l).get_library().get_symbols().detach()
+        Swoop.From(l).get_library().get_devicesets().detach()
+
+    eagleFile.add_library(l)
+        

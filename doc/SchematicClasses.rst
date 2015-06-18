@@ -43,6 +43,9 @@ Net
 --------------
 .. autoclass:: Net
 
+Base_Part
+--------------
+.. autoclass:: Base_Part
 
 Part
 --------------

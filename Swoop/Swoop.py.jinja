@@ -56,7 +56,7 @@ def NotImplemented(s):
 
 class SwoopError (Exception):
     """
-    An internal error occurred.
+    An Swoop-related error occurred.
     """
     def __init__(self, text):
         self.text = text
@@ -1332,6 +1332,13 @@ class {{classname}}({{tag.baseclass}}):
         :param s: The {{l.get_contained_type_list_doc_string("or")}} to add.
         :rtype: :code:`self`
         """
+        if not any([
+                #{% for t in l.get_contained_type_list() %}
+                isinstance(s, {{t}}),
+                #{% endfor %}
+            ]):
+            raise SwoopError("Argument to {{classname}}.add_{{l.accessorName}}() should be of type {{l.get_contained_type_list_string()}}.  Got " + str(type(s).__name__) + ".")
+        
         self.{{l.name}}.append(s)
         s.parent = self
         return self
@@ -1393,7 +1400,7 @@ class {{classname}}({{tag.baseclass}}):
     #{%endif%}
     #{%endfor%}
 
-        ### Add, lookup, and get for maps
+    ### Add, lookup, and get for maps
     #{%for m in tag.maps%}
     #{%if not m.suppressAccessors %}
     def add_{{m.accessorName}}(self, s):
@@ -1402,6 +1409,14 @@ class {{classname}}({{tag.baseclass}}):
         :param s: The {{m.get_contained_type_list_doc_string()}} to add.
         :rtype: :code:`self`
         """
+        if not any([
+                #{% for t in m.get_contained_type_list() %}
+                isinstance(s, {{t}}),
+                #{% endfor %}
+            ]):
+            raise SwoopError("Argument to {{classname}}.add_{{m.accessorName}}() should be of type {{m.get_contained_type_list_string()}}.  Got " + str(type(s).__name__) + ".")
+        
+
         self.{{m.name}}[s.{{m.mapkey}}] = s
         s.parent = self
         return self
@@ -1580,17 +1595,17 @@ class Part (Base_Part):
         try:
             assert self.find_library() is not None
         except Exception as e:
-            raise SwoopError("Library '" + self.library +  "' missing for " + str(self.name))
+            raise SwoopError("Library '" + self.library +  "' missing for '" + str(self.name) + "'")
         
         try:
             assert self.find_deviceset() is not None
         except Exception as e:
-            raise SwoopError("DeviceSet '" + self.find_library().name + ":" + self.deviceset + "' missing for " + str(self.name))
+            raise SwoopError("DeviceSet '" + self.find_library().name + ":" + self.deviceset + "' missing for '" + str(self.name) + "'")
 
         try:
             assert self.find_device() is not None
         except Exception as e:
-            raise SwoopError("Device '" + self.find_library().name + ":" + self.find_deviceset().name + ":" + self.device + "' missing for " + str(self.name))
+            raise SwoopError("Device '" + self.find_library().name + ":" + self.find_deviceset().name + ":" + self.device + "' missing for '" + str(self.name) + "'")
         
         EagleFilePart.check_sanity(self)
         
@@ -1626,14 +1641,15 @@ class Part (Base_Part):
         tech = device.technologies.get(self.technology)
         return tech
 
-    def set_device(self, library=None, deviceset=None, device=None):
-        if library is not None:
-            self.library = library
-        if deviceset is not None:
-            self.deviceset = deviceset
-        if device is not None:
-            self.device = device
-        return self
+    # SS: removed since it doesn't match the semantics of the rest of the system
+    # def set_device(self, library=None, deviceset=None, device=None):
+    #     if library is not None:
+    #         self.library = library
+    #     if deviceset is not None:
+    #         self.deviceset = deviceset
+    #     if device is not None:
+    #         self.device = device
+    #     return self
 
         
     def find_package(self):

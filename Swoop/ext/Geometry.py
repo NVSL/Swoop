@@ -100,7 +100,8 @@ class GeometryMixin(object):
 
     def set_point(self, pt, i=0):
         """
-        Set coordinate from a numpy array
+        Set a coordinate of this object
+        pt is a numpy array
         """
         if isinstance(self, Swoop.Polygon):
             self.get_nth_vertex(i).set_point(pt)
@@ -440,6 +441,7 @@ class BoardFile(Swoop.From):
 
         #Finally, the board outline
         self.bbox = self.get_plain_elements().\
+            filtered_by(lambda e: hasattr(e, "get_layer")).\
             with_layer("Dimension").\
             get_bounding_box().\
             reduce(Rectangle.union)

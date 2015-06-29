@@ -802,6 +802,7 @@ tags["port"] = TagClass("port",
 
 
 tags["instance"] = TagClass("instance",
+                            customchild=True,
                             baseclass = "EagleFilePart",
                             attrs=[Attr("part",
                                         lookupEFP=("Part","lambda efp, key: NotImplemented('Lookup of part from instance not implemented.')"),

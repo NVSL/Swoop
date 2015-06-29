@@ -1574,6 +1574,20 @@ EagleFile.class_map["{{tag.tag}}"] = {{classname}}
          
 #{% endfor %}
 
+class Instance (Base_Instance):
+    """ 
+    Extra functions for Intsances.
+    """
+    def __init__(self):
+        Base_Instance.__init__(self)
+
+    def find_part(self):
+        """
+        Get the :class:`Part` object this :class:`Instance` belongs to.
+        """
+        return self.get_root().parts[self.part]
+
+EagleFile.class_map["instance"] = Instance
 
 class Part (Base_Part):
     """Extra functions for Parts.  Sanity checks, and facilities for find the

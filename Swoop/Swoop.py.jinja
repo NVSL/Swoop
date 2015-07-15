@@ -778,7 +778,10 @@ class From(object):
         :rtype:  Varies
         :throws: :class:`IndexError`
         """
-        return self.efps[0]
+        try:
+            return self.efps[0]
+        except:
+            return None
 
     def filtered_by(self, func):
         """

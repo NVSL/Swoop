@@ -1,6 +1,6 @@
 from Swoop import EagleFile
 import Swoop
-
+import logging as log
 
 class ScanLayersVisitor(Swoop.EagleFilePartVisitor):
     """A visitor to scan the file for all :class:`EagleFilePart` objects a
@@ -179,7 +179,9 @@ def rebuildBoardConnections(sch, brd):
                    with_pin(pinref.pin).
                    get_pad().first())
 
-            assert pad is not None
+            assert pad is not None;
+            if pad is None:
+                log.warn("Can't find pad for '{}:{}.{}' on net '{}'".format(pinref.get_part(), pinref.gate, pinref.pin, name))
 
             brd.get_signal(name).add_contactref(Swoop.Contactref().
                                                 set_element(pinref.get_part()).

@@ -524,9 +524,10 @@ class EagleFile(EagleFilePart):
         :rtype: :class:`Layer` 
         """
         n = int(num)
-        if n not in self.layers:
-            raise SwoopError("No layer number " + str(n) +" in " + str(self.filename))
-        return self.layers[n].name
+        if n not in self.layers: 
+            return "Layer" + str(num)
+        else:
+            return self.layers[n].name
 
     def layer_name_to_number(self, name):
         """

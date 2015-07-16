@@ -404,7 +404,9 @@ tags["deviceset"] = TagClass("deviceset",
 
 tags["device"] = TagClass("device",
                           baseclass = "EagleFilePart",
-                          attrs=[Attr("name", required=False),
+                          attrs=[Attr("name",
+                                      required=True,
+                                      vtype="str"),
                                  Attr("package",
                                       required=False,
                                       lookupEFP=("Package", "lambda efp, key: efp.get_parent().get_parent().get_package(key)"))],
@@ -859,7 +861,9 @@ tags["connect"] = TagClass("connect",
 
 tags["technology"] = TagClass("technology",
                               baseclass = "EagleFilePart",
-                              attrs=[nameAttr()],
+                              attrs=[Attr("name",
+                                          required=True,
+                                          vtype="str")],
                               sections=[Map("attributes", "./attribute", requireTag=True)])
 
 

@@ -116,7 +116,6 @@ class EagleFilePart(object):
         :rtype: :class:`EagleFilePart`
         
         """
-        
         self.parent.remove_child(self)
         return self
     
@@ -1484,9 +1483,12 @@ class {{classname}}({{tag.baseclass}}):
 
         :rtype: :code:`self`
         """
-        del self.{{m.name}}[efp.{{m.mapkey}}]
-        efp.parent = None
-        return self
+        if self.{{m.name}}[efp.{{m.mapkey}}] == efp:
+            del self.{{m.name}}[efp.{{m.mapkey}}]
+            efp.parent = None
+            return self
+        else:
+            raise SwoopError("Tried to use remove_{{m.accessorName}}() to delete the wrong kind of child?: {}".format(str(efp)))
     #{%endif%}
     #{%endfor%}
 
@@ -1570,7 +1572,12 @@ class {{classname}}({{tag.baseclass}}):
 
         :rtype: :code:`None`
         """
-        print indent + str(self.__class__.__name__)
+        print indent + str(self.__class__.__name__),
+        try:
+            print self.get_name()
+        except:
+            print
+            pass
         for c in self.get_children():
             c.dump(indent + "   ")
 
@@ -1640,6 +1647,8 @@ class Part (Base_Part):
         Get the deviceset for this part.
         """
         lib = self.find_library();
+        if lib is None:
+            return None;
         deviceset = lib.devicesets.get(self.deviceset)
         return deviceset
         
@@ -1648,6 +1657,9 @@ class Part (Base_Part):
         Get the library entry for this part
         """
         deviceset = self.find_deviceset()
+        if deviceset is None:
+            return None;
+        assert self.device is not None
         device = deviceset.devices.get(self.device)
         return device
 
@@ -1656,6 +1668,8 @@ class Part (Base_Part):
         Get the library entry for this part
         """
         device = self.find_device()
+        if device is None:
+            return None;
         tech = device.technologies.get(self.technology)
         return tech
 

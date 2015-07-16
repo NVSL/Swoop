@@ -23,6 +23,7 @@ def removeDeadEFPs(ef):
     :rtype: :class:`EagleFile`
 
     """
+
     deletedSomething = True;
     while deletedSomething:
         deletedSomething = False
@@ -36,7 +37,8 @@ def removeDeadEFPs(ef):
             libs = [ef.get_library()]
         else:
             libs = ef.get_libraries()
-                        
+            
+        
         for l in libs:
             libraries.add(l)
 
@@ -44,6 +46,7 @@ def removeDeadEFPs(ef):
                 symbols.add(s)
 
             for p in Swoop.From(l).get_packages():
+                #print "found " + p.get_name()
                 packages.add(p)
             
             for ds in Swoop.From(l).get_devicesets():
@@ -65,11 +68,18 @@ def removeDeadEFPs(ef):
                 libraries.discard(lib)
                 devicesets.discard(p.find_deviceset())
                 devices.discard(p.find_device())
+                for g in Swoop.From(p.find_deviceset()).get_gates().get_symbol():
+                    symbols.discard(lib.get_symbol(g))
+
         elif isinstance(ef, Swoop.BoardFile):
             for p in Swoop.From(ef).get_elements():
                 lib = p.find_library()
+                #print "keeping " + lib.get_name()
                 libraries.discard(lib)
+                #print "keeping " + p.get_package()
+                #print "keeping " + p.find_package().get_name()
                 packages.discard(p.find_package())
+                #assert Swoop.From(libs).get_packages().with_name("ROTARY-ENCODER-W/BUTTON-ADAFRUIT377").count() > 0
         elif isinstance(ef, Swoop.LibraryFile):
             lib = ef.get_library();
             libraries.discard(lib)
@@ -81,12 +91,10 @@ def removeDeadEFPs(ef):
                 devices.discard(p)
             for ds in Swoop.From(lib).get_devicesets():
                 devicesets.discard(ds)
-            
-        for efp in packages | symbols | devices | devicesets | libraries:
-            deletedSomething = True
-            efp.detach()
-            #print ". " + str(efp),
-        #print "|"
+        for l in [packages,symbols , devices , devicesets , libraries]:
+            for efp in l:
+                deletedSomething = True
+                efp.detach()
     return ef
         
 def main(argv = None):

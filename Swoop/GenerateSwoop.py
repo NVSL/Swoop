@@ -205,7 +205,6 @@ class Map(Collection):
         else:
             self.mapkey = mapkey
         
-
 class List(Collection):
     """
     Collection that is an ordered list
@@ -217,6 +216,28 @@ class List(Collection):
         """
         Collection.__init__(self,name, xpath, accessorName,suppressAccessors, requireTag, containedTypes)
         self.type = "List"
+
+class AttrList(Collection):
+    """
+    Collection that is an ordered list but is stored as a whitespace-separeted attribute value.
+    """
+    def __init__(self, name, attr, accessorName):
+        """Create a List object.
+        
+        See the documentation for :class:`Collection` for the parameters. 
+        """
+        Collection.__init__(self, name, "", accessorName,  False, False, str)
+        self.attr = attr
+        self.type = "AttrList"
+
+    def get_contained_type_list_doc_string(self, conjunction="or"):
+        return "str"
+
+    def get_contained_type_list_string(self, conjunction="or"):
+        return "str"
+
+    def get_contained_type_list(self):
+        assert False
 
 class Singleton(Collection):
     """
@@ -266,6 +287,7 @@ class TagClass:
         self.sortattr = sortattr
         self.lists = []
         self.maps = []
+        self.attrLists= []
         self.baseclass = baseclass
         if classname is None:
             self.classname = self.get_tag_initial_cap()
@@ -275,6 +297,7 @@ class TagClass:
         self.customchild = customchild
         self.maps = [m for m in self.sections if isinstance(m, Map)]
         self.lists = [l for l in self.sections if isinstance(l, List)]
+        self.attrLists = [l for l in self.sections if isinstance(l, AttrList)]
         self.singletons = [s for s in self.sections if isinstance(s, Singleton)]
 
         if preserveTextAs is None:
@@ -852,10 +875,11 @@ tags["connect"] = TagClass("connect",
                                   Attr("pin",
                                        lookupEFP=("Pin","lambda efp, key: NotImplemented('Lookup of pin from connect not implemented.')"),
                                        required=True),
-                                  Attr("pad",
-                                       lookupEFP=("Pad","lambda efp, key: NotImplemented('Lookup of pad from connect not implemented.')"),
-                                       required=True),
-                                  Attr("route", required=False)])
+                                  # Attr("pad",
+                                  #      lookupEFP=("Pad","lambda efp, key: NotImplemented('Lookup of pad from connect not implemented.')"),
+                                  #      required=True),
+                                  Attr("route", required=False)],
+                           sections=[AttrList("pads", "pad", "pad")])
 
 
 

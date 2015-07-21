@@ -1037,6 +1037,9 @@ class {{classname}}({{tag.baseclass}}):
         #{%for l in tag.lists %}
         self.{{l.name}}=[]
         #{%endfor%}
+        #{%for l in tag.attrLists %}
+        self.{{l.name}}=[]
+        #{%endfor%}
         #{%for m in tag.maps %}
         self.{{m.name}}={}
         #{%endfor%}
@@ -1093,6 +1096,13 @@ class {{classname}}({{tag.baseclass}}):
         #{%for l in tag.lists %}
         for c in root.xpath("{{l.xpath}}"):
             self.add_{{l.accessorName}}(self.get_class_for_tag(c.tag)._from_et(c,self))
+        #{%endfor%}
+
+        ### Do the same for the attr lists
+
+        #{%for l in tag.attrLists %}
+        for c in root.get("{{l.attr}}").split(" "):
+            self.add_{{l.accessorName}}(c)
         #{%endfor%}
 
         ### And the singletons
@@ -1172,6 +1182,7 @@ class {{classname}}({{tag.baseclass}}):
             target = smartAddSubTags(r, "{{l.xpath}}")
             # add them in sorted order.  This gives us a simple canonicalization that makes it feasible to use diff to compare files.
             target.extend([i.get_et() for i in sorted(self.{{l.name}},key=lambda x: x.sortkey())])
+
         #{%elif l.type == "Map" %}
 
         ## add a map.
@@ -1180,6 +1191,12 @@ class {{classname}}({{tag.baseclass}}):
             target = smartAddSubTags(r, "{{l.xpath}}")
             # add them in sorted order.  This gives us a simple canonicalization that makes it feasible to use diff to compare files.
             target.extend([i.get_et() for i in sorted(self.{{l.name}}.values(),key=lambda x: x.sortkey())])
+
+        #{%elif l.type == "AttrList" %}
+        
+        if self.{{l.name}} is not None:
+            r.set("{{l.attr}}", " ".join(self.{{l.name}}))
+
         #{%else%}
 
         ## or add a singleton.
@@ -1213,6 +1230,11 @@ class {{classname}}({{tag.baseclass}}):
         n.{{l.name}} = []
         for x in self.{{l.name}}:
             n.add_{{l.accessorName}}(x.clone())
+        #{%endfor%}
+        #{%for l in tag.attrLists %}
+        n.{{l.name}} = []
+        for x in self.{{l.name}}:
+            n.add_{{l.accessorName}}(x)
         #{%endfor%}
         #{%for s in tag.singletons %}
         if n.{{s.name}} is not None:
@@ -1396,6 +1418,74 @@ class {{classname}}({{tag.baseclass}}):
         """
         self.{{l.name}} = [x for x in self.{{l.name}} if x != efp]
         efp.parent = None
+        return self
+
+    #{%else%}
+    # {{l.name}} accessor supressed
+    #{%endif%}
+    #{%endfor%}
+
+    #{%for l in tag.attrLists%}
+    #{%if not l.suppressAccessors %}
+    def add_{{l.accessorName}}(self, s):
+        """ Add a {{l.get_contained_type_list_doc_string()}} to the :code:`{{l.name}}` of this :class:`{{tag.classname}}`.
+
+        :param s: The {{l.get_contained_type_list_doc_string("or")}} to add.
+        :rtype: :code:`self`
+        """
+        if not isinstance(s, str):
+            raise SwoopError("Argument to {{classname}}.add_{{l.accessorName}}() should be str.  Got " + str(type(s).__name__) + ".")
+        
+        self.{{l.name}}.append(s)
+        return self
+
+    def get_nth_{{l.accessorName}}(self, n):
+        """ get then nth {{l.get_contained_type_list_doc_string("or")}} object from the :code:`{{l.name}}` of this :class:`{{tag.classname}}`.
+        
+        :param n: Index of the item to return.
+
+        :rtype: {{l.get_contained_type_list_doc_string()}} object
+        """
+        return self.{{l.name}}[n]
+
+    def get_{{l.name}}(self, attrs=None, type=None):
+        """Return (and possibly filter) items in the the :code:`{{l.name}}` list of {{l.get_contained_type_list_doc_string("or")}} objects for this :class:`{{tag.classname}}`.
+        
+        This functions provides a mechanism for filtering the items as well.
+        The keys in :code:`attrs` are taken as attributes names and the
+        values are requested values.  Items in the list that have all the
+        requested values for the corresponding attributes will be returned.  
+
+        A if :code:`type` is not :code:`None`, the item will match if it is an
+        instance of the type provided.
+        
+        :param attrs: A set of key-value pairs that represent a filter to apply to the item's attributes.
+        :param type:  A type to filter on.  Only items that are an instance of this type will be returned.
+        :returns: A List of {{l.get_contained_type_list_doc_string("and")}} objects
+        :rtype: List of {{l.get_contained_type_list_doc_string("and")}} objects
+        """
+        if attrs is not None or type is not None:
+            raise NotImplementedError("filtered get not implemented.")
+        return self.{{l.name}}
+
+    def clear_{{l.name}}(self):
+        """
+        Remove all the {{l.get_contained_type_list_doc_string("and")}} objects from the :code:`{{l.name}}` of this :class:`{{tag.classname}}`.
+        
+        :rtype: :code:`self`
+        """
+        self.{{l.name}} = []
+        return self
+
+    def remove_{{l.accessorName}}(self, v):
+        """
+        Remove a {{l.get_contained_type_list_doc_string()}} from the :code:`{{l.name}}` of this :class:`{{tag.classname}}`.
+        
+        :param efp: The {{l.get_contained_type_list_doc_string("or")}} object to remove.
+
+        :rtype: :code:`self`
+        """
+        self.{{l.name}} = [x for x in self.{{l.name}} if x != v]
         return self
 
     #{%else%}

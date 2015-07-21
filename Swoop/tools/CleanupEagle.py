@@ -68,6 +68,10 @@ def removeDeadEFPs(ef):
                 libraries.discard(lib)
                 devicesets.discard(p.find_deviceset())
                 devices.discard(p.find_device())
+                # print p.get_name()
+                # print p.get_library()
+                # print p.get_deviceset()
+                # print p.find_deviceset().get_name()
                 for g in Swoop.From(p.find_deviceset()).get_gates().get_symbol():
                     symbols.discard(lib.get_symbol(g))
 

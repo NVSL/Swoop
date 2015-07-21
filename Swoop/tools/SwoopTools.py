@@ -170,22 +170,23 @@ def rebuildBoardConnections(sch, brd):
             if sch.get_part(pinref.part).find_device().get_package() is None:
                 continue
 
-            pad = (Swoop.From(sch).
+            pads = (Swoop.From(sch).
                    get_parts().
                    with_name(pinref.get_part()).
                    find_device().
                    get_connects().
                    with_gate(pinref.gate).
                    with_pin(pinref.pin).
-                   get_pad().first())
+                   get_pads())
 
-            assert pad is not None;
-            if pad is None:
-                log.warn("Can't find pad for '{}:{}.{}' on net '{}'".format(pinref.get_part(), pinref.gate, pinref.pin, name))
+            assert pads is not None;
+            if pads is None:
+                log.warn("Can't find pads for '{}:{}.{}' on net '{}'".format(pinref.get_part(), pinref.gate, pinref.pin, name))
 
-            brd.get_signal(name).add_contactref(Swoop.Contactref().
-                                                set_element(pinref.get_part()).
-                                                set_pad(pad))
+            for pad in pads:
+                brd.get_signal(name).add_contactref(Swoop.Contactref().
+                                                    set_element(pinref.get_part()).
+                                                    set_pad(pad))
 
 def propagatePartToBoard(part, brd):
     """

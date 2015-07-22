@@ -1597,8 +1597,7 @@ class {{classname}}({{tag.baseclass}}):
         if self.{{l.name}} is not None:
             self.{{l.name}}.parent = None
         self.{{l.name}} = s
-        if self.{{l.name}}.parent is not None:
-            self.{{l.name}}.parent = self
+        s.parent = self
         return self
 
     def get_{{l.accessorName}}(self):

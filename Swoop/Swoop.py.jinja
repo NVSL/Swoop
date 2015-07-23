@@ -267,8 +267,396 @@ def unparseByType(efp, attrType, v):
     
     return r
 
+class OnePointGeometry:
+    def __init__(self):
+        pass
+    
+    def set_location(self,x,y):
+        """
+        Set the location of this :class:`EagleFilePart`.
+        
+        :param x: x coordinate
+        :param y: y coordinate
+        :returns: :code:`self`
+        """
+        self.set_x(x);
+        self.set_y(y);
+        return self;
+
+    def get_location(self):
+        """
+        Get the location of this :class:`EagleFilePart`.
+        
+        :returns: a list: :code:`[x, y]`
+        """
+        return [self.get_x(),self.get_y()]
+    
+    def translate(self,dx,dy):
+        """
+        Move this :class:`EagleFilePart`.
+        
+        :param dx: change in x coordinate
+        :param dy: change in y coordinate
+        """
+        self.set_x(self.get_x() + dx)
+        self.set_y(self.get_y() + dy)
+        return self
+
+class DimensionGeometry:
+    def __init__(self):
+        pass
+    def set_size(self,width,height):
+        """
+        Set the size of this :class:`EagleFilePart`.
+        
+        :param width: width
+        :param height: height
+        :returns: :code:`self`
+        """
+        self.set_dx(width);
+        self.set_dy(height);
+        return self;
+
+    def get_size(self):
+        """
+        Get the size of this :class:`EagleFilePart`.
+        
+        :returns: a list: :code:`[width, height]`
+        """
+        return [self.get_dx(), self.get_dy()]
+    
+    def get_width(self):
+        """
+        Get the width of this :class:`EagleFilePart`.
+        
+        :returns: the width
+        :rtype: :code:`float`
+        """
+        return self.get_dx()
+
+    def set_width(self,width):
+        """
+        Set the width of this :class:`EagleFilePart`.
+        
+        :param width: The width
+        :returns: :code:`self`
+        """
+        self.set_dx(width);
+        return self;
+
+    def get_height(self):
+        """
+        Get the height of this :class:`EagleFilePart`.
+        
+        :returns: the height
+        :rtype: :code:`float`
+        """
+        return self.get_dy();
+
+    def set_height(self,height):
+        """
+        Set the height of this :class:`EagleFilePart`.
+        
+        :param height: The height
+        :returns: :code:`self`
+        """
+        self.set_dy(height);
+        return self;
 
 
+class LineGeometry:
+    def __init__(self):
+        pass
+    def set_start(self,x,y):
+        """
+        Set the location of the start point of this :class:`EagleFilePart`.
+        
+        :param x: x coordinate
+        :param y: y coordinate
+        :returns: :code:`self`
+        """
+        self.set_x1(x);
+        self.set_y1(y);
+        return self;
+
+    def set_end(self,x,y):
+        """
+        Set the location of the end point of this :class:`EagleFilePart`.
+        
+        :param x: x coordinate
+        :param y: y coordinate
+        :returns: :code:`self`
+        """
+        self.set_x2(x);
+        self.set_y2(y);
+        return self;
+
+    def set_geometry(self, x1,y1,x2,y2):
+        """
+        Set the start and end points for this :class:`EagleFilePart`.
+        
+        :param x1: x coordinate of the start
+        :param y1: y coordinate of the start
+        :param x2: x coordinate of the end
+        :param y2: y coordinate of the end
+        :returns: :code:`self`
+        """
+        self.set_x1(x1);
+        self.set_y1(y1);
+        self.set_x2(x2);
+        self.set_y2(y2);
+        return self;
+
+    def get_geometry(self):
+        """
+        Get the start and end points for this :class:`EagleFilePart`.
+        
+        :returns: :code:`[start_x, start_y, end_x, end_y]`
+        """
+        return [self.get_x1(), self.get_y1(), self.get_x2(), self.get_y2()]
+    
+    def translate(self,dx,dy):
+        """
+        Move this :class:`EagleFilePart`.
+        
+        :param dx: change in x coordinate
+        :param dy: change in y coordinate
+        """
+        self.set_x1(self.get_x1() + dx)
+        self.set_y1(self.get_y1() + dy)
+        self.set_x2(self.get_x2() + dx)
+        self.set_y2(self.get_y2() + dy)
+        return self
+
+class MeasureGeometry(LineGeometry):
+    def __init__(self):
+        pass
+    
+    def set_align(self, x,y):
+        """
+        Set the location of the align point of this :class:`EagleFilePart`.
+        
+        :param x: x coordinate
+        :param y: y coordinate
+        :returns: :code:`self`
+        """
+        self.set_x3(x);
+        self.set_y3(y);
+        return self;
+
+    def get_align(self):
+        """
+        Get the location of the align point of this :class:`EagleFilePart`.
+        
+        :returns: a list: :code:`[x, y]`
+        """
+        return [self.get_x3(), self.get_y3()]
+
+    def translate(self,dx,dy):
+        """
+        Move this :class:`EagleFilePart`.
+        
+        :param dx: change in x coordinate
+        :param dy: change in y coordinate
+        """
+        LineGeometry.translate(self,dx,dy)
+        self.set_x3(self.get_x3() + dx)
+        self.set_y3(self.get_y3() + dy)
+        return self
+
+class RectGeometry:
+    def __init__(self):
+        pass
+    def set_lefttop(self,left,top):
+        """
+        Set the location of the top-left corner of this :class:`EagleFilePart`.
+        
+        :param x: x coordinate
+        :param y: y coordinate
+        :returns: :code:`self`
+        """
+        self.set_x1(left);
+        self.set_y1(t);
+        return self;
+
+    def set_rightbottom(self,right,bottom):
+        """
+        Set the location of the bottom-right corner of this :class:`EagleFilePart`.
+        
+        :param x: x coordinate
+        :param y: y coordinate
+        :returns: :code:`self`
+        """
+        self.set_x2(right);
+        self.set_y2(bottom);
+        return self;
+
+    def set_geometry(self, left, top, right, bottom):
+        """
+        Set the start and end points for this :class:`EagleFilePart`.
+        
+        :param left: left coordinate
+        :param top: top coordinate
+        :param right: right coordinate
+        :param bottom: bottom coordinate
+        :returns: :code:`self`
+        """
+        self.set_x1(left);
+        self.set_y1(top);
+        self.set_x2(right);
+        self.set_y2(bottom);
+        return self;
+
+    def get_geometry(self):
+        """
+        Get the start and end points for this :class:`EagleFilePart`.
+        
+        :returns: :code:`[left, top, right, bottom]`
+        """
+        return [self.get_x1(), self.get_y1(), self.get_x2(), self.get_y2()]
+    
+    def translate(self,dx,dy):
+        """
+        Move this :class:`EagleFilePart`.
+        
+        :param dx: change in x coordinate
+        :param dy: change in y coordinate
+        """
+        self.set_x1(self.get_x1() + dx)
+        self.set_y1(self.get_y1() + dy)
+        self.set_x2(self.get_x2() + dx)
+        self.set_y2(self.get_y2() + dy)
+        return self
+
+class CircleRadiusGeometry:
+    def __init__(self):
+        pass
+
+    def set_diameter(self,d):
+        """
+        Set the diameter for this :class:`EagleFilePart`.
+        
+        :param d: the diameter
+        :returns: :code:`self`
+        """
+        self.set_radius(self,d/2);
+        return self
+    
+    def get_diameter(self):
+        """
+        Get the diameter for this :class:`EagleFilePart`.
+        
+        :returns: the diameter
+        :rtype: :code:`float`
+        """
+        return self.get_radius()*2;
+
+class CircleDiameterGeometry:
+    def __init__(self):
+        pass
+    
+    def set_radius(self,r):
+        """
+        Set the radius for this :class:`EagleFilePart`.
+        
+        :param r: the radius
+        :returns: :code:`self`
+        """
+        self.set_diameter(self,2*r);
+        return self
+    
+    def get_radius(self):
+        """
+        Get the radius for this :class:`EagleFilePart`.
+        
+        :returns: the radius
+        :rtype: :code:`float`
+        """
+        return self.get_diameter()/2;
+
+class RotationGeometry:
+    def __init__(self):
+        pass
+
+    def _parseRot(self):
+        r = self.get_rot();
+        m = re.match("(M)?(S)?(R)(\d+\.?\d*)", r)
+        if m is None:
+            raise SwoopError("Illegal rot value: '{}'.".format(r))
+        
+        v =[m.group(1) is not None,
+            m.group(2) is not None,
+            float(m.group(4))]
+        return v
+
+    def _unparseRot(self, rot):
+        self.set_rot("{}{}R{:.1f}".format("M" if rot[0] else "",
+                                         "S" if rot[1] else "",
+                                         float(rot[2]) % 360.0))
+                        
+    def set_mirrored(self, m):
+        """
+        Set the mirrored value of this :class:`EagleFilePart`.
+        
+        :param m: new mirrored value
+        :returns: :code:`self`
+        """
+        t = self._parseRot();
+        t[0] = m;
+        self._unparseRot(t);
+        return self
+    
+    def set_spin(self, s):
+        """
+        Set the spin value of this :class:`EagleFilePart`.
+        
+        :param m: new spin value
+        :returns: :code:`self`
+        """
+        t = self._parseRot();
+        t[1] = s;
+        self._unparseRot(t);
+        return self
+
+    def set_rotation(self, r):
+        """
+        Set the rotation value of this :class:`EagleFilePart`.
+        
+        :param m: new rotation value
+        :returns: :code:`self`
+        """
+        t = self._parseRot();
+        t[2] = r;
+        self._unparseRot(t);
+        return self
+        
+    def get_mirrored(self):
+        """
+        Get the mirrored value of this :class:`EagleFilePart`.
+        
+        :returns: :code:`True` if the :class:`EagleFilePart` object is mirrored, otherwise, :code:`False`
+        :rtype: Boolean
+        """
+        return self._parseRot()[0]
+    
+    def get_spin(self):
+        """
+        Get the spin value of this :class:`EagleFilePart`.
+        
+        :returns: :code:`True` if the :class:`EagleFilePart` object is spin, otherwise, :code:`False`
+        :rtype: Boolean
+        """
+        return self._parseRot()[1]
+    
+    def get_rotation(self):
+        """
+        Get the rotation value of this :class:`EagleFilePart`.
+        
+        :returns: the rotation
+        :rtype: :code:`float`
+        """
+        return self._parseRot()[2]
+    
 class EagleFile(EagleFilePart):
     """
 
@@ -992,7 +1380,7 @@ class EagleFilePartVisitor(object):
 #{% set classname = "Base_" + tag.classname %}
 #{%endif%}
 
-class {{classname}}({{tag.baseclass}}):
+class {{classname}}({{tag.get_all_base_classes_as_str()}}):
     """
     Class representing the contents of a <{{tag.tag}}> tag in Eagle files.
 
@@ -1029,7 +1417,9 @@ class {{classname}}({{tag.baseclass}}):
         """
         Construct an empty :class:`{{classname}}` object.
         """
-        {{tag.baseclass}}.__init__(self)
+        #{% for c in tag.get_all_base_classes_as_list() %}
+        {{c}}.__init__(self)
+        #{% endfor %}
         
         #{%for a in tag.attrs %}
         self.{{a.name}}=None
@@ -1274,7 +1664,12 @@ class {{classname}}({{tag.baseclass}}):
 
         :rtype: :code:`self`
         """
+        oldkey = self.{{a.name}}
         self.{{a.name}} = v
+        #{%if a.isKey %}
+        if self.get_parent() is not None:
+            self.get_parent()._rekey_child(oldkey, self);
+        #{% endif %}
         return self
 
     def with_{{a.accessorName}}(self,v):
@@ -1579,6 +1974,7 @@ class {{classname}}({{tag.baseclass}}):
             return self
         else:
             raise SwoopError("Tried to use remove_{{m.accessorName}}() to delete the wrong kind of child?: {}".format(str(efp)))
+    
     #{%endif%}
     #{%endfor%}
 
@@ -1648,10 +2044,34 @@ class {{classname}}({{tag.baseclass}}):
             pass
         #{%endfor%}
         #{%for s in tag.singletons%}
-        if self.get_{{s.accessorName}} == efp:
+        if self.get_{{s.accessorName}}() == efp:
             self.set_{{s.accessorName}}(None)
         #{%endfor%}
 
+    def _rekey_child(self, oldkey, efp):
+        """
+        Remove a child :class:`EagleFilePart` object.
+        
+        :param efp: the class:`EagleFilePart` object to remove.
+        :return: Nothing
+        """
+        #{%for m in tag.maps%}
+        if self.get_{{m.accessorName}}(oldkey) == efp:
+            del self.{{m.name}}[oldkey]
+            self.add_{{m.accessorName}}(efp)
+        #{%endfor%}
+
+    #{%if tag.has_maps() %}
+    def check_sanity(self):
+        {{tag.baseclass}}.check_sanity(self)
+
+        # Check whether keys in our maps match the keys in our children
+        #{% for m in tag.maps %}
+        for k in self.{{m.name}}:
+            if self.{{m.name}}[k].get_{{m.mapkey}}() != k:
+                raise SwoopError("Child's {{m.mapkey}} ('{}') doesn't match key in parent's map ('{}')".format(self.{{m.name}}[k].get_{{m.mapkey}}(),k))
+        #{% endfor %}
+    #{%endif%}
     def dump(self, indent="", increment="   "):
         """
         Recursive debug dump.
@@ -1670,6 +2090,7 @@ class {{classname}}({{tag.baseclass}}):
         for c in self.get_children():
             c.dump(indent + "   ")
 
+        
 EagleFile.class_map["{{tag.tag}}"] = {{classname}}
          
 #{% endfor %}

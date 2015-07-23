@@ -140,6 +140,21 @@ class TestSwoop(unittest.TestCase):
                          get_layers().
                          count(), 56, "Detach Error")
 
+    def test_Rekey(self):
+        sch = self.sch.clone()
+        brd = self.brd.clone()
+        s = Swoop.From(sch).get_libraries().get_symbols()[0]
+        l = s.get_parent();
+
+        old = s.get_name()
+        self.assertEqual(l.get_symbol(old), s, "Rename precondition error")
+        s.set_name("foo")
+        self.assertEqual(s.get_name(), "foo", "Rename error")
+        self.assertEqual(l.get_symbol("foo"), s,"Rename error")
+        self.assertEqual(l.get_symbol(old), None, "Rename error")
+        l.check_sanity()
+        
+        
     def test_Lookup(self):
         sch = self.sch.clone()
         brd = self.brd.clone()

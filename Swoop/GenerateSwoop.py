@@ -87,7 +87,7 @@ class Attr:
     Class representing an attribute.
     
     """
-    def __init__(self, name, required=False, parse=None, unparse=None,vtype=None,accessorName=None,xmlName=None, lookupEFP=None):
+    def __init__(self, name, required=False, parse=None, unparse=None,vtype=None,accessorName=None,xmlName=None, lookupEFP=None, isKey=False):
         """Create a class describing an attribute.
         
         :param name: The attribute's name.  This is the name used for the member of the :class:`EagleFilePart` object.  For example :code:`foo.netclass` (since :code:`class` clashes with a the Python :code:`class` reserved word.
@@ -97,8 +97,10 @@ class Attr:
         :param accessorName:This is the string that will appear in Swoop API calls.  For example :code:`foo.get_class()`
         :param xmlName:This is string used in the XML representation.  For example, :code:`class`.
         :param lookupEFP: This is a tuple.  The first element is a type.  The second is a function that looks up an object of that type based on the value of this attribute.  Function should take two arguments, the current :class:`EagleFilePart` and the value of the attribute. 
+        :param isKey: True if this attribute is key in a map of the parent. 
         """
         self.name = name.replace("-", "_")
+        self.isKey= isKey
         if xmlName is None:
             self.xmlName = name
         else:
@@ -257,7 +259,8 @@ class TagClass:
     """
     def __init__(self,
                  tag,
-                 baseclass=None, 
+                 baseclass=None,
+                 mixins=None,
                  classname=None,
                  customchild=False,
                  preserveTextAs=None,
@@ -281,6 +284,11 @@ class TagClass:
         else:
             self.sections = sections
 
+        if mixins is None:
+            self.mixins = []
+        else:
+            self.mixins = mixins
+            
         self.dontsort = dontsort
         self.tag = tag
         self.attrs = attrs
@@ -306,7 +314,12 @@ class TagClass:
             self.preserveTextAs = preserveTextAs
 
         self.hasCollections = (len(self.maps) + len(self.lists) + len(self.singletons) > 0)
-        
+
+    def get_all_base_classes_as_str(self):
+        return ", ".join([self.baseclass] + self.mixins)
+    def get_all_base_classes_as_list(self):
+        return [self.baseclass] + self.mixins
+    
     def get_attr_names(self):
         return [x for x in self.attrs]
     def get_list_names(self):
@@ -316,7 +329,8 @@ class TagClass:
     def get_tag_initial_cap(self):
         return initialCap(self.tag)
 
-
+    def has_maps(self):
+        return len(self.maps) > 0
 tags = {}
 
 def layerAttr(required=True):
@@ -354,10 +368,11 @@ rotAttr = Attr("rot",
                vtype="str",
                required=False)
 
-def nameAttr():
+def nameAttr(isKey=True):
     return Attr("name",
-            vtype="str",
-            required=True)
+                vtype="str",
+                required=True,
+                isKey=isKey)
 
 smashedAttr = Attr("smashed", required=False)
 
@@ -385,6 +400,7 @@ tags["schematic"] = TagClass("schematic",
 
 tags["module"] = TagClass("module",
                           baseclass = "EagleFilePart",
+                          mixins=["DimensionGeometry"],
                           attrs=[nameAttr(),
                                  Attr("prefix", required=False),
                                  dimensionAttr("dx",True),
@@ -474,6 +490,7 @@ tags["signal"] = TagClass("signal",
 
 tags["moduleinst"] = TagClass("moduleinst",
                               baseclass = "EagleFilePart",
+                              mixins=["OnePointGeometry", "RotationGeometry"],
                               attrs=[nameAttr(),
                                      Attr("module",
                                           required=True,
@@ -512,6 +529,7 @@ tags["variant"] = TagClass("variant",
 
 tags["gate"] = TagClass("gate",
                         baseclass = "EagleFilePart",
+                          mixins=["OnePointGeometry"],
                         attrs=[nameAttr(),
                                Attr("symbol",
                                     required=True,
@@ -527,6 +545,7 @@ tags["gate"] = TagClass("gate",
 
 tags["wire"] = TagClass("wire",
                         baseclass = "EagleFilePart",
+                          mixins=["LineGeometry"],
                         attrs=[dimensionAttr("x1", required=True),
                                dimensionAttr("y1", required=True),
                                dimensionAttr("x2", required=True),
@@ -544,6 +563,7 @@ tags["wire"] = TagClass("wire",
 
 tags["dimension"] = TagClass("dimension",
                              baseclass = "EagleFilePart",
+                             mixins=["MeasureGeometry"],
                              attrs=[dimensionAttr("x1", required=True),
                                     dimensionAttr("y1", required=True),
                                     dimensionAttr("x2", required=True),
@@ -572,6 +592,7 @@ tags["dimension"] = TagClass("dimension",
 
 tags["text"] = TagClass("text",
                         baseclass = "EagleFilePart",
+                          mixins=["OnePointGeometry"],
                         preserveTextAs = "text",
                         attrs=[dimensionAttr("x",True),
                                dimensionAttr("y",True),
@@ -591,6 +612,7 @@ tags["text"] = TagClass("text",
 
 tags["circle"] = TagClass("circle",
                           baseclass = "EagleFilePart",
+                          mixins=["OnePointGeometry", "CircleRadiusGeometry"],
                           attrs=[dimensionAttr("x",required=True),
                                  dimensionAttr("y",required=True),
                                  dimensionAttr("radius", required=True),
@@ -601,6 +623,7 @@ tags["circle"] = TagClass("circle",
 
 tags["rectangle"] = TagClass("rectangle",
                              baseclass = "EagleFilePart",
+                          mixins=["RectGeometry", "RotationGeometry"],
                              attrs=[dimensionAttr("x1", required=True),
                                     dimensionAttr("y1", required=True),
                                     dimensionAttr("x2", required=True),
@@ -612,6 +635,7 @@ tags["rectangle"] = TagClass("rectangle",
 
 tags["frame"] = TagClass("frame",
                          baseclass = "EagleFilePart",
+                          mixins=["RectGeometry"],
                          attrs=[dimensionAttr("x1", required=True),
                                 dimensionAttr("y1", required=True),
                                 dimensionAttr("x2", required=True),
@@ -648,6 +672,7 @@ tags["frame"] = TagClass("frame",
 
 tags["hole"] = TagClass("hole",
                         baseclass = "EagleFilePart",
+                          mixins=["OnePointGeometry"],
                         attrs=[dimensionAttr("x",True),
                                dimensionAttr("y",True),
                                drillAttr( required=True)])
@@ -656,6 +681,7 @@ tags["hole"] = TagClass("hole",
 
 tags["pad"] = TagClass("pad",
                        baseclass = "EagleFilePart",
+                          mixins=["OnePointGeometry", "CircleDiameterGeometry", "RotationGeometry"],
                        attrs=[nameAttr(),
                               dimensionAttr("x",True),
                               dimensionAttr("y",True),
@@ -677,6 +703,7 @@ tags["pad"] = TagClass("pad",
 
 tags["smd"] = TagClass("smd",
                        baseclass = "EagleFilePart",
+                          mixins=["OnePointGeometry", "DimensionGeometry", "RotationGeometry"],
                        attrs=[nameAttr(),
                               dimensionAttr("x",True),
                               dimensionAttr("y",True),
@@ -701,6 +728,7 @@ tags["smd"] = TagClass("smd",
 
 tags["element"] = TagClass("element",
                            baseclass = "EagleFilePart",
+                           mixins=["OnePointGeometry", "RotationGeometry"],
                            #customchild = True,
                            attrs=[nameAttr(),
                                   Attr("library",
@@ -732,6 +760,7 @@ tags["element"] = TagClass("element",
 
 tags["via"] = TagClass("via",
                        baseclass = "EagleFilePart",
+                          mixins=["OnePointGeometry", "CircleDiameterGeometry"],
                        attrs=[dimensionAttr("x",True),
                               dimensionAttr("y",True),
                               Attr("extent", required=True),
@@ -767,6 +796,7 @@ tags["polygon"] = TagClass("polygon",
 tags["vertex"] = TagClass("vertex",
                           dontsort=True,
                           baseclass = "EagleFilePart",
+                          mixins=["OnePointGeometry"],
                           attrs=[dimensionAttr("x",True),
                                  dimensionAttr("y",True),
                                  Attr("curve", 
@@ -777,6 +807,7 @@ tags["vertex"] = TagClass("vertex",
 
 tags["pin"] = TagClass("pin",
                        baseclass = "EagleFilePart",
+                          mixins=["OnePointGeometry", "RotationGeometry"],
                        attrs=[nameAttr(),
                               dimensionAttr("x",True),
                               dimensionAttr("y",True),
@@ -829,6 +860,7 @@ tags["port"] = TagClass("port",
 tags["instance"] = TagClass("instance",
                             customchild=True,
                             baseclass = "EagleFilePart",
+                            mixins=["OnePointGeometry", "RotationGeometry"],
                             attrs=[Attr("part",
                                         lookupEFP=("Part","lambda efp, key: NotImplemented('Lookup of part from instance not implemented.')"),
                                         required=True),
@@ -845,6 +877,7 @@ tags["instance"] = TagClass("instance",
 
 tags["label"] = TagClass("label",
                          baseclass = "EagleFilePart",
+                          mixins=["OnePointGeometry", "RotationGeometry"],
                          attrs=[dimensionAttr("x",True),
                                 dimensionAttr("y",True),
                                 sizeAttr(required=True),
@@ -862,6 +895,7 @@ tags["label"] = TagClass("label",
 
 tags["junction"] = TagClass("junction",
                             baseclass = "EagleFilePart",
+                            mixins=["OnePointGeometry"],
                             attrs=[dimensionAttr("x",True),
                                    dimensionAttr("y",True)])
 
@@ -996,8 +1030,9 @@ tags["layer"] = TagClass("layer",
                          sortattr="number",
                          attrs=[Attr("number",
                                      vtype="int",
-                                     required=True),
-                                nameAttr(),
+                                     required=True,
+                                     isKey=True),
+                                nameAttr(isKey=False),
                                 Attr("color", 
                                      vtype="int",
                                      required=True),
@@ -1026,6 +1061,7 @@ tags["class"] = TagClass("class",
 tags["clearance"] = TagClass("clearance",
                              baseclass = "EagleFilePart",
                              attrs=[Attr("netclass",
+                                         isKey=True,
                                          accessorName = "class",
                                          xmlName="class",
                                          lookupEFP=("Class","lambda efp, key: NotImplemented('Lookup of class from clearance not implemented.')"),
@@ -1128,7 +1164,7 @@ tags["eagleSchematic"] = TagClass("eagle",
                                   attrs=[Attr("version", required=True)],
                                   sections=[List("settings", "./drawing/settings/setting",requireTag=True),
                                             Singleton("grid", "./drawing/grid"),
-                                            Map("layers", "./drawing/layers/layer", suppressAccessors=True),
+                                            Map("layers", "./drawing/layers/layer", suppressAccessors=True, mapkey="number"),
                                             # this is necessary to preserve and provide access to the attributes on the schematic. This object doesn't actually contain anything, though.
                                             Singleton("schematic", "./drawing/schematic"), 
                                             Singleton("description", "./drawing/schematic/description", requireTag=True),
@@ -1149,7 +1185,7 @@ tags["eagleLibrary"] = TagClass("eagle",
                                 attrs=[Attr("version", required=True)],
                                 sections=[List("settings", "./drawing/settings/setting", requireTag=True),
                                           Singleton("grid", "./drawing/grid"),
-                                          Map("layers", "./drawing/layers/layer", suppressAccessors=True),
+                                          Map("layers", "./drawing/layers/layer", suppressAccessors=True, mapkey="number"),
                                           Singleton("library", "./drawing/library"),
                                           Singleton("compatibility", "./compatibility")])
 

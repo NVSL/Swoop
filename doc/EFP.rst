@@ -234,4 +234,21 @@ Query Methods
    :rtype: :class:`EagelFilePart` or :code:`None`
 
 
-	   
+Geometry Helpers
+----------------
+
+Many :class:`EagleFilePart` subclasses include geometric information (location,
+size, rotation, etc.).  The following mixin classes provide helper functions to
+make accessing and manipulating geometric information more natural.  If an
+:class:`EagleFilePart` subclass has one of these helper classes as a baseclass,
+than these functions are available for that class.
+
+.. autoclass:: OnePointGeometry
+.. autoclass:: DimensionGeometry
+.. autoclass:: LineGeometry
+.. autoclass:: MeasureGeometry
+.. autoclass:: RectGeometry
+.. autoclass:: CircleRadiusGeometry
+.. autoclass:: CircleDiameterGeometry
+.. autoclass:: RotationGeometry
+

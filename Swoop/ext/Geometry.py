@@ -79,6 +79,10 @@ def arc_bounding_box(p1, p2, theta):
 
 class GeometryMixin(object):
     def get_mirrored(self):
+        """
+        Is this object mirrored?
+        :return: bool
+        """
         return hasattr(self, "get_rot") and \
                self.get_rot() is not None and \
                "M" in self.get_rot()
@@ -115,6 +119,10 @@ class GeometryMixin(object):
                 getattr(self,"set_y" + i)(pt[1])
 
     def num_points(self):
+        """
+        Number of points in this object
+        E.g., circles have 1, lines have 2 and polygons have arbitrary amounts
+        """
         if isinstance(self, Swoop.Polygon):
             return len(self.get_vertices())
         else:
@@ -292,10 +300,17 @@ class GeometryMixin(object):
 
 
     def move(self, move_vector):
+        """
+        Offset the position of this by a numpy vector
+        """
         for i in xrange(self.num_points()):
             self.set_point(self.get_point(i) + move_vector, i)
 
     def rotate(self, degrees):
+        """
+        Rotate everything around the origin (0,0)
+        Positive is counter-clockwise
+        """
         rot_mtx = Rectangle.rotation_matrix(math.radians(degrees))
         if isinstance(self, Swoop.Rectangle):
             # Special case: you can't just rotate each vertex :(
@@ -312,6 +327,9 @@ class GeometryMixin(object):
             self.set_rot(Dingo.Component.angle_match_to_str(angle))
 
     def mirror(self):
+        """
+        Flip this object around the Y axis and set any mirrored attributes
+        """
         for i in xrange(self.num_points()):
             v = self.get_point(i)
             v[0] *= -1

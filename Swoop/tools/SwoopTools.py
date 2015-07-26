@@ -189,6 +189,7 @@ def rebuildBoardConnections(sch, brd):
                                                     set_pad(pad))
 
 def propagatePartToBoard(part, brd):
+
     """
     Copy :code:`part` to ``brd`` by creating a new :class:`Element` and populating it accordingly.
     If the part already exists, it will be replaced.

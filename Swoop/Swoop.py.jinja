@@ -845,10 +845,11 @@ class EagleFile(EagleFilePart):
         :rtype: :code:`None`
 
         """
+
         assert isinstance(layer, Layer)
 
-        self.layers[int(layer.number)] = layer
-        self.layersByName[layer.name] = layer
+        self.layers[int(layer.get_number())] = layer
+        self.layersByName[layer.get_name()] = layer
         layer.parent = self
 
     def get_layers(self):
@@ -858,7 +859,7 @@ class EagleFile(EagleFilePart):
         :rtype: Map of :code:`EagleFilePart` objects keyed by layer name.
 
         """
-        return self.layersByName
+        return self.layers;
 
     def get_layersByNumber(self):
         """
@@ -867,6 +868,14 @@ class EagleFile(EagleFilePart):
         :rtype: Map of :code:`EagleFilePart` objects keyed by layer number.
         """
         return self.layers
+
+    def get_layersByName(self):
+        """
+        Get a map of names to Layer objects.
+
+        :rtype: Map of :code:`EagleFilePart` objects keyed by layer number.
+        """
+        return self.layersByName
 
     # def get_flippedLayer(self, l):
     #     if (isinstance(l, str)):
@@ -911,10 +920,10 @@ class EagleFile(EagleFilePart):
         :rtype: :class:`Layer` 
         """
         n = int(num)
-        if n not in self.layers: 
+        if n not in self.get_layers(): 
             return "Layer" + str(num)
         else:
-            return self.layers[n].name
+            return self.get_layers()[n].name
 
     def layer_name_to_number(self, name):
         """
@@ -2069,7 +2078,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         #{% for m in tag.maps %}
         for k in self.{{m.name}}:
             if self.{{m.name}}[k].get_{{m.mapkey}}() != k:
-                raise SwoopError("Child's {{m.mapkey}} ('{}') doesn't match key in parent's map ('{}')".format(self.{{m.name}}[k].get_{{m.mapkey}}(),k))
+                raise SwoopError("Child's {{m.mapkey}} ('{}') doesn't match key in parent's map ('{}')".format(self.get_{{m.name}}[k].get_{{m.mapkey}}(),k))
         #{% endfor %}
     #{%endif%}
     def dump(self, indent="", increment="   "):

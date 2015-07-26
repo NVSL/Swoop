@@ -1914,7 +1914,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
             raise SwoopError("Argument to {{classname}}.add_{{m.accessorName}}() should be of type {{m.get_contained_type_list_string()}}.  Got " + str(type(s).__name__) + ".")
         
 
-        self.{{m.name}}[s.{{m.mapkey}}] = s
+        self.{{m.name}}[s.get_{{m.mapkey}}()] = s
         s.parent = self
         return self
 
@@ -2078,7 +2078,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         #{% for m in tag.maps %}
         for k in self.{{m.name}}:
             if self.{{m.name}}[k].get_{{m.mapkey}}() != k:
-                raise SwoopError("Child's {{m.mapkey}} ('{}') doesn't match key in parent's map ('{}')".format(self.get_{{m.name}}[k].get_{{m.mapkey}}(),k))
+                raise SwoopError("Child's {{m.mapkey}} ('{}') doesn't match key in parent's map ('{}')".format(self.{{m.name}}[k].get_{{m.mapkey}}(),k))
         #{% endfor %}
     #{%endif%}
     def dump(self, indent="", increment="   "):

@@ -21,8 +21,8 @@ def main():
         ef = Swoop.EagleFile.from_file(f)
 
 
-        #if args.layers:
-        #    Swoop.tools.normalizeLayers(ef, layers, force=args.force)
+        if args.layers:
+            Swoop.tools.normalizeLayers(ef, layers, force=args.force)
             
             
         ef.write(f)

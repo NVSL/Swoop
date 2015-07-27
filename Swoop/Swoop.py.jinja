@@ -1703,8 +1703,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
     def set_{{a.accessorName}}(self,v):
         """ Set the value of :code:`{{a.name}}` for this  :class:`{{tag.classname}}`.  This corresponds to the :code:`{{a.name}}` attribute of a :code:`<{{tag.tag}}>` in an Eagle file.
 
-        :param v: :class:`EagleFilePart` to set.
-
+        :param v: new value
         :rtype: :code:`self`
         """
         #{%if a.isKey %}
@@ -2288,7 +2287,6 @@ class Attribute (Base_Attribute):
     """
     def __init__(self):
         Base_Attribute.__init__(self)
-        self.in_library = False
 
     def __str__(self):
         return self.name + " = '" + self.value + "' [const=" + str(self.constant) + ";lib=" + str(self.from_library) +"]";

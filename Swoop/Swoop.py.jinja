@@ -127,7 +127,7 @@ class EagleFilePart(object):
         """
         raise NotImplementedError()
     
-    def get_et ():
+    def get_et (self):
         """
         Generate an element tree that represents the :code:`EagleFilePart`.
 
@@ -135,6 +135,17 @@ class EagleFilePart(object):
 
         """
         raise NotImplementedError()
+
+    def get_xml (self):
+        """
+        Return a string that contains the XML representation of this :code:`EagleFilePart`.
+
+        :rtype: :code:`str`
+
+        """
+        
+        return ET.tostring(self.get_et())
+
 
     def get_root(self):
         """ 
@@ -267,6 +278,23 @@ def unparseByType(efp, attrType, v):
     
     return r
 
+def typeCheck(type, v, cannotBeNone):
+    if v is None and not cannotBeNone:
+        return True
+    
+    if type == "None_is_empty_string":
+        return isinstance(v,str) or v is None
+    elif type == "str" or type == "layer_string": 
+        return isinstance(v, str)
+    elif type == "int":
+        return isinstance(v,int) 
+    elif type == "float":
+        return isinstance(v,float) or isinstance(v, int)
+    elif type == "bool" or type == "constant_bool":
+        return isinstance(v,bool)
+    else:
+        raise SwoopError("Unknown type '" + type + "'")
+    
 class OnePointGeometry:
     def __init__(self):
         pass
@@ -852,14 +880,20 @@ class EagleFile(EagleFilePart):
         self.layersByName[layer.get_name()] = layer
         layer.parent = self
 
+    def get_layer(self, v):
+        """
+        Lookup a layer by number.
+        """
+        return self.layers[v]
+    
     def get_layers(self):
         """
-        Get a map of names to Layer objects
+        Get a list of layers.
         
-        :rtype: Map of :code:`EagleFilePart` objects keyed by layer name.
+        :rtype: List of :code:`Swoop.Layer` objects for this eagle file.
 
         """
-        return self.layers;
+        return self.layers.values();
 
     def get_layersByNumber(self):
         """
@@ -920,10 +954,10 @@ class EagleFile(EagleFilePart):
         :rtype: :class:`Layer` 
         """
         n = int(num)
-        if n not in self.get_layers(): 
+        if n not in self.layers:
             return "Layer" + str(num)
         else:
-            return self.get_layers()[n].name
+            return self.layers[n].name
 
     def layer_name_to_number(self, name):
         """
@@ -1673,8 +1707,13 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
 
         :rtype: :code:`self`
         """
+        #{%if a.isKey %}
         oldkey = self.{{a.name}}
+        #{% endif %}
+        if not typeCheck("{{a.vtype}}", v, {{a.required}}):
+            raise SwoopError("Illegal value ({}) of type {} for attribute '{{a.name}}' of {{tag.classname}} object (should be {{a.vtype}}).".format(v, type(v)))
         self.{{a.name}} = v
+        
         #{%if a.isKey %}
         if self.get_parent() is not None:
             self.get_parent()._rekey_child(oldkey, self);
@@ -1698,7 +1737,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
 
         """
 
-        if type(v) in [str, int, float]:
+        if type(v) in [str, int, float, bool]:
             return self if self.{{a.name}} == v else None
         elif callable(v):
             return self if v(self.{{a.name}}) else None
@@ -2228,8 +2267,7 @@ class Part (Base_Part):
         else:
             self.add_attribute(Attribute().
                                set_name(name).
-                               set_value(value).
-                               set_in_library(False))
+                               set_value(value))
         return self
 
 
@@ -2255,39 +2293,31 @@ class Attribute (Base_Attribute):
     def __str__(self):
         return self.name + " = '" + self.value + "' [const=" + str(self.constant) + ";lib=" + str(self.from_library) +"]";
 
+    def get_in_library(self):
+        if isinstance(self.get_parent(), Technology):
+            return True;
+        elif isinstance(self.get_parent(), Part):
+            return False
+        elif isinstance(self.get_parent(), Instance):
+            return False
+        elif isinstance(self.get_parent(), Element):
+            return False
+        elif isinstance(self.get_parent(), EagleFile):
+            return False
+        else:
+            raise SwoopError("Unexpectedly found attribute in '" + attribute_root.getparent().tag +"' tag.")
 
     @classmethod
     def _from_et (cls, attribute_root, parent):
         n = Attribute()
         n. _init_from_et(attribute_root, parent)
         
-        if attribute_root.getparent().tag == "technology":
-            from_library = True;
-        elif attribute_root.getparent().tag == "part":
-            from_library = False
-        elif attribute_root.getparent().tag == "instance":
-            from_library = False
-        elif attribute_root.getparent().tag == "element":
-            from_library = False
-        elif attribute_root.getparent().tag == "attributes":
-            from_library = False
-        else:
-            raise SwoopError("Unexpectedly found attribute in '" + attribute_root.getparent().tag +"' tag.")
-
-        n.in_library = from_library
         return n
-
-    def set_in_library(self, v):
-        self.in_library = v
-        return self
-    
-    def get_in_libbrary(self):
-        return self.in_library()
 
     def get_et (self):
         n = Base_Attribute.get_et(self)
         
-        if not self.in_library:
+        if not self.get_in_library():
             if "constant" in n.attrib:
                 del n.attrib["constant"]
 

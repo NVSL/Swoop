@@ -106,8 +106,8 @@ def mergeLayers(src, dst, force=False):
     :param force:  If :code:`True` overwrite the layers.  Otherwise, throw an :class:`SwoopError` on conflict.
 
     """
-    for srcLayer in src.get_layers().values():
-        for dstLayer in dst.get_layers().values():
+    for srcLayer in src.get_layers():
+        for dstLayer in dst.get_layers():
             if ((srcLayer.name == dstLayer.name and srcLayer.number != dstLayer.number) or 
                 (srcLayer.name != dstLayer.name and srcLayer.number == dstLayer.number)):
                 if force:
@@ -119,7 +119,7 @@ def mergeLayers(src, dst, force=False):
                     raise Swoop.SwoopError("Layer mismatch: " +
                                             str(src.filename) + " <" + str(srcLayer.number) + ", '" + str(srcLayer.name) +"'>; " +
                                             str(dst.filename) +" = <" + str(dstLayer.number) + ", '" + str(dstLayer.name) +"'>;")
-        if srcLayer.name not in dst.get_layers():
+        if srcLayer.name not in dst.get_layersByName():
             dst.add_layer(srcLayer.clone())
         
 def normalizeLayers(ef, layers, force=False):
@@ -209,15 +209,14 @@ def propagatePartToBoard(part, brd):
                     find_package().
                     get_name()
                 ).
-        set_value(part.get_value()).
+        set_value(part.get_value() if part.get_value() is not None else "").
         set_x(0).
         set_y(0))
 
     for a in part.find_technology().get_attributes():
         n.add_attribute(a.clone().
                         set_display("off").
-                        set_layer("Document").
-                        set_in_library(False))
+                        set_layer("Document"))
 
     for a in part.get_attributes():
         n.add_attribute(a.clone().

@@ -4,6 +4,7 @@ import Swoop.tools
 import os
 import re
 import math
+from lxml import etree as ET
 
 class TestSwoop(unittest.TestCase):
     
@@ -32,7 +33,7 @@ class TestSwoop(unittest.TestCase):
                          get_package("CAPC1608X90_HS").
                          get_drawing_elements().
                          with_layer("tCream").
-                         count(), 2, "Fluent search failure")
+                         count(), 2)#, "Fluent search failure")
         
         self.assertEqual(t.
                          get_libraries().
@@ -186,4 +187,30 @@ class TestSwoop(unittest.TestCase):
         except e:
             self.assertTrue(False, "write to string failed")
             raise e
+
+    def test_TypeCheck(self):
+        sch = self.sch.clone()
+
+        l =sch.get_layers()[0]
+        with self.assertRaises(Swoop.SwoopError):
+            l.set_name(10);
+        with self.assertRaises(Swoop.SwoopError):
+            l.set_number("hello");
+
+        l.set_name("foo")
+        l.set_number(1999)
+        
+
+    def test_ConstantAttrs(self):
+        sch = self.sch.clone()
+
+        a = Swoop.From(sch).get_libraries().get_devicesets().get_devices().get_technologies().get_attributes()[0]
+
+        self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>')
+        a.set_constant(True)
+        self.assertEqual(a.get_xml(), '<attribute name="CASE" value=""/>')
+        a.set_constant(False)
+        self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>')
+        
+
         

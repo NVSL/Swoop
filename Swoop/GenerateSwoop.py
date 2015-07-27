@@ -128,12 +128,15 @@ class Attr:
         if unparse is None:
             self.unparse = "unparseByType"
         else:
+            assert False
             self.unparse = unparse
 
         if parse is None:
             self.parse = "parseByType"
         else:
+            assert  False
             self.parse = parse
+
 
 def initialCap(a):
         t = a[0].upper() + a[1:]
@@ -448,6 +451,7 @@ tags["device"] = TagClass("device",
                                       vtype="str"),
                                  Attr("package",
                                       required=False,
+                                      #vtype="None_is_empty_string",
                                       lookupEFP=("Package", "lambda efp, key: efp.get_parent().get_parent().get_package(key)"))],
                           sections=[List("connects", "./connects/connect"),
                                     Map("technologies", "./technologies/technology")])
@@ -521,7 +525,8 @@ tags["variant"] = TagClass("variant",
                                   Attr("populate", 
                                        vtype="bool",
                                        required=False),
-                                  Attr("value", required=False),
+                                  Attr("value",
+                                       required=False),
                                   Attr("technology",
                                        required=True)])
 
@@ -840,7 +845,8 @@ tags["part"] = TagClass("part",
                                     lookupEFP=("Technology","lambda efp, key: efp.find_device().get_technology(key)"),
                                     required=False,
                                     vtype="None_is_empty_string"),
-                               Attr("value", required=False)],
+                               Attr("value",
+                                    required=False)],
                         sections=[Map("attributes", "./attribute", requireTag=True),
                                   Map("variants", "./variant")])
 

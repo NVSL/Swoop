@@ -7,13 +7,13 @@ import math
 from lxml import etree as ET
 
 class TestSwoop(unittest.TestCase):
-    
+
     def setUp(self):
         self.me = os.path.dirname(os.path.realpath(__file__))
         self.sch = Swoop.EagleFile.from_file(self.me + "/inputs/Xperimental_Trinket_Pro_small_parts_power_breakout.picked.sch")
         self.brd = Swoop.EagleFile.from_file(self.me + "/inputs/Xperimental_Trinket_Pro_small_parts_power_breakout.picked.brd")
         self.lbr = Swoop.EagleFile.from_file(self.me + "/inputs/Components.lbr")
-        
+
     def test_Search(self):
         self.assertEqual(len([ x for x in self.brd.get_library("KoalaBuild").get_packages()[0].get_drawing_elements() if x.layer=="tDocu"]), 4, "Search failure")
         self.assertEqual(len(self.brd.get_libraries()), len(self.brd.get_libraries()), "Search by type error")
@@ -34,7 +34,7 @@ class TestSwoop(unittest.TestCase):
                          get_drawing_elements().
                          with_layer("tCream").
                          count(), 2)#, "Fluent search failure")
-        
+
         self.assertEqual(t.
                          get_libraries().
                          get_package("CAPC1608X90_HS").
@@ -79,7 +79,7 @@ class TestSwoop(unittest.TestCase):
                          get_layers().
                          with_name(lambda x: re.match("^t", x) is not None).
                          count(), 17, "Regex filter failure")
-                         
+
         self.assertEqual(t.get_layers().
                          get_number().
                          reduce(min),
@@ -109,8 +109,8 @@ class TestSwoop(unittest.TestCase):
 
         self.assertEqual(sum(t.get_layers().
                              get_number()), s, "iteration failure")
-        
-                         
+
+
         self.assertEqual(round(Swoop.From(self.brd).
                                get_signals().
                                get_wires().
@@ -122,7 +122,7 @@ class TestSwoop(unittest.TestCase):
                          get_layers().
                          with_name(Swoop.matching("^t")).
                          count(), 17, "Regex matching failure")
-        
+
         self.assertEqual(Swoop.From(self.brd).
                          get_layers().
                          with_name(Swoop.not_matching("^t")).
@@ -154,8 +154,8 @@ class TestSwoop(unittest.TestCase):
         self.assertEqual(l.get_symbol("foo"), s,"Rename error")
         self.assertEqual(l.get_symbol(old), None, "Rename error")
         l.check_sanity()
-        
-        
+
+
     def test_Lookup(self):
         sch = self.sch.clone()
         brd = self.brd.clone()
@@ -163,7 +163,7 @@ class TestSwoop(unittest.TestCase):
         self.assertTrue(isinstance(brd.get_nth_library(0).get_nth_deviceset(2).get_nth_device(0).find_package(), Swoop.Package), "wrong type from find_package")
         self.assertTrue(isinstance(brd.get_nth_element(0).find_library(), Swoop.Library), "wrong type from find_library")
         self.assertTrue(isinstance(brd.get_nth_element(0).find_package(), Swoop.Package), "wrong type from find_package")
-        
+
         self.assertTrue(isinstance(sch.get_nth_part(3).find_library(), Swoop.Library), "wrong type from find_library")
         self.assertTrue(isinstance(sch.get_nth_part(3).find_deviceset(), Swoop.Deviceset), "wrong type from find_deviceset")
         self.assertTrue(isinstance(sch.get_nth_part(3).find_device(), Swoop.Device), "wrong type from find_device")
@@ -176,7 +176,7 @@ class TestSwoop(unittest.TestCase):
             threw = True
 
         self.assertTrue(threw, "not implemented failed")
-        
+
     def test_Write(self):
         import StringIO
         output = StringIO.StringIO()
@@ -199,7 +199,7 @@ class TestSwoop(unittest.TestCase):
 
         l.set_name("foo")
         l.set_number(1999)
-        
+
 
     def test_ConstantAttrs(self):
         sch = self.sch.clone()
@@ -211,6 +211,9 @@ class TestSwoop(unittest.TestCase):
         self.assertEqual(a.get_xml(), '<attribute name="CASE" value=""/>')
         a.set_constant(False)
         self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>')
-        
 
-        
+    def test_Swoop_openfile(self):
+        a = Swoop.EagleFile.from_file(os.path.join(self.me, "inputs/Quadcopter.koala.sch"))
+
+
+

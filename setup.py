@@ -3,6 +3,7 @@ from setuptools.command.build_py import build_py
 import os
 from codecs import open
 import sys
+from Cython.Build import cythonize
 
 #import argparse
 #parser = argparse.ArgumentParser(description="Fix eagle files to make them dtd conforming")
@@ -60,6 +61,7 @@ setup(name='Swoop',
           "" : ["*.rst"],
           "Swoop" : ["Swoop/Swoop.py.jinja", "Swoop/eagle.dtd.diff", "Swoop/eagle.dtd"]
       },
+      #ext_modules = cythonize("Swoop/Swoop.py"),
       install_requires=["lxml>=3.4.2",  "Sphinx>=1.3.1", "numpy"],
       setup_requires=["Jinja2>=2.7.3"],
       include_package_data=True,

@@ -1060,7 +1060,7 @@ tags["class"] = TagClass("class",
                                 nameAttr(),
                                 widthAttr(required=False),
                                 drillAttr(required=False)],
-                         sections=[Map("clearances", "./clearance", mapkey="netclass")])
+                         sections=[Map("clearances", "./clearance", mapkey="class")])
 
 
 

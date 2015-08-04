@@ -878,7 +878,10 @@ class EagleFile(EagleFilePart):
             if filename is not None:
                 f = open(filename + ".broken.xml", "w")
                 f.write(header + ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True))
-            raise SwoopError("Swoop structure does not validate" + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
+            if len(EagleFile.DTD.error_log.filter_from_errors()) > 0:
+                raise SwoopError("Swoop structure does not validate" + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
+            else:
+                raise SwoopError("Swoop structure is not valid.")
         else:
             f.write(header+ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True))
 

@@ -9,6 +9,11 @@ from lxml import etree as ET
 class TestSwoop(unittest.TestCase):
 
     def setUp(self):
+        self.curdir = os.path.dirname(os.path.realpath(__file__))
+        self.tmpdir = os.path.join(self.curdir, "temp")
+        if not os.path.exists(self.tmpdir):
+            os.makedirs(self.tmpdir)
+
         self.me = os.path.dirname(os.path.realpath(__file__))
         self.sch = Swoop.EagleFile.from_file(self.me + "/inputs/Xperimental_Trinket_Pro_small_parts_power_breakout.picked.sch")
         self.brd = Swoop.EagleFile.from_file(self.me + "/inputs/Xperimental_Trinket_Pro_small_parts_power_breakout.picked.brd")
@@ -215,5 +220,18 @@ class TestSwoop(unittest.TestCase):
     def test_Swoop_openfile(self):
         a = Swoop.EagleFile.from_file(os.path.join(self.me, "inputs/Quadcopter.koala.sch"))
 
+    def test_Swoop_write_with_None(self):
+        a = Swoop.EagleFile.from_file(os.path.join(self.me, "inputs/Trinket_Pro_default_SMD_parts_power_breakout.koala.sch"))
+        a.write(os.path.join(self.tmpdir, "a.sch"))
 
-
+    def tearDown(self):
+        # Remove self.tmpdir
+        try:
+            for root, dirs, files in os.walk(self.tmpdir, topdown=False):
+                for name in files:
+                    os.remove(os.path.join(root, name))
+                for name in dirs:
+                    os.rmdir(os.path.join(root, name))
+            os.rmdir(self.tmpdir)
+        except:
+            pass

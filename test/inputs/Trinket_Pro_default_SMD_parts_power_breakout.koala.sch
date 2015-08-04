@@ -2633,7 +2633,7 @@ verticle or right angle</description>
 <parts>
 <part name="R4" library="KoalaDesign" deviceset="GENERIC-RESISTOR_" device="" value="68"/>
 <part name="D3" library="KoalaDesign" deviceset="GENERIC-DIODE-ZENER_" device="" value="3.6V"/>
-<part name="U1" library="NVSL" deviceset="ATMEGA328-NO-THERMAL_" device="32TQFP" value="None">
+<part name="U1" library="NVSL" deviceset="ATMEGA328-NO-THERMAL_" device="32TQFP" value="">
 <attribute name="DIST1" value="DigiKey"/>
 <attribute name="DIST1PN" value="ATMEGA328-AU-ND"/>
 <attribute name="MFR" value="Atmel"/>
@@ -2643,7 +2643,7 @@ verticle or right angle</description>
 <part name="R2A" library="KoalaDesign" deviceset="GENERIC-RESISTOR_" device="" value="305K +/- 5%">
 <attribute name="TOL" value="1%"/>
 </part>
-<part name="U2" library="NVSL" deviceset="ADJUSTABLE-VOLTAGE-REGULATOR_" device="SOIC8" value="None">
+<part name="U2" library="NVSL" deviceset="ADJUSTABLE-VOLTAGE-REGULATOR_" device="SOIC8" value="">
 <attribute name="DIST1" value="DigiKey"/>
 <attribute name="DIST1PN" value="576-1149-1-ND"/>
 <attribute name="IFWD" value="150ma"/>
@@ -2653,34 +2653,34 @@ verticle or right angle</description>
 </part>
 <part name="R7" library="KoalaDesign" deviceset="GENERIC-RESISTOR_" device="" value="1.5K"/>
 <part name="D2" library="KoalaDesign" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" value="&lt;0.36V"/>
-<part name="JP1" library="NVSL" deviceset="USB-5PIN-CONN_" device="USB-MINIB-MTH-POSTS" value="None">
+<part name="JP1" library="NVSL" deviceset="USB-5PIN-CONN_" device="USB-MINIB-MTH-POSTS" value="">
 <attribute name="DIST1" value="DigiKey"/>
 <attribute name="DIST1PN" value="609-4701-1-ND"/>
 <attribute name="MFR" value="FCI"/>
 <attribute name="MPN" value="10033526-N3212MLF"/>
 </part>
-<part name="SUPPLY7" library="supply2" deviceset="VCC" device="" value="None"/>
-<part name="JP3" library="NVSL" deviceset="SIP-12_" device="2.54-SPACE-VERTICAL" value="None">
+<part name="SUPPLY7" library="supply2" deviceset="VCC" device="" value=""/>
+<part name="JP3" library="NVSL" deviceset="SIP-12_" device="2.54-SPACE-VERTICAL" value="">
 <attribute name="BREAKAWAY" value="12 position"/>
 <attribute name="DIST1" value="DigiKey"/>
 <attribute name="DSIST-1-PN" value="SAM1035-50-ND"/>
 <attribute name="MFR" value="Samtec"/>
 <attribute name="MPN" value="TSW-150-07-T-S"/>
 </part>
-<part name="JP5" library="NVSL" deviceset="SIP-2_" device="2.54-SPACE-VERTICAL" value="None">
+<part name="JP5" library="NVSL" deviceset="SIP-2_" device="2.54-SPACE-VERTICAL" value="">
 <attribute name="BREAKAWAY" value="2 position"/>
 <attribute name="DIST1" value="DigiKey"/>
 <attribute name="DIST1PN" value="SAM1035-50-ND"/>
 <attribute name="MFR" value="Samtec"/>
 <attribute name="MPN" value="TSW-150-07-T-S"/>
 </part>
-<part name="U$20" library="microbuilder" deviceset="VBUS" device="" value="None"/>
-<part name="U$2" library="microbuilder" deviceset="VBUS" device="" value="None"/>
-<part name="U$3" library="microbuilder" deviceset="VBUS" device="" value="None"/>
+<part name="U$20" library="microbuilder" deviceset="VBUS" device="" value=""/>
+<part name="U$2" library="microbuilder" deviceset="VBUS" device="" value=""/>
+<part name="U$3" library="microbuilder" deviceset="VBUS" device="" value=""/>
 <part name="D1" library="KoalaDesign" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" value="&lt;0.36V"/>
-<part name="U$1" library="microbuilder" deviceset="VBAT" device="" value="None"/>
-<part name="U$6" library="microbuilder" deviceset="VBUS" device="" value="None"/>
-<part name="U2A" library="NVSL" deviceset="ADJUSTABLE-VOLTAGE-REGULATOR_" device="SOIC8" value="None">
+<part name="U$1" library="microbuilder" deviceset="VBAT" device="" value=""/>
+<part name="U$6" library="microbuilder" deviceset="VBUS" device="" value=""/>
+<part name="U2A" library="NVSL" deviceset="ADJUSTABLE-VOLTAGE-REGULATOR_" device="SOIC8" value="">
 <attribute name="DIST1" value="DigiKey"/>
 <attribute name="DIST1PN" value="576-1149-1-ND"/>
 <attribute name="IFWD" value="150ma"/>
@@ -2688,7 +2688,7 @@ verticle or right angle</description>
 <attribute name="MPN" value="MIC2951-03YM"/>
 <attribute name="VFWD" value="0.3V"/>
 </part>
-<part name="U2B" library="NVSL" deviceset="ADJUSTABLE-VOLTAGE-REGULATOR_" device="SOIC8" value="None">
+<part name="U2B" library="NVSL" deviceset="ADJUSTABLE-VOLTAGE-REGULATOR_" device="SOIC8" value="">
 <attribute name="DIST1" value="DigiKey"/>
 <attribute name="DIST1PN" value="576-1149-1-ND"/>
 <attribute name="IFWD" value="150ma"/>
@@ -2696,20 +2696,20 @@ verticle or right angle</description>
 <attribute name="MPN" value="MIC2951-03YM"/>
 <attribute name="VFWD" value="0.3V"/>
 </part>
-<part name="U$5" library="microbuilder" deviceset="VBAT" device="" value="None"/>
-<part name="SUPPLY14" library="supply2" deviceset="VCC" device="" value="None"/>
-<part name="SUPPLY12" library="supply2" deviceset="VCC" device="" value="None"/>
-<part name="SUPPLY10" library="supply2" deviceset="VCC" device="" value="None"/>
-<part name="JP4" library="NVSL" deviceset="SIP-12_" device="2.54-SPACE-VERTICAL" value="None">
+<part name="U$5" library="microbuilder" deviceset="VBAT" device="" value=""/>
+<part name="SUPPLY14" library="supply2" deviceset="VCC" device="" value=""/>
+<part name="SUPPLY12" library="supply2" deviceset="VCC" device="" value=""/>
+<part name="SUPPLY10" library="supply2" deviceset="VCC" device="" value=""/>
+<part name="JP4" library="NVSL" deviceset="SIP-12_" device="2.54-SPACE-VERTICAL" value="">
 <attribute name="BREAKAWAY" value="12 position"/>
 <attribute name="DIST1" value="DigiKey"/>
 <attribute name="DIST1PN" value="SAM1035-50-ND"/>
 <attribute name="MFR" value="Samtec"/>
 <attribute name="MPN" value="TSW-150-07-T-S"/>
 </part>
-<part name="SUPPLY4" library="supply2" deviceset="VCC" device="" value="None"/>
-<part name="SUPPLY5" library="supply2" deviceset="VCC" device="" value="None"/>
-<part name="SUPPLY6" library="supply2" deviceset="VCC" device="" value="None"/>
+<part name="SUPPLY4" library="supply2" deviceset="VCC" device="" value=""/>
+<part name="SUPPLY5" library="supply2" deviceset="VCC" device="" value=""/>
+<part name="SUPPLY6" library="supply2" deviceset="VCC" device="" value=""/>
 <part name="C2A" library="KoalaDesign" deviceset="GENERIC-CAPACITOR-NP_" device="" value="100pF">
 <attribute name="TOL" value="5%"/>
 <attribute name="WV" value="50V"/>
@@ -2723,8 +2723,8 @@ verticle or right angle</description>
 <attribute name="WV" value="35V"/>
 </part>
 <part name="D2B" library="KoalaDesign" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" value="&lt;0.36V"/>
-<part name="SUPPLY8" library="supply2" deviceset="VCC" device="" value="None"/>
-<part name="SUPPLY9" library="supply2" deviceset="VCC" device="" value="None"/>
+<part name="SUPPLY8" library="supply2" deviceset="VCC" device="" value=""/>
+<part name="SUPPLY9" library="supply2" deviceset="VCC" device="" value=""/>
 <part name="C5" library="KoalaDesign" deviceset="GENERIC-CAPACITOR-NP_" device="" value="0.1uF">
 <attribute name="TOL" value="10%"/>
 <attribute name="WV" value="50V"/>
@@ -2735,19 +2735,19 @@ verticle or right angle</description>
 </part>
 <part name="LED1" library="KoalaDesign" deviceset="GENERIC-DIODE-LED_" device="" value="Red"/>
 <part name="R5" library="KoalaDesign" deviceset="GENERIC-RESISTOR_" device="" value="68"/>
-<part name="GND9" library="supply1" deviceset="GND" device="" value="None"/>
+<part name="GND9" library="supply1" deviceset="GND" device="" value=""/>
 <part name="LED2" library="KoalaDesign" deviceset="GENERIC-DIODE-LED_" device="" value="Green"/>
 <part name="R1" library="KoalaDesign" deviceset="GENERIC-RESISTOR_" device="" value="100K">
 <attribute name="TOL" value="1%"/>
 </part>
 <part name="R3" library="KoalaDesign" deviceset="GENERIC-RESISTOR_" device="" value="470"/>
-<part name="GND3" library="supply1" deviceset="GND" device="" value="None"/>
+<part name="GND3" library="supply1" deviceset="GND" device="" value=""/>
 <part name="R2C" library="KoalaDesign" deviceset="GENERIC-RESISTOR_" device="" value="143K">
 <attribute name="TOL" value="1%"/>
 </part>
-<part name="GND10" library="supply1" deviceset="GND" device="" value="None"/>
+<part name="GND10" library="supply1" deviceset="GND" device="" value=""/>
 <part name="R8" library="KoalaDesign" deviceset="GENERIC-RESISTOR_" device="" value="10K"/>
-<part name="GND4" library="supply1" deviceset="GND" device="" value="None"/>
+<part name="GND4" library="supply1" deviceset="GND" device="" value=""/>
 <part name="C3" library="KoalaDesign" deviceset="GENERIC-CAPACITOR-NP_" device="" value="3.3uF">
 <attribute name="COMMENT" value="Wanted 3.3uF, but had to go 4.7 to get 35V in 0805 (its there in 0603)."/>
 <attribute name="WV" value="35V"/>
@@ -2755,28 +2755,28 @@ verticle or right angle</description>
 <part name="R2B" library="KoalaDesign" deviceset="GENERIC-RESISTOR_" device="" value="170K +/- 5%">
 <attribute name="TOL" value="1%"/>
 </part>
-<part name="U$12" library="microbuilder" deviceset="VBAT" device="" value="None"/>
+<part name="U$12" library="microbuilder" deviceset="VBAT" device="" value=""/>
 <part name="R1A" library="KoalaDesign" deviceset="GENERIC-RESISTOR_" device="" value="100K">
 <attribute name="TOL" value="1%"/>
 </part>
-<part name="GND17" library="supply1" deviceset="GND" device="" value="None"/>
-<part name="GND16" library="supply1" deviceset="GND" device="" value="None"/>
-<part name="GND15" library="supply1" deviceset="GND" device="" value="None"/>
-<part name="FTDI" library="NVSL" deviceset="SIP-6_" device="2.54-SPACE-VERTICAL" value="None">
+<part name="GND17" library="supply1" deviceset="GND" device="" value=""/>
+<part name="GND16" library="supply1" deviceset="GND" device="" value=""/>
+<part name="GND15" library="supply1" deviceset="GND" device="" value=""/>
+<part name="FTDI" library="NVSL" deviceset="SIP-6_" device="2.54-SPACE-VERTICAL" value="">
 <attribute name="BREAKAWAY" value="6 position"/>
 <attribute name="DIST1" value="DigiKey"/>
 <attribute name="DIST1PN" value="SAM1035-50-ND"/>
 <attribute name="MFR" value="Samtec"/>
 <attribute name="MPN" value="TSW-150-07-T-S"/>
 </part>
-<part name="GND13" library="supply1" deviceset="GND" device="" value="None"/>
-<part name="GND11" library="supply1" deviceset="GND" device="" value="None"/>
-<part name="U$7" library="microbuilder" deviceset="VBUS" device="" value="None"/>
+<part name="GND13" library="supply1" deviceset="GND" device="" value=""/>
+<part name="GND11" library="supply1" deviceset="GND" device="" value=""/>
+<part name="U$7" library="microbuilder" deviceset="VBUS" device="" value=""/>
 <part name="Y1" library="KoalaDesign" deviceset="GENERIC-RESONATOR_" device="" value="16 MHz">
 <attribute name="STBL" value="&lt;0.3%"/>
 <attribute name="TOL" value="&lt;0.5%"/>
 </part>
-<part name="GND14" library="supply1" deviceset="GND" device="" value="None"/>
+<part name="GND14" library="supply1" deviceset="GND" device="" value=""/>
 <part name="C1B" library="KoalaDesign" deviceset="GENERIC-CAPACITOR-NP_" device="" value="3.3uF">
 <attribute name="COMMENT" value="Wanted 3.3uF, but had to go 4.7 to get 35V in 0805 (its there in 0603)."/>
 <attribute name="WV" value="35V"/>
@@ -2785,35 +2785,35 @@ verticle or right angle</description>
 <attribute name="COMMENT" value="Wanted 3.3uF, but had to go 4.7 to get 35V in 0805 (its there in 0603)."/>
 <attribute name="WV" value="35V"/>
 </part>
-<part name="J1" library="NVSL" deviceset="BATTERY-CONN-RECEPTACLE" device="PH-SMD-2MM" value="None">
+<part name="J1" library="NVSL" deviceset="BATTERY-CONN-RECEPTACLE" device="PH-SMD-2MM" value="">
 <attribute name="DIST1" value="DigiKey"/>
 <attribute name="DIST1PN" value="455-1749-2-ND"/>
 <attribute name="MFR" value="JST"/>
 <attribute name="MPN" value="S2B-PH-SM4-TB(LF)(SN)"/>
 </part>
-<part name="J2" library="NVSL" deviceset="BATTERY-CONN-RECEPTACLE" device="PH-SMD-2MM" value="None">
+<part name="J2" library="NVSL" deviceset="BATTERY-CONN-RECEPTACLE" device="PH-SMD-2MM" value="">
 <attribute name="DIST1" value="DigiKey"/>
 <attribute name="DIST1PN" value="455-1749-2-ND"/>
 <attribute name="MFR" value="JST"/>
 <attribute name="MPN" value="S2B-PH-SM4-TB(LF)(SN)"/>
 </part>
-<part name="SW1" library="NVSL" deviceset="PUSHBUTTON-SHIELD-GND_" device="CK_KMR211GLSR-TACTILE" value="None">
+<part name="SW1" library="NVSL" deviceset="PUSHBUTTON-SHIELD-GND_" device="CK_KMR211GLSR-TACTILE" value="">
 <attribute name="DIST1" value="DigiKey"/>
 <attribute name="DIST1PN" value="401-1426-1-ND"/>
 <attribute name="MFR" value="C&amp;K"/>
 <attribute name="MPN" value="KMR211GLFS"/>
 </part>
-<part name="FRAME9" library="frames" deviceset="FRAME_A_L" device="" value="None"/>
-<part name="FRAME8" library="frames" deviceset="FRAME_A_L" device="" value="None"/>
+<part name="FRAME9" library="frames" deviceset="FRAME_A_L" device="" value=""/>
+<part name="FRAME8" library="frames" deviceset="FRAME_A_L" device="" value=""/>
 <part name="D1A" library="KoalaDesign" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" value="&lt;0.36V"/>
-<part name="FRAME3" library="frames" deviceset="FRAME_A_L" device="" value="None"/>
-<part name="FRAME2" library="frames" deviceset="FRAME_A_L" device="" value="None"/>
+<part name="FRAME3" library="frames" deviceset="FRAME_A_L" device="" value=""/>
+<part name="FRAME2" library="frames" deviceset="FRAME_A_L" device="" value=""/>
 <part name="D4" library="KoalaDesign" deviceset="GENERIC-DIODE-ZENER_" device="" value="3.6V"/>
 <part name="D5" library="KoalaDesign" deviceset="GENERIC-DIODE-SCHOTTKY_" device="" value="&lt;0.36V"/>
-<part name="FRAME7" library="frames" deviceset="FRAME_A_L" device="" value="None"/>
-<part name="FRAME6" library="frames" deviceset="FRAME_A_L" device="" value="None"/>
-<part name="FRAME5" library="frames" deviceset="FRAME_A_L" device="" value="None"/>
-<part name="FRAME4" library="frames" deviceset="FRAME_A_L" device="" value="None"/>
+<part name="FRAME7" library="frames" deviceset="FRAME_A_L" device="" value=""/>
+<part name="FRAME6" library="frames" deviceset="FRAME_A_L" device="" value=""/>
+<part name="FRAME5" library="frames" deviceset="FRAME_A_L" device="" value=""/>
+<part name="FRAME4" library="frames" deviceset="FRAME_A_L" device="" value=""/>
 </parts>
 <sheets>
 <sheet>

@@ -202,6 +202,9 @@ def propagatePartToBoard(part, brd):
     :rtype: :code:`None`
 
     """
+    if part.find_package() is None:
+        raise Swoop.SwoopError("Can't find package for '{}'.".format(part.get_name()))
+
     n =(Swoop.Element().
         set_name(part.get_name()).
         set_library(part.get_library()).

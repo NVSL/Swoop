@@ -40,6 +40,7 @@ import copy
 import os
 import re
 import cPickle
+import argparse
 
 supportedVersions = ["6.5.0", "6.6.0", "7.0.0", "7.1.0", "7.2.0", "7.3.0"]
 
@@ -55,6 +56,17 @@ class EagleFormatError(Exception):
 def NotImplemented(s):
     raise NotImplementedError(s)
 
+class SetNoPickleAction(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        EagleFile.enablePickle = False
+class SetPickleAction(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        EagleFile.enablePickle = True
+
+def add_args_to_parser(parser):
+    parser.add_argument('--swoop:nopickle', nargs=0, action=SetNoPickleAction)
+    parser.add_argument('--swoop:pickle', nargs=0, action=SetPickleAction)
+    
 class SwoopError (Exception):
     """
     An Swoop-related error occurred.
@@ -177,16 +189,22 @@ class EagleFilePart(object):
         """
         raise NotImplementedError()
 
-    def check_sanity(self):
+    def check_sanity(self, visited_efps = None):
         """
         Perform a (recursive) sanity check on this :code:`EagleFilePart`
         
         :rtype: :code:`None`
         """
+        if visited_efps is None:
+            visited_efps = {}
+        
         for i in self.get_children():
+            if i in visited_efps:
+                raise SwoopError("Child visited twice. Original parent was {}.  This parent is {}".format(str(visited_efps[i]), str(self)))
+            visited_efps[i] = self
             if i.parent != self:
                 raise SwoopError("Parent pointer mismatch.  Child = " + str(i) + "; child.parent = " + str(i.parent) + "; Parent = " + str(self) )
-            i.check_sanity()
+            i.check_sanity(visited_efps)
 
     def with_type(self,t):
         """
@@ -268,6 +286,9 @@ def unparseByType(efp, attrType, v):
             else:
                 r = None
         elif attrType == "layer_string":
+            #if efp.get_file() is None:
+            #print efp.get_root()
+            #   print efp.get_name()
             r = str(efp.get_file().layer_name_to_number(v))
         else:
             raise SwoopError("Unknown attr type '" + attrType + "'")
@@ -705,6 +726,7 @@ class EagleFile(EagleFilePart):
     schematicFileType = None
     libraryFileType = None
     isRawSwoop = True
+    enablePickle = False # disable this because it shows no performance benefit.
     
     #{% for tag in tags %}
     def new_{{tag.classname}}(self):
@@ -800,7 +822,8 @@ class EagleFile(EagleFilePart):
             except Exception as e:
                 pass;#print e
 
-            if usePickle:
+
+            if usePickle and EagleFile.enablePickle:
                 ef = cPickle.load(open(filename + ".pickle"))
                 return ef
         
@@ -842,7 +865,7 @@ class EagleFile(EagleFilePart):
                 raise EagleFormatError("Eagle file opened as '" + str(filename) +"' is not one of " + str(supportedVersions) + ".  Chickening out.")
                 
         ef.check_sanity()
-        if cls.isRawSwoop:
+        if cls.isRawSwoop and EagleFile.enablePickle:
             cPickle.dump(ef, open(filename + ".pickle", "w"), cPickle.HIGHEST_PROTOCOL)
         return ef
 
@@ -1692,8 +1715,11 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
             n.add_{{l.accessorName}}(x)
         #{%endfor%}
         #{%for s in tag.singletons %}
-        if n.{{s.name}} is not None:
-            n.{{s.name}} = self.{{s.name}}.clone()
+        n.{{s.name}} = None
+        if self.{{s.name}} is not None:
+            n.set_{{s.accessorName}}(self.{{s.name}}.clone())
+        else:
+            n.set_{{s.accessorName}}(None)
         #{%endfor%}
         n.parent = None
         return n
@@ -2062,7 +2088,8 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         if self.{{l.name}} is not None:
             self.{{l.name}}.parent = None
         self.{{l.name}} = s
-        s.parent = self
+        if s is not None:
+            s.parent = self
         return self
 
     def get_{{l.accessorName}}(self):
@@ -2091,6 +2118,12 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         #{%for m in tag.maps%}
         r = r + self.{{m.name}}.values()
         #{%endfor%}
+
+        #{%for s in tag.singletons%}
+        if self.{{s.name}} is not None:
+            r = r + [self.{{s.name}}]
+        #{%endfor%}
+
         return r
 
     def remove_child(self, efp):
@@ -2131,8 +2164,8 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         #{%endfor%}
 
     #{%if tag.has_maps() %}
-    def check_sanity(self):
-        {{tag.baseclass}}.check_sanity(self)
+    def check_sanity(self, visited_efps = None):
+        {{tag.baseclass}}.check_sanity(self, visited_efps)
 
         # Check whether keys in our maps match the keys in our children
         #{% for m in tag.maps %}
@@ -2141,6 +2174,15 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
                 raise SwoopError("Child's {{m.mapkey}} ('{}') doesn't match key in parent's map ('{}')".format(self.{{m.name}}[k].get_{{m.mapkey}}(),k))
         #{% endfor %}
     #{%endif%}
+
+    def __str__(self):
+        r = "["+repr(self)+" "
+        #{%for a in tag.attrs %}
+        r = r + "{{a.name}}:" + str(self.get_{{a.accessorName}}()) + " "
+        #{%endfor%}
+        r = r + "]"
+        return r
+            
     def dump(self, indent="", increment="   "):
         """
         Recursive debug dump.
@@ -2193,7 +2235,7 @@ class Part (Base_Part):
     #     else:
     #         return EagleFilePart.is_child(self,f)
 
-    def check_sanity(self):
+    def check_sanity(self, visited_efps = None):
         #assert self.get_device() is not None
 
         try:
@@ -2211,7 +2253,7 @@ class Part (Base_Part):
         except Exception as e:
             raise SwoopError("Device '" + self.find_library().name + ":" + self.find_deviceset().name + ":" + self.device + "' missing for '" + str(self.name) + "'")
         
-        EagleFilePart.check_sanity(self)
+        Base_Part.check_sanity(self, visited_efps)
         
          
     def find_library(self):
@@ -2381,7 +2423,7 @@ class LibraryFile(Base_LibraryFile):
         Loads a Library file from an ElementTree.Element representation.
         """
         r = cls()
-        r. _init_from_et(et, parent)
+        r._init_from_et(et, parent)
         if r.get_library().name is None:
             r.get_library().set_name(os.path.basename(filename)[:-4])
         return r

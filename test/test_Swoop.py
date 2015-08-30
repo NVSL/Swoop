@@ -224,6 +224,15 @@ class TestSwoop(unittest.TestCase):
         a = Swoop.EagleFile.from_file(os.path.join(self.me, "inputs/Trinket_Pro_default_SMD_parts_power_breakout.koala.sch"))
         a.write(os.path.join(self.tmpdir, "a.sch"))
 
+    def test_Clone(self):
+        a = Swoop.EagleFile.from_file(os.path.join(self.me, "inputs/Trinket_Pro_default_SMD_parts_power_breakout.koala.sch"))
+        a.clone()
+        a.write("foo.sch")
+
+        for a in [self.brd, self.sch, self.lbr]:
+            b = a.clone()
+            b.write("/dev/null")
+        
     def tearDown(self):
         # Remove self.tmpdir
         try:

@@ -8,30 +8,24 @@
     </settings>
     <grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
     <layers>
-      <layer number="100" name="tFaceplateCover" color="11" fill="1" visible="yes" active="yes"/>
-      <layer number="101" name="bFaceplateCover" color="11" fill="1" visible="yes" active="yes"/>
+      <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
+      <layer number="2" name="Route2" color="1" fill="3" visible="no" active="yes"/>
+      <layer number="3" name="Route3" color="4" fill="3" visible="no" active="yes"/>
+      <layer number="4" name="Route4" color="1" fill="4" visible="no" active="yes"/>
+      <layer number="5" name="Route5" color="4" fill="4" visible="no" active="yes"/>
+      <layer number="6" name="Route6" color="1" fill="8" visible="no" active="yes"/>
+      <layer number="7" name="Route7" color="4" fill="8" visible="no" active="yes"/>
+      <layer number="8" name="Route8" color="1" fill="2" visible="no" active="yes"/>
+      <layer number="9" name="Route9" color="4" fill="2" visible="no" active="yes"/>
       <layer number="10" name="Route10" color="1" fill="7" visible="no" active="yes"/>
-      <layer number="114" name="Unresolved" color="12" fill="1" visible="yes" active="yes"/>
-      <layer number="115" name="Resolved" color="10" fill="1" visible="yes" active="yes"/>
-      <layer number="116" name="Generic" color="9" fill="1" visible="yes" active="yes"/>
       <layer number="11" name="Route11" color="4" fill="7" visible="no" active="yes"/>
       <layer number="13" name="Route13" color="4" fill="5" visible="no" active="yes"/>
       <layer number="14" name="Route14" color="1" fill="6" visible="no" active="yes"/>
-      <layer number="150" name="tFaceplate" color="11" fill="1" visible="yes" active="yes"/>
-      <layer number="151" name="bFaceplate" color="11" fill="1" visible="yes" active="yes"/>
       <layer number="15" name="Route15" color="4" fill="6" visible="no" active="yes"/>
-      <layer number="160" name="tMountFaceplate" color="11" fill="1" visible="no" active="yes"/>
-      <layer number="161" name="bMountFaceplate" color="11" fill="1" visible="no" active="yes"/>
-      <layer number="162" name="tCopperArt" color="11" fill="1" visible="no" active="yes"/>
-      <layer number="163" name="bCopperArt" color="11" fill="1" visible="no" active="yes"/>
-      <layer number="164" name="tRubout" color="14" fill="3" visible="yes" active="yes"/>
-      <layer number="165" name="bRubout" color="13" fill="3" visible="yes" active="yes"/>
-      <layer number="167" name="Fiducials" color="13" fill="1" visible="yes" active="yes"/>
       <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="yes"/>
       <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
       <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
       <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
-      <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
       <layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
       <layer number="21" name="tPlace" color="7" fill="1" visible="no" active="no"/>
       <layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
@@ -42,7 +36,6 @@
       <layer number="27" name="tValues" color="7" fill="1" visible="no" active="no"/>
       <layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
       <layer number="29" name="tStop" color="7" fill="3" visible="no" active="no"/>
-      <layer number="2" name="Route2" color="1" fill="3" visible="no" active="yes"/>
       <layer number="30" name="bStop" color="7" fill="6" visible="yes" active="yes"/>
       <layer number="31" name="tCream" color="11" fill="1" visible="yes" active="yes"/>
       <layer number="32" name="bCream" color="7" fill="5" visible="no" active="yes"/>
@@ -53,7 +46,6 @@
       <layer number="37" name="tTest" color="7" fill="1" visible="no" active="yes"/>
       <layer number="38" name="bTest" color="7" fill="1" visible="yes" active="yes"/>
       <layer number="39" name="tKeepout" color="4" fill="11" visible="no" active="no"/>
-      <layer number="3" name="Route3" color="4" fill="3" visible="no" active="yes"/>
       <layer number="40" name="bKeepout" color="5" fill="1" visible="yes" active="yes"/>
       <layer number="41" name="tRestrict" color="4" fill="10" visible="yes" active="yes"/>
       <layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
@@ -64,23 +56,31 @@
       <layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
       <layer number="48" name="Document" color="7" fill="1" visible="no" active="yes"/>
       <layer number="49" name="Reference" color="7" fill="1" visible="no" active="yes"/>
-      <layer number="4" name="Route4" color="1" fill="4" visible="no" active="yes"/>
       <layer number="51" name="tDocu" color="7" fill="1" visible="no" active="no"/>
       <layer number="52" name="bDocu" color="7" fill="1" visible="no" active="no"/>
-      <layer number="5" name="Route5" color="4" fill="4" visible="no" active="yes"/>
-      <layer number="6" name="Route6" color="1" fill="8" visible="no" active="yes"/>
-      <layer number="7" name="Route7" color="4" fill="8" visible="no" active="yes"/>
-      <layer number="8" name="Route8" color="1" fill="2" visible="no" active="yes"/>
       <layer number="90" name="Modules" color="5" fill="1" visible="yes" active="yes"/>
       <layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
       <layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
-      <layer number="93" name="Pins" color="2" fill="1" visible="yes" active="yes"/>
+      <layer number="93" name="Pins" color="2" fill="1" visible="no" active="yes"/>
       <layer number="94" name="Symbols" color="4" fill="1" visible="yes" active="yes"/>
       <layer number="95" name="Names" color="7" fill="1" visible="yes" active="yes"/>
       <layer number="96" name="Values" color="7" fill="1" visible="yes" active="yes"/>
       <layer number="97" name="Info" color="7" fill="1" visible="yes" active="yes"/>
       <layer number="98" name="Guide" color="6" fill="1" visible="yes" active="yes"/>
-      <layer number="9" name="Route9" color="4" fill="2" visible="no" active="yes"/>
+      <layer number="100" name="tFaceplateCover" color="11" fill="1" visible="yes" active="yes"/>
+      <layer number="101" name="bFaceplateCover" color="11" fill="1" visible="yes" active="yes"/>
+      <layer number="114" name="Unresolved" color="12" fill="1" visible="yes" active="yes"/>
+      <layer number="115" name="Resolved" color="10" fill="1" visible="yes" active="yes"/>
+      <layer number="116" name="Generic" color="9" fill="1" visible="yes" active="yes"/>
+      <layer number="150" name="tFaceplate" color="11" fill="1" visible="yes" active="yes"/>
+      <layer number="151" name="bFaceplate" color="11" fill="1" visible="yes" active="yes"/>
+      <layer number="160" name="tMountFaceplate" color="11" fill="1" visible="no" active="yes"/>
+      <layer number="161" name="bMountFaceplate" color="11" fill="1" visible="no" active="yes"/>
+      <layer number="162" name="tCopperArt" color="11" fill="1" visible="no" active="yes"/>
+      <layer number="163" name="bCopperArt" color="11" fill="1" visible="no" active="yes"/>
+      <layer number="164" name="tRubout" color="14" fill="3" visible="yes" active="yes"/>
+      <layer number="165" name="bRubout" color="13" fill="3" visible="yes" active="yes"/>
+      <layer number="167" name="Fiducials" color="13" fill="1" visible="yes" active="yes"/>
     </layers>
     <schematic>
       <libraries>
@@ -24176,9 +24176,9 @@ by exp-lbrs.ulp</description>
                     <connect gate="G$1" pin="ADC7" pad="22"/>
                     <connect gate="G$1" pin="AREF" pad="20"/>
                     <connect gate="G$1" pin="AVCC" pad="18"/>
-                    <connect gate="G$1" pin="GND" pad="21"/>
                     <connect gate="G$1" pin="GND@1" pad="3"/>
                     <connect gate="G$1" pin="GND@2" pad="5"/>
+                    <connect gate="G$1" pin="GND" pad="21"/>
                     <connect gate="G$1" pin="PB0(ICP)" pad="12"/>
                     <connect gate="G$1" pin="PB1(OC1A)" pad="13"/>
                     <connect gate="G$1" pin="PB2(SS/OC1B)" pad="14"/>
@@ -24230,9 +24230,9 @@ by exp-lbrs.ulp</description>
                     <connect gate="G$1" pin="ADC7" pad="22"/>
                     <connect gate="G$1" pin="AREF" pad="20"/>
                     <connect gate="G$1" pin="AVCC" pad="18"/>
-                    <connect gate="G$1" pin="GND" pad="21"/>
                     <connect gate="G$1" pin="GND@1" pad="3"/>
                     <connect gate="G$1" pin="GND@2" pad="5"/>
+                    <connect gate="G$1" pin="GND" pad="21"/>
                     <connect gate="G$1" pin="PB0(ICP)" pad="12"/>
                     <connect gate="G$1" pin="PB1(OC1A)" pad="13"/>
                     <connect gate="G$1" pin="PB2(SS/OC1B)" pad="14"/>
@@ -25549,8 +25549,8 @@ by exp-lbrs.ulp</description>
                   <connects>
                     <connect gate="G$1" pin="10" pad="10"/>
                     <connect gate="G$1" pin="11" pad="11"/>
-                    <connect gate="G$1" pin="1" pad="1"/>
                     <connect gate="G$1" pin="12" pad="12"/>
+                    <connect gate="G$1" pin="1" pad="1"/>
                     <connect gate="G$1" pin="2" pad="2"/>
                     <connect gate="G$1" pin="3" pad="3"/>
                     <connect gate="G$1" pin="4" pad="4"/>
@@ -25587,9 +25587,9 @@ by exp-lbrs.ulp</description>
                   <connects>
                     <connect gate="G$1" pin="10" pad="10"/>
                     <connect gate="G$1" pin="11" pad="11"/>
-                    <connect gate="G$1" pin="1" pad="1"/>
                     <connect gate="G$1" pin="12" pad="12"/>
                     <connect gate="G$1" pin="13" pad="13"/>
+                    <connect gate="G$1" pin="1" pad="1"/>
                     <connect gate="G$1" pin="2" pad="2"/>
                     <connect gate="G$1" pin="3" pad="3"/>
                     <connect gate="G$1" pin="4" pad="4"/>
@@ -25626,10 +25626,10 @@ by exp-lbrs.ulp</description>
                   <connects>
                     <connect gate="G$1" pin="10" pad="10"/>
                     <connect gate="G$1" pin="11" pad="11"/>
-                    <connect gate="G$1" pin="1" pad="1"/>
                     <connect gate="G$1" pin="12" pad="12"/>
                     <connect gate="G$1" pin="13" pad="13"/>
                     <connect gate="G$1" pin="14" pad="14"/>
+                    <connect gate="G$1" pin="1" pad="1"/>
                     <connect gate="G$1" pin="2" pad="2"/>
                     <connect gate="G$1" pin="3" pad="3"/>
                     <connect gate="G$1" pin="4" pad="4"/>
@@ -25666,11 +25666,11 @@ by exp-lbrs.ulp</description>
                   <connects>
                     <connect gate="G$1" pin="10" pad="10"/>
                     <connect gate="G$1" pin="11" pad="11"/>
-                    <connect gate="G$1" pin="1" pad="1"/>
                     <connect gate="G$1" pin="12" pad="12"/>
                     <connect gate="G$1" pin="13" pad="13"/>
                     <connect gate="G$1" pin="14" pad="14"/>
                     <connect gate="G$1" pin="15" pad="15"/>
+                    <connect gate="G$1" pin="1" pad="1"/>
                     <connect gate="G$1" pin="2" pad="2"/>
                     <connect gate="G$1" pin="3" pad="3"/>
                     <connect gate="G$1" pin="4" pad="4"/>
@@ -25707,12 +25707,12 @@ by exp-lbrs.ulp</description>
                   <connects>
                     <connect gate="G$1" pin="10" pad="10"/>
                     <connect gate="G$1" pin="11" pad="11"/>
-                    <connect gate="G$1" pin="1" pad="1"/>
                     <connect gate="G$1" pin="12" pad="12"/>
                     <connect gate="G$1" pin="13" pad="13"/>
                     <connect gate="G$1" pin="14" pad="14"/>
                     <connect gate="G$1" pin="15" pad="15"/>
                     <connect gate="G$1" pin="16" pad="16"/>
+                    <connect gate="G$1" pin="1" pad="1"/>
                     <connect gate="G$1" pin="2" pad="2"/>
                     <connect gate="G$1" pin="3" pad="3"/>
                     <connect gate="G$1" pin="4" pad="4"/>
@@ -25836,7 +25836,6 @@ by exp-lbrs.ulp</description>
                   <connects>
                     <connect gate="G$1" pin="10" pad="10"/>
                     <connect gate="G$1" pin="11" pad="11"/>
-                    <connect gate="G$1" pin="1" pad="1"/>
                     <connect gate="G$1" pin="12" pad="12"/>
                     <connect gate="G$1" pin="13" pad="13"/>
                     <connect gate="G$1" pin="14" pad="14"/>
@@ -25845,10 +25844,10 @@ by exp-lbrs.ulp</description>
                     <connect gate="G$1" pin="17" pad="17"/>
                     <connect gate="G$1" pin="18" pad="18"/>
                     <connect gate="G$1" pin="19" pad="19"/>
+                    <connect gate="G$1" pin="1" pad="1"/>
                     <connect gate="G$1" pin="20" pad="20"/>
                     <connect gate="G$1" pin="21" pad="21"/>
                     <connect gate="G$1" pin="22" pad="22"/>
-                    <connect gate="G$1" pin="2" pad="2"/>
                     <connect gate="G$1" pin="23" pad="23"/>
                     <connect gate="G$1" pin="24" pad="24"/>
                     <connect gate="G$1" pin="25" pad="25"/>
@@ -25856,28 +25855,29 @@ by exp-lbrs.ulp</description>
                     <connect gate="G$1" pin="27" pad="27"/>
                     <connect gate="G$1" pin="28" pad="28"/>
                     <connect gate="G$1" pin="29" pad="29"/>
+                    <connect gate="G$1" pin="2" pad="2"/>
                     <connect gate="G$1" pin="30" pad="30"/>
                     <connect gate="G$1" pin="31" pad="31"/>
                     <connect gate="G$1" pin="32" pad="32"/>
                     <connect gate="G$1" pin="33" pad="33"/>
-                    <connect gate="G$1" pin="3" pad="3"/>
                     <connect gate="G$1" pin="34" pad="34"/>
                     <connect gate="G$1" pin="35" pad="35"/>
                     <connect gate="G$1" pin="36" pad="36"/>
                     <connect gate="G$1" pin="37" pad="37"/>
                     <connect gate="G$1" pin="38" pad="38"/>
                     <connect gate="G$1" pin="39" pad="39"/>
+                    <connect gate="G$1" pin="3" pad="3"/>
                     <connect gate="G$1" pin="40" pad="40"/>
                     <connect gate="G$1" pin="41" pad="41"/>
                     <connect gate="G$1" pin="42" pad="42"/>
                     <connect gate="G$1" pin="43" pad="43"/>
                     <connect gate="G$1" pin="44" pad="44"/>
-                    <connect gate="G$1" pin="4" pad="4"/>
                     <connect gate="G$1" pin="45" pad="45"/>
                     <connect gate="G$1" pin="46" pad="46"/>
                     <connect gate="G$1" pin="47" pad="47"/>
                     <connect gate="G$1" pin="48" pad="48"/>
                     <connect gate="G$1" pin="49" pad="49"/>
+                    <connect gate="G$1" pin="4" pad="4"/>
                     <connect gate="G$1" pin="50" pad="50"/>
                     <connect gate="G$1" pin="5" pad="5"/>
                     <connect gate="G$1" pin="6" pad="6"/>
@@ -26104,8 +26104,8 @@ by exp-lbrs.ulp</description>
                   <connects>
                     <connect gate="G$1" pin="10" pad="10"/>
                     <connect gate="G$1" pin="11" pad="11"/>
-                    <connect gate="G$1" pin="1" pad="1"/>
                     <connect gate="G$1" pin="12" pad="12"/>
+                    <connect gate="G$1" pin="1" pad="1"/>
                     <connect gate="G$1" pin="2" pad="2"/>
                     <connect gate="G$1" pin="3" pad="3"/>
                     <connect gate="G$1" pin="4" pad="4"/>

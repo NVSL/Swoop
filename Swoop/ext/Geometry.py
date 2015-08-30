@@ -418,6 +418,7 @@ class BoardFile(Swoop.From):
             rect = via.get_bounding_box()
             self._elements.append(GeoElem(Iso_rectangle_2(*rect.bounds_tuple), via))
 
+
         #Stuff in <plain>
         for elem in self.get_plain_elements():
             cgal_elem = elem._get_cgal_elem()
@@ -452,7 +453,7 @@ class BoardFile(Swoop.From):
                 if angle['mirrored']:
                     package_elem.mirror()
                 package_elem.move(origin)
-
+        
             geom = GeoElem(Polygon_2(poly), elem)
             self._elements.append(geom)
             elem._extension_geo_elem = geom
@@ -463,7 +464,6 @@ class BoardFile(Swoop.From):
             with_layer("Dimension").\
             get_bounding_box().\
             reduce(Rectangle.union)
-
 
     def draw_rect(self, rectangle, layer):
         swoop_rect = WithMixin.class_map["rectangle"]()

@@ -1,4 +1,5 @@
 from setuptools import setup
+from setuptools import Extension
 from setuptools.command.build_py import build_py
 import os
 from codecs import open
@@ -8,6 +9,8 @@ from Cython.Build import cythonize
 #import argparse
 #parser = argparse.ArgumentParser(description="Fix eagle files to make them dtd conforming")
 #parser.add_argument("--dtd", required=True,  type=str, nargs=1, dest='dtd', help="Eagle dtd to use.")
+
+
 
 class BuildSwoop(build_py):
 
@@ -20,6 +23,7 @@ class BuildSwoop(build_py):
         dtd.write('"""')
         dtd.close()
         Swoop.GenerateSwoop.main("Swoop/Swoop.py")
+        #Swoop.GenerateSwoop.main("Swoop/Swoop.pyx")
         build_py.run(self)
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -61,7 +65,8 @@ setup(name='Swoop',
           "" : ["*.rst"],
           "Swoop" : ["Swoop/Swoop.py.jinja", "Swoop/eagle.dtd.diff", "Swoop/eagle.dtd"]
       },
-      #ext_modules = cythonize("Swoop/Swoop.py"),
+      
+      #ext_modules = cythonize([Extension("*", ["Swoop/Swoop.pyx"], extra_compile_args=["-O4"])]),
       install_requires=["lxml>=3.4.2",  "Sphinx>=1.3.1", "numpy"],
       setup_requires=["Jinja2>=2.7.3"],
       include_package_data=True,

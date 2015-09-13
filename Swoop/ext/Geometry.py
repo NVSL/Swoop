@@ -188,7 +188,7 @@ class GeometryMixin(object):
     def get_bounding_box(self):
         """
         Get the minimum bounding box enclosing this list of primitive elements
-        More accurate than self_get_cgal_elem().bbox(), because it accounts for segment width
+        More accurate than self._get_cgal_elem().bbox(), because it accounts for segment width
         """
         def max_min(vertex_list, width=None):
             max = np.maximum.reduce(vertex_list)
@@ -218,7 +218,7 @@ class GeometryMixin(object):
             return Rectangle.from_cgal_bbox(bbox, check=False)
         elif isinstance(self, Swoop.Via) or isinstance(self, Swoop.Pad):
             #These assume default settings
-            #Unfortunately, DRC can change the sizes of things after import
+            #Unfortunately, restring can change the sizes of things after import
 
             center = self.get_point()
             if self.get_diameter() is None:
@@ -377,10 +377,12 @@ class GeoElem(object):
 
 # Primitive drawing elements: Pad, Smd, Via, Rectangle, Wire, Polygon, Text?
 
+# And now some monkey patching
 
 def get_package_moved(self):
     return self.package_moved
 Swoop.Element.get_package_moved = get_package_moved
+
 
 WithMixin = Swoop.Mixin(GeometryMixin, "geo")
 
@@ -471,6 +473,28 @@ class BoardFile(Swoop.From):
         swoop_rect.set_point(rectangle.bounds[1], 1)
         swoop_rect.set_layer(layer)
         self.add_plain_element(swoop_rect)
+
+    def draw_circle(self, center, radius, layer, width=None):
+        """
+        Draw a circle. Width of None means it's a filled in circle
+        :param center: center (numpy point)
+        :param radius:
+        :param layer: Swoop layer
+        :param width:
+        :return:
+        """
+        swoop_circ = WithMixin.class_map["circle"]()
+        swoop_circ.set_point(center)
+        swoop_circ.set_layer(layer)
+        if width is None:
+            #Circle is filled in
+            swoop_circ.set_width(radius)
+            swoop_circ.set_radius(radius/2.0)
+        else:
+            swoop_circ.set_width(width)
+            swoop_circ.set_radius(radius)
+        self.add_plain_element(swoop_circ)
+
 
     def get_overlapping(self, rectangle_or_xmin, ymin=None, xmax=None, ymax=None):
         if isinstance(rectangle_or_xmin, Rectangle):

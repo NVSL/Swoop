@@ -1,7 +1,7 @@
 # coding=utf-8
 
 import Swoop
-from Rectangle import Rectangle
+from Dingo.Rectangle import Rectangle
 from CGAL.CGAL_Kernel import \
     Segment_2,\
     Polygon_2,\
@@ -21,6 +21,16 @@ def np2cgal(numpy_point):
 
 def cgal2np(cgal_point):
     return np.array([cgal_point.x(), cgal_point.y()])
+
+def distance(p1, p2):
+    """
+    Distnace between 2 numpy points
+    :param p1:
+    :param p2:
+    :return:
+    """
+    return np.linalg.norm(p1 - p2)
+
 
 def isinstance_any(object, list):
     for c in list:
@@ -101,6 +111,12 @@ class GeometryMixin(object):
                 i = str(i + 1)
                 return np.array([getattr(self, "get_x" + i)(), getattr(self, "get_y" + i)()])
 
+    def get_points(self):
+        """
+        Just get all the points
+        """
+        for i in xrange(self.num_points()):
+            yield self.get_point(i)
 
     def set_point(self, pt, i=0):
         """

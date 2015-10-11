@@ -2,13 +2,6 @@
 
 import Swoop
 from Dingo.Rectangle import Rectangle
-from CGAL.CGAL_Kernel import \
-    Segment_2,\
-    Polygon_2,\
-    Point_2,\
-    Bbox_2,\
-    Iso_rectangle_2,\
-    do_intersect
 import numpy as np
 import Dingo.Component
 import math
@@ -17,6 +10,13 @@ from math import pi
 
 
 def np2cgal(numpy_point):
+    from CGAL.CGAL_Kernel import \
+        Segment_2,\
+        Polygon_2,\
+        Point_2,\
+        Bbox_2,\
+        Iso_rectangle_2,\
+        do_intersect
     return Point_2(numpy_point[0], numpy_point[1])
 
 def cgal2np(cgal_point):
@@ -87,6 +87,25 @@ def arc_bounding_box(p1, p2, theta):
                                       center[1] + arc_radius*math.sin(test_angle)]))
     return Rectangle.from_vertices(vertices)
 
+# Store all information about translation/rotation/mirroring in this class
+class Transform(object):
+    def __init__(self, rotation=0, translation=None, mirrored=False):
+        self._rotation = rotation
+        if translation is None:
+            self._translation = np.zeros(2)
+        else:
+            self._translation = translation
+        self._mirrored = mirrored
+
+
+    @property
+    def rotation(self):
+        return self._rotation
+
+    @rotation.setter
+    def rotation(self, r):
+        self._rotation = r
+
 class GeometryMixin(object):
     def get_mirrored(self):
         """
@@ -117,6 +136,14 @@ class GeometryMixin(object):
         """
         for i in xrange(self.num_points()):
             yield self.get_point(i)
+
+    def get_transform(self):
+        """
+        Get the transform object that would be required to move this object to where it is from the origin
+        """
+        if self.num_points() == 1:
+            t = Transform()
+
 
     def set_point(self, pt, i=0):
         """
@@ -156,6 +183,13 @@ class GeometryMixin(object):
         Get a cgal geometry element representing this object, if any
         Width is only considered for Wire
         """
+        from CGAL.CGAL_Kernel import \
+            Segment_2,\
+            Polygon_2,\
+            Point_2,\
+            Bbox_2,\
+            Iso_rectangle_2,\
+            do_intersect
         if isinstance(self, Swoop.Rectangle):
             rect = Rectangle(self.get_point(0), self.get_point(1), check=False)
             verts = list(rect.vertices_ccw())
@@ -281,7 +315,7 @@ class GeometryMixin(object):
             else:
                 rect = Rectangle(center - radius, center + radius)
                 if self.get_shape()=='square':
-                    rect.rotate(angle,origin=center)
+                    rect.rotate_resize(angle,origin=center)
                 return rect
         elif isinstance(self, Swoop.Smd):
             center = self.get_point()
@@ -365,6 +399,13 @@ class GeoElem(object):
     A CGAL shape and a Swoop object
     """
     def __init__(self, cgal_elem, swoop_elem):
+        from CGAL.CGAL_Kernel import \
+            Segment_2,\
+            Polygon_2,\
+            Point_2,\
+            Bbox_2,\
+            Iso_rectangle_2,\
+            do_intersect
         self.cgal_elem = cgal_elem
         self.swoop_elem = swoop_elem
         bbox = cgal_elem.bbox()
@@ -374,12 +415,20 @@ class GeoElem(object):
         self.iso_rect = Iso_rectangle_2(bbox.xmin(), bbox.ymin(), bbox.xmax(), bbox.ymax())
 
     def overlaps(self, iso_rect_query):
+
         """
         Does this element overlap the bounding box?
 
         :param bbox_query: CGAL bounding box to check against
         :return: Bool
         """
+        from CGAL.CGAL_Kernel import \
+            Segment_2,\
+            Polygon_2,\
+            Point_2,\
+            Bbox_2,\
+            Iso_rectangle_2,\
+            do_intersect
         if isinstance(self.cgal_elem, Polygon_2):
             #do_intersect does not work with Polygon_2 for some reason
             #Check bounding box intersection first, it's faster
@@ -399,14 +448,17 @@ def get_package_moved(self):
     return self.package_moved
 Swoop.Element.get_package_moved = get_package_moved
 
-
 WithMixin = Swoop.Mixin(GeometryMixin, "geo")
 
 class BoardFile(Swoop.From):
     """
     A wrapper around Swoop.BoardFile that adds some geometric methods
+
+    Requires CGAL
     """
+
     def __init__(self, filename):
+
         """
         Completely overrides the parent constructor
 
@@ -417,6 +469,14 @@ class BoardFile(Swoop.From):
         :param filename: .brd file to create self from
         :return:
         """
+        from CGAL.CGAL_Kernel import \
+            Segment_2,\
+            Polygon_2,\
+            Point_2,\
+            Bbox_2,\
+            Iso_rectangle_2,\
+            do_intersect
+
         # From needs this in order to work
         # Call from_file in Swoop and get a Swoop.BoardFile
         super(BoardFile, self).__init__(WithMixin.from_file(filename))
@@ -471,7 +531,7 @@ class BoardFile(Swoop.From):
                 if angle['mirrored']:
                     package_elem.mirror()
                 package_elem.move(origin)
-        
+
             geom = GeoElem(Polygon_2(poly), elem)
             self._elements.append(geom)
             elem._extension_geo_elem = geom
@@ -511,8 +571,17 @@ class BoardFile(Swoop.From):
             swoop_circ.set_radius(radius)
         self.add_plain_element(swoop_circ)
 
+    def draw_text(self, origin, text):
+        text = WithMixin.class_map["text"]()
 
     def get_overlapping(self, rectangle_or_xmin, ymin=None, xmax=None, ymax=None):
+        from CGAL.CGAL_Kernel import \
+            Segment_2,\
+            Polygon_2,\
+            Point_2,\
+            Bbox_2,\
+            Iso_rectangle_2,\
+            do_intersect
         if isinstance(rectangle_or_xmin, Rectangle):
             query = Iso_rectangle_2(*rectangle_or_xmin.bounds_tuple)
         else:
@@ -537,13 +606,9 @@ class BoardFile(Swoop.From):
                 return elem.cgal_elem
 
 
-
 def from_file(filename):
     if filename.endswith(".brd"):
         return BoardFile(filename)
     else:
         return Swoop.From(WithMixin.from_file(filename))
-
-
-
 

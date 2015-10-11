@@ -4,22 +4,16 @@ from os.path import join
 import Swoop
 import math
 
-import numpy as np
-import numpy.testing as npt
-import CGAL.CGAL_Kernel
-import Swoop.ext.Geometry as SwoopGeom
-from Swoop.ext.Shapes import Rectangle
-
 HAVE_DEPENDENCIES = True
-# try:
-#     import numpy as np
-#     import numpy.testing as npt
-#     import CGAL.CGAL_Kernel
-#     import Swoop.ext.Geometry as SwoopGeom
-#     from Swoop.ext.Shapes import Rectangle
-# except ImportError as e:
-#     print e
-#     HAVE_DEPENDENCIES = False
+try:
+    import numpy as np
+    import numpy.testing as npt
+    import CGAL.CGAL_Kernel
+    import Swoop.ext.Geometry as SwoopGeom
+    from Swoop.ext.Shapes import Rectangle
+except ImportError as e:
+    print e
+    HAVE_DEPENDENCIES = False
 
 
 def get_inp(filename):
@@ -120,6 +114,8 @@ class TestBoundingBoxes(unittest.TestCase):
         self.assertEqual(len(results.with_type(Swoop.Wire)), 4)
 
 
+class TestShapeQueries(unittest.TestCase):
+    pass
 
 
 

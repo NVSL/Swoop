@@ -4,15 +4,22 @@ from os.path import join
 import Swoop
 import math
 
+import numpy as np
+import numpy.testing as npt
+import CGAL.CGAL_Kernel
+import Swoop.ext.Geometry as SwoopGeom
+from Swoop.ext.Shapes import Rectangle
+
 HAVE_DEPENDENCIES = True
-try:
-    import numpy as np
-    import numpy.testing as npt
-    import CGAL.CGAL_Kernel
-    import Swoop.ext.Geometry as SwoopGeom
-    from Rectangle import Rectangle
-except ImportError:
-    HAVE_DEPENDENCIES = False
+# try:
+#     import numpy as np
+#     import numpy.testing as npt
+#     import CGAL.CGAL_Kernel
+#     import Swoop.ext.Geometry as SwoopGeom
+#     from Swoop.ext.Shapes import Rectangle
+# except ImportError as e:
+#     print e
+#     HAVE_DEPENDENCIES = False
 
 
 def get_inp(filename):
@@ -21,7 +28,7 @@ def get_inp(filename):
 def eagle_code(vert_list):
     return "poly " + " ".join(["({0} {1})".format(v[0],v[1]) for v in vert_list])
 
-@unittest.skipUnless(HAVE_DEPENDENCIES, "Need numpy, CGAL python bindings, and Dingo's rectangle to run this")
+# @unittest.skipUnless(HAVE_DEPENDENCIES, "Need numpy, CGAL python bindings, and Dingo's rectangle to run this")
 class TestBoundingBoxes(unittest.TestCase):
 
     def test_correct_shape(self):
@@ -92,23 +99,6 @@ class TestBoundingBoxes(unittest.TestCase):
         rect = board.get_element("ARDUINO").get_package_moved().\
             get_children().get_bounding_box().reduce(Rectangle.union)
         self.assertEqual(rect, Rectangle( (65.44012, 15.95000), (91.43026, 66.66429)))
-
-        #
-        # arduino_package = board.get_element("ARDUINO").get_package_moved()[0]
-        # origin = board.get_element("ARDUINO").get_point()[0]
-        # for c in arduino_package.get_children():
-        #     c.move(-origin)
-        # arduino_package.set_name("TEST-PACKAGE")
-        # lib = board.get_library("BOBs")[0]
-        # lib.add_package(arduino_package)
-        # elem = SwoopGeom.WithMixin.class_map["element"]()
-        # elem.set_name("OUTPUT")
-        # elem.set_library("BOBs")
-        # elem.set_package("TEST-PACKAGE")
-        # elem.set_x(0)
-        # elem.set_y(0)
-        # board.add_element(elem)
-        # board.write("out.brd")
 
     def test_bbox_after_filter(self):
         board = SwoopGeom.from_file(get_inp("fp_bbox.brd"))

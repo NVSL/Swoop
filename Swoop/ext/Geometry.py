@@ -1,13 +1,27 @@
 # coding=utf-8
 
 import Swoop
-from Dingo.Rectangle import Rectangle
+from Swoop.ext.Shapes import Rectangle
 import numpy as np
-import Dingo.Component
 import math
 from math import pi
+import re
 
+#Make sense out of Eagle's angle attribute and return a hash
+def angle_match(angle_str):
+    match = re.match("(M?)R(-?\d+)",angle_str)
+    if match is None:
+        return None
+    angle = int(match.group(2))
+    return {'angle': angle, 'mirrored': match.group(1)=='M'}
 
+def angle_match_to_str(angle):
+    angle_str=""
+    if angle['mirrored']:
+        angle_str += "M"
+    angle_str += "R"
+    angle_str += str(angle['angle'])
+    return angle_str
 
 def np2cgal(numpy_point):
     from CGAL.CGAL_Kernel import \
@@ -194,7 +208,7 @@ class GeometryMixin(object):
             rect = Rectangle(self.get_point(0), self.get_point(1), check=False)
             verts = list(rect.vertices_ccw())
             if self.get_rot() is not None:
-                angle_obj = Dingo.Component.angle_match(self.get_rot())
+                angle_obj = angle_match(self.get_rot())
                 angle = math.radians(angle_obj['angle'])
                 if angle_obj['mirrored']:
                     angle *= -1
@@ -283,7 +297,7 @@ class GeometryMixin(object):
 
             angle = 0.0
             if isinstance(self, Swoop.Pad) and self.get_rot() is not None:
-                angle_m = Dingo.Component.angle_match(self.get_rot())
+                angle_m = angle_match(self.get_rot())
                 angle = angle_m['angle']
                 if angle_m['mirrored']:
                     angle = 180.0 - angle
@@ -321,7 +335,7 @@ class GeometryMixin(object):
             center = self.get_point()
             radius = np.array([self.get_dx(), self.get_dy()]) / 2.0
             if self.get_rot() is not None:
-                angle = Dingo.Component.angle_match(self.get_rot())
+                angle = angle_match(self.get_rot())
                 radius = abs(Rectangle.rotation_matrix(math.radians(angle['angle'])).dot(radius))
             return Rectangle(center - radius, center + radius)
         elif isinstance(self, Swoop.Circle):
@@ -372,9 +386,9 @@ class GeometryMixin(object):
                 self.set_point( rot_mtx.dot(self.get_point(i)), i)
         if hasattr(self, "get_rot"):
             rot = self.get_rot() or "R0"
-            angle = Dingo.Component.angle_match(rot)
+            angle = angle_match(rot)
             angle['angle'] = (angle['angle'] + degrees) % 360
-            self.set_rot(Dingo.Component.angle_match_to_str(angle))
+            self.set_rot(angle_match_to_str(angle))
 
     def mirror(self):
         """
@@ -387,9 +401,9 @@ class GeometryMixin(object):
 
         if hasattr(self, "get_rot"):
             rot = self.get_rot() or "R0"
-            angle = Dingo.Component.angle_match(rot)
+            angle = angle_match(rot)
             angle['mirrored'] = not angle['mirrored']
-            self.set_rot(Dingo.Component.angle_match_to_str(angle))
+            self.set_rot(angle_match_to_str(angle))
         if hasattr(self, "get_curve") and self.get_curve() is not None:
             self.set_curve( -self.get_curve() )
 
@@ -511,7 +525,7 @@ class BoardFile(Swoop.From):
             rect = package.get_children().get_bounding_box().reduce(Rectangle.union)
 
             if elem.get_rot() is not None:
-                angle = Dingo.Component.angle_match(elem.get_rot())
+                angle = angle_match(elem.get_rot())
             else:
                 angle = {'angle': 0, 'mirrored': False}
             rotmatx = Rectangle.rotation_matrix(math.radians(angle['angle']))

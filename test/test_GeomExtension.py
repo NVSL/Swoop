@@ -10,7 +10,7 @@ try:
     import numpy.testing as npt
     import CGAL.CGAL_Kernel
     import Swoop.ext.Geometry as SwoopGeom
-    from Swoop.ext.Shapes import Rectangle
+    from Swoop.ext.Shapes import Rectangle, LineSegment, RotatedRectangle
 except ImportError as e:
     print e
     HAVE_DEPENDENCIES = False
@@ -94,6 +94,21 @@ class TestBoundingBoxes(unittest.TestCase):
             get_children().get_bounding_box().reduce(Rectangle.union)
         self.assertEqual(rect, Rectangle( (65.44012, 15.95000), (91.43026, 66.66429)))
 
+    def test_bbox_other(self):
+        brd = SwoopGeom.WithMixin.from_file(get_inp("loud-flashy-driver.postroute.brd"))
+        transform = brd.get_element("L_2_DRIVE").get_transform()
+        bbox = Swoop.From(brd).get_element("L_2_DRIVE").\
+            find_package().get_children().\
+            filtered_by(lambda c: hasattr(c,"get_layer") and c.get_layer()=="tKeepout").\
+            get_bounding_box().reduce(Rectangle.union)
+        bbox = transform.apply(bbox)
+        self.assertEqual(bbox, Rectangle((-15.2535, 76.5065), (34.4035, 127.4335)).rotate(180,False))
+
+        bbox2 = brd.get_element("R_2_DRIVE").find_package().get_bounding_box("tKeepout")
+        bbox2 = brd.get_element("R_2_DRIVE").get_transform().apply(bbox2)
+        self.assertEqual(bbox2, Rectangle((66.5417619588, 70.8907803168), (116.198761959, 121.817780317)).rotate(200,False))
+
+
     def test_bbox_after_filter(self):
         board = SwoopGeom.from_file(get_inp("fp_bbox.brd"))
         bbox = board.get_elements().get_package_moved().get_bounding_box()[0]
@@ -114,10 +129,101 @@ class TestBoundingBoxes(unittest.TestCase):
         self.assertEqual(len(results.with_type(Swoop.Wire)), 4)
 
 
+class TestFilteredBoundingBoxes(unittest.TestCase):
+    def test_equality(self):
+        r1 = RotatedRectangle(Rectangle((1,2), (3,4)), 120)
+        r2 = RotatedRectangle(Rectangle((1,2), (3,4)), 120)
+
+        self.assertEqual(r1, r2)
+        r2.rotate(10)
+        self.assertNotEqual(r1, r2)
+
+    def test_transform(self):
+        brd = Swoop.From(SwoopGeom.WithMixin.from_file(get_inp("loud-flashy-driver.postroute.brd")))
+        transform = brd.get_element("R_2_DRIVE").get_transform()[0]
+
+        self.assertEqual(transform.rotation, 200)
+        self.assertEqual(transform.mirrored, False)
+        npt.assert_allclose(transform.translation, np.array([123,93]))
+        bbox = brd.get_element("R_2_DRIVE").find_package().get_children().\
+            filtered_by(lambda p: hasattr(p,"get_layer") and p.get_layer()=="bKeepout").get_bounding_box().\
+            reduce(Rectangle.union)
+        bbox = transform.apply(bbox)
+        should_be = RotatedRectangle(Rectangle( (66.5280811531, 70.9283680217), (116.185081153, 121.855368022) ), 200, around_origin=False)
+        self.assertEqual(should_be, bbox)
+        # print bbox
+
+        # print bbox.eagle_code()
+
 class TestShapeQueries(unittest.TestCase):
-    pass
+    def test_segments(self):
+        l1 = LineSegment(np.array([0,0]), np.array([2,2]))
+        l2 = LineSegment(np.array([0,0]), np.array([3,-2]))
+        self.assertTrue(l1.overlaps(l2))
+        self.assertTrue(l2.overlaps(l1))
 
+        l2 = LineSegment(np.array([-1,-1]), np.array([3,3]))
+        self.assertTrue(l1.overlaps(l2))
+        self.assertTrue(l2.overlaps(l1))
 
+        l2 = LineSegment(np.array([-1,-2]), np.array([4,3]))
+        self.assertFalse(l1.overlaps(l2))
+        self.assertFalse(l2.overlaps(l1))
+
+        l2 = LineSegment(np.array([3,-1]), np.array([-1,3]))
+        self.assertTrue(l1.overlaps(l2))
+        self.assertTrue(l2.overlaps(l1))
+
+    def test_recs(self):
+        r1 = Rectangle( (-1,-1), (8,7) )
+        r2 = Rectangle((8.79, 2.144), (17.79, 11.144)).rotate(-10, around_origin=False)
+
+        self.assertFalse(r1.overlaps(r2))
+        self.assertFalse(r2.overlaps(r1))
+
+        r2 = Rectangle((8.5, 2.144), (17.5, 11.144)).rotate(-10, around_origin=False)
+        # edges=list(r2.edges())
+        # self.assertEqual(len(edges), 4)
+        # for e in edges:
+        #     print e.p1, e.p2
+
+        self.assertTrue(r1.overlaps(r2))
+        self.assertTrue(r2.overlaps(r1))
+
+        r = Rectangle((0.498, -12.082), (13.29, -0.124))
+        npt.assert_allclose(r.center(), np.array([ 6.894, -6.103]))
+        r1 = r.rotate(10, False)
+        npt.assert_allclose(r1.center(), np.array([ 6.894, -6.103]))
+        rcopy = r1.copy()
+        npt.assert_allclose(rcopy.center(), np.array([ 6.894, -6.103]))
+        rcopy = rcopy.rotate(-10, False)
+        npt.assert_allclose(rcopy.center(), np.array([ 6.894, -6.103]))
+
+        npt.assert_allclose(r1.center(), np.array([ 6.894, -6.103]))
+        r2 = Rectangle((0,-12), (13,0)).rotate(20, False)
+        self.assertTrue(r1.overlaps(r2))
+        npt.assert_allclose(r1.center(), np.array([ 6.894, -6.103]))
+        r2 = Rectangle((3,-9), (9,-5)).rotate(169, False)
+        self.assertTrue(r1.overlaps(r2))
+        r2 = Rectangle((13,-5), (19,-1)).rotate(169, False)
+        self.assertTrue(r1.overlaps(r2))
+        r2.move(np.array([1,0]))
+        self.assertFalse(r1.overlaps(r2))
+
+        r1 = Rectangle((3,-8), (18,-2)).rotate(0)
+        r2 = r1.copy().rotate(90, around_origin=False)
+        self.assertTrue(r1.overlaps(r2))
+        r2.move(np.array([11,0]))
+        self.assertFalse(r1.overlaps(r2))
+
+        r1 = Rectangle((3,-8), (18,-2)).rotate(10,False)
+        r2 = Rectangle((-5,-8), (10,-2)).rotate(280,False)
+        self.assertTrue(r1.overlaps(r2))
+        self.assertTrue(r2.overlaps(r1))
+
+        r2.move(np.array([-3,0]))
+        self.assertFalse(r1.overlaps(r2))
+        self.assertFalse(r2.overlaps(r1))
 
 if __name__ == '__main__':
     unittest.main()

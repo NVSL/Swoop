@@ -5,6 +5,8 @@ from math import sin,cos
 import random
 from itertools import izip
 from numpy.linalg import det
+import itertools
+import Geometry as SG
 
 
 class LineSegment(object):
@@ -48,11 +50,25 @@ class LineSegment(object):
     def length(self):
         return np.linalg.norm(self.p2 - self.p1)
 
+    def bounding_box(self):
+        """
+        Return a minimal Rectangle bounding self
+        CAREFUL: rectilinear line segments will cause an error
+        """
+        return Rectangle(np.minimum.reduce([self.p1, self.p2]),
+                         np.maximum.reduce([self.p1, self.p2]))
+
 
     def overlaps(self, other):
         """
         If there is a common point between self and other, return true
         """
+        if isinstance(other, Rectangle):
+            return other.overlaps(self)
+
+        if not isinstance(other, LineSegment):
+            raise TypeError("Cannot test overlap between {0} and {1}".format(self.__class__,other.__class__))
+
         for s in (self,other):
             assert s.x1 <= s.x2
             if s.x1 == s.x2:
@@ -91,11 +107,14 @@ class RotatedRectangle(object):
     """
     A rectangle with a rotation attribute
     """
-    def __init__(self, rect, angle_degrees):
+    def __init__(self, rect, angle_degrees, around_origin=True):
         assert isinstance(rect, Rectangle)
-        self._angle = angle_degrees
+        self._angle = 0
         self._rect = rect
-        self._rmatrix = Rectangle.rotation_matrix(math.radians(angle_degrees))
+        self.rotate(angle_degrees, around_origin)
+
+    def __eq__(self, other):
+        return self.angle == other.angle and self._rect == other._rect
 
     def overlaps(self, other):
         if isinstance(other, Rectangle):
@@ -114,24 +133,37 @@ class RotatedRectangle(object):
 
     def edges(self):
         c = self._rect.center()
-        verts = list(map(lambda v: self._rmatrix.dot(v), self._rect.vertices()))
+        verts = list(map(lambda v: self._rmatrix.dot(v-c)+c, self._rect.vertices()))
         for i in xrange(4):
             yield LineSegment(verts[i], verts[(i+1) % 4])
 
-    def rotate(self, angle_degrees):
+    def eagle_code(self):
+        return "rect R{0} ({1} {2}) ({3} {4})".format(*((self.angle,) + self._rect.bounds_tuple))
+
+    def rotate(self, angle_degrees, around_origin=True):
         self._angle = (self._angle + angle_degrees) % 360.0
         self._rmatrix = Rectangle.rotation_matrix(math.radians(self._angle))
 
-        # Change the origin of the rectangle
-        c = self._rect.center()
-        c = Rectangle.rotation_matrix(math.radians(angle_degrees)).dot(c)
-        self._rect.move_to(c)
+        # Change the origin of the underlying rectilinear rectangle
+        if around_origin:
+            c = self._rect.center()
+            c = Rectangle.rotation_matrix(math.radians(angle_degrees)).dot(c)
+            self._rect.move_to(c)
+        # Otherwise, we rotate around the rectangle center
+        return self
+
+    def center(self):
+        return self._rect.center()
+
+    def move(self, vector):
+        self._rect.move(vector)
+        return self
 
     def bounding_box(self):
         return self._rect.rotate_resize(self.angle, around_origin=False)
 
     def copy(self):
-        return RotatedRectangle(self._rect.copy(), self.angle)
+        return RotatedRectangle(self._rect.copy(), self.angle, around_origin=False)
 
     @property
     def angle(self):
@@ -263,8 +295,8 @@ class Rectangle(object):
     def right(self):
         return self.bounds[1][0]
 
-    def rotate(self, angle_degrees):
-        return RotatedRectangle(self, angle_degrees)
+    def rotate(self, angle_degrees, around_origin=True):
+        return RotatedRectangle(self, angle_degrees, around_origin)
 
     def rotate_resize(self,angle_degrees,around_origin=True,origin=None):
         """
@@ -357,7 +389,7 @@ class Rectangle(object):
         return max(self.bounds[1] - self.bounds[0])
 
     #Flip the rectangle around the specified axis
-    def mirror(self,axis):
+    def mirror(self, axis):
         change = 1 - axis
         self.bounds[0][change] *= -1    #Negate
         self.bounds[1][change] *= -1
@@ -410,20 +442,22 @@ class Rectangle(object):
     #Sharing sides does not count, it must overlap inside the epsilon
     def overlaps(self, other):
         if isinstance(other, LineSegment):
-            if not other.bounding_box().overlaps(self):
-                return False
             if self.enclose_vertex(other.p1) or self.enclose_vertex(other.p2):
                 return True
             for edge in self.edges():
                 if edge.overlaps(other):
                     return True
             return False
-        else:
+        elif isinstance(other, Rectangle):
             for axis in xrange(2):
                 if not (self.low(axis) < other.high(axis) - Rectangle.EPSILON and
                                 self.high(axis) > other.low(axis) + Rectangle.EPSILON):
                     return False
             return True
+        elif isinstance(other, RotatedRectangle):
+            return other.overlaps(self)
+        else:
+            raise TypeError("Cannot test overlap between {0} and {1}".format(self.__class__, other.__class__))
 
     #Add a constant padding to everything around the rectangle
     def pad(self,padding):
@@ -488,6 +522,17 @@ class Rectangle(object):
 
     def num_enclosed_vertices(self,other):
         return sum(1 for _ in self.enclosed_vertices(other))
+
+    def edges(self):
+        """
+        Yield all edges clockwise starting from top left
+        Like a toilet bowl in Australia
+        :return:
+        """
+        verts = list(self.vertices())
+        for i in xrange(4):
+            yield LineSegment(verts[i], verts[(i+1)%4])
+
 
     def eagle_code(self):
         """

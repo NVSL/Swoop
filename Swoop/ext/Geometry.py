@@ -102,8 +102,9 @@ def arc_bounding_box(p1, p2, theta):
     return Rectangle.from_vertices(vertices)
 
 # Store all information about translation/rotation/mirroring in this class
+# Eagle order of operations: rotation, mirroring, translation
 class Transform(object):
-    def __init__(self, rotation=0, translation=None, mirrored=False):
+    def __init__(self, rotation=0, mirrored=False, translation=None):
         self._rotation = rotation
         if translation is None:
             self._translation = np.zeros(2)
@@ -111,6 +112,23 @@ class Transform(object):
             self._translation = translation
         self._mirrored = mirrored
 
+    def __repr__(self):
+        return "Transform({0}, {1}, {2})".format(self.rotation, self.mirrored, self.translation)
+
+    def apply(self, other):
+        """
+        Apply this transform to some geometric object
+        :param other: Any object that supports rotate(angle degrees), mirror(), and move() methods
+        :return:
+        """
+        for m in ["rotate", "mirror", "move"]:
+            assert hasattr(other, m), "{0} does not have a {1}() method and cannot be transformed".\
+                format(other.__class__,m)
+        transformed = other.rotate(self.rotation)
+        if self.mirrored:
+            transformed = transformed.mirror()
+        transformed = transformed.move(self.translation)
+        return transformed
 
     @property
     def rotation(self):
@@ -119,6 +137,15 @@ class Transform(object):
     @rotation.setter
     def rotation(self, r):
         self._rotation = r
+
+    @property
+    def mirrored(self):
+        return self._mirrored
+
+    @property
+    def translation(self):
+        return self._translation
+
 
 class GeometryMixin(object):
     def get_mirrored(self):
@@ -156,8 +183,16 @@ class GeometryMixin(object):
         Get the transform object that would be required to move this object to where it is from the origin
         """
         if self.num_points() == 1:
-            t = Transform()
-
+            rot = 0
+            mirrored = False
+            if hasattr(self, "get_rot") and self.get_rot() is not None:
+                ang = angle_match(self.get_rot())
+                rot = ang['angle']
+                mirrored = ang['mirrored']
+            return Transform(rotation=rot, translation=self.get_point(), mirrored=mirrored)
+        else:
+            raise TypeError("{0} has {1} coordinates defined, cannot get a Transform() object".
+                            format(self.__class__, self.num_points()))
 
     def set_point(self, pt, i=0):
         """
@@ -249,10 +284,12 @@ class GeometryMixin(object):
         else:
             return None
 
-    def get_bounding_box(self):
+    def get_bounding_box(self, layer=None):
         """
         Get the minimum bounding box enclosing this list of primitive elements
         More accurate than self._get_cgal_elem().bbox(), because it accounts for segment width
+
+        :param layer: Swoop layer to filter on
         """
         def max_min(vertex_list, width=None):
             max = np.maximum.reduce(vertex_list)
@@ -349,15 +386,21 @@ class GeometryMixin(object):
         elif isinstance(self, Swoop.Element):
             # Element objects do not have enough information for the bounding box
             # That gets set in the constructor
+            assert hasattr(self,"_extension_geo_elem") and\
+                   self._extension_geo_elem is not None, \
+                "This Swoop object is missing a predefined CGAL element. This always gets set inside the overriden " \
+                "BoardFile class in the Geometry module, which likely means you are subverting the BoardFile " \
+                "class and rolling your own."
             return self._extension_geo_elem.rect
         elif isinstance(self, Swoop.Package):
             rect = None
             for c in self.get_children():
-                r = c.get_bounding_box()
-                if r is not None:
-                    if rect is None:
-                        rect = r
-                    rect = Rectangle.union(rect, r)
+                if (layer is None) or (hasattr(c,"get_layer") and c.get_layer()==layer):
+                    r = c.get_bounding_box()
+                    if r is not None:
+                        if rect is None:
+                            rect = r
+                        rect = Rectangle.union(rect, r)
             return rect
         else:
             return None

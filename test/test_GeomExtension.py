@@ -153,6 +153,11 @@ class TestFilteredBoundingBoxes(unittest.TestCase):
         self.assertEqual(should_be, bbox)
         # print bbox
 
+    def test_filtering(self):
+        brd = SwoopGeom.WithMixin.from_file(get_inp("loud-flashy-driver.postroute.brd"))
+        bbox = brd.get_element("U1_3_DISPLAY_2").get_bounding_box(type=Swoop.Pad)
+        print bbox.eagle_code()
+
         # print bbox.eagle_code()
 
 class TestShapeQueries(unittest.TestCase):

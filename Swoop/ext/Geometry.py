@@ -284,7 +284,7 @@ class GeometryMixin(object):
         else:
             return None
 
-    def get_bounding_box(self, layer=None):
+    def get_bounding_box(self, layer=None, type=None):
         """
         Get the minimum bounding box enclosing this list of primitive elements
         More accurate than self._get_cgal_elem().bbox(), because it accounts for segment width
@@ -386,16 +386,19 @@ class GeometryMixin(object):
         elif isinstance(self, Swoop.Element):
             # Element objects do not have enough information for the bounding box
             # That gets set in the constructor
-            assert hasattr(self,"_extension_geo_elem") and\
-                   self._extension_geo_elem is not None, \
-                "This Swoop object is missing a predefined CGAL element. This always gets set inside the overriden " \
-                "BoardFile class in the Geometry module, which likely means you are subverting the BoardFile " \
-                "class and rolling your own."
-            return self._extension_geo_elem.rect
+            if hasattr(self,"_extension_geo_elem"):
+                return self._extension_geo_elem.rect
+            else:
+                tform = self.get_transform()
+                bbox = self.find_package().get_bounding_box(layer=layer, type=type)
+                if bbox is None:
+                    return None
+                return tform.apply(bbox)
         elif isinstance(self, Swoop.Package):
             rect = None
             for c in self.get_children():
-                if (layer is None) or (hasattr(c,"get_layer") and c.get_layer()==layer):
+                if ((layer is None) or (hasattr(c,"get_layer") and c.get_layer()==layer))\
+                        and ((type is None) or isinstance(c, type)):
                     r = c.get_bounding_box()
                     if r is not None:
                         if rect is None:

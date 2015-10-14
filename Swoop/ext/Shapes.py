@@ -6,7 +6,6 @@ import random
 from itertools import izip
 from numpy.linalg import det
 import itertools
-import Geometry as SG
 
 
 class LineSegment(object):

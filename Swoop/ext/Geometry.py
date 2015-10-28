@@ -597,11 +597,12 @@ class BoardFile(Swoop.From):
             elem._extension_geo_elem = geom
 
         #Finally, the board outline
-        self.bbox = self.get_plain_elements().\
+        outline = self.get_plain_elements().\
             filtered_by(lambda e: hasattr(e, "get_layer")).\
-            with_layer("Dimension").\
-            get_bounding_box().\
-            reduce(Rectangle.union)
+            with_layer("Dimension")
+
+        if len(outline) > 0:
+            self.bbox = outline.get_bounding_box().reduce(Rectangle.union)
 
     def draw_rect(self, rectangle, layer):
         swoop_rect = WithMixin.class_map["rectangle"]()

@@ -804,6 +804,20 @@ class EagleFile(EagleFilePart):
         return cls.from_file(filename, bestEffort)
 
     @classmethod
+    def from_etree(cls, et):
+        """
+        Build file from element tree.
+
+        :param et: Element tree data structure (e.g., returned by :code:`ElementTree.parse(filename)`)
+        """
+        if EagleFile.DTD is not None:
+            if not EagleFile.DTD.validate(et.getroot()):
+                raise SwoopError("Tried to load from invalid eTree")
+        if issubclass(cls, LibraryFile):
+            raise NotImplementedError("Can't create library from raw etree.  What's the librarie's name?")
+        return cls._from_et(et.getroot(), None)
+    
+    @classmethod
     def from_file (cls, filename, bestEffort = True, pickle=True):
         """
         Loads a Eagle file from a .sch, .lbr, or .brd file.  A synonym for :meth:`EagleFile.open`

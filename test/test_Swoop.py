@@ -15,9 +15,12 @@ class TestSwoop(unittest.TestCase):
             os.makedirs(self.tmpdir)
 
         self.me = os.path.dirname(os.path.realpath(__file__))
-        self.sch = Swoop.EagleFile.from_file(self.me + "/inputs/Xperimental_Trinket_Pro_small_parts_power_breakout.picked.sch")
-        self.brd = Swoop.EagleFile.from_file(self.me + "/inputs/Xperimental_Trinket_Pro_small_parts_power_breakout.picked.brd")
-        self.lbr = Swoop.EagleFile.from_file(self.me + "/inputs/Components.lbr")
+        self.sch_file = self.me + "/inputs/Xperimental_Trinket_Pro_small_parts_power_breakout.picked.sch"
+        self.sch = Swoop.EagleFile.from_file(self.sch_file);
+        self.brd_file = self.me + "/inputs/Xperimental_Trinket_Pro_small_parts_power_breakout.picked.brd"
+        self.brd = Swoop.EagleFile.from_file(self.brd_file)
+        self.lbr_file = self.me + "/inputs/Components.lbr"
+        self.lbr = Swoop.EagleFile.from_file(self.lbr_file)
 
     def test_Search(self):
         self.assertEqual(len([ x for x in self.brd.get_library("KoalaBuild").get_packages()[0].get_drawing_elements() if x.layer=="tDocu"]), 4, "Search failure")
@@ -244,3 +247,13 @@ class TestSwoop(unittest.TestCase):
             os.rmdir(self.tmpdir)
         except:
             pass
+
+    def test_etreeOpen(self):
+        tree = ET.parse(self.sch_file)
+        Swoop.SchematicFile.from_etree(tree)
+        tree = ET.parse(self.brd_file)
+        Swoop.BoardFile.from_etree(tree)
+        #tree = ET.parse(self.lbr_file)
+        #Swoop.LibraryFile.from_etree(tree)
+
+        

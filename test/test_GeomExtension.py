@@ -156,7 +156,7 @@ class TestFilteredBoundingBoxes(unittest.TestCase):
     def test_filtering(self):
         brd = SwoopGeom.WithMixin.from_file(get_inp("loud-flashy-driver.postroute.brd"))
         bbox = brd.get_element("U1_3_DISPLAY_2").get_bounding_box(type=Swoop.Pad)
-        # print bbox.eagle_code()
+        print bbox.eagle_code()
 
         # print bbox.eagle_code()
 
@@ -229,28 +229,6 @@ class TestShapeQueries(unittest.TestCase):
         r2.move(np.array([-3,0]))
         self.assertFalse(r1.overlaps(r2))
         self.assertFalse(r2.overlaps(r1))
-
-    def test_rotated_rec_bug(self):
-        # rect R0.0 (42.0028 37.7614999892) (48.2385000242 44.2385000108)
-        # rect R180.0 (14.51 1.84) (32.29 27.875)
-
-        # rect R0.0 (42.0028 37.7614999892) (48.2385000242 44.2385000108)
-        # rect R180.0 (1.175 2.475) (51.975 54.545)
-
-        led = RotatedRectangle(Rectangle( (42.00280, 37.76150), (48.23850, 44.23850)), 0.0, False)
-        motor_bot = RotatedRectangle(Rectangle( (14.51000, 1.84000), (32.29000, 27.87500)), 180.0, False)
-        motor_top = RotatedRectangle(Rectangle( (1.17500, 2.47500), (51.97500, 54.54500)), 180.0, False)
-
-        self.assertFalse(led.overlaps(motor_bot))
-        self.assertFalse(motor_bot.overlaps(led))
-
-        self.assertTrue(led.overlaps(motor_top))
-        self.assertTrue(motor_top.overlaps(led))
-
-        # print r1.eagle_code()
-        # print r2.eagle_code()
-        # print r3.eagle_code()
-
 
 if __name__ == '__main__':
     unittest.main()

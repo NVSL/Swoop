@@ -57,20 +57,12 @@ class LineSegment(object):
         return Rectangle(np.minimum.reduce([self.p1, self.p2]),
                          np.maximum.reduce([self.p1, self.p2]))
 
-    def copy(self):
-        pass
-
 
     def overlaps(self, other):
         """
         If there is a common point between self and other, return true
         """
-
-        # The implementations should be in [more complicated] overlaps [less complicated]
         if isinstance(other, Rectangle):
-            return other.overlaps(self)
-
-        if isinstance(other, RotatedRectangle):
             return other.overlaps(self)
 
         if not isinstance(other, LineSegment):
@@ -123,27 +115,16 @@ class RotatedRectangle(object):
     def __eq__(self, other):
         return self.angle == other.angle and self._rect == other._rect
 
-    def __repr__(self):
-        return "RotatedRectangle({0}, {1}, {2})".format(self._rect.__repr__(), self._angle, False)
-
     def overlaps(self, other):
         if isinstance(other, Rectangle):
             for edge in self.edges():
                 if edge.overlaps(other):
-                    return True
-            for edge in other.edges():
-                if edge.overlaps(self):
                     return True
             return False
         elif isinstance(other, RotatedRectangle):
             # Make one rectangle rectilinear, then use above method
             rectilinear = self.copy().rotate(-self.angle)
             rotated = other.copy().rotate(-self.angle)
-            assert abs(rectilinear.angle) < 0.00001
-            return rectilinear.bounding_box().overlaps(rotated)
-        elif isinstance(other, LineSegment):
-            rectilinear = self.copy().rotate(-self.angle)
-            rotated_segment = other.copy().rotate(-self.angle)
             assert abs(rectilinear.angle) < 0.00001
             return rectilinear.bounding_box().overlaps(rotated)
         else:

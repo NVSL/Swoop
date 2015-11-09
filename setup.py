@@ -5,7 +5,7 @@ import os
 from codecs import open
 import sys
 
-#from Cython.Build import cythonize
+#from Cython.Build import *
 
 #import argparse
 #parser = argparse.ArgumentParser(description="Fix eagle files to make them dtd conforming")

@@ -239,6 +239,7 @@ class GeometryMixin(object):
             Bbox_2,\
             Iso_rectangle_2,\
             do_intersect
+
         if isinstance(self, Swoop.Rectangle):
             rect = Rectangle(self.get_point(0), self.get_point(1), check=False)
             verts = list(rect.vertices_ccw())
@@ -252,10 +253,11 @@ class GeometryMixin(object):
                 for i,v in enumerate(verts):
                     verts[i] = np.dot(v - origin, rmat) + origin
             return Polygon_2(map(np2cgal, verts))
+
         elif isinstance(self, Swoop.Wire):
             p1 = self.get_point(0)
             p2 = self.get_point(1)
-            if self.get_width() is None:
+            if self.get_width() is None or self.get_width() == 0:
                 return Segment_2(np2cgal(p1), np2cgal(p2))
             else:
                 # Wire has width

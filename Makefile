@@ -7,7 +7,7 @@ build:
 
 .PHONY: test
 test: 
-	python -m unittest discover test
+	python -m unittest discover -v test
 
 .PHONY: doc
 doc: build $(wildcard doc/*.rst)

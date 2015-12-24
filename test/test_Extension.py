@@ -4,9 +4,10 @@ import Swoop.tools
 import os
 import re
 import math
+import testExt
+import areaExt as Area
 
 from Swoop import *
-
 
 class TestExtension(unittest.TestCase):
 
@@ -22,14 +23,23 @@ class TestExtension(unittest.TestCase):
             return self.get_name()
 
     def setUp(self):
-
+        #log.basicConfig(format="%(levelname)s: %(message)s", level=log.DEBUG)
+        
         NewEagleFile = Swoop.Mixin(self.MyMixin, "Typer")
-        #print NewEagleFile.__name__
+
         self.me = os.path.dirname(os.path.realpath(__file__))
         self.sch = NewEagleFile.from_file(self.me + "/inputs/Xperimental_Trinket_Pro_small_parts_power_breakout.picked.sch")
         self.brd = NewEagleFile.from_file(self.me + "/inputs/Xperimental_Trinket_Pro_small_parts_power_breakout.picked.brd")
         self.lbr = NewEagleFile.from_file(self.me + "/inputs/Components.lbr")
-        
+
+        NewEagleFileMod = Swoop.Mixin(testExt, "Mod")
+        #print NewEagleFile.__name__
+        self.lbr2 = NewEagleFileMod.from_file(self.me + "/inputs/Components.lbr")
+
+        AreaEagleFile = Swoop.Mixin(Area, "Area")
+        #print NewEagleFile.__name__
+        self.lbr_area = AreaEagleFile.from_file(self.me + "/inputs/Components.lbr")
+
     def test_Mixin(self):
 
         self.assertEqual(isinstance(From(self.lbr).
@@ -50,9 +60,13 @@ class TestExtension(unittest.TestCase):
     class Jumper(object):
         def do_it(self):
             return "jump"
-
+        def jump(self):
+            return "jump"
+        
     class Walker(object):
         def do_it(self):
+            return "walk"
+        def walk(self):
             return "walk"
 
 
@@ -105,6 +119,42 @@ class TestExtension(unittest.TestCase):
         self.assertEqual(Counter(oldsch).go().elementCount, Counter(self.sch).go().elementCount, "Extensions + visitor error")
         self.assertEqual(Counter(oldsch).go().count, Counter(self.sch).go().count, "Extensions + visitor error")
 
+    def test_Composition(self):
+        J = Swoop.Mixin(self.Jumper, "Jump")
+        WJ = Swoop.Mixin(self.Walker, "Walk", base=J)
+
+        wjl = WJ.from_file(self.me + "/inputs/Components.lbr")
+
+        self.assertEqual(wjl.get_library().jump(), "jump", "Extension composition error")
+        self.assertEqual(wjl.get_library().walk(), "walk", "Extension composition error")
+
+        WJA = Swoop.Mixin(Area, "Area", base=WJ)
+        wjal = WJA.from_file(self.me + "/inputs/Components.lbr")
+        self.assertAlmostEqual(From(wjal).
+                               get_library().
+                               get_packages().
+                               get_drawing_elements().
+                               with_type(Rectangle).
+                               get_area().
+                               reduce(lambda x,y:x+y, init=0.0),
+                               7711.54157257,
+                               places=5,
+                               msg="Extension composition error")
+        
+        A = Swoop.Mixin(Area, "Area")
+        AJ = Swoop.Mixin(self.Jumper, "Jump", base=A)
+        ajl = AJ.from_file(self.me + "/inputs/Components.lbr")
+        self.assertAlmostEqual(From(ajl).
+                               get_library().
+                               get_packages().
+                               get_drawing_elements().
+                               with_type(Rectangle).
+                               get_area().
+                               reduce(lambda x,y:x+y, init=0.0),
+                               7711.54157257,
+                               places=7,
+                               msg="Extension composition error")
+        
     def test_Example(self):
         class AttrMixin(object):
             def __init__(self):
@@ -121,4 +171,8 @@ class TestExtension(unittest.TestCase):
         sch.get_library("PickerDesign").get_symbol("GENERIC-RESISTOR_").set_attr("good?", "yes!")
         self.assertEqual(sch.get_library("PickerDesign").get_symbol("GENERIC-RESISTOR_").get_attr("good?"), "yes!", "Attr mixin error")
 
-    
+
+    def test_MixinModule(self):
+        self.assertEqual(self.lbr2.get_library().hello(), "Hello from Library", "Module-based extension error")
+        self.assertFalse(hasattr(self.lbr2.get_library().get_symbols()[0], "hello"))
+        self.assertAlmostEqual(From(self.lbr_area).get_library().get_packages().get_drawing_elements().with_type(Rectangle).get_area().reduce(lambda x,y:x+y, init=0.0),7711.54157257, places=7, msg="Area extension error")

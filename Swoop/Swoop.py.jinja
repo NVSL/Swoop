@@ -41,6 +41,7 @@ import os
 import re
 import cPickle
 import argparse
+import inspect
 
 supportedVersions = ["6.5.0", "6.6.0", "7.0.0", "7.1.0", "7.2.0", "7.3.0", "7.4.0", "7.5.0"]
 
@@ -1061,6 +1062,10 @@ class EagleFile(EagleFilePart):
         """
         return self.libraries.get(l)
 
+class nothing():
+    def __init__(self):
+        pass
+
 def Mixin(mixin, prefix, base=EagleFile):
     """Extend Swoop by adding a mixin to every class.
 
@@ -1069,7 +1074,7 @@ def Mixin(mixin, prefix, base=EagleFile):
     classes are prefixed with :code:`prefix` and they all inherit from the
     original class and :code:`mixin`.
 
-    :param mixin: Mixin class.  Its constructor should take no arguments.
+    :param mixin: Mixin class or module.  Its constructor for a mixin class (Or the classes in a mixin module) should take no arguments.
     :param prefix: Prefix for the class name.  It'll be prepended to the names of all the Swoop classes.
     :param base: Starting point for the extension.  This should either be :class:`Swoop.EagleFile` or a class returned by a previous call to this function.
     :returns: A new subclass of :code:`base` that can be used just like :class:`EagleFile`
@@ -1085,15 +1090,56 @@ def Mixin(mixin, prefix, base=EagleFile):
         T.__name__ = name
         return T
 
-    n = Extend(base,mixin, prefix + base.__name__)
-    n.isRawSwoop = False
-    #print n.class_map.get("library")
-    for i in base.class_map:
-        n.class_map[i] = Extend(base.class_map[i], mixin, prefix + base.class_map[i].__name__)
+    def get_class_from_module(module, theClass):
+        #print module
+        #print theClass
+        c = inspect.getmembers(module, inspect.isclass)
+        #print c
+        for i in c:
+            if i[1].__name__.split(".")[-1] == theClass.__name__.split(".")[-1]:
+                log.info("Found class '{}' for '{}'".format(i[1], theClass))
+                return i[1]
+            else:
+                log.info("Class '{}' was no match for '{}'".format(i[1], theClass))
+                
+        return None
+        
+    base_mixin = get_class_from_module(mixin,EagleFile)
+    base_mixin = base_mixin if base_mixin is not None else nothing
 
-    n.boardFileType = Extend(base.get_board_file_type(),         mixin, prefix + base.get_board_file_type().__name__)
-    n.schematicFileType = Extend(base.get_schematic_file_type(), mixin, prefix + base.get_schematic_file_type().__name__)
-    n.libraryFileType = Extend(base.get_library_file_type(),     mixin, prefix + base.get_library_file_type().__name__)
+    n = Extend(base, base_mixin, prefix + base.__name__)
+    n.isRawSwoop = False
+    for i in base.class_map:
+        if inspect.isclass(mixin):
+            n.class_map[i] = Extend(base.class_map[i], mixin, prefix + base.class_map[i].__name__)
+        elif inspect.ismodule(mixin):
+            c = get_class_from_module(mixin, EagleFile.class_map[i])
+            if c is not None:
+                log.info("Patching {} with {}".format(base.class_map[i], c))
+                ext =  Extend(base.class_map[i], c, prefix + base.class_map[i].__name__)
+                n.class_map[i] = ext
+                n.class_map[i]()
+            else:
+                n.class_map[i] = base.class_map[i]
+        
+    board_mixin = get_class_from_module(mixin,BoardFile)
+    board_mixin = board_mixin if board_mixin is not None else nothing
+        
+    schematic_mixin = get_class_from_module(mixin,SchematicFile)
+    schematic_mixin = schematic_mixin if schematic_mixin is not None else nothing
+        
+    library_mixin = get_class_from_module(mixin,LibraryFile)
+    library_mixin = library_mixin if library_mixin is not None else nothing
+        
+
+    n.boardFileType = Extend(base.get_board_file_type(),
+                             board_mixin, prefix + base.get_board_file_type().__name__)
+    
+    n.schematicFileType = Extend(base.get_schematic_file_type(),
+                                 schematic_mixin, prefix + base.get_schematic_file_type().__name__)
+    
+    n.libraryFileType = Extend(base.get_library_file_type(),
+                               library_mixin, prefix + base.get_library_file_type().__name__)
 
     n.boardFileType.class_map = copy.copy(n.class_map)
     n.schematicFileType.class_map = copy.copy(n.class_map)

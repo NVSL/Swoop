@@ -942,11 +942,26 @@ class EagleFile(EagleFilePart):
         self.layersByName[layer.get_name()] = layer
         layer.parent = self
 
-    def get_layer(self, v):
+    def get_layer(self, l):
         """
-        Lookup a layer by number.
+        Lookup a layer by number or name.
+        
+        :param l: A :code:`str`, or :code:`int` describing a layer.
+        :returns: The layer.
+        :rtype:  :class:`Layer`
         """
-        return self.layers[v]
+        if isinstance(v, int):
+            try:
+                return self.layers[v]
+            except:
+                raise SwoopError("Unknown layer number: {}".format(v))
+        elif isinstance(v, str):
+            try:
+                return self.layersByName[v]
+            except:
+                raise SwoopError("Unknown layer name: '{}'".format(v))
+        else:
+            raise SwoopError("Wrong type for layer lookup: {}".format(type(v)))
     
     def get_layers(self):
         """
@@ -973,30 +988,51 @@ class EagleFile(EagleFilePart):
         """
         return self.layersByName
 
-    # def get_flippedLayer(self, l):
-    #     if (isinstance(l, str)):
-    #         origName = l
-    #         if l[0] == "t":
-    #             l = "b" + l[1:]
-    #         elif l[0] == "b":
-    #             l = "t" + l[1:]
-    #         elif l == "Top":
-    #             l = "Bottom"
-    #         elif l == "Bottom":
-    #             l = "Top"
-    #         if l not in self.layersByName:
-    #             raise SwoopError("Tried to flip layer '" + origName + "', but '" + l + "' doesn't exist")
-    #         return name
-    #     elif (isinstance(l,int)):
-    #         if l in self.layers:
-    #             return self.get_flippedLayer(self, self.layers[l]).number
-    #         else:
-    #             raise SwoopError("Can't find layer number " + number)
-    #     elif (isinstance(l,Layer)):
-    #         if l.name in self.layersByName:
-    #             return self.layersByName[get_flippedLayer(l.name)]
-    #         else:
-    #             raise SwoopError("Can't find layer '" + l.name +"' in this file")
+    def get_mirrored_layer(self, l):
+        """
+
+        Find the mirrored version of a layer.  For 'mirrored' objects, Eagle will
+        automatically change layers from a 'top' layer to a 'bottom' layer under the following conditions:
+
+        * The 'top' layer starts with 't' and has an odd layer number.
+        * The 'bottom' layer startes with 'b' and has the layer number one higher than the corresponding 'top' layer.
+        * The 'top' layer's numbers is less than or equal to 59.
+
+        For instance tPlace (number 21) because bPlace (number 22).
+
+        This function returns the mirrored version of a layer according to the rules above.
+
+        :param l: A :code:`str`, :code:`int`, or :class:`Layer` specifying a layer.
+        :returns: A description of the mirrored layer.
+        :rtype:  Same type as :code:`l`
+        """
+
+        if (isinstance(l, str)):
+            return self.get_mirrored_layer(self.layersByName[l]).get_name()
+        elif (isinstance(l, int)):
+            return self.get_mirrored_layer(self.layers[l]).get_number()
+        elif (isinstance(l, Layer)):
+            if l.get_number() <= 60: # According to
+                                   # http://www.element14.com/community/thread/42249/l/creating-new-pairs-of-topbottom-layers,
+                                   # the 't' and 'b' prefixes only work up to
+                                   # layer 60
+                name = l.get_name()
+                if name[0] == "t":
+                    assert (l.get_number() % 2) == 1 # 't' layers are supposed to be odd-numbered
+                    name = "b" + name[1:]
+                elif name[0] == "b":
+                    assert (l.get_number() % 2) == 0 # 'b' layers are supposed to be even-numbered
+                    name = "t" + name[1:]
+                elif name == "Top":
+                    name = "Bottom"
+                elif name == "Bottom":
+                    name = "Top"
+                    
+                if name not in self.layersByName:
+                    raise SwoopError("Tried to mirror layer {}, but '{}' doesn't exist".format(l,name))
+                else:
+                    return self.layersByName[name]
+            return l
 
     def parse_layer_number(self, num):
 
@@ -1010,6 +1046,7 @@ class EagleFile(EagleFilePart):
         return self.layer_name_to_number(name)
     
     def layer_number_to_name(self, num):
+
         """
         Given a layer number, return the name.
 

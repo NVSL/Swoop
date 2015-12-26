@@ -628,7 +628,7 @@ tags["circle"] = TagClass("circle",
 
 tags["rectangle"] = TagClass("rectangle",
                              baseclass = "EagleFilePart",
-                          mixins=["RectGeometry", "RotationGeometry"],
+                             mixins=["RectGeometry", "RotationGeometry"],
                              attrs=[dimensionAttr("x1", required=True),
                                     dimensionAttr("y1", required=True),
                                     dimensionAttr("x2", required=True),

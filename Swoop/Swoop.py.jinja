@@ -631,6 +631,9 @@ class RotationGeometry:
 
     def _parseRot(self):
         r = self.get_rot();
+        if r is None:
+            return [False, False, 0]
+        
         m = re.match("(M)?(S)?(R)(\d+\.?\d*)", r)
         if m is None:
             raise SwoopError("Illegal rot value: '{}'.".format(r))
@@ -1118,7 +1121,6 @@ def Mixin(mixin, prefix, base=EagleFile):
                 log.info("Patching {} with {}".format(base.class_map[i], c))
                 ext =  Extend(base.class_map[i], c, prefix + base.class_map[i].__name__)
                 n.class_map[i] = ext
-                n.class_map[i]()
             else:
                 n.class_map[i] = base.class_map[i]
         

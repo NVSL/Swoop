@@ -442,7 +442,7 @@ class LineGeometry:
         self.set_y2(y);
         return self;
 
-    def set_geometry(self, x1,y1,x2,y2):
+    def set_points(self, x1,y1,x2,y2):
         """
         Set the start and end points for this :class:`EagleFilePart`.
         
@@ -458,7 +458,7 @@ class LineGeometry:
         self.set_y2(y2);
         return self;
 
-    def get_geometry(self):
+    def get_points(self):
         """
         Get the start and end points for this :class:`EagleFilePart`.
         
@@ -542,7 +542,7 @@ class RectGeometry:
         self.set_y2(bottom);
         return self;
 
-    def set_geometry(self, left, top, right, bottom):
+    def set_corners(self, left, top, right, bottom):
         """
         Set the start and end points for this :class:`EagleFilePart`.
         
@@ -558,7 +558,7 @@ class RectGeometry:
         self.set_y2(bottom);
         return self;
 
-    def get_geometry(self):
+    def get_corners(self):
         """
         Get the start and end points for this :class:`EagleFilePart`.
         

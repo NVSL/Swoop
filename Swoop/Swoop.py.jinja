@@ -942,11 +942,11 @@ class EagleFile(EagleFilePart):
         self.layersByName[layer.get_name()] = layer
         layer.parent = self
 
-    def get_layer(self, l):
+    def get_layer(self, v):
         """
         Lookup a layer by number or name.
         
-        :param l: A :code:`str`, or :code:`int` describing a layer.
+        :param v: A :code:`str`, or :code:`int` describing a layer.
         :returns: The layer.
         :rtype:  :class:`Layer`
         """

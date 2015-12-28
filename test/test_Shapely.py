@@ -38,20 +38,23 @@ class TestShapely(unittest.TestCase):
         self.testbrd1 = ShapelySwoop.from_file(self.me + "/inputs/shapeTest1.brd")
         self.testbrd2 = ShapelySwoop.from_file(self.me + "/inputs/shapeTest2.brd")
         self.testbrd3 = ShapelySwoop.from_file(self.me + "/inputs/shapeTest3.brd")
+
+        self.boardtest = ShapelySwoop.from_file(self.me + "/inputs/test_saving.brd")
         
     def test_element(self):
         tests = [("shapely.ops.cascaded_union(Swoop.From(self.testbrd1).get_elements().get_geometry())", -8745343124844733482, "BLACK"),
                  ("self.testbrd1.get_element('U$1').get_geometry()", 3449774795493592488, "BLACK"),
                  ("self.testbrd1.get_element('U$2').get_geometry()", 2947786369872830885, "BLACK"),
-                 ("self.testbrd1.get_element('U$2').get_geometry(layer='Top')", -2316119240083132091, "RED"),
-                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd1).get_elements().get_geometry(layer='Top'))", -1405743727263307022, "RED"),
+                 ("self.testbrd1.get_element('U$2').get_geometry(layer_query='Top')", -2316119240083132091, "RED"),
+                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd1).get_elements().get_geometry(layer_query='Top'))", -1405743727263307022, "RED"),
                  ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry())", -5984626191484754127, "BLACK"),
-                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer='tPlace'))", 4675948399285872422, "BLACK"),
-                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer='bPlace'))", -8147871516156910189, "BLACK"),
-                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_element('U$1').get_geometry(layer='Top'))", -5301026454227315084, "RED"),
-                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_element('U$1').get_geometry(layer='Bottom'))", -5999577188847035307, "BLUE"),
-                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer='tTest2'))", -8049353574747205132, "PURPLE"),
-                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer='bTest2'))", 3934649351525441535, "YELLOW"),
+                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tPlace'))", 4675948399285872422, "BLACK"),
+                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='bPlace'))", -8147871516156910189, "BLACK"),
+                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_element('U$1').get_geometry(layer_query='Top'))", -5301026454227315084, "RED"),
+                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_element('U$1').get_geometry(layer_query='Bottom'))", -5999577188847035307, "BLUE"),
+                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tTest2'))", -8049353574747205132, "PURPLE"),
+                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='bTest2'))", 3934649351525441535, "YELLOW"),
+                 ("shapely.ops.cascaded_union(self.boardtest.get_geometry())", -138569437861972423, "BLACK"),
              ]
 
         c = 0

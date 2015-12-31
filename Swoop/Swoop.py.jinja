@@ -220,6 +220,19 @@ class EagleFilePart(object):
         """
         return self if isinstance(self, t) else None
 
+    def without_type(self,t):
+        """
+        Filter this :code:`EagleFilePart` object based on its non-membership in a type. 
+        
+        Return :code:`self` if self is not an instance of type :code:`t` and :code:`None` otherwise.  This is useful in combination with :class:`From` object.
+        
+        :param t: The type to check for.
+        :returns: :code:`self` if self is not an instance of type :code:`t` and :code:`None` otherwise. 
+        :rtype: :class:`EagelFilePart` or :code:`None`
+
+        """
+        return self if not isinstance(self, t) else None
+
     def make_from(self):
         """
         Create a a :class:`From` object containing this object.
@@ -1137,10 +1150,10 @@ def Mixin(mixin, prefix, base=EagleFile):
         #print c
         for i in c:
             if i[1].__name__.split(".")[-1] == theClass.__name__.split(".")[-1]:
-                log.info("Found class '{}' for '{}'".format(i[1], theClass))
+                log.debug("Found class '{}' for '{}'".format(i[1], theClass))
                 return i[1]
             else:
-                log.info("Class '{}' was no match for '{}'".format(i[1], theClass))
+                log.debug("Class '{}' was no match for '{}'".format(i[1], theClass))
                 
         return None
         
@@ -1868,9 +1881,9 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
 
     def with_{{a.accessorName}}(self,v):
         """
-        Filter this :code:`EagleFilePart` object based on the value of :code:`{{a.name}}`.  For use in combination with :class:`From` objects.
+        Filter this :code:`EagleFilePart` object based on the value of :code:`{{a.name}}`. 
         
-        Return :code:`self` if one of the following is true:
+        Return :code:`self` if one of the following is :code:`True`:
 
         1.  :code:`{{a.name}}` equals :code:`v`
         2.  :code:`v` is callable and :code:`v(self.get_{{a.accessorName}}()` is :code:`True`
@@ -1887,6 +1900,32 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
             return self if self.{{a.name}} == v else None
         elif callable(v):
             return self if v(self.{{a.name}}) else None
+        else:
+            raise SwoopError("Illegal type passed to with_{{a.accessorName}}")
+
+    def without_{{a.accessorName}}(self,v):
+        """
+        Filter this :code:`EagleFilePart` object based on the value of :code:`{{a.name}}`. 
+        
+        Return :code:`self` if one of the following is :code:`True`:
+
+        1.  :code:`{{a.name}}` is not equal to :code:`v`
+        2.  :code:`v` is callable and :code:`v(self.get_{{a.accessorName}}()` is :code:`False`
+
+        This is useful in combination with :class:`From` object.
+        
+        :param t: The value to check for or a callable object.
+        :returns: :code:`self` if the criteria above are met and :code:`None` otherwise. 
+        :rtype: :class:`EagelFilePart` or :code:`None`
+
+        """
+
+        if type(v) in [str, int, float, bool]:
+            return self if self.{{a.name}} == v else None
+        elif callable(v):
+            return self if v(self.{{a.name}}) else None
+        else:
+            raise SwoopError("Illegal type passed to without_{{a.accessorName}}")
 
 
     #{%endfor%}
@@ -1932,6 +1971,30 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
             return self if v(self.{{tag.preserveTextAs}}) else None
         else:
             raise SwoopError("Illegal type passed to with_{{tag.preserveTextAs}}")
+
+    def without_{{tag.preserveTextAs}}(self,v):
+        """
+        Filter this :code:`EagleFilePart` object based on the value of :code:`{{tag.preserveTextAs}}`.
+        
+        Return :code:`self` if one of the following is true:
+
+        1.  :code:`{{tag.preserveTextAs}}` does not equal :code:`v`
+        2.  :code:`v` is callable and :code:`v(self.get_{{tag.preserveTextAs}}()` is :code:`False`
+
+        This is useful in combination with :class:`From` object.
+        
+        :param t: The value to check for or a callable object.
+        :returns: :code:`self` if the criteria above are met and :code:`None` otherwise. 
+        :rtype: :class:`EagelFilePart` or :code:`None`
+
+        """
+
+        if type(v) in [str, int, float]:
+            return self if self.{{tag.preserveTextAs}} == v else None
+        elif callable(v):
+            return self if v(self.{{tag.preserveTextAs}}) else None
+        else:
+            raise SwoopError("Illegal type passed to without_{{tag.preserveTextAs}}")
     #{% endif %}
 
 

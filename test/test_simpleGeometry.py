@@ -15,8 +15,8 @@ class TestSimpleGeometry(unittest.TestCase):
 
     def test_geo(self):
         ef = From(EagleFile.from_file(self.me + "/inputs/geo_test.sch"))
-        part = ef.get_nth_sheet(0).get_nth_instance(0)[0]
-        rotpart = ef.get_nth_sheet(0).get_nth_instance(1)[0]
+        part = ef.get_nth_sheet(0).get_nth_instance(1)[0]
+        rotpart = ef.get_nth_sheet(0).get_nth_instance(0)[0]
         circle = ef.get_nth_sheet(0).get_plain_elements().with_type(Circle)[0]
         measure = ef.get_nth_sheet(0).get_plain_elements().with_type(Dimension)[0]
         wire = ef.get_nth_sheet(0).get_nets().get_segments().get_wires()[0]

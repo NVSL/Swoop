@@ -37,22 +37,22 @@ class TestShapely(unittest.TestCase):
         
     def test_element(self):
         tests = [
-            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd1).get_elements().get_geometry())", 4543782496711782003, "#000000"),
-            ("self.testbrd1.get_element('U$1').get_geometry()", 558293734914727651, "#000000"),
-            ("self.testbrd1.get_element('U$2').get_geometry()", 1542196656777319817, "#000000"),
+            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd1).get_elements().get_geometry())", 6504294297733679555, "#000000"),
+            ("self.testbrd1.get_element('U$1').get_geometry()", -2789613719270802873, "#000000"),
+            ("self.testbrd1.get_element('U$2').get_geometry()", 1650928756827396133, "#000000"),
             ("self.testbrd1.get_element('U$2').get_geometry(layer_query='Top')", -2316119240083132091, "#ff0000"),
             ("shapely.ops.cascaded_union(Swoop.From(self.testbrd1).get_elements().get_geometry(layer_query='Top'))", -1405743727263307022, "#ff0000"),
-            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry())", 1383575516265791664, "#000000"),
+            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry())", -8790793505350002856, "#000000"),
             ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tPlace'))", 4675948399285872422, "#000000"),
             ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='bPlace'))", -8147871516156910189, "#000000"),
             ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_element('U$1').get_geometry(layer_query='Top'))", -5301026454227315084, "#ff0000"),
             ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_element('U$1').get_geometry(layer_query='Bottom'))", -5999577188847035307, "#0000ff"),
             ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tTest2'))", -8049353574747205132, "#ff00ff"),
             ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='bTest2'))", 3934649351525441535, "#ff00ff"),
-            ("shapely.ops.cascaded_union(self.boardtest.get_geometry())", 6722318116014407667, "#000000"),
+            ("shapely.ops.cascaded_union(self.boardtest.get_geometry())", -5479704724911999023, "#000000"),
             ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='Holes'))", 7701255143946384531, "#000000"),
             ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tKeepout', polygonize_wires=SEFP.POLYGONIZE_BEST_EFFORT))", -5168448055214345009, "#000000"),
-            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tKeepout', polygonize_wires=SEFP.POLYGONIZE_NONE))", -6142800795751873055, "#000000"),
+            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tKeepout', polygonize_wires=SEFP.POLYGONIZE_NONE))", 7043720151262557027, "#000000"),
         ]
 
         c = 0

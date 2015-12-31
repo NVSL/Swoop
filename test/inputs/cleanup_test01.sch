@@ -58,6 +58,8 @@
       <layer number="49" name="Reference" color="7" fill="1" visible="no" active="yes"/>
       <layer number="51" name="tDocu" color="7" fill="1" visible="no" active="yes"/>
       <layer number="52" name="bDocu" color="7" fill="1" visible="no" active="yes"/>
+      <layer number="59" name="tFaceplate" color="11" fill="1" visible="yes" active="yes"/>
+      <layer number="60" name="bFaceplate" color="11" fill="1" visible="yes" active="yes"/>
       <layer number="90" name="Modules" color="5" fill="1" visible="yes" active="yes"/>
       <layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
       <layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
@@ -72,8 +74,6 @@
       <layer number="114" name="Unresolved" color="12" fill="1" visible="yes" active="yes"/>
       <layer number="115" name="Resolved" color="10" fill="1" visible="yes" active="yes"/>
       <layer number="116" name="Generic" color="9" fill="1" visible="yes" active="yes"/>
-      <layer number="150" name="tFaceplate" color="11" fill="1" visible="yes" active="yes"/>
-      <layer number="151" name="bFaceplate" color="11" fill="1" visible="yes" active="yes"/>
       <layer number="160" name="tMountFaceplate" color="11" fill="1" visible="no" active="yes"/>
       <layer number="161" name="bMountFaceplate" color="11" fill="1" visible="no" active="yes"/>
       <layer number="162" name="tCopperArt" color="11" fill="1" visible="no" active="yes"/>

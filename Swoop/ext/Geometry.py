@@ -481,7 +481,7 @@ class GeoElem(object):
         """
         Does this element overlap the bounding box?
 
-        :param bbox_query: CGAL bounding box to check against
+        :param iso_rect_query: CGAL bounding box to check against
         :return: Bool
         """
         from CGAL.CGAL_Kernel import \
@@ -490,13 +490,21 @@ class GeoElem(object):
             Point_2,\
             Bbox_2,\
             Iso_rectangle_2,\
-            do_intersect
+            do_intersect,\
+            ON_BOUNDED_SIDE,\
+            ON_BOUNDARY
         if isinstance(self.cgal_elem, Polygon_2):
             #do_intersect does not work with Polygon_2 for some reason
             #Check bounding box intersection first, it's faster
             if do_intersect(self.iso_rect, iso_rect_query):
+                # Check polygon edges crossing the rectangle
                 for edge in self.cgal_elem.edges():
                     if do_intersect(edge, iso_rect_query):
+                        return True
+                # Check rectangle vertices inside the polygon
+                for i in xrange(4):
+                    b = self.cgal_elem.bounded_side(iso_rect_query.vertex(i))
+                    if b==ON_BOUNDED_SIDE or b==ON_BOUNDARY:
                         return True
             return False
         else:

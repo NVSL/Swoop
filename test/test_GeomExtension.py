@@ -128,6 +128,18 @@ class TestBoundingBoxes(unittest.TestCase):
         self.assertEqual(len(results.with_type(Swoop.Element)), 2)
         self.assertEqual(len(results.with_type(Swoop.Wire)), 4)
 
+        board = SwoopGeom.from_file(get_inp("test_query.brd"))
+
+        result = board.get_overlapping(Rectangle((99,47), (104,53)))
+        self.assertEqual(len(result), 1)
+        result = board.get_overlapping(Rectangle((100,46), (102,48)))
+        self.assertEqual(len(result), 1)
+        result = board.get_overlapping(Rectangle((107,52), (109,54)))
+        self.assertEqual(len(result), 0)
+        result = board.get_overlapping(Rectangle((102,38), (104,40)))
+        self.assertEqual(len(result), 1)
+
+
 
 class TestFilteredBoundingBoxes(unittest.TestCase):
     def test_equality(self):
@@ -247,9 +259,6 @@ class TestShapeQueries(unittest.TestCase):
         self.assertTrue(led.overlaps(motor_top))
         self.assertTrue(motor_top.overlaps(led))
 
-        # print r1.eagle_code()
-        # print r2.eagle_code()
-        # print r3.eagle_code()
 
     def test_segments_in_rec(self):
         r = Rectangle((0,0), (19,16))

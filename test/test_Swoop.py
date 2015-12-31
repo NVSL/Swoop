@@ -199,7 +199,7 @@ class TestSwoop(unittest.TestCase):
     def test_TypeCheck(self):
         sch = self.sch.clone()
 
-        l =sch.get_layers()[0]
+        l = sch.get_layers()[0]
         with self.assertRaises(Swoop.SwoopError):
             l.set_name(10);
         with self.assertRaises(Swoop.SwoopError):
@@ -257,3 +257,24 @@ class TestSwoop(unittest.TestCase):
         #Swoop.LibraryFile.from_etree(tree)
 
         
+    def test_mirror_layers(self):
+        self.assertEqual(self.sch.get_mirrored_layer("Top"), "Bottom", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer("Bottom"), "Top", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer("tPlace"), "bPlace", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer("bPlace"), "tPlace", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer("Dimension"), "Dimension", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer("tFaceplateCover"), "tFaceplateCover", "Layer mirroring error")
+
+        self.assertEqual(self.sch.get_mirrored_layer(self.sch.get_layer("Top")).get_name(), "Bottom", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(self.sch.get_layer("Bottom")).get_name(), "Top", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(self.sch.get_layer("tPlace")).get_name(), "bPlace", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(self.sch.get_layer("bPlace")).get_name(), "tPlace", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(self.sch.get_layer("Dimension")).get_name(), "Dimension", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(self.sch.get_layer("tFaceplateCover")).get_name(), "tFaceplateCover", "Layer mirroring error")
+
+        self.assertEqual(self.sch.get_mirrored_layer(1), 16, "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(16), 1, "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(21), 22, "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(22), 21, "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(20), 20, "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(100), 100, "Layer mirroring error")

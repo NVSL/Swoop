@@ -3,22 +3,75 @@ Extending Swoop
 
 .. currentmodule:: Swoop
 
-Swoop is extensible via two mechanisms.  Both of them modify the set of classes
+Swoop is extensible via three mechanisms.  Both of them modify the set of classes
 that Swoop creates as it parses a file and creates new :class:`EagleFilePart`
 objects.
 
+Targeted Mixins
+----------------
 
-Mixins
-------
+The first mechanism is targeted mixins. A mixin is as class that provides some
+additional functionality to another class by creating a new class that inherits
+from both the mixin class and the original class.  Swoop's targetd mixin
+mechanism allows you to selectively add mixins to the :class:`EagleFilePart`
+classes that Swoop uses to represent Eagle files.
 
-The first mechanism is mixins.  A mixin is as class that provides some
-additional functionality for each :class:`EagleFilePart` that Swoop creates.
-When you extend Swoop using a mixin, you create a new subclass of each
-:class:`EagleFilePart` class that Swoop uses (e.g., :class:`Library`,
-:class:`Attribute`, and :class:`Symbol`).  The new subclass inherits both from
-original class and the mixin in class.
 
-The :meth:`Swoop.Mixin` function generates all theses classes automatically.
+To use targeted mixins, you provide a python module that contains a mixin class
+for each Swoop class you'd like to modify.  The mixin class should have the
+same name as the Swoop class it is meant to modify.  For instance, in this
+example, we use :meth:`Swoop.Mixin` to add an :code:`get_area()` method to
+:class:`Rectangle` and :class:`Circle`.
+
+Here's the module (in Area.py):
+
+.. code-block:: python
+
+    class Rectangle:
+	def __init__(self):
+            pass
+	def get_area(self):
+            return abs((self.get_x2()-self.get_x1()) * (self.get_y1()-self.get_y2()))
+
+    class Circle:
+	def __init__(self):
+            pass
+	def get_area(self):
+            return math.pi * (self.get_radius()**2)
+
+and how to use it to print out the sum of the areas of all the rectangle and circles in all the packages in a libray:
+
+.. code-block:: python
+
+    import Area
+    
+    AreaEagleFile = Swoop.Mixin(Area, "Area")
+    
+    lbr = AreaEagleFile.open("test.lbr")
+    print (From(test.lbr).
+           get_library().
+           get_packages().
+           get_drawing_elements().
+           with_type(Rectangle).
+           get_area().
+           reduce(lambda x,y:x+y, init=0.0))
+
+    print (From(test.lbr).
+           get_library().
+           get_packages().
+           get_drawing_elements().
+           with_type(Circle).
+           get_area().
+           reduce(lambda x,y:x+y, init=0.0))
+
+
+.. autofunction:: Swoop.Mixin
+
+Universal Mixins
+----------------
+
+You can also call :meth:`Swoop.Mixin` with a single class and have it mixed
+into all of the :class:`EagleFilePart` sub classes.
 
 For instance, to add a set of arbitrary attributes to each object, you could do this:
 
@@ -57,12 +110,12 @@ You can compose extensions as well:
     sch2.get_library("A_LIBARRY").get_symbol("GOOD_SYMBOL").do_it()
     sch2.get_library("A_LIBARRY").get_symbol("GOOD_SYMBOL").set_attr("good?", "yes!")
 
-
-.. autofunction:: Swoop.Mixin
    
 
 The Class Map
 -------------
+
+:bold:`Don't do this.  It's deprecated because it's messy`
 
 You can take finer-grain control over which classes Swoop uses by modifying the
 :code:`class_map` member of :class:`EagleFile` (or a derived class returned by

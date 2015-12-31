@@ -41,6 +41,7 @@ import os
 import re
 import cPickle
 import argparse
+import inspect
 
 supportedVersions = ["6.5.0", "6.6.0", "7.0.0", "7.1.0", "7.2.0", "7.3.0", "7.4.0", "7.5.0"]
 
@@ -218,6 +219,19 @@ class EagleFilePart(object):
 
         """
         return self if isinstance(self, t) else None
+
+    def without_type(self,t):
+        """
+        Filter this :code:`EagleFilePart` object based on its non-membership in a type. 
+        
+        Return :code:`self` if self is not an instance of type :code:`t` and :code:`None` otherwise.  This is useful in combination with :class:`From` object.
+        
+        :param t: The type to check for.
+        :returns: :code:`self` if self is not an instance of type :code:`t` and :code:`None` otherwise. 
+        :rtype: :class:`EagelFilePart` or :code:`None`
+
+        """
+        return self if not isinstance(self, t) else None
 
     def make_from(self):
         """
@@ -441,7 +455,7 @@ class LineGeometry:
         self.set_y2(y);
         return self;
 
-    def set_geometry(self, x1,y1,x2,y2):
+    def set_points(self, x1,y1,x2,y2):
         """
         Set the start and end points for this :class:`EagleFilePart`.
         
@@ -457,7 +471,7 @@ class LineGeometry:
         self.set_y2(y2);
         return self;
 
-    def get_geometry(self):
+    def get_points(self):
         """
         Get the start and end points for this :class:`EagleFilePart`.
         
@@ -541,7 +555,7 @@ class RectGeometry:
         self.set_y2(bottom);
         return self;
 
-    def set_geometry(self, left, top, right, bottom):
+    def set_corners(self, left, top, right, bottom):
         """
         Set the start and end points for this :class:`EagleFilePart`.
         
@@ -557,7 +571,7 @@ class RectGeometry:
         self.set_y2(bottom);
         return self;
 
-    def get_geometry(self):
+    def get_corners(self):
         """
         Get the start and end points for this :class:`EagleFilePart`.
         
@@ -630,6 +644,9 @@ class RotationGeometry:
 
     def _parseRot(self):
         r = self.get_rot();
+        if r is None:
+            return [False, False, 0]
+        
         m = re.match("(M)?(S)?(R)(\d+\.?\d*)", r)
         if m is None:
             raise SwoopError("Illegal rot value: '{}'.".format(r))
@@ -940,9 +957,24 @@ class EagleFile(EagleFilePart):
 
     def get_layer(self, v):
         """
-        Lookup a layer by number.
+        Lookup a layer by number or name.
+        
+        :param v: A :code:`str`, or :code:`int` describing a layer.
+        :returns: The layer.
+        :rtype:  :class:`Layer`
         """
-        return self.layers[v]
+        if isinstance(v, int):
+            try:
+                return self.layers[v]
+            except:
+                raise SwoopError("Unknown layer number: {}".format(v))
+        elif isinstance(v, str):
+            try:
+                return self.layersByName[v]
+            except:
+                raise SwoopError("Unknown layer name: '{}'".format(v))
+        else:
+            raise SwoopError("Wrong type for layer lookup: {}".format(type(v)))
     
     def get_layers(self):
         """
@@ -969,30 +1001,51 @@ class EagleFile(EagleFilePart):
         """
         return self.layersByName
 
-    # def get_flippedLayer(self, l):
-    #     if (isinstance(l, str)):
-    #         origName = l
-    #         if l[0] == "t":
-    #             l = "b" + l[1:]
-    #         elif l[0] == "b":
-    #             l = "t" + l[1:]
-    #         elif l == "Top":
-    #             l = "Bottom"
-    #         elif l == "Bottom":
-    #             l = "Top"
-    #         if l not in self.layersByName:
-    #             raise SwoopError("Tried to flip layer '" + origName + "', but '" + l + "' doesn't exist")
-    #         return name
-    #     elif (isinstance(l,int)):
-    #         if l in self.layers:
-    #             return self.get_flippedLayer(self, self.layers[l]).number
-    #         else:
-    #             raise SwoopError("Can't find layer number " + number)
-    #     elif (isinstance(l,Layer)):
-    #         if l.name in self.layersByName:
-    #             return self.layersByName[get_flippedLayer(l.name)]
-    #         else:
-    #             raise SwoopError("Can't find layer '" + l.name +"' in this file")
+    def get_mirrored_layer(self, l):
+        """
+
+        Find the mirrored version of a layer.  For 'mirrored' objects, Eagle will
+        automatically change layers from a 'top' layer to a 'bottom' layer under the following conditions:
+
+        * The 'top' layer starts with 't' and has an odd layer number.
+        * The 'bottom' layer startes with 'b' and has the layer number one higher than the corresponding 'top' layer.
+        * The 'top' layer's numbers is less than or equal to 59.
+
+        For instance tPlace (number 21) because bPlace (number 22).
+
+        This function returns the mirrored version of a layer according to the rules above.
+
+        :param l: A :code:`str`, :code:`int`, or :class:`Layer` specifying a layer.
+        :returns: A description of the mirrored layer.
+        :rtype:  Same type as :code:`l`
+        """
+
+        if (isinstance(l, str)):
+            return self.get_mirrored_layer(self.layersByName[l]).get_name()
+        elif (isinstance(l, int)):
+            return self.get_mirrored_layer(self.layers[l]).get_number()
+        elif (isinstance(l, Layer)):
+            if l.get_number() <= 60: # According to
+                                   # http://www.element14.com/community/thread/42249/l/creating-new-pairs-of-topbottom-layers,
+                                   # the 't' and 'b' prefixes only work up to
+                                   # layer 60
+                name = l.get_name()
+                if name[0] == "t":
+                    assert (l.get_number() % 2) == 1 # 't' layers are supposed to be odd-numbered
+                    name = "b" + name[1:]
+                elif name[0] == "b":
+                    assert (l.get_number() % 2) == 0 # 'b' layers are supposed to be even-numbered
+                    name = "t" + name[1:]
+                elif name == "Top":
+                    name = "Bottom"
+                elif name == "Bottom":
+                    name = "Top"
+                    
+                if name not in self.layersByName:
+                    raise SwoopError("Tried to mirror layer {}, but '{}' doesn't exist".format(l,name))
+                else:
+                    return self.layersByName[name]
+            return l
 
     def parse_layer_number(self, num):
 
@@ -1006,6 +1059,7 @@ class EagleFile(EagleFilePart):
         return self.layer_name_to_number(name)
     
     def layer_number_to_name(self, num):
+
         """
         Given a layer number, return the name.
 
@@ -1061,6 +1115,10 @@ class EagleFile(EagleFilePart):
         """
         return self.libraries.get(l)
 
+class nothing():
+    def __init__(self):
+        pass
+
 def Mixin(mixin, prefix, base=EagleFile):
     """Extend Swoop by adding a mixin to every class.
 
@@ -1069,7 +1127,7 @@ def Mixin(mixin, prefix, base=EagleFile):
     classes are prefixed with :code:`prefix` and they all inherit from the
     original class and :code:`mixin`.
 
-    :param mixin: Mixin class.  Its constructor should take no arguments.
+    :param mixin: Mixin class or module.  Its constructor for a mixin class (Or the classes in a mixin module) should take no arguments.
     :param prefix: Prefix for the class name.  It'll be prepended to the names of all the Swoop classes.
     :param base: Starting point for the extension.  This should either be :class:`Swoop.EagleFile` or a class returned by a previous call to this function.
     :returns: A new subclass of :code:`base` that can be used just like :class:`EagleFile`
@@ -1085,15 +1143,55 @@ def Mixin(mixin, prefix, base=EagleFile):
         T.__name__ = name
         return T
 
-    n = Extend(base,mixin, prefix + base.__name__)
-    n.isRawSwoop = False
-    #print n.class_map.get("library")
-    for i in base.class_map:
-        n.class_map[i] = Extend(base.class_map[i], mixin, prefix + base.class_map[i].__name__)
+    def get_class_from_module(module, theClass):
+        #print module
+        #print theClass
+        c = inspect.getmembers(module, inspect.isclass)
+        #print c
+        for i in c:
+            if i[1].__name__.split(".")[-1] == theClass.__name__.split(".")[-1]:
+                log.debug("Found class '{}' for '{}'".format(i[1], theClass))
+                return i[1]
+            else:
+                log.debug("Class '{}' was no match for '{}'".format(i[1], theClass))
+                
+        return None
+        
+    base_mixin = get_class_from_module(mixin,EagleFile)
+    base_mixin = base_mixin if base_mixin is not None else nothing
 
-    n.boardFileType = Extend(base.get_board_file_type(),         mixin, prefix + base.get_board_file_type().__name__)
-    n.schematicFileType = Extend(base.get_schematic_file_type(), mixin, prefix + base.get_schematic_file_type().__name__)
-    n.libraryFileType = Extend(base.get_library_file_type(),     mixin, prefix + base.get_library_file_type().__name__)
+    n = Extend(base, base_mixin, prefix + base.__name__)
+    n.isRawSwoop = False
+    for i in base.class_map:
+        if inspect.isclass(mixin):
+            n.class_map[i] = Extend(base.class_map[i], mixin, prefix + base.class_map[i].__name__)
+        elif inspect.ismodule(mixin):
+            c = get_class_from_module(mixin, EagleFile.class_map[i])
+            if c is not None:
+                log.info("Patching {} with {}".format(base.class_map[i], c))
+                ext =  Extend(base.class_map[i], c, prefix + base.class_map[i].__name__)
+                n.class_map[i] = ext
+            else:
+                n.class_map[i] = base.class_map[i]
+        
+    board_mixin = get_class_from_module(mixin,BoardFile)
+    board_mixin = board_mixin if board_mixin is not None else nothing
+        
+    schematic_mixin = get_class_from_module(mixin,SchematicFile)
+    schematic_mixin = schematic_mixin if schematic_mixin is not None else nothing
+        
+    library_mixin = get_class_from_module(mixin,LibraryFile)
+    library_mixin = library_mixin if library_mixin is not None else nothing
+        
+
+    n.boardFileType = Extend(base.get_board_file_type(),
+                             board_mixin, prefix + base.get_board_file_type().__name__)
+    
+    n.schematicFileType = Extend(base.get_schematic_file_type(),
+                                 schematic_mixin, prefix + base.get_schematic_file_type().__name__)
+    
+    n.libraryFileType = Extend(base.get_library_file_type(),
+                               library_mixin, prefix + base.get_library_file_type().__name__)
 
     n.boardFileType.class_map = copy.copy(n.class_map)
     n.schematicFileType.class_map = copy.copy(n.class_map)
@@ -1783,9 +1881,9 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
 
     def with_{{a.accessorName}}(self,v):
         """
-        Filter this :code:`EagleFilePart` object based on the value of :code:`{{a.name}}`.  For use in combination with :class:`From` objects.
+        Filter this :code:`EagleFilePart` object based on the value of :code:`{{a.name}}`. 
         
-        Return :code:`self` if one of the following is true:
+        Return :code:`self` if one of the following is :code:`True`:
 
         1.  :code:`{{a.name}}` equals :code:`v`
         2.  :code:`v` is callable and :code:`v(self.get_{{a.accessorName}}()` is :code:`True`
@@ -1802,6 +1900,32 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
             return self if self.{{a.name}} == v else None
         elif callable(v):
             return self if v(self.{{a.name}}) else None
+        else:
+            raise SwoopError("Illegal type passed to with_{{a.accessorName}}")
+
+    def without_{{a.accessorName}}(self,v):
+        """
+        Filter this :code:`EagleFilePart` object based on the value of :code:`{{a.name}}`. 
+        
+        Return :code:`self` if one of the following is :code:`True`:
+
+        1.  :code:`{{a.name}}` is not equal to :code:`v`
+        2.  :code:`v` is callable and :code:`v(self.get_{{a.accessorName}}()` is :code:`False`
+
+        This is useful in combination with :class:`From` object.
+        
+        :param t: The value to check for or a callable object.
+        :returns: :code:`self` if the criteria above are met and :code:`None` otherwise. 
+        :rtype: :class:`EagelFilePart` or :code:`None`
+
+        """
+
+        if type(v) in [str, int, float, bool]:
+            return self if self.{{a.name}} == v else None
+        elif callable(v):
+            return self if v(self.{{a.name}}) else None
+        else:
+            raise SwoopError("Illegal type passed to without_{{a.accessorName}}")
 
 
     #{%endfor%}
@@ -1847,6 +1971,30 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
             return self if v(self.{{tag.preserveTextAs}}) else None
         else:
             raise SwoopError("Illegal type passed to with_{{tag.preserveTextAs}}")
+
+    def without_{{tag.preserveTextAs}}(self,v):
+        """
+        Filter this :code:`EagleFilePart` object based on the value of :code:`{{tag.preserveTextAs}}`.
+        
+        Return :code:`self` if one of the following is true:
+
+        1.  :code:`{{tag.preserveTextAs}}` does not equal :code:`v`
+        2.  :code:`v` is callable and :code:`v(self.get_{{tag.preserveTextAs}}()` is :code:`False`
+
+        This is useful in combination with :class:`From` object.
+        
+        :param t: The value to check for or a callable object.
+        :returns: :code:`self` if the criteria above are met and :code:`None` otherwise. 
+        :rtype: :class:`EagelFilePart` or :code:`None`
+
+        """
+
+        if type(v) in [str, int, float]:
+            return self if self.{{tag.preserveTextAs}} == v else None
+        elif callable(v):
+            return self if v(self.{{tag.preserveTextAs}}) else None
+        else:
+            raise SwoopError("Illegal type passed to without_{{tag.preserveTextAs}}")
     #{% endif %}
 
 

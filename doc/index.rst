@@ -35,7 +35,8 @@ Contents
    SwoopTools
    Examples
    CodeGen
-
+   ShapelySwoop
+   
 Index
 -----
 

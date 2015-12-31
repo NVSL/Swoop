@@ -7,6 +7,9 @@ Swoop is extensible via three mechanisms.  Both of them modify the set of classe
 that Swoop creates as it parses a file and creates new :class:`EagleFilePart`
 objects.
 
+For an example of a complex mixin, checkout :mod:`ext.ShapleySwoop`.
+
+
 Targeted Mixins
 ----------------
 
@@ -115,7 +118,7 @@ You can compose extensions as well:
 The Class Map
 -------------
 
-:bold:`Don't do this.  It's deprecated because it's messy`
+**Don't do this.  It's deprecated because it's messy**
 
 You can take finer-grain control over which classes Swoop uses by modifying the
 :code:`class_map` member of :class:`EagleFile` (or a derived class returned by
@@ -142,3 +145,11 @@ For instance if you wanted to add a :code:`set_location()` method to
 
 If you later extend :class:`EagleFile` using :meth:`Swoop.Mixin`, the mixin will be applied to :class:`MyElement`.
 
+Available Extensions
+--------------------
+
+.. toctree::
+   :maxdepth: 1
+	      
+   ShapelySwoop
+		      

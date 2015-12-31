@@ -1,3 +1,31 @@
+""".. module:: ShapelySwoop
+
+.. moduleauthor:: Steven Swanson (swanson@cs.ucsd.edu)
+
+ShapleySwoop is a Swoop extension that lets you extract geometry information
+from the a Eagle file.  It adds a single method
+:meth:`ShapelyEagleFilePart.get_geometry`, that returns an object that
+represents the shape of :class:`EagleFilePart` objects that have a meaningful
+shape (e.g., packages, pads, smds, wires, and rectangles, among others).
+
+ShapelySwoop is built on the `Shapely library
+<http://toblerity.org/shapely/manual.html>`_ , and you can use that libraries
+operations to do whatever you'd like with the resulting geometry.
+
+The core of ShapelySwoop is a the :class:`ShapelyEagleFilePart` class.  It
+defines the interface ShapelySwoop adds to :class:`EagleFilePart` subclasses
+for objects that have meaningful shapes.
+
+The goal is to mimic what Eagle does, so if you ask for layer "Holes,"
+:class:`Via` should give a circle with the same diameter as the hole in
+the middle of the via, while "Top" should give you the diameter of the
+restring.  
+
+ShapelySwoop is currently very incomplete.  Check your results with the
+debugging facilities before relying on it.
+
+"""
+
 import shapely.geometry as shapes
 import shapely.affinity as affinity
 import shapely
@@ -57,12 +85,13 @@ class ShapelyEagleFilePart():
     POLYGONIZE_BEST_EFFORT = 1;
     POLYGONIZE_STRICT = 2;
     
-    def do_polygonize_wires(self, mode, wires, layer_query):
+    def _do_polygonize_wires(self, mode, wires, layer_query):
+        
         """
         Try to deal with lines enclose areas.
         """
        
-        #log.debug("do_polygonize_wires {} {} {}".format(mode, wires, layer_query))
+        #log.debug("_do_polygonize_wires {} {} {}".format(mode, wires, layer_query))
         if mode == ShapelyEagleFilePart.POLYGONIZE_NONE:
             return shapely.ops.unary_union(wires.get_geometry(layer_query=layer_query))
         else:
@@ -89,12 +118,6 @@ class ShapelyEagleFilePart():
     def get_geometry(self, layer_query=None, polygonize_wires=POLYGONIZE_NONE):
         """Get the Shapely geometry for this :code:`EagleFilePart` object on a particular layer.
 
-        The goal is to mimic what Eagle does, so if you ask for layer "Holes,"
-        :class:`Via` should give a circle with the same diameter as the hole in
-        the middle of the via, while "Top" should give you the diameter of the
-        restring.  This kind of functionality is not uniformly or completely
-        implemented yet.  Your milage may vary.
-
         If you pass :code:`polygonize_wires`, then this function will try to
         deal with lines that enclose areas intelligently.
 
@@ -102,15 +125,14 @@ class ShapelyEagleFilePart():
           normal geometry for the lines.  As near as I can tell, this is what Eagle does.
         
         * For :code:`ShapelyEagleFilePart.POLYGONIZE_BEST_EFFORT`, use shapely to build what
-        polygons it can, and return everything else as wires (i.e., lines).  The rule is that
-        we try to merge wires of the same width into polygons.  For incomplete
-        polygons, just render the parts as wires.
+          polygons it can, and return everything else as wires (i.e., lines).  The rule is that
+          we try to merge wires of the same width into polygons.
 
         * For :code:`ShapelyEagleFilePart.POLYGONIZE_STRICT`, do the same thing, but throw an error if there
-        are any invalid, incomplete polygons.
+          are any invalid, incomplete polygons.
 
         :param layer_query: The layer you want the geometry for.  :code:`None` for everything. (Default = :code:`None`)
-        :param polygonize_wires: Whether you want to polygonize wires.  See docs for :meth:`do_polygonize_wires`. (Default = :code:`ShapelyEagleFilePart.POLYGONIZE_NONE`)
+        :param polygonize_wires: Whether you want to polygonize wires.  (Default = :code:`ShapelyEagleFilePart.POLYGONIZE_NONE`)
         :returns: The geometry
         :rtype: A Shapely geometry object
 
@@ -127,11 +149,11 @@ class BoardFile(ShapelyEagleFilePart):
     def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
         brd = Swoop.From(self)
 
-        wires = self.do_polygonize_wires(polygonize_wires,
-                                         brd.
-                                         get_plain_elements().
-                                         with_type(Wire),
-                                         layer_query=layer_query)
+        wires = self._do_polygonize_wires(polygonize_wires,
+                                          brd.
+                                          get_plain_elements().
+                                          with_type(Wire),
+                                          layer_query=layer_query)
 
         parts = (brd.get_elements() +
                  brd.get_plain_elements().without_type(Wire) +
@@ -198,11 +220,11 @@ class Package(ShapelyEagleFilePart):
     def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
         package = Swoop.From(self)
 
-        wires = self.do_polygonize_wires(polygonize_wires,
-                                         package.
-                                         get_drawing_elements().
-                                         with_type(Wire),
-                                         layer_query=layer_query)
+        wires = self._do_polygonize_wires(polygonize_wires,
+                                          package.
+                                          get_drawing_elements().
+                                          with_type(Wire),
+                                          layer_query=layer_query)
 
         parts = (package.get_drawing_elements().without_type(Wire) +
                  package.get_smds() +
@@ -370,6 +392,12 @@ class Junction(ShapelyEagleFilePart):
         ShapelyEagleFilePart.__init__(self);
 
 class GeometryDump:
+    """Utility class for dumping multiple Shapley geometry objects.
+
+    You can only have one of these going at once, otherwise the output will get
+    confused.
+
+    """
     RED = "#ff0000"
     GREEN = "#00ff00"
     BLACK = "#000000"
@@ -381,6 +409,9 @@ class GeometryDump:
     
     
     def __init__(self, title, filename):
+        """
+        Prepare to dump geometry.  It'll end up in :code:`filename` (a pdf) with :code:`title` as the title.
+        """
         if not dumping_geometry_works:
             log.warn("Can't dump geometry because matplotlib doesn't work in virtualenv.")
             return
@@ -392,6 +423,16 @@ class GeometryDump:
 
         
     def add_geometry(self, mp, width=0, alpha=1, facecolor='none', edgecolor="#0000ff"):
+        """
+        Add a piece of geometry to the output.
+        
+        :param mp: The geometry.
+        :param width: the width of the border.
+        :param alpha: alpha blending value.
+        :param facecolor: color of the inside of the geometry.
+        :param edgecolor: color of the border.
+        
+        """
         if not dumping_geometry_works:
             log.warn("Can't dump geometry because matplotlib doesn't work in virtualenv.")
             return
@@ -412,6 +453,9 @@ class GeometryDump:
 
 
     def dump(self):
+        """
+        Write out the geometry.
+        """
         bounds = self.everything.bounds
         width  = abs(bounds[2] - bounds[0])
         height = abs(bounds[3] - bounds[1])
@@ -430,6 +474,10 @@ class GeometryDump:
         self.fig.clf()
 
 def dump_geometry(geometry, title, filename, color="#888888"):
+    """
+    Dump a Shapely :code:`geometry` object to :code:`filename`, title the figure it draws :code:`title`, and draw it in :code:`color`
+    """
+    
     dump = GeometryDump(title,filename)
     dump.add_geometry(geometry, facecolor=color,alpha=1)
     dump.dump()

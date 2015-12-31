@@ -1,9 +1,12 @@
 import unittest
 import Swoop
-import Swoop.ext.Shapely
+import Swoop.ext.ShapelySwoop
+from Swoop.ext.ShapelySwoop import ShapelyEagleFilePart as SEFP
 import os
 import shapely
 import re
+from Swoop.ext.ShapelySwoop import GeometryDump as GeoDump
+from Swoop.ext.ShapelySwoop import ShapelySwoop as ShapelySwoop
 
 def hash_geo(geo):
     """
@@ -19,22 +22,13 @@ def hash_geo(geo):
 def dump(test, geo, title, c, color):
     hash = hash_geo(geo)
     print """("{}", {}, "{}"),""".format(test[0], hash, test[2])
-    colors = {"RED":"#ff0000",
-              "GREEN":"#00ff00",
-              "BLACK":"#000000",
-              "BLUE":"#0000ff",
-              "YELLOW":"#ff00ff",
-              "PURPLE":"#ff00ff"
-        }
-    
-    Swoop.ext.Shapely.dump_geometry(geo, "{} ({})".format(title,hash) , "{0:03d}.pdf".format(c), colors[color])
+    Swoop.ext.ShapelySwoop.dump_geometry(geo, "{} ({})".format(title,hash) , "{0:03d}.pdf".format(c), color)
 
 
 class TestShapely(unittest.TestCase):
     
     def setUp(self):
         self.me = os.path.dirname(os.path.realpath(__file__))
-        ShapelySwoop = Swoop.Mixin(Swoop.ext.Shapely, "Shapely")
         self.testbrd1 = ShapelySwoop.from_file(self.me + "/inputs/shapeTest1.brd")
         self.testbrd2 = ShapelySwoop.from_file(self.me + "/inputs/shapeTest2.brd")
         self.testbrd3 = ShapelySwoop.from_file(self.me + "/inputs/shapeTest3.brd")
@@ -42,22 +36,33 @@ class TestShapely(unittest.TestCase):
         self.boardtest = ShapelySwoop.from_file(self.me + "/inputs/test_saving.brd")
         
     def test_element(self):
-        tests = [("shapely.ops.cascaded_union(Swoop.From(self.testbrd1).get_elements().get_geometry())", -8745343124844733482, "BLACK"),
-                 ("self.testbrd1.get_element('U$1').get_geometry()", 3449774795493592488, "BLACK"),
-                 ("self.testbrd1.get_element('U$2').get_geometry()", 2947786369872830885, "BLACK"),
-                 ("self.testbrd1.get_element('U$2').get_geometry(layer_query='Top')", -2316119240083132091, "RED"),
-                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd1).get_elements().get_geometry(layer_query='Top'))", -1405743727263307022, "RED"),
-                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry())", -5984626191484754127, "BLACK"),
-                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tPlace'))", 4675948399285872422, "BLACK"),
-                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='bPlace'))", -8147871516156910189, "BLACK"),
-                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_element('U$1').get_geometry(layer_query='Top'))", -5301026454227315084, "RED"),
-                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_element('U$1').get_geometry(layer_query='Bottom'))", -5999577188847035307, "BLUE"),
-                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tTest2'))", -8049353574747205132, "PURPLE"),
-                 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='bTest2'))", 3934649351525441535, "YELLOW"),
-                 ("shapely.ops.cascaded_union(self.boardtest.get_geometry())", -138569437861972423, "BLACK"),
-             ]
+        tests = [
+            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd1).get_elements().get_geometry())", 4543782496711782003, "#000000"),
+            ("self.testbrd1.get_element('U$1').get_geometry()", 558293734914727651, "#000000"),
+            ("self.testbrd1.get_element('U$2').get_geometry()", 1542196656777319817, "#000000"),
+            ("self.testbrd1.get_element('U$2').get_geometry(layer_query='Top')", -2316119240083132091, "#ff0000"),
+            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd1).get_elements().get_geometry(layer_query='Top'))", -1405743727263307022, "#ff0000"),
+            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry())", 1383575516265791664, "#000000"),
+            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tPlace'))", 4675948399285872422, "#000000"),
+            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='bPlace'))", -8147871516156910189, "#000000"),
+            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_element('U$1').get_geometry(layer_query='Top'))", -5301026454227315084, "#ff0000"),
+            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_element('U$1').get_geometry(layer_query='Bottom'))", -5999577188847035307, "#0000ff"),
+            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tTest2'))", -8049353574747205132, "#ff00ff"),
+            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='bTest2'))", 3934649351525441535, "#ff00ff"),
+            ("shapely.ops.cascaded_union(self.boardtest.get_geometry())", 6722318116014407667, "#000000"),
+            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='Holes'))", 7701255143946384531, "#000000"),
+            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tKeepout', polygonize_wires=SEFP.POLYGONIZE_BEST_EFFORT))", -5168448055214345009, "#000000"),
+            ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tKeepout', polygonize_wires=SEFP.POLYGONIZE_NONE))", -6142800795751873055, "#000000"),
+        ]
 
         c = 0
+        # We compare the geometry the commands produced with a hash of the
+        # correct geometry.  If you need to update the correct answers,
+        # uncomment the "dump" below, and comment out the assert.  Run
+        # "frameworkpython -m unittest test_Shapely.TestShapely.test_element"
+        # and then look at all ???.pdf files.  Check that they correct.  When
+        # they are replace the array above with the output of the command.
+        # It's the commands with the updated hashes.  Questions? ask Steve.
         for i in tests:
             geo = eval(i[0])
             #dump(i, geo, i[0], c, i[2])

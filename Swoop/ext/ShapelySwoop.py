@@ -12,28 +12,27 @@ try:
     from matplotlib import pyplot as plt
     from descartes import PolygonPatch
 except RuntimeError as e:
-    log.error("Can't use matplotlib on macosx due to virtualenv.  Dumping to pdf won't work.  Talk to Steve if you need to fix.")
+    log.warning("Can't use matplotlib on macosx due to virtualenv.  Dumping to pdf won't work.  Talk to Steve if you need to fix.")
     dumping_geometry_works = False
               
 
 strict = False;
 
 class ShapelyEagleFilePart():
+
     def __init__(self):
         pass
-    def get_geometry(self, layer_query=None):
-        if strict:
-            raise NotImplemented("Can't get shape for {}".format(self.__class__.__name__()))
-        else:
-            return shapes.LineString()
 
-    def apply_width(self, shape):
-        if self.get_width() > 0:
-            return shape.buffer(self.get_width()/2, resolution=16)
+    def _apply_width(self, shape, width=None):
+        if width is None:
+            width = self.get_width()
+            
+        if width > 0:
+            return shape.buffer(width/2, resolution=16)
         else:
             return shape
 
-    def apply_transform(self, shape, origin=(0,0)):
+    def _apply_transform(self, shape, origin=(0,0)):
         if shape.is_empty:
             return shape
         r = shape
@@ -41,7 +40,7 @@ class ShapelyEagleFilePart():
         r = affinity.scale(r, xfact=(-1 if self.get_mirrored() else 1), origin=(0,0))
         return r;
 
-    def layer_matches(self, query, layer_name):
+    def _layer_matches(self, query, layer_name):
         if query is None:
             return True
         
@@ -53,33 +52,104 @@ class ShapelyEagleFilePart():
             return query == query.get_name()
         else:
             raise Swoop.SwoopError("illegal layer query: {}".format(query))
+
+    POLYGONIZE_NONE = 0;
+    POLYGONIZE_BEST_EFFORT = 1;
+    POLYGONIZE_STRICT = 2;
+    
+    def do_polygonize_wires(self, mode, wires, layer_query):
+        """
+        Try to deal with lines enclose areas.
+        """
+       
+        #log.debug("do_polygonize_wires {} {} {}".format(mode, wires, layer_query))
+        if mode == ShapelyEagleFilePart.POLYGONIZE_NONE:
+            return shapely.ops.unary_union(wires.get_geometry(layer_query=layer_query))
+        else:
+            widths = wires.get_width().unique();
+            result = shapes.LineString()
+
+            for w in widths:
+                geometry = wires.with_width(w).get_geometry(apply_width=False,layer_query=layer_query);
+                polygons, dangles, cuts, invalids = shapely.ops.polygonize_full(list(geometry))
+                if mode == ShapelyEagleFilePart.POLYGONIZE_STRICT:
+                    if len(dangles) + len(cuts) + len(invalids) > 0:
+                        raise SwoopError("Tried to polygonize non-polygon ({})".format(self))
+
+                combined = shapely.ops.unary_union([polygons, dangles, cuts, invalids])
+                combined = self._apply_width(combined, width=w)
+
+                result = result.union(combined)
+
+        if mode != ShapelyEagleFilePart.POLYGONIZE_STRICT and mode != ShapelyEagleFilePart.POLYGONIZE_BEST_EFFORT:
+            raise Swoop.SwoopError("Unknown polygonize mode: {}".mode)
+
+        return result
+
+    def get_geometry(self, layer_query=None, polygonize_wires=POLYGONIZE_NONE):
+        """Get the Shapely geometry for this :code:`EagleFilePart` object on a particular layer.
+
+        The goal is to mimic what Eagle does, so if you ask for layer "Holes,"
+        :class:`Via` should give a circle with the same diameter as the hole in
+        the middle of the via, while "Top" should give you the diameter of the
+        restring.  This kind of functionality is not uniformly or completely
+        implemented yet.  Your milage may vary.
+
+        If you pass :code:`polygonize_wires`, then this function will try to
+        deal with lines that enclose areas intelligently.
+
+        * For :code:`ShapelyEagleFilePart.POLYGONIZE_NONE` (the default), do nothing but return the
+          normal geometry for the lines.  As near as I can tell, this is what Eagle does.
         
+        * For :code:`ShapelyEagleFilePart.POLYGONIZE_BEST_EFFORT`, use shapely to build what
+        polygons it can, and return everything else as wires (i.e., lines).  The rule is that
+        we try to merge wires of the same width into polygons.  For incomplete
+        polygons, just render the parts as wires.
+
+        * For :code:`ShapelyEagleFilePart.POLYGONIZE_STRICT`, do the same thing, but throw an error if there
+        are any invalid, incomplete polygons.
+
+        :param layer_query: The layer you want the geometry for.  :code:`None` for everything. (Default = :code:`None`)
+        :param polygonize_wires: Whether you want to polygonize wires.  See docs for :meth:`do_polygonize_wires`. (Default = :code:`ShapelyEagleFilePart.POLYGONIZE_NONE`)
+        :returns: The geometry
+        :rtype: A Shapely geometry object
+
+        """
+        if strict:
+            raise NotImplemented("Can't get shape for {}".format(self.__class__.__name__()))
+        else:
+            return shapes.LineString()
 
 class BoardFile(ShapelyEagleFilePart):
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
 
-    def get_geometry(self, layer_query=None):
+    def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
         brd = Swoop.From(self)
 
+        wires = self.do_polygonize_wires(polygonize_wires,
+                                         brd.
+                                         get_plain_elements().
+                                         with_type(Wire),
+                                         layer_query=layer_query)
+
         parts = (brd.get_elements() +
-                 brd.get_plain_elements() +
+                 brd.get_plain_elements().without_type(Wire) +
                  brd.get_signals().get_wires() +
                  brd.get_signals().get_vias())
 
-        return shapely.ops.unary_union(parts.get_geometry(layer_query=layer_query))
-
-        
+        return shapely.ops.unary_union(parts.get_geometry(layer_query=layer_query, polygonize_wires=polygonize_wires) + [wires])
+            
 class Circle(ShapelyEagleFilePart):
     # Fixme:  Cut out center
     
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
 
-    def get_geometry(self, layer_query=None):
-        if self.layer_matches(layer_query, self.get_layer()):
+    def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
+        if self._layer_matches(layer_query, self.get_layer()):
             circle = shapes.Point(self.get_x(), self.get_y()).buffer(self.get_radius())
-            return self.apply_width(circle)
+            return self._apply_width(circle)
         else:
             return shapes.LineString()
     
@@ -87,10 +157,10 @@ class Rectangle(ShapelyEagleFilePart):
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
 
-    def get_geometry(self, layer_query=None):
+    def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
         assert not self.get_mirrored()  # When I select "mirrored" in Eagle, it just modifies the rotation angle.
 
-        if self.layer_matches(layer_query, self.get_layer()):
+        if self._layer_matches(layer_query, self.get_layer()):
 
             # if self.get_mirrored():
             #     mirror = shapely.affinity.scale(xfact=-1, center=(0,0,0))
@@ -111,10 +181,10 @@ class Polygon(ShapelyEagleFilePart):
     def __init__(self):
         ShapelyEagleFilePart.__init__(self)
 
-    def get_geometry(self, layer_query=None):
-        if self.layer_matches(layer_query, self.get_layer()):
+    def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
+        if self._layer_matches(layer_query, self.get_layer()):
             polygon = shapes.Polygon([(v.get_x(), v.get_y()) for v in self.get_vertices()])
-            return self.apply_width(polygon)
+            return self._apply_width(polygon)
         else:
             return shapes.LineString()
             
@@ -124,41 +194,51 @@ class Package(ShapelyEagleFilePart):
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
 
-    def get_geometry(self, layer_query=None):
+        
+    def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
         package = Swoop.From(self)
 
-        parts = (package.get_drawing_elements() + 
+        wires = self.do_polygonize_wires(polygonize_wires,
+                                         package.
+                                         get_drawing_elements().
+                                         with_type(Wire),
+                                         layer_query=layer_query)
+
+        parts = (package.get_drawing_elements().without_type(Wire) +
                  package.get_smds() +
                  package.get_pads())
 
-        return shapely.ops.unary_union(parts.get_geometry(layer_query=layer_query))
-
+        
+        return shapely.ops.unary_union(parts.get_geometry(layer_query=layer_query, polygonize_wires=polygonize_wires) + [wires])
+    
         
 class Element(ShapelyEagleFilePart):
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
 
-    def apply_transform(self, shape):
-        r = ShapelyEagleFilePart.apply_transform(self, shape)
+    def _apply_transform(self, shape):
+        r = ShapelyEagleFilePart._apply_transform(self, shape)
         return affinity.translate(r, xoff=self.get_x(), yoff=self.get_y())
 
-    def get_geometry(self, layer_query=None):
+    def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
         if self.get_mirrored() and layer_query is not None:
             layer_query = self.get_file().get_mirrored_layer(layer_query)
 
-        shape = self.find_package().get_geometry(layer_query=layer_query);
-        return self.apply_transform(shape)
+        #log.debug("Getitng geometry for {}. {} {}".format(self.get_name(), layer_query, polygonize_wires))
+        shape = self.find_package().get_geometry(layer_query=layer_query, polygonize_wires=polygonize_wires);
+        return self._apply_transform(shape)
 
 class Wire(ShapelyEagleFilePart):
     # Fixme: handle curves
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
 
-    def get_geometry(self, layer_query=None):
-        if self.layer_matches(layer_query, self.get_layer()):
+    def get_geometry(self, layer_query=None, apply_width=True, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
+        if self._layer_matches(layer_query, self.get_layer()):
             line = shapes.LineString([(self.get_x1(), self.get_y1()), (self.get_x2(), self.get_y2())])
-            r = self.apply_width(line)
-            return r
+            if apply_width:
+                line = self._apply_width(line)
+            return line
         else:
             return shapes.LineString()
     
@@ -168,13 +248,13 @@ class Smd(ShapelyEagleFilePart):
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
 
-    def get_geometry(self, layer_query=None):
-        if self.layer_matches(layer_query, self.get_layer()):
+    def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
+        if self._layer_matches(layer_query, self.get_layer()):
             box = shapes.box(self.get_x()-self.get_dx()/2.0,
                              self.get_y()-self.get_dy()/2.0,
                              self.get_x() + self.get_dx()/2.0,
                              self.get_y() + self.get_dy()/2.0)
-            return self.apply_transform(box, origin=(self.get_x(), self.get_y()))
+            return self._apply_transform(box, origin=(self.get_x(), self.get_y()))
         else:
             return shapes.LineString()
         
@@ -204,23 +284,30 @@ class Frame(ShapelyEagleFilePart):
         ShapelyEagleFilePart.__init__(self);
 
 class Hole(ShapelyEagleFilePart):
+    # Fixme : Generate tStop and bStop
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
 
+    def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
+        if self._layer_matches(layer_query, "Holes"):
+            circle = shapes.Point(self.get_x(), self.get_y()).buffer(self.get_drill()/2)
+            return circle;
+        else:
+            return shapes.LineString()
+        
 class Pad(ShapelyEagleFilePart):
     # Fixme: handle other shapes.
-    
+    # Fixme : Generate tStop and bStop
+    # Fixme: Pads should be different sizes or different layers.
+    # Fixme: Pads should maybe generate keepout geometry as well?
+        
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
 
     def render_pad(self, layer_query, drill, rest_ring):
 
-        # Fixme: Pads should be different sizes or different layers.
-        # Fixme: Pads should maybe generate keepout geometry as well?
-        
         if layer_query is not None and self.get_file().get_layer(layer_query).get_number() > 16:
             return shapes.LineString()
-        
 
         radius = (drill/2) + rest_ring * drill
     
@@ -251,7 +338,7 @@ class Pad(ShapelyEagleFilePart):
 
         return shape
 
-    def get_geometry(self, layer_query=None):
+    def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
 
         shape = self.render_pad(layer_query, self.get_drill(), 0.25)
         # By default, the radius of the circle of copper
@@ -260,13 +347,13 @@ class Pad(ShapelyEagleFilePart):
         # settings of Eagle.  Swoop doesn't
         # know about the DRC settings, so we
         # just us the default.
-        return self.apply_transform(shape, origin=(self.get_x(), self.get_y()))
+        return self._apply_transform(shape, origin=(self.get_x(), self.get_y()))
                                
 class Via(Pad):
     def __init__(self):
         Pad.__init__(self);
 
-    def get_geometry(self, layer_query=None):
+    def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
         # This isn't quite right.  Via size is set in the DRC file.
         return self.render_pad(layer_query, self.get_drill(), 0.25)
 
@@ -282,14 +369,33 @@ class Junction(ShapelyEagleFilePart):
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
 
-
-def dump_geometry(geometry, title, filename, color="#888888"):
-    if not dumping_geometry_works:
-        log.warn("Can't dump geometry because matplotlib doesn't work in virtualenv.")
-        return
+class GeometryDump:
+    RED = "#ff0000"
+    GREEN = "#00ff00"
+    BLACK = "#000000"
+    WHITE = "#ffffff"
+    GRAY = "#888888"
+    BLUE = "#0000ff"
+    YELLOW = "#ff00ff"
+    PURPLE = "#ff00ff"
     
-    fig = plt.figure(2, figsize=(10,10), dpi=90)
-    def add_multipolygon(fig, mp, width=0, alpha=1, facecolor='none', edgecolor="#0000ff"):
+    
+    def __init__(self, title, filename):
+        if not dumping_geometry_works:
+            log.warn("Can't dump geometry because matplotlib doesn't work in virtualenv.")
+            return
+        self.everything = shapes.LineString()
+        self.title = title
+        self.filename = filename
+        self.fig = plt.figure(2, figsize=(10,10), dpi=90)
+        self.subfig = self.fig.add_subplot(111)
+
+        
+    def add_geometry(self, mp, width=0, alpha=1, facecolor='none', edgecolor="#0000ff"):
+        if not dumping_geometry_works:
+            log.warn("Can't dump geometry because matplotlib doesn't work in virtualenv.")
+            return
+
         if not mp:
             return
         if isinstance(mp, shapely.geometry.polygon.Polygon):
@@ -298,31 +404,46 @@ def dump_geometry(geometry, title, filename, color="#888888"):
             l = mp.geoms
         for p in l:
             if not isinstance(p, shapely.geometry.polygon.Polygon):
-                fig.plot([i[0] for i in p.coords], [i[1] for i in p.coords], color=facecolor)
+                self.subfig.plot([i[0] for i in p.coords], [i[1] for i in p.coords], color=facecolor)
             elif p:
                 ring_patch = PolygonPatch(p, facecolor=facecolor, edgecolor=edgecolor, linewidth=width, alpha=alpha)
-                fig.add_patch(ring_patch)
+                self.subfig.add_patch(ring_patch)
+            self.everything= self.everything.union(p)
 
-    subfig = fig.add_subplot(111)
-    bounds = geometry.bounds
-    width  = abs(bounds[2] - bounds[0])
-    height = abs(bounds[3] - bounds[1])
-    xrange = [bounds[0] - 0.1*width,  bounds[2] + 0.1*width]
-    yrange = [bounds[1] - 0.1*height, bounds[3] + 0.1*height]
-    subfig.set_xlim(*xrange)
-    subfig.set_ylim(*yrange)
-    #subfig.set_xlim(-25,25)
-    #subfig.set_ylim(-25,25)
-    subfig.set_aspect(1)
 
-    subfig.xaxis.set_ticks(range(int(math.floor(float(bounds[0]))), int(math.ceil(float(bounds[2])))))
-    subfig.yaxis.set_ticks(range(int(math.floor(float(bounds[1]))), int(math.ceil(float(bounds[3])))))
-    subfig.grid(True)
+    def dump(self):
+        bounds = self.everything.bounds
+        width  = abs(bounds[2] - bounds[0])
+        height = abs(bounds[3] - bounds[1])
+        xrange = [bounds[0] - 0.1*width,  bounds[2] + 0.1*width]
+        yrange = [bounds[1] - 0.1*height, bounds[3] + 0.1*height]
+        self.subfig.set_xlim(*xrange)
+        self.subfig.set_ylim(*yrange)
+        self.subfig.set_aspect(1)
 
-    add_multipolygon(subfig, geometry, facecolor=color,alpha=1)
-
-    plt.title(title)
+        self.subfig.xaxis.set_ticks(range(int(math.floor(float(bounds[0]))), int(math.ceil(float(bounds[2])))))
+        self.subfig.yaxis.set_ticks(range(int(math.floor(float(bounds[1]))), int(math.ceil(float(bounds[3])))))
+        self.subfig.grid(True)        
+        plt.title(self.title)
     
-    fig.savefig(filename, format='pdf')
-    fig.clf()
-    # import time    
+        self.fig.savefig(self.filename, format='pdf')
+        self.fig.clf()
+
+def dump_geometry(geometry, title, filename, color="#888888"):
+    dump = GeometryDump(title,filename)
+    dump.add_geometry(geometry, facecolor=color,alpha=1)
+    dump.dump()
+
+
+def polygon_as_svg(shapely_polygon):
+    print shapely_polygon
+    points = " ".join(["{},{}".format(p[0],p[1]) for p in shapely_polygon.exterior.coords])
+    print "<svg>"
+    print "<polygon points='{}'  style='fill:lime; stroke:purple; stroke-width:1mm'/>".format(points)
+    print "</svg>"
+    
+
+
+
+import sys
+ShapelySwoop = Swoop.Mixin(sys.modules[__name__], "Shapely")

@@ -1067,7 +1067,8 @@ class EagleFile(EagleFilePart):
         """
         n = int(num)
         if n not in self.layers:
-            return "Layer" + str(num)
+            raise SwoopError("No such layer number: {}".format(num))
+        #return "Layer" + str(num)
         else:
             return self.layers[n].name
 

@@ -7,17 +7,7 @@ import shapely
 import re
 from Swoop.ext.ShapelySwoop import GeometryDump as GeoDump
 from Swoop.ext.ShapelySwoop import ShapelySwoop as ShapelySwoop
-
-def hash_geo(geo):
-    """
-    Hash a shapley geometry object by converting it to string, rounding all the floats it contains and taking a hash of the resulting string.  
-    
-    The rounding prevents false failures due to floating point errors.
-    """
-    def trim(match):
-        return str(round(float(match.group(0)), 5))
-    v = re.sub("-?\d+(\.\d+)?", trim, str(geo))
-    return hash(v)
+from Swoop.ext.ShapelySwoop import hash_geometry as hash_geo
 
 def dump(test, geo, title, c, color):
     hash = hash_geo(geo)

@@ -33,6 +33,7 @@ import shapely.ops
 import math
 import Swoop
 import logging as log
+import re
 
 dumping_geometry_works = True
 try:
@@ -40,7 +41,6 @@ try:
     from matplotlib import pyplot as plt
     from descartes import PolygonPatch
 except RuntimeError as e:
-    log.warning("Can't use matplotlib on macosx due to virtualenv.  Dumping to pdf won't work.  Talk to Steve if you need to fix.")
     dumping_geometry_works = False
               
 
@@ -66,6 +66,14 @@ class ShapelyEagleFilePart():
         r = shape
         r = affinity.rotate(r, self.get_rotation(), origin=origin)
         r = affinity.scale(r, xfact=(-1 if self.get_mirrored() else 1), origin=(0,0))
+        return r;
+
+    def _apply_inverse_transform(self, shape, origin=(0,0)):
+        if shape.is_empty:
+            return shape
+        r = shape
+        r = affinity.scale(r, xfact=(-1 if self.get_mirrored() else 1), origin=(0,0))
+        r = affinity.rotate(r, -self.get_rotation(), origin=origin)
         return r;
 
     def _layer_matches(self, query, layer_name):
@@ -242,6 +250,13 @@ class Element(ShapelyEagleFilePart):
         r = ShapelyEagleFilePart._apply_transform(self, shape)
         return affinity.translate(r, xoff=self.get_x(), yoff=self.get_y())
 
+    def _apply_inverse_transform(self, shape):
+        r = affinity.translate(shape, xoff=-self.get_x(), yoff=-self.get_y())
+        return ShapelyEagleFilePart._apply_inverse_transform(self, r)
+
+    def map_board_geometry_to_package_geometry(self, shape):
+        return self._apply_inverse_transform(shape)
+
     def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
         if self.get_mirrored() and layer_query is not None:
             layer_query = self.get_file().get_mirrored_layer(layer_query)
@@ -413,7 +428,7 @@ class GeometryDump:
         Prepare to dump geometry.  It'll end up in :code:`filename` (a pdf) with :code:`title` as the title.
         """
         if not dumping_geometry_works:
-            log.warn("Can't dump geometry because matplotlib doesn't work in virtualenv.")
+            log.warning("Can't use matplotlib on macosx due to virtualenv.  Dumping to pdf won't work.  Talk to Steve if you need to fix.")
             return
         self.everything = shapes.LineString()
         self.title = title
@@ -482,14 +497,39 @@ def dump_geometry(geometry, title, filename, color="#888888"):
     dump.add_geometry(geometry, facecolor=color,alpha=1)
     dump.dump()
 
+def polygon_as_svg(shapely_polygon, svgclass=None, style=None):
+    if svgclass is None:
+        svgclass = ""
+    else:
+        svgclass = "class='{}'".format(svgclass)
+        
+    if style is None:
+        style = ""
+    else:
+        style = "style='{}'".format(style)
 
-def polygon_as_svg(shapely_polygon):
-    print shapely_polygon
-    points = " ".join(["{},{}".format(p[0],p[1]) for p in shapely_polygon.exterior.coords])
-    print "<svg>"
-    print "<polygon points='{}'  style='fill:lime; stroke:purple; stroke-width:1mm'/>".format(points)
-    print "</svg>"
+    if isinstance(shapely_polygon, shapely.geometry.polygon.Polygon):
+        l = [shapely_polygon]
+    else:
+        l = shapely_polygon.geoms
+
+    r = ""
+    # Fixme:  Really, this should be a <path> and we should render the interior points to create holes.
+    for i in l:
+        points = " ".join(["{},{}".format(round(p[0],5),round(p[1],5)) for p in i.exterior.coords])
+        r = r + ("<polygon {} {} points='{}'/>".format(svgclass, style, points))
+    return r
+
+def hash_geometry(geo):
+    """
+    Hash a shapley geometry object by converting it to string, rounding all the floats it contains and taking a hash of the resulting string.  
     
+    The rounding prevents false failures due to floating point errors.
+    """
+    def trim(match):
+        return str(round(float(match.group(0)), 5))
+    v = re.sub("-?\d+(\.\d+)?", trim, str(geo))
+    return hash(v)
 
 
 

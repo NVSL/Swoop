@@ -516,7 +516,7 @@ def polygon_as_svg(shapely_polygon, svgclass=None, style=None):
     r = ""
     # Fixme:  Really, this should be a <path> and we should render the interior points to create holes.
     for i in l:
-        points = " ".join(["{},{}".format(round(p[0],5),round(p[1],5)) for p in i.exterior.coords])
+        points = " ".join(["{},{}".format(round(p[0],4),round(p[1],4)) for p in i.exterior.coords])
         r = r + ("<polygon {} {} points='{}'/>".format(svgclass, style, points))
     return r
 

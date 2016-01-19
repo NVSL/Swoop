@@ -4,7 +4,6 @@ import Swoop
 import argparse
 import shutil
 import Swoop.tools
-import GadgetronConfig
 import logging as log
 
 # class RelayerV(SwoopTools.EagleFilePartVisitor):
@@ -12,12 +11,12 @@ import logging as log
 #         SwoopTools.EagleFilePartVisitor.__init__(self,root)
 #         self.old_layer = old_layer
 #         self.new_layer = new_layer
-        
+
 #     def default_pre(self, efp):
 #         if hasattr(self, get_layer()):
 #             if self.get_layer() == self.old_layer:
 #                 self.set_layer(self.new_layer)
-            
+
 
 def main():
     parser = argparse.ArgumentParser(description="Update layer numbers.")
@@ -25,7 +24,7 @@ def main():
     parser.add_argument("--layers", required=True, type=str, dest='layers', help="File with layer numbers you want")
     parser.add_argument("-v", required=False, action='store_true', dest='verbose', help="Be verbose")
     parser.add_argument("-n", required=False, action='store_true', dest='dry_run', help="Don't overwrite anything")
-    
+
     args = parser.parse_args()
 
     if args.verbose:
@@ -36,10 +35,10 @@ def main():
 
     layers = Swoop.LibraryFile.from_file(args.layers)
     new_layers = Swoop.From(layers).get_layers()
-    
+
     for f in args.file:
         ef = Swoop.EagleFile.from_file(f)
-        
+
         for newl in new_layers:
             try:
                 oldl = ef.get_layer(newl.get_name())
@@ -56,10 +55,10 @@ def main():
 
                 log.info("Changed layer '{}' from {} to {} in {}".format(oldl.get_name(), oldl.get_number(), newl.get_number(), f))
                 oldl.set_number(newl.get_number())
-                
+
         if not args.dry_run:
             ef.write(f)
 
 if __name__ == "__main__":
     main()
-    
+

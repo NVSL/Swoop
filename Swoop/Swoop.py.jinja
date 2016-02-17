@@ -42,6 +42,7 @@ import re
 import cPickle
 import argparse
 import inspect
+import DRU
 
 supportedVersions = ["6.5.0", "6.6.0", "7.0.0", "7.1.0", "7.2.0", "7.3.0", "7.4.0", "7.5.0"]
 
@@ -76,6 +77,11 @@ class SwoopError (Exception):
         self.text = text
     def __str__(self):
         return self.text
+
+_ROOT = os.path.abspath(os.path.dirname(__file__))
+def get_data(path):
+    return os.path.join(_ROOT, path)
+
 
 class EagleFilePart(object):
 
@@ -163,7 +169,7 @@ class EagleFilePart(object):
 
     def get_root(self):
         """ 
-        Find the root of this :class:`EagleFilePart` tree.
+        Find the root of this :class:`EagleFilePart` tree.  This may or may not be an :class:`EagleFile`.
 
         :rtype: :class:`EagleFilePart`
 
@@ -173,6 +179,16 @@ class EagleFilePart(object):
         else:
             return self
 
+    def get_DRU(self):
+        """
+        Return the :class:`DRUFile` object associated with this :code:`EagleFilePart`.
+        """
+        root = self.get_root()
+        if isinstance(root, EagleFile):
+            return root.DRUFile
+        else:
+            return None;
+    
     def clone(self):
         """
         Clone the :class:`EagleFilePart`.  It should be identical to the orginial, except that the parent should be :code:`None`.
@@ -810,7 +826,7 @@ class EagleFile(EagleFilePart):
         return v
 
     @classmethod
-    def open(cls,filename, bestEffort = True):
+    def open(cls,filename, bestEffort = True, DRUFile=None):
         """
         Loads a Eagle file from a .sch, .lbr, or .brd file.  A synonym for :meth:`EagleFile.from_file`
         
@@ -818,7 +834,7 @@ class EagleFile(EagleFilePart):
         :param bestEffort: If :code:`True`, load the file even if it doesn't conform to the DTD.        
         :returns: A new :class:`BoardFile`, :class:`LibraryFile`, or :class:`SchematicFile` object
         """
-        return cls.from_file(filename, bestEffort)
+        return cls.from_file(filename, bestEffort, DRUFile)
 
     @classmethod
     def from_etree(cls, et):
@@ -835,7 +851,7 @@ class EagleFile(EagleFilePart):
         return cls._from_et(et.getroot(), None)
     
     @classmethod
-    def from_file (cls, filename, bestEffort = True, pickle=True):
+    def from_file (cls, filename, bestEffort = True, DRUFile=None, pickle=True):
         """
         Loads a Eagle file from a .sch, .lbr, or .brd file.  A synonym for :meth:`EagleFile.open`
 
@@ -894,7 +910,12 @@ class EagleFile(EagleFilePart):
                 log.warning("Eagle file opened as '" + str(filename) +"' is not one of " + str(supportedVersions) + ".  Doing our best.")
             else:
                 raise EagleFormatError("Eagle file opened as '" + str(filename) +"' is not one of " + str(supportedVersions) + ".  Chickening out.")
-                
+
+        if DRUFile is None:
+            DRUFilename = get_data("default.dru")
+
+        ef.DRUFile = DRU.DRUFile(DRUFilename)
+            
         ef.check_sanity()
         if cls.isRawSwoop and EagleFile.enablePickle:
             cPickle.dump(ef, open(filename + ".pickle", "w"), cPickle.HIGHEST_PROTOCOL)

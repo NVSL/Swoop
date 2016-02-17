@@ -30,6 +30,7 @@ Contents
    LibraryClasses
    MiscClasses
    From
+   DRU
    Exceptions
    ExtendingSwoop
    SwoopTools

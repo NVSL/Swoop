@@ -54,7 +54,7 @@ class TestBoundingBoxes(unittest.TestCase):
         self.assertEqual(rect, Rectangle( (135.93650, 85.93650), (138.06350, 90.06350)))
 
         rect = board.get_element("TEST-PAD1").get_bounding_box()[0]
-        self.assertEqual(rect,Rectangle( (124.50000, 87.50000), (130.50000, 90.50000)))
+        self.assertEqual(rect,Rectangle( (129.50000, 71.50000), (135.50000, 74.50000)))
 
         rect = board.get_element("TEST-PAD2").get_bounding_box()[0]
         self.assertEqual(rect, Rectangle( (116.50000, 89.25000), (119.50000, 90.75000)))

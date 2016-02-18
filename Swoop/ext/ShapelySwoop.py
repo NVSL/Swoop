@@ -238,7 +238,6 @@ class Package(ShapelyEagleFilePart):
                  package.get_smds() +
                  package.get_pads())
 
-        
         return shapely.ops.unary_union(parts.get_geometry(layer_query=layer_query, polygonize_wires=polygonize_wires) + [wires])
     
         
@@ -278,23 +277,27 @@ class Wire(ShapelyEagleFilePart):
             return line
         else:
             return shapes.LineString()
-    
-
 
 class Smd(ShapelyEagleFilePart):
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
 
     def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
-        if self._layer_matches(layer_query, self.get_layer()):
+
+        DRU = self.get_DRU();
+        if (self._layer_matches(layer_query, self.get_layer()) or
+            (self._layer_matches(self.get_layer(), "Top") and self._layer_matches(layer_query, "tStop")) or
+            (self._layer_matches(self.get_layer(), "Bottom") and self._layer_matches(layer_query, "bStop"))):
             box = shapes.box(self.get_x()-self.get_dx()/2.0,
                              self.get_y()-self.get_dy()/2.0,
                              self.get_x() + self.get_dx()/2.0,
                              self.get_y() + self.get_dy()/2.0)
+            if self._layer_matches(layer_query,"tStop") or self._layer_matches(layer_query, "bStop"):
+                box = box.buffer(computeStopMaskExtra(min(self.get_dx(), self.get_dy()), DRU))
             return self._apply_transform(box, origin=(self.get_x(), self.get_y()))
         else:
-            return shapes.LineString()
-        
+             return shapes.LineString()
+             
         
 class Module(ShapelyEagleFilePart):
     def __init__(self):
@@ -320,36 +323,56 @@ class Frame(ShapelyEagleFilePart):
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
 
+def scaleAndBound(value, maxv, minv, percent):
+    extra = percent * value
+    extra = max(extra, minv)
+    extra = min(extra, maxv)
+    return extra
+    
+def computeStopMaskExtra(radius, DRU):
+    return scaleAndBound(radius, DRU.mvStopFrame, DRU.mlMinStopFrame, DRU.mlMaxStopFrame)
+    
 class Hole(ShapelyEagleFilePart):
     # Fixme : Generate tStop and bStop
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
 
     def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
+        DRU = self.get_DRU();
         if self._layer_matches(layer_query, "Holes"):
             circle = shapes.Point(self.get_x(), self.get_y()).buffer(self.get_drill()/2)
             return circle;
+        elif self._layer_matches(layer_query, "tStop") or self._layer_matches(layer_query, "bStop"):
+             radius = self.get_drill()/2
+             circle = shapes.Point(self.get_x(), self.get_y()).buffer(radius + computeStopMaskExtra(radius, DRU))
+             return circle;
         else:
             return shapes.LineString()
         
 class Pad(ShapelyEagleFilePart):
     # Fixme: handle other shapes.
-    # Fixme : Generate tStop and bStop
+    # Fixme : Generate tStop and bStop correctly
     # Fixme: Pads should be different sizes or different layers.
     # Fixme: Pads should maybe generate keepout geometry as well?
         
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
 
-    def render_pad(self, layer_query, drill, rest_ring):
+    def render_pad(self, layer_query, drill):
 
-        if layer_query is not None and self.get_file().get_layer(layer_query).get_number() > 16:
+        DRU = self.get_DRU()
+        if self._layer_matches(layer_query, "Holes"):
+            hole = shapes.Point(self.get_x(), self.get_y()).buffer(drill/2)
+            return hole;
+
+        radius = (drill/2);
+        radius = radius + scaleAndBound(radius, DRU.rvPadTop, DRU.rlMinPadTop, DRU.rlMaxPadTop)
+        
+        if layer_query is not None and self.get_file().get_layer(layer_query).get_number() > 16 and not self._layer_matches(layer_query, "tStop") and  not self._layer_matches(layer_query,"bStop"):
             return shapes.LineString()
 
-        radius = (drill/2) + rest_ring * drill
-    
         if self.get_shape() == "square":
-            shape = shapes.box(self.get_x() - radius,
+            shape = shapes.box(self.get_x() - radius ,
                                self.get_y() - radius,
                                self.get_x() + radius,
                                self.get_y() + radius)
@@ -362,11 +385,30 @@ class Pad(ShapelyEagleFilePart):
                                self.get_y() + radius)
             shape = shape.intersection(affinity.rotate(shape, 45))
         elif self.get_shape() == "long":
-            shape = None
+            shape = shapely.ops.unary_union([shapes.point.Point(self.get_x() + DRU.psElongationLong/100.0 * radius,
+                                                                self.get_y()).buffer(radius),
+                                             shapes.point.Point(self.get_x() - DRU.psElongationLong/100.0 * radius,
+                                                                self.get_y()).buffer(radius),
+                                             shapes.box(self.get_x() - DRU.psElongationLong/100.0 * radius,
+                                                        self.get_y() - radius,
+                                                        self.get_x() + DRU.psElongationLong/100.0 * radius,
+                                                        self.get_y() + radius)])
         elif self.get_shape() == "offset":
-            shape = None
+            shape = shapely.ops.unary_union([shapes.point.Point(self.get_x() + DRU.psElongationOffset/100.0 * radius * 2,
+                                                                self.get_y()).buffer(radius),
+                                             shapes.point.Point(self.get_x(),
+                                                                self.get_y()).buffer(radius),
+                                             shapes.box(self.get_x(),
+                                                        self.get_y() - radius,
+                                                        self.get_x() + DRU.psElongationLong/100.0 * radius * 2,
+                                                        self.get_y() + radius)
+                                         ])
         else:
             raise Swoop.SwoopError("Unknown pad shape: '{}'".format(self.get_shape()))
+
+        if shape is not None:
+            if self._layer_matches(layer_query,"tStop") or self._layer_matches(layer_query, "bStop"):
+                shape = shape.buffer(computeStopMaskExtra(radius, DRU))
 
         if strict and shape is None:
             raise NotImplemented("Geometry for pad shape '{}' is not implemented yet.".format(self.get_shape()))
@@ -377,13 +419,7 @@ class Pad(ShapelyEagleFilePart):
 
     def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
 
-        shape = self.render_pad(layer_query, self.get_drill(), 0.25)
-        # By default, the radius of the circle of copper
-        # is drill radius + 25% of the drill diameter.
-        # The percentage is a parameter set in the DRC
-        # settings of Eagle.  Swoop doesn't
-        # know about the DRC settings, so we
-        # just us the default.
+        shape = self.render_pad(layer_query, self.get_drill())
         return self._apply_transform(shape, origin=(self.get_x(), self.get_y()))
                                
 class Via(Pad):
@@ -392,7 +428,11 @@ class Via(Pad):
 
     def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
         # This isn't quite right.  Via size is set in the DRC file.
-        return self.render_pad(layer_query, self.get_drill(), 0.25)
+        DRU = self.get_DRU()
+        if (self._layer_matches(layer_query, "tStop") or self._layer_matches(layer_query, "bStop")) and self.get_drill() < DRU.mlViaStopLimit:
+            return shapes.LineString()
+        else:
+            return self.render_pad(layer_query, self.get_drill())
 
 class Pin(ShapelyEagleFilePart):
     def __init__(self):
@@ -430,6 +470,7 @@ class GeometryDump:
         if not dumping_geometry_works:
             log.warning("Can't use matplotlib on macosx due to virtualenv.  Dumping to pdf won't work.  Talk to Steve if you need to fix.")
             return
+
         self.everything = shapes.LineString()
         self.title = title
         self.filename = filename
@@ -516,8 +557,14 @@ def polygon_as_svg(shapely_polygon, svgclass=None, style=None):
     r = ""
     # Fixme:  Really, this should be a <path> and we should render the interior points to create holes.
     for i in l:
-        points = " ".join(["{},{}".format(round(p[0],4),round(p[1],4)) for p in i.exterior.coords])
-        r = r + ("<polygon {} {} points='{}'/>".format(svgclass, style, points))
+        data = "M{} {} ".format(i.exterior.coords[0][0],i.exterior.coords[0][1]) + " ".join(map(lambda x: "L{} {}".format(x[0],x[1]), i.exterior.coords[1:])) + " Z"
+
+        for k in i.interiors:
+            data = data + "M{} {} ".format(k.coords[0][0],k.coords[0][1]) + " ".join(map(lambda x: "L{} {}".format(x[0],x[1]), k.coords[1:])) + " Z"
+        
+        r = r + ("<path {} {} d='{}'/>".format(svgclass, style, data))
+        #points = " ".join(["{},{}".format(round(p[0],4),round(p[1],4)) for p in i.exterior.coords])
+        #r = r + ("<polygon {} {} points='{}'/>".format(svgclass, style, points))
     return r
 
 def hash_geometry(geo):

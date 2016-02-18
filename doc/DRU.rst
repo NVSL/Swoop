@@ -14,5 +14,5 @@ provided with Swoop.
 The DRUFile Class
 -----------------
 
-.. autoclass:: Swoop.DRUFile
+.. autoclass:: Swoop.DRU.DRUFile
    :members:

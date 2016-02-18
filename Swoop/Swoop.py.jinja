@@ -832,6 +832,7 @@ class EagleFile(EagleFilePart):
         
         :param filename: Filename to load.
         :param bestEffort: If :code:`True`, load the file even if it doesn't conform to the DTD.        
+        :param DRUFile: A DRU file to use.  You don't need to worry about this unless you need precisely correct answers to questions about the geometry of things on your board.  By default, it uses sensible defaults.
         :returns: A new :class:`BoardFile`, :class:`LibraryFile`, or :class:`SchematicFile` object
         """
         return cls.from_file(filename, bestEffort, DRUFile)

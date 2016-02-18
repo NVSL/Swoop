@@ -43,6 +43,7 @@ import cPickle
 import argparse
 import inspect
 import DRU
+import collections
 
 supportedVersions = ["6.5.0", "6.6.0", "7.0.0", "7.1.0", "7.2.0", "7.3.0", "7.4.0", "7.5.0"]
 
@@ -156,7 +157,7 @@ class EagleFilePart(object):
         """
         raise NotImplementedError()
 
-    def get_xml (self):
+    def get_xml (self, pretty_print=False):
         """
         Return a string that contains the XML representation of this :code:`EagleFilePart`.
 
@@ -164,7 +165,7 @@ class EagleFilePart(object):
 
         """
         
-        return ET.tostring(self.get_et())
+        return ET.tostring(self.get_et(),pretty_print=pretty_print)
 
 
     def get_root(self):
@@ -1465,8 +1466,8 @@ class From(object):
         else:
             return reduce(func, self.efps, init)
 
-def from_file(filename):
-    return From(EagleFile.from_file(filename))
+#def from_file(filename):
+#    return From(EagleFile.from_file(filename))
 
 class EagleFilePartVisitor(object):
     """A visitor utility class for :class:`EagleFile` objects.  
@@ -1654,7 +1655,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         self.{{l.name}}=[]
         #{%endfor%}
         #{%for m in tag.maps %}
-        self.{{m.name}}={}
+        self.{{m.name}}=collections.OrderedDict()
         #{%endfor%}
         #{%for s in tag.singletons %}
         self.{{s.name}}=None
@@ -1872,6 +1873,15 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
             post(self,context)
         except AttributeError:
             visitor.default_post(self,context)
+
+    def is_equal(self, other):
+        """
+        Check whether two :code:`EagleFilePart` objects are identical.
+        
+        :param other: Object to compare to.
+        :returns: :code:`True` if they are identical, otherwise, :code:`False`
+        """
+        return self.get_xml() == other.get_xml()
         
     ### Getters/Setters for attribute values
 

@@ -1655,7 +1655,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         self.{{l.name}}=[]
         #{%endfor%}
         #{%for m in tag.maps %}
-        self.{{m.name}}=collections.OrderedDict()
+        self.{{m.name}}={} #tecollections.OrderedDict()  For unclear reasons, this caused ordering to become more unpredictable, rather than less.
         #{%endfor%}
         #{%for s in tag.singletons %}
         self.{{s.name}}=None

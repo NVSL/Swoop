@@ -1679,7 +1679,13 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         n = cls()
         n. _init_from_et(root,parent)
         return n
-            
+
+    def _get_error_name(self):
+        if hasattr(self, "get_name"):
+            return self.get_name();
+        else:
+            return "{{tag.classname}}";
+        
     def  _init_from_et(self, root, parent):
         """
         Initialized a :class:`{{tag.classname}}` from a :code:`{{tag.tag}}` element.  This is useful if you have a subclass of :class:`{{tag.classname}}` .
@@ -1688,50 +1694,54 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         :param parent: :class:`EagleFilePart` that will become the parent of :code:`this` .
         :rtype: :class:`{{tag.classname}}`
         """
+        try:
             
-        if root.tag != "{{tag.tag}}":
-            raise EagleFormatError("Tried to create {{tag.tag}} from " + root.tag)
+            if root.tag != "{{tag.tag}}":
+                raise EagleFormatError("Tried to create {{tag.tag}} from " + root.tag)
 
-        #{%for a in tag.attrs%}
-        self.{{a.name}}={{a.parse}}(parent, "{{a.vtype}}", root.get("{{a.xmlName}}"))
-        #{%endfor%}
+            #{%for a in tag.attrs%}
+            self.{{a.name}}={{a.parse}}(parent, "{{a.vtype}}", root.get("{{a.xmlName}}"))
+            #{%endfor%}
 
-        self.parent = parent
+            self.parent = parent
 
-        ### populate the maps by searching for elements that match xpath and generating objects for them.
-        
-        #{%for m in tag.maps%}
-        for c in root.xpath("{{m.xpath}}"):
-            self.add_{{m.accessorName}}(self.get_class_for_tag(c.tag)._from_et(c, self))
-        #{%endfor%}
+            ### populate the maps by searching for elements that match xpath and generating objects for them.
 
-        ### Do the same for the lists
+            #{%for m in tag.maps%}
+            for c in root.xpath("{{m.xpath}}"):
+                self.add_{{m.accessorName}}(self.get_class_for_tag(c.tag)._from_et(c, self))
+            #{%endfor%}
 
-        #{%for l in tag.lists %}
-        for c in root.xpath("{{l.xpath}}"):
-            self.add_{{l.accessorName}}(self.get_class_for_tag(c.tag)._from_et(c,self))
-        #{%endfor%}
+            ### Do the same for the lists
 
-        ### Do the same for the attr lists
+            #{%for l in tag.lists %}
+            for c in root.xpath("{{l.xpath}}"):
+                self.add_{{l.accessorName}}(self.get_class_for_tag(c.tag)._from_et(c,self))
+            #{%endfor%}
 
-        #{%for l in tag.attrLists %}
-        for c in root.get("{{l.attr}}").split(" "):
-            self.add_{{l.accessorName}}(c)
-        #{%endfor%}
+            ### Do the same for the attr lists
 
-        ### And the singletons
-        
-        #{%for s in tag.singletons %}
-        x = root.xpath("{{s.xpath}}")
-        if len(x) is not 0:
-            self.set_{{s.accessorName}}(self.get_class_for_tag(x[0].tag)._from_et(x[0],self))
-        #{%endfor%}
+            #{%for l in tag.attrLists %}
+            for c in root.get("{{l.attr}}").split(" "):
+                self.add_{{l.accessorName}}(c)
+            #{%endfor%}
 
-        ### And, finally, if the objects wants the text from the tag.
-        
-        #{%if tag.preserveTextAs != "" %}
-        self.{{tag.preserveTextAs}} = root.text
-        #{% endif %}
+            ### And the singletons
+
+            #{%for s in tag.singletons %}
+            x = root.xpath("{{s.xpath}}")
+            if len(x) is not 0:
+                self.set_{{s.accessorName}}(self.get_class_for_tag(x[0].tag)._from_et(x[0],self))
+            #{%endfor%}
+
+            ### And, finally, if the objects wants the text from the tag.
+
+            #{%if tag.preserveTextAs != "" %}
+            self.{{tag.preserveTextAs}} = root.text
+            #{% endif %}
+        except SwoopError as e:
+            e.text = "{}:{}".format(self._get_error_name(), e.text)
+            raise e
 
 
     def sortkey(self):
@@ -2548,7 +2558,7 @@ class Attribute (Base_Attribute):
         Base_Attribute.__init__(self)
 
     def __str__(self):
-        return self.name + " = '" + self.value + "' [const=" + str(self.constant) + ";lib=" + str(self.from_library) +"]";
+        return self.name + " = '" + self.value + "' [const=" + str(self.constant) + "]";
 
     def get_in_library(self):
         if isinstance(self.get_parent(), Technology):

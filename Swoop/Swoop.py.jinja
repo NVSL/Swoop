@@ -1764,78 +1764,82 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         :rtype:  :class:`ElementTree`.
         
         """
-        r = ET.Element("{{tag.tag}}")
+        try:
+            r = ET.Element("{{tag.tag}}")
 
-        ### Set the tag attributes 
-        
-        #{%for a in tag.attrs%}
+            ### Set the tag attributes 
 
-        ## Unparse the values.
+            #{%for a in tag.attrs%}
 
-        v = {{a.unparse}}(self, "{{a.vtype}}", self.{{a.name}})
+            ## Unparse the values.
 
-        ## For required attributes None becomes "".  For optional attributes, we just leave the attribute out.
-        if v is not None:
-            r.set("{{a.xmlName}}", v)
-        #{%if a.required %}
-        else:
-            r.set("{{a.xmlName}}", "")
-        #{%endif%}
+            v = {{a.unparse}}(self, "{{a.vtype}}", self.{{a.name}})
 
-        #{%endfor%}
+            ## For required attributes None becomes "".  For optional attributes, we just leave the attribute out.
+            if v is not None:
+                r.set("{{a.xmlName}}", v)
+            #{%if a.required %}
+            else:
+                r.set("{{a.xmlName}}", "")
+            #{%endif%}
 
-        ### process the sections in order.  They have to be in section order,
-        ### because eagle files are order dependent.
-        
-        #{%for l in tag.sections%}
+            #{%endfor%}
 
-        ## For some tags, Eagle generates empty tags when there's no contant
-        ## rather than just leaving the tag out.  We mark these with
-        ## Tag.requireTag in GenerateSwoop.py and force their generation
-        ## here.
-        
-        #{%if l.requireTag %}
-        smartAddSubTags(r, "{{l.xpath}}")
-        #{%endif%}
+            ### process the sections in order.  They have to be in section order,
+            ### because eagle files are order dependent.
 
-        #{%if l.type == "List" %}
+            #{%for l in tag.sections%}
 
-        ## add a list.
+            ## For some tags, Eagle generates empty tags when there's no contant
+            ## rather than just leaving the tag out.  We mark these with
+            ## Tag.requireTag in GenerateSwoop.py and force their generation
+            ## here.
 
-        if len(self.{{l.name}}) is not 0:
-            target = smartAddSubTags(r, "{{l.xpath}}")
-            # add them in sorted order.  This gives us a simple canonicalization that makes it feasible to use diff to compare files.
-            target.extend([i.get_et() for i in sorted(self.{{l.name}},key=lambda x: x.sortkey())])
+            #{%if l.requireTag %}
+            smartAddSubTags(r, "{{l.xpath}}")
+            #{%endif%}
 
-        #{%elif l.type == "Map" %}
+            #{%if l.type == "List" %}
 
-        ## add a map.
-        
-        if len(self.{{l.name}}) is not 0:
-            target = smartAddSubTags(r, "{{l.xpath}}")
-            # add them in sorted order.  This gives us a simple canonicalization that makes it feasible to use diff to compare files.
-            target.extend([i.get_et() for i in sorted(self.{{l.name}}.values(),key=lambda x: x.sortkey())])
+            ## add a list.
 
-        #{%elif l.type == "AttrList" %}
-        
-        if self.{{l.name}} is not None:
-            r.set("{{l.attr}}", " ".join(self.{{l.name}}))
+            if len(self.{{l.name}}) is not 0:
+                target = smartAddSubTags(r, "{{l.xpath}}")
+                # add them in sorted order.  This gives us a simple canonicalization that makes it feasible to use diff to compare files.
+                target.extend([i.get_et() for i in sorted(self.{{l.name}},key=lambda x: x.sortkey())])
 
-        #{%else%}
+            #{%elif l.type == "Map" %}
 
-        ## or add a singleton.
-        
-        if self.{{l.name}} is not None:
-            target = smartAddSubTags(r, "{{l.xpath}}")
-            target.append(self.{{l.name}}.get_et())
-        #{%endif%}
-        #{%endfor%}
+            ## add a map.
 
-        ## set the text, if its needed.
-        
-        #{%if tag.preserveTextAs != "" %}
-        r.text = self.{{tag.preserveTextAs}}
-        #{% endif %}
+            if len(self.{{l.name}}) is not 0:
+                target = smartAddSubTags(r, "{{l.xpath}}")
+                # add them in sorted order.  This gives us a simple canonicalization that makes it feasible to use diff to compare files.
+                target.extend([i.get_et() for i in sorted(self.{{l.name}}.values(),key=lambda x: x.sortkey())])
+
+            #{%elif l.type == "AttrList" %}
+
+            if self.{{l.name}} is not None:
+                r.set("{{l.attr}}", " ".join(self.{{l.name}}))
+
+            #{%else%}
+
+            ## or add a singleton.
+
+            if self.{{l.name}} is not None:
+                target = smartAddSubTags(r, "{{l.xpath}}")
+                target.append(self.{{l.name}}.get_et())
+            #{%endif%}
+            #{%endfor%}
+
+            ## set the text, if its needed.
+
+            #{%if tag.preserveTextAs != "" %}
+            r.text = self.{{tag.preserveTextAs}}
+            #{% endif %}
+        except SwoopError as e:
+            e.text = "{}:{}".format(self._get_error_name(), e.text)
+            raise e
         return r
 
     def clone(self):
@@ -1844,30 +1848,34 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         
         :rtype: :class:`{{tag.classname}}`
         """
-        n = copy.copy(self)
-        #{%for m in tag.maps%}
-        n.{{m.name}} = {}
-        for x in self.{{m.name}}.values():
-            n.add_{{m.accessorName}}(x.clone())
-        #{%endfor%}
-        #{%for l in tag.lists %}
-        n.{{l.name}} = []
-        for x in self.{{l.name}}:
-            n.add_{{l.accessorName}}(x.clone())
-        #{%endfor%}
-        #{%for l in tag.attrLists %}
-        n.{{l.name}} = []
-        for x in self.{{l.name}}:
-            n.add_{{l.accessorName}}(x)
-        #{%endfor%}
-        #{%for s in tag.singletons %}
-        n.{{s.name}} = None
-        if self.{{s.name}} is not None:
-            n.set_{{s.accessorName}}(self.{{s.name}}.clone())
-        else:
-            n.set_{{s.accessorName}}(None)
-        #{%endfor%}
-        n.parent = None
+        try:
+            n = copy.copy(self)
+            #{%for m in tag.maps%}
+            n.{{m.name}} = {}
+            for x in self.{{m.name}}.values():
+                n.add_{{m.accessorName}}(x.clone())
+            #{%endfor%}
+            #{%for l in tag.lists %}
+            n.{{l.name}} = []
+            for x in self.{{l.name}}:
+                n.add_{{l.accessorName}}(x.clone())
+            #{%endfor%}
+            #{%for l in tag.attrLists %}
+            n.{{l.name}} = []
+            for x in self.{{l.name}}:
+                n.add_{{l.accessorName}}(x)
+            #{%endfor%}
+            #{%for s in tag.singletons %}
+            n.{{s.name}} = None
+            if self.{{s.name}} is not None:
+                n.set_{{s.accessorName}}(self.{{s.name}}.clone())
+            else:
+                n.set_{{s.accessorName}}(None)
+            #{%endfor%}
+            n.parent = None
+        except SwoopError as e:
+            e.text = "{}:{}".format(self._get_error_name(), e.text)
+            raise e
         return n
 
     def accept_preorder_visitor(self, visitor):

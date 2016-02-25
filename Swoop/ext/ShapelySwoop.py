@@ -60,20 +60,20 @@ class ShapelyEagleFilePart():
         else:
             return shape
 
-    def _apply_transform(self, shape, origin=(0,0)):
+    def _apply_transform(self, shape, rotation_origin=(0,0), scale_origin=(0,0)):
         if shape.is_empty:
             return shape
         r = shape
-        r = affinity.rotate(r, self.get_rotation(), origin=origin)
-        r = affinity.scale(r, xfact=(-1 if self.get_mirrored() else 1), origin=(0,0))
+        r = affinity.rotate(r, self.get_rotation(), origin=rotation_origin)
+        r = affinity.scale(r, xfact=(-1 if self.get_mirrored() else 1), origin=scale_origin)
         return r;
 
-    def _apply_inverse_transform(self, shape, origin=(0,0)):
+    def _apply_inverse_transform(self, shape, rotation_origin=(0,0), scale_origin=(0,0)):
         if shape.is_empty:
             return shape
         r = shape
-        r = affinity.scale(r, xfact=(-1 if self.get_mirrored() else 1), origin=(0,0))
-        r = affinity.rotate(r, -self.get_rotation(), origin=origin)
+        r = affinity.scale(r, xfact=(-1 if self.get_mirrored() else 1), origin=scale_origin)
+        r = affinity.rotate(r, -self.get_rotation(), origin=rotation_origin)
         return r;
 
     def _layer_matches(self, query, layer_name):
@@ -188,7 +188,7 @@ class Rectangle(ShapelyEagleFilePart):
         ShapelyEagleFilePart.__init__(self);
 
     def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
-        assert not self.get_mirrored()  # When I select "mirrored" in Eagle, it just modifies the rotation angle.
+        
 
         if self._layer_matches(layer_query, self.get_layer()):
 
@@ -201,8 +201,12 @@ class Rectangle(ShapelyEagleFilePart):
                              min(self.get_y1(), self.get_y2()),
                              max(self.get_x1(), self.get_x2()),
                              max(self.get_y1(), self.get_y2()))
-            box = affinity.rotate(box, self.get_rotation())
-
+            # When I select "mirrored" in Eagle, it just modifies the rotation angle.
+            if self.get_mirrored():
+                angle = 180-self.get_rotation()
+            else:
+                angle = self.get_rotation()
+            box = affinity.rotate(box, angle)
             return box;
         else:
             return shapes.LineString()
@@ -294,7 +298,7 @@ class Smd(ShapelyEagleFilePart):
                              self.get_y() + self.get_dy()/2.0)
             if self._layer_matches(layer_query,"tStop") or self._layer_matches(layer_query, "bStop"):
                 box = box.buffer(computeStopMaskExtra(min(self.get_dx(), self.get_dy()), DRU))
-            return self._apply_transform(box, origin=(self.get_x(), self.get_y()))
+            return self._apply_transform(box, rotation_origin=(self.get_x(), self.get_y()), scale_origin=(self.get_x(), self.get_y()))
         else:
              return shapes.LineString()
              
@@ -420,7 +424,7 @@ class Pad(ShapelyEagleFilePart):
     def get_geometry(self, layer_query=None, polygonize_wires=ShapelyEagleFilePart.POLYGONIZE_NONE):
 
         shape = self.render_pad(layer_query, self.get_drill())
-        return self._apply_transform(shape, origin=(self.get_x(), self.get_y()))
+        return self._apply_transform(shape, rotation_origin=(self.get_x(), self.get_y()), scale_origin=(self.get_x(), self.get_y()))
                                
 class Via(Pad):
     def __init__(self):

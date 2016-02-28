@@ -57,6 +57,6 @@ class TestShapely(unittest.TestCase):
         # It's the commands with the updated hashes.  Questions? ask Steve.
         for i in tests:
             geo = eval(i[0])
-            dump(i, geo, i[0], c, i[2])
-            #self.assertEqual(hash_geo(geo), i[1], "Geometry failure on test {}".format(c))
+            #dump(i, geo, i[0], c, i[2])
+            self.assertEqual(hash_geo(geo), i[1], "Geometry failure on test {}".format(c))
             c = c + 1

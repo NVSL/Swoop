@@ -146,7 +146,7 @@ class EagleFilePart(object):
         Parse the part from an Element Tree
 
         """
-        raise NotImplementedError()
+        raise NotImplementedError("_from_et not implemented in {}".format(cls))
     
     def get_et (self):
         """
@@ -942,13 +942,6 @@ class EagleFile(EagleFilePart):
         header="""<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
 """
-        if type(file) is str:
-            f = open(file, "w")
-            filename = file
-        else:
-            f = file
-            filename = None
-            
         if check_sanity:
             self.check_sanity()
         if dtd_validate and not self.validate():
@@ -960,6 +953,12 @@ class EagleFile(EagleFilePart):
             else:
                 raise SwoopError("Swoop structure is not valid.")
         else:
+            if type(file) is str:
+                f = open(file, "w")
+                filename = file
+            else:
+                f = file
+                filename = None
             f.write(header+ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True))
 
     def add_layer (self, layer):
@@ -2372,9 +2371,12 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         :return: Nothing
         """
         #{%for m in tag.maps%}
-        if self.get_{{m.accessorName}}(oldkey) == efp:
-            del self.{{m.name}}[oldkey]
-            self.add_{{m.accessorName}}(efp)
+        try:
+            if self.get_{{m.accessorName}}(oldkey) == efp:
+                del self.{{m.name}}[oldkey]
+                self.add_{{m.accessorName}}(efp)
+        except SwoopError:
+            pass
         #{%endfor%}
 
     #{%if tag.has_maps() %}

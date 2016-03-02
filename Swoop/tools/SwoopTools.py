@@ -188,12 +188,30 @@ def rebuildBoardConnections(sch, brd):
                                                     set_element(pinref.get_part()).
                                                     set_pad(pad))
 
+
+def buildBoardFromSchematic(sch, template_brd):
+    """
+    Create a minimal board from a schematic file.  :code:`template_brd` is modified and returned.
+    
+    :param sch: the input schematic
+    :param brd: a template :class:`BoardFile`
+    :returns: A :class:`BoardFile` object that is consistent with the schematic.
+    """
+
+    for part in sch.get_parts():
+        propagatePartToBoard(part, template_brd)
+
+    rebuildBoardConnections(sch, template_brd)
+    return template_brd
+
 def propagatePartToBoard(part, brd):
 
     """
     Copy :code:`part` to ``brd`` by creating a new :class:`Element` and populating it accordingly.
-    If the part already exists, it will be replaced.
+    If the part already exists, it will be replaced.  Attributes are not displayed by default, but the display layer is set to "Document".
     
+    If the library for the part is missing in the board, it will be create.  If the package is missing, it will be copied.  If it exists and the package for the part and the package in the board are not the same, raise an exception.
+
     .. Note::
        This function doesn't update the board's signals.  You can run :meth:`rebuildBoardConnections` to do that.
 
@@ -202,9 +220,25 @@ def propagatePartToBoard(part, brd):
     :rtype: :code:`None`
 
     """
+    if part.find_device().get_package() is None:
+        return
+    
     if part.find_package() is None:
-        raise Swoop.SwoopError("Can't find package for '{}'.".format(part.get_name()))
+        raise Swoop.SwoopError("Can't find package for '{}' ({}.{}.{}.{}).".format(part.get_name(), part.get_library(), part.get_deviceset(), part.get_device(), part.get_technology()))
 
+    dst_lib = brd.get_library(part.get_library())
+
+    if dst_lib is None:
+        dst_lib = Swoop.Library().set_name(part.get_library())
+        brd.add_library(dst_lib)
+
+    dst_package = dst_lib.get_package(part.find_package().get_name())
+    if dst_package is None:
+        dst_package = part.find_package().clone()
+        dst_lib.add_package(dst_package)
+    else:
+        assert dst_package.is_equal(part.find_package()), "Package from schematic is not the same as package in board"
+    
     n =(Swoop.Element().
         set_name(part.get_name()).
         set_library(part.get_library()).
@@ -216,6 +250,7 @@ def propagatePartToBoard(part, brd):
         set_x(0).
         set_y(0))
 
+    
     for a in part.find_technology().get_attributes():
         n.add_attribute(a.clone().
                         set_display("off").
@@ -224,7 +259,9 @@ def propagatePartToBoard(part, brd):
     for a in part.get_attributes():
         n.add_attribute(a.clone().
                         set_display("off").
-                        set_layer("Document"))                                        
+                        set_layer("Document"))
+
+
     brd.add_element(n)
 
 def updateLibrary(eagleFile, library):

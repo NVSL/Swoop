@@ -262,36 +262,38 @@ class EagleFilePart(object):
     
 def parseByType(efp, attrType, s):
 
-    if attrType == "None_is_empty_string":
-        if s is None:
-            r = ""
-        else:
-            r = s
-    elif s is not None:
-        if attrType == "str":
-            r = s
-        elif attrType == "int":
-            r = int(s)
-        elif attrType == "float":
-            r = float(s)
-        elif attrType == "bool":
-
-            if s.upper() in ["YES"]:
-                r = True
-            elif s.upper() in ["NO"]:
-                r = False
+    try:
+        if attrType == "None_is_empty_string":
+            if s is None:
+                r = ""
             else:
-                raise SwoopError("Invalid eagle bool value '" + s +"' in child of " + str(efp))
-        elif attrType == "constant_bool":
-            r = (s != "no")
-        elif attrType == "layer_string":
-            r = efp.get_file().layer_number_to_name(int(s))
+                r = s
+        elif s is not None:
+            if attrType == "str":
+                r = s
+            elif attrType == "int":
+                r = int(s)
+            elif attrType == "float":
+                r = float(s)
+            elif attrType == "bool":
+
+                if s.upper() in ["YES"]:
+                    r = True
+                elif s.upper() in ["NO"]:
+                    r = False
+                else:
+                    raise SwoopError("Invalid eagle bool value '" + s +"' in child of " + str(efp))
+            elif attrType == "constant_bool":
+                r = (s != "no")
+            elif attrType == "layer_string":
+                r = efp.get_file().layer_number_to_name(int(s))
+            else:
+                raise SwoopError("Unknown attr type '" + attrType + "'")
+            assert r is not None
         else:
-            raise SwoopError("Unknown attr type '" + attrType + "'")
-        assert r is not None
-    else:
-        r = None
-    
+            r = None
+    except ValueError as e:
+        raise SwoopError("Bad value: '{}' should be {} ({}) {}".format(s, attrType,e, efp))
     return r
 
 def unparseByType(efp, attrType, v):

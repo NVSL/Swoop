@@ -73,7 +73,17 @@ class ShapelyEagleFilePart():
         else:
             return shape
 
+    @staticmethod
+    def _do_transform(shape, rotation, mirrored, rotation_origin=(0,0), scale_origin=(0,0)):
+        if shape is None or shape.is_empty:
+            return shape
+        r = shape
+        r = affinity.rotate(r, rotation, origin=rotation_origin)
+        r = affinity.scale(r, xfact=(-1 if mirrored else 1), origin=scale_origin)
+        return r;
+
     def _apply_transform(self, shape, rotation_origin=(0,0), scale_origin=(0,0)):
+        return ShapelyEagleFilePart._do_transform(shape, self.get_rotation(), self.get_mirrored(), rotation_origin=rotation_origin, scale_origin=scale_origin)
         if shape.is_empty:
             return shape
         r = shape
@@ -81,13 +91,17 @@ class ShapelyEagleFilePart():
         r = affinity.scale(r, xfact=(-1 if self.get_mirrored() else 1), origin=scale_origin)
         return r;
 
-    def _apply_inverse_transform(self, shape, rotation_origin=(0,0), scale_origin=(0,0)):
-        if shape.is_empty:
+    @staticmethod
+    def _do_inverse_transform(shape, rotation, mirrored, rotation_origin=(0,0), scale_origin=(0,0)):
+        if shape is None or shape.is_empty:
             return shape
         r = shape
-        r = affinity.scale(r, xfact=(-1 if self.get_mirrored() else 1), origin=scale_origin)
-        r = affinity.rotate(r, -self.get_rotation(), origin=rotation_origin)
+        r = affinity.scale(r, xfact=(-1 if mirrored else 1), origin=scale_origin)
+        r = affinity.rotate(r, -rotation, origin=rotation_origin)
         return r;
+
+    def _apply_inverse_transform(self, shape, rotation_origin=(0,0), scale_origin=(0,0)):
+        return ShapelyEagleFilePart._do_inverse_transform(shape, self.get_rotation(), self.get_mirrored, rotation_origin=rotation_origin, scale_origin=scale_origin)
 
     def _layer_matches(self, query, layer_name):
         if query is None:
@@ -273,13 +287,28 @@ class Element(ShapelyEagleFilePart):
         ShapelyEagleFilePart.__init__(self);
 
 
+    @staticmethod
+    def _do_transform(shape, x,y,rotation,mirrored):
+        if shape is None or shape.is_empty:
+            return shape
+        r = ShapelyEagleFilePart._do_transform(shape, rotation, mirrored)
+        return affinity.translate(r, x, y)
+
+    @staticmethod
+    def _do_inverse_transform(shape, x,y,rotation,mirrored):
+        if shape is None or shape.is_empty:
+            return shape
+
+        r = affinity.translate(shape, xoff=-x, yoff=-y)
+        return ShapelyEagleFilePart._do_inverse_transform(r, rotation,mirrored)
+        
     def _apply_transform(self, shape):
-        r = ShapelyEagleFilePart._apply_transform(self, shape)
-        return affinity.translate(r, xoff=self.get_x(), yoff=self.get_y())
+        return Element._do_transform(shape, self.get_x(), self.get_y(), self.get_rotation(), self.get_mirrored())
+        #r = ShapelyEagleFilePart._apply_transform(self, shape)
+        #return affinity.translate(r, xoff=self.get_x(), yoff=self.get_y())
 
     def _apply_inverse_transform(self, shape):
-        r = affinity.translate(shape, xoff=-self.get_x(), yoff=-self.get_y())
-        return ShapelyEagleFilePart._apply_inverse_transform(self, r)
+        return Element._do_inverse_transform(shape, self.get_x(), self.get_y(), self.get_rotation(), self.get_mirrored())
 
     def map_board_geometry_to_package_geometry(self, shape):
         return self._apply_inverse_transform(shape)

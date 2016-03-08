@@ -84,6 +84,7 @@ def get_data(path):
     return os.path.join(_ROOT, path)
 
 
+
 class EagleFilePart(object):
 
     """
@@ -268,6 +269,11 @@ def parseByType(efp, attrType, s):
                 r = ""
             else:
                 r = s
+        elif attrType == "None_is_float_zero":
+            if s is None:
+                r = 0
+            else:
+                r = float(s)
         elif s is not None:
             if attrType == "str":
                 r = s
@@ -302,6 +308,11 @@ def unparseByType(efp, attrType, v):
             r = None
         else:
             r = v
+    elif attrType == "None_is_float_zero":
+        if v == 0.0:
+            r = None
+        else:
+            r = str(v)
     elif v is not None:
         if attrType == "str":  # Doing nothing to strings lets us handle weird
                                # unicode characters.
@@ -339,6 +350,8 @@ def typeCheck(type, v, cannotBeNone):
     
     if type == "None_is_empty_string":
         return isinstance(v,str) or v is None
+    elif type == "None_is_float_zero":
+        return isinstance(v,float) or isinstance(v,int) or v is None
     elif type == "str" or type == "layer_string": 
         return isinstance(v, str)
     elif type == "int":
@@ -2447,11 +2460,6 @@ class Part (Base_Part):
     def __init__(self):
         Base_Part.__init__(self)
 
-    # def is_child(self, f):
-    #     if f == "schematic":
-    #         return False
-    #     else:
-    #         return EagleFilePart.is_child(self,f)
 
     def check_sanity(self, visited_efps = None):
         #assert self.get_device() is not None
@@ -2512,16 +2520,6 @@ class Part (Base_Part):
         tech = device.technologies.get(self.technology)
         return tech
 
-    # SS: removed since it doesn't match the semantics of the rest of the system
-    # def set_device(self, library=None, deviceset=None, device=None):
-    #     if library is not None:
-    #         self.library = library
-    #     if deviceset is not None:
-    #         self.deviceset = deviceset
-    #     if device is not None:
-    #         self.device = device
-    #     return self
-
         
     def find_package(self):
         """
@@ -2536,12 +2534,6 @@ class Part (Base_Part):
         return package
     
 
-    # def get_library_attributes(self):
-    #     """
-    #     Get attribute values for this part that come from the library.
-    #     """
-    #     return {k:v for (k,v) in self.attributes.iteritems() if v.from_library}
-
     def set_attribute(self,name, value):
         if name in self.attributes:
             self.attributes[name].set_value(value)
@@ -2551,13 +2543,6 @@ class Part (Base_Part):
                                set_value(value))
         return self
 
-
-    # def get_attribute(self,name):
-    #     return self.attributes.get(name).value
-
-    # def remove_attribute(self,name):
-    #     self.attributes[name].parent = None
-    #     del self.attributes[name]
 
 EagleFile.class_map["part"] = Part
 
@@ -2651,3 +2636,60 @@ class LibraryFile(Base_LibraryFile):
 
     
 #print EagleFile.class_map
+class LibraryCache(object):
+    """
+    A library file cache.  Save the time of opening libraries repeatedly.  
+    
+    An instance of this is available as :code:`Swoop.library_cache`, but you may build your own, if you want.
+    """
+    
+    def __init__(self):
+        self.libfile_to_lib = {}
+        self.libname_to_path = {}
+
+    def register_library(self, path):
+        """
+        
+        Register a library file with the cache.  This allows you to later
+        request the library by name.  For instance if you register
+        :code:`foo.lbr` you can ask for :code:`foo'. 
+
+        :param path: The path to the lbr file.  The path is canonicalized internally (and made absolute) so if :code:`bar/foo.lbr` is the same as :code:`bar/../bar/foo.lbr`.
+
+        """
+        cpath = os.path.realpath(path)
+        libname = os.path.split(cpath)[1].replace(".lbr","").upper()
+        log.debug("Registered library {} as {}".format(path, libname))
+        self.libname_to_path[libname] = cpath
+
+    def load_library_by_path(self, path):
+        """ 
+        Load a library using a path to file.
+
+        :param path: The path to the lbr file.  The path is canonicalized internally (and made absolute) so if :code:`bar/foo.lbr` is the same as :code:`bar/../bar/foo.lbr`.
+        """
+        
+        cpath = os.path.realpath(path)
+        self.register_library(path) # make sure we can find it later via load_library_by_name
+        if cpath not in self.libfile_to_lib:
+            log.debug("LibraryCache miss: {}".format(path))
+            self.libfile_to_lib[cpath] = LibraryFile.open(cpath)
+        else:
+            log.debug("LibraryCache hit: {}".format(path))
+        return self.libfile_to_lib[cpath]
+
+    def load_library_by_name(self, name):
+        """
+        Load a library by (case insensitive) name.  If you haven't registered the path to the library or accessed it previously via :code:`load_library_by_path`, it will raise an exception.
+
+        :param name: Library name (case insensitive)
+        """
+
+        if name.upper() in self.libname_to_path:
+            r = self.load_library_by_path(self.libname_to_path[name.upper()])
+            log.debug("Returning {} for libname '{}'".format(r, name))
+            return r
+        else:
+            raise SwoopError("Unknwon library name {} (did you register the file?)")
+    
+library_cache = LibraryCache()

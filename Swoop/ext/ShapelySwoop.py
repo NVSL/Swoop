@@ -25,7 +25,6 @@ ShapelySwoop is currently very incomplete.  Check your results with the
 debugging facilities before relying on it.
 
 """
-
 import shapely.geometry as shapes
 import shapely.affinity as affinity
 import shapely
@@ -43,6 +42,52 @@ try:
 except RuntimeError as e:
     dumping_geometry_works = False
               
+def getFacetsForWire(wire):
+    if wire.get_curve() == 0:
+        return [shapes.Point(wire.get_x1(), wire.get_y1()), shapes.Point(wire.get_x2(), wire.get_y2())]
+    
+    curve = math.radians(wire.get_curve())
+    p1= shapes.Point(wire.get_x1(),wire.get_y1())
+    p2= shapes.Point(wire.get_x2(),wire.get_y2())
+    if p2.x == p1.x:
+        leveling_angle = math.radians(90)
+    else:
+        leveling_angle = -math.atan((p2.y-p1.y)/(p2.x-p1.x))
+    p1p = p1#rotate(p1, leveling_angle, origin=p1, use_radians=True)
+    p2p = affinity.rotate(p2, leveling_angle, origin=p1, use_radians=True) # rotate p2 around p1, so they lie on a horizontal line.  Finding the center is easier this way.
+    
+    l = (p2p.x-p1p.x)/2  # half the distance between the points.
+    h = l/math.tan(-curve/2) # compute the distance to the center of the circle
+                             # from the line connecting the two points.
+    
+    cp = shapes.Point(p1p.x + l, p1p.y-h) # the center of the (rotated) circle.
+    c = affinity.rotate(cp, -leveling_angle, origin=p1, use_radians=True)  # unrotate the circle to get the center of the original circle.
+
+    # how man line segments to use to approximate the curve.  Bound the angle between consecutive segments to 5 degrees. ALways have at least 10 segments.
+    facets = max(10, int(math.ceil(abs(wire.get_curve())/5)))
+    
+    points = []
+    t = p1
+    for i in range(1,facets + 2):  # Generate the segments by rotating p1
+                                   # around the center a little bit at a time.
+        points.append(t)
+        t = affinity.rotate(t, curve/facets, origin=c, use_radians=True)
+
+    return points
+
+def facetizeWire(wire):
+
+    if wire.get_curve() == 0:
+        return [wire]
+
+    points = getFacetsForWire (wire)
+    wires =[]
+    for i in range(0, len(points)-1):
+        wires.append(Swoop.Wire()
+                     .set_points(points[i].x, points[i].y, points[i+1].x, points[i+1].y)
+                     .set_layer(wire.get_layer())
+                     .set_width(wire.get_width()))
+    return wires
 
 class ShapelyEagleFilePart():
 
@@ -328,9 +373,10 @@ class Wire(ShapelyEagleFilePart):
 
     def get_geometry(self, layer_query=None, **options):
         if self._layer_matches(layer_query, self.get_layer()):
-            line = shapes.LineString([(self.get_x1(), self.get_y1()), (self.get_x2(), self.get_y2())])
-            line = self._apply_width(line, **options)
-            return line
+            shape = shapes.LineString(getFacetsForWire(self))
+
+            shape = self._apply_width(shape, **options)
+            return shape
         else:
             return shapes.LineString()
 

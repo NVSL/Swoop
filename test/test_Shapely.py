@@ -25,6 +25,7 @@ class TestShapely(unittest.TestCase):
         self.testbrd5 = ShapelySwoop.open(self.me + "/inputs/shapeTest5.brd")
 
         self.boardtest = ShapelySwoop.open(self.me + "/inputs/test_saving.brd")
+        self.curvetest = ShapelySwoop.open(self.me + "/inputs/curve_test.brd")
         
     def test_element(self):
         tests = [
@@ -41,10 +42,10 @@ class TestShapely(unittest.TestCase):
 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_element('U$1').get_geometry(layer_query='Bottom'))", -5999577188847035307, "#0000ff"),
 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tTest2'))", -8049353574747205132, "#ff00ff"),
 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='bTest2'))", 3934649351525441535, "#ff00ff"),
-("shapely.ops.cascaded_union(self.boardtest.get_geometry())", -3406475292936588903, "#000000"),
+("shapely.ops.cascaded_union(self.boardtest.get_geometry())", 5717082840990930239, "#000000"),
+("shapely.ops.cascaded_union(self.curvetest.get_geometry())", -3582554294855955455, "#000000"),
 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='Holes'))", -3913453783608111839, "#000000"),
 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tKeepout', polygonize_wires=SEFP.POLYGONIZE_BEST_EFFORT))", -5168448055214345009, "#000000"),
-("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tKeepout', polygonize_wires=SEFP.POLYGONIZE_NONE))", 7043720151262557027, "#000000"),
         ]
 
         c = 0

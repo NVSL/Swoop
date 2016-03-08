@@ -232,21 +232,29 @@ def propagatePartToBoard(part, brd):
         dst_lib = Swoop.Library().set_name(part.get_library())
         brd.add_library(dst_lib)
 
+    #src_lib = part.find_library()
+    #assert src_lib is not None, "Missing library '{}' for part '{}'".format(part.get_library(), part.get_name())
+    
     dst_package = dst_lib.get_package(part.find_package().get_name())
     if dst_package is None:
         dst_package = part.find_package().clone()
         dst_lib.add_package(dst_package)
     else:
         assert dst_package.is_equal(part.find_package()), "Package from schematic is not the same as package in board"
+
+    # Reverse-engineered logic about setting values in board files.
+    if part.find_deviceset().get_uservalue():
+        fallback_value = ""
+    else:
+        fallback_value = part.get_deviceset()+part.get_device()
     
     n =(Swoop.Element().
         set_name(part.get_name()).
         set_library(part.get_library()).
         set_package(part.
                     find_package().
-                    get_name()
-                ).
-        set_value(part.get_value() if part.get_value() is not None else "").
+                    get_name()).
+        set_value(part.get_value() if part.get_value() is not None else fallback_value).
         set_x(0).
         set_y(0))
 

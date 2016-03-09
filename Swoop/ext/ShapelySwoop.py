@@ -34,6 +34,9 @@ import Swoop
 import logging as log
 import re
 import copy
+import collections
+from Swoop.ext.VectorFont.VectorFont import vectorFont
+
 dumping_geometry_works = True
 try:
     import matplotlib
@@ -129,12 +132,6 @@ class ShapelyEagleFilePart():
 
     def _apply_transform(self, shape, rotation_origin=(0,0), scale_origin=(0,0)):
         return ShapelyEagleFilePart._do_transform(shape, self.get_rotation(), self.get_mirrored(), rotation_origin=rotation_origin, scale_origin=scale_origin)
-        if shape.is_empty:
-            return shape
-        r = shape
-        r = affinity.rotate(r, self.get_rotation(), origin=rotation_origin)
-        r = affinity.scale(r, xfact=(-1 if self.get_mirrored() else 1), origin=scale_origin)
-        return r;
 
     @staticmethod
     def _do_inverse_transform(shape, rotation, mirrored, rotation_origin=(0,0), scale_origin=(0,0)):
@@ -255,7 +252,7 @@ class Circle(ShapelyEagleFilePart):
 
     def get_geometry(self, layer_query=None, **options):
         if self._layer_matches(layer_query, self.get_layer()):
-            circle = shapes.Point(self.get_x(), self.get_y()).buffer(self.get_radius())
+            circle = shapes.LinearRing(shapes.Point(self.get_x(), self.get_y()).buffer(self.get_radius()).exterior)
             return self._apply_width(circle, **options)
         else:
             return shapes.LineString()
@@ -293,6 +290,9 @@ class Polygon(ShapelyEagleFilePart):
         ShapelyEagleFilePart.__init__(self)
 
     def get_geometry(self, layer_query=None, **options):
+        # if self.get_width() == 0 and options["hide_zero_width_items"]:
+        #     return shapes.LineString()
+
         if self._layer_matches(layer_query, self.get_layer()):
             polygon = shapes.Polygon([(v.get_x(), v.get_y()) for v in self.get_vertices()])
             return self._apply_width(polygon, **options)
@@ -372,6 +372,9 @@ class Wire(ShapelyEagleFilePart):
         ShapelyEagleFilePart.__init__(self);
 
     def get_geometry(self, layer_query=None, **options):
+        # if self.get_width() == 0 and options["hide_zero_width_items"]:
+        #     return shapes.LineString()
+
         if self._layer_matches(layer_query, self.get_layer()):
             shape = shapes.LineString(getFacetsForWire(self))
 
@@ -420,7 +423,85 @@ class Dimension(ShapelyEagleFilePart):
 class Text(ShapelyEagleFilePart):
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
-                                
+
+    def get_geometry(self, layer_query=None, **options):
+        if not self._layer_matches(layer_query, self.get_layer()):
+            return shapes.LineString()
+
+        if self.get_align() == "center":
+            h_align = "center"
+            v_align = "center"
+        else:
+            m = re.match("(\w+)-(\w+)", self.get_align())
+            v_align = m.group(1)
+            h_align = m.group(2)
+
+        lines = self.get_text().split("\n")
+
+        stroke_width = self.get_ratio()/100.0
+        yscale = (vectorFont.base_height - stroke_width)/vectorFont.base_height
+        RenderedLine = collections.namedtuple("RenderedLine", ["width", "shape"])
+
+        rendered_lines = []
+        for l in lines:
+            cursor = 0
+            text = shapes.LineString()
+            for character in l:
+                glyph_data = vectorFont.glyphs[character]
+                xscale = ((glyph_data.width - stroke_width/2)/glyph_data.width + glyph_data.width)/2  # emperical formula
+                glyph = shapes.MultiLineString(glyph_data.lines)
+                glyph = affinity.scale(glyph,# the width of the lines we use for drawing must fit within the line height.
+                                       yfact=yscale,
+                                       xfact=xscale,
+                                       origin=(0,0)) 
+                # Put the character at the cursor and move it down to accomodate the stroke thickness.  emprical value
+                glyph = affinity.translate(glyph,
+                                           cursor + stroke_width/2,
+                                           -stroke_width/2); 
+                text = text.union(glyph)
+                effective_width = glyph_data.width
+                cursor = cursor + effective_width + vectorFont.base_kerning
+            width = cursor - vectorFont.base_kerning
+            rendered_lines.append(RenderedLine(width, text))
+
+        max_width = max(map(lambda x:x.width, rendered_lines))
+
+        baseline_skip = vectorFont.base_height + self.get_distance()/100.0*vectorFont.base_height;
+
+        text = shapes.LineString()
+        v_cursor = 0
+        for l in rendered_lines:
+            if h_align == "left":
+                dx = 0
+            elif h_align == "center":
+                dx = (max_width - l.width)/2 - max_width/2
+            elif h_align == "right":
+                dx = (max_width - l.width) - max_width
+            else:
+                assert False, "illegal h_align: {}".format(h_align)
+            text = text.union(affinity.translate(l.shape, dx, v_cursor))
+
+            v_cursor = v_cursor - baseline_skip
+
+        height = -v_cursor - self.get_distance()/100.0*vectorFont.base_height
+
+        if v_align == "top":
+            dy = 0
+        elif v_align == "center": 
+            dy = height/2
+        elif v_align == "bottom":
+            dy = height
+        else:
+            assert False, "illegal v_align: {}".format(v_align)
+
+        text = affinity.translate(text,0,dy)
+
+        text = affinity.scale(text, xfact=self.get_size(), yfact=self.get_size(), origin=(0,0))
+        text = affinity.translate(text, self.get_x(), self.get_y())
+        text = self._apply_transform(text, rotation_origin=(self.get_x(), self.get_y()), scale_origin=(self.get_x(), self.get_y()))
+        text = self._apply_width(text, width=stroke_width*self.get_size(),**options)
+        return text
+        
 class Frame(ShapelyEagleFilePart):
     def __init__(self):
         ShapelyEagleFilePart.__init__(self);
@@ -659,14 +740,14 @@ def polygon_as_svg(shapely_polygon, svgclass=None, style=None):
     r = ""
     # Fixme:  Really, this should be a <path> and we should render the interior points to create holes.
     for i in l:
-        data = "M{} {} ".format(i.exterior.coords[0][0],i.exterior.coords[0][1]) + " ".join(map(lambda x: "L{} {}".format(x[0],x[1]), i.exterior.coords[1:])) + " Z"
-
-        for k in i.interiors:
-            data = data + "M{} {} ".format(k.coords[0][0],k.coords[0][1]) + " ".join(map(lambda x: "L{} {}".format(x[0],x[1]), k.coords[1:])) + " Z"
+        if isinstance(i, shapes.LineString):
+            data = "M{} {}".format(i.coords[0][0],i.coords[0][1]) + " ".join(map(lambda x: "L{} {}".format(x[0],x[1]), i.coords[1:]))
+        else:
+            data = "M{} {} ".format(i.exterior.coords[0][0],i.exterior.coords[0][1]) + " ".join(map(lambda x: "L{} {}".format(x[0],x[1]), i.exterior.coords[1:])) + " Z"
+            for k in i.interiors:
+                data = data + "M{} {} ".format(k.coords[0][0],k.coords[0][1]) + " ".join(map(lambda x: "L{} {}".format(x[0],x[1]), k.coords[1:])) + " Z"
         
         r = r + ("<path {} {} d='{}'/>".format(svgclass, style, data))
-        #points = " ".join(["{},{}".format(round(p[0],4),round(p[1],4)) for p in i.exterior.coords])
-        #r = r + ("<polygon {} {} points='{}'/>".format(svgclass, style, points))
     return r
 
 def hash_geometry(geo):

@@ -261,19 +261,26 @@ class EagleFilePart(object):
         """
         return From(self)
     
-def parseByType(efp, attrType, s):
+def parseByType(efp, attrType, default, s):
 
     try:
-        if attrType == "None_is_empty_string":
+        if attrType == "None_is_default_string":
             if s is None:
-                r = ""
+                r = default
             else:
                 r = s
-        elif attrType == "None_is_float_zero":
+        elif attrType == "None_is_default_float":
             if s is None:
-                r = 0
+                r = default
             else:
                 r = float(s)
+        elif attrType == "None_is_default_int":
+            assert isinstance(default, int)
+            if s is None:
+                r = default
+            else:
+                r = int(s)
+            assert isinstance(r, int)
         elif s is not None:
             if attrType == "str":
                 r = s
@@ -300,20 +307,34 @@ def parseByType(efp, attrType, s):
             r = None
     except ValueError as e:
         raise SwoopError("Bad value: '{}' should be {} ({}) {}".format(s, attrType,e, efp))
+
     return r
 
-def unparseByType(efp, attrType, v):
-    if attrType == "None_is_empty_string":
-        if v == "":
+def unparseByType(efp, attrType, default, v):
+    if v is None:
+        return v
+
+    if attrType == "None_is_default_string":
+        assert default is not None
+        if v == default:
             r = None
         else:
             r = v
-    elif attrType == "None_is_float_zero":
-        if v == 0.0:
+    elif attrType == "None_is_default_float":
+        assert default is not None
+        if v == default:
             r = None
         else:
             r = str(v)
-    elif v is not None:
+    elif attrType == "None_is_default_int":
+        assert default is not None
+        assert default != "None"
+        assert isinstance(v, int), "{}".format(v)
+        if v == default:
+            r = None
+        else:
+            r = str(v)
+    else:
         if attrType == "str":  # Doing nothing to strings lets us handle weird
                                # unicode characters.
             r = v 
@@ -339,19 +360,19 @@ def unparseByType(efp, attrType, v):
 
         if attrType != "constant_bool":
             assert r is not None
-    else:
-        r = None
     
     return r
 
 def typeCheck(type, v, cannotBeNone):
     if v is None and not cannotBeNone:
-        return True
+        return False
     
-    if type == "None_is_empty_string":
+    if type == "None_is_default_string":
         return isinstance(v,str) or v is None
-    elif type == "None_is_float_zero":
+    elif type == "None_is_default_float":
         return isinstance(v,float) or isinstance(v,int) or v is None
+    elif type == "None_is_default_int":
+        return isinstance(v,int) or v is None
     elif type == "str" or type == "layer_string": 
         return isinstance(v, str)
     elif type == "int":
@@ -829,7 +850,7 @@ class EagleFile(EagleFilePart):
             v = True;
         
         if not v:
-            log.warning("Eagle file opened as '" + str(self.filename) +"' is invalid: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
+            log.error("Eagle file opened as '" + str(self.filename) +"' is invalid: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
         else:
             log.info("Eagle file opened as '" + str(self.filename) +"' parsed to valid Eagle data.")
 
@@ -960,9 +981,10 @@ class EagleFile(EagleFilePart):
         if check_sanity:
             self.check_sanity()
         if dtd_validate and not self.validate():
-            if filename is not None:
-                f = open(filename + ".broken.xml", "w")
+            if self.filename is not None:
+                f = open(self.filename + ".broken.xml", "w")
                 f.write(header + ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True))
+
             if len(EagleFile.DTD.error_log.filter_from_errors()) > 0:
                 raise SwoopError("Swoop structure does not validate" + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
             else:
@@ -1715,7 +1737,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
                 raise EagleFormatError("Tried to create {{tag.tag}} from " + root.tag)
 
             #{%for a in tag.attrs%}
-            self.{{a.name}}={{a.parse}}(parent, "{{a.vtype}}", root.get("{{a.xmlName}}"))
+            self.{{a.name}}={{a.parse}}(parent, "{{a.vtype}}", {{a.get_literal_default()}}, root.get("{{a.xmlName}}"))
             #{%endfor%}
 
             self.parent = parent
@@ -1788,7 +1810,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
 
             ## Unparse the values.
 
-            v = {{a.unparse}}(self, "{{a.vtype}}", self.{{a.name}})
+            v = {{a.unparse}}(self, "{{a.vtype}}", {{a.get_literal_default()}},  self.{{a.name}})
 
             ## For required attributes None becomes "".  For optional attributes, we just leave the attribute out.
             if v is not None:
@@ -1932,6 +1954,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         :param v: new value
         :rtype: :code:`self`
         """
+                        
         #{%if a.isKey %}
         oldkey = self.{{a.name}}
         #{% endif %}
@@ -2329,7 +2352,25 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
 
     #{%endif%}
     #{%endfor%}
+
+    #{%if tag.preserveTextAs != "" %}
+    def set_{{tag.preserveTextAs}}(self, s):
+        """ Set the text content for this :class:`{{tag.classname}}`.
+
+        :param s: text to set.
+        :rtype: :code:`self`
+        """
+        self.{{tag.preserveTextAs}} = s
+        return self
+
+    def get_{{tag.preserveTextAs}}(self):
+        """ Get the text content from this :class:`{{tag.classname}}`.
+        
+        :rtype: the text content.
+        """
+        return self.{{tag.preserveTextAs}}
     
+    #{% endif %}
     
     def get_children(self):
         """

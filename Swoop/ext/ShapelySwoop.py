@@ -44,14 +44,9 @@ try:
     from descartes import PolygonPatch
 except RuntimeError as e:
     dumping_geometry_works = False
-              
-def getFacetsForWire(wire):
-    if wire.get_curve() == 0:
-        return [shapes.Point(wire.get_x1(), wire.get_y1()), shapes.Point(wire.get_x2(), wire.get_y2())]
+
+def getFacets(p1,p2, curve):
     
-    curve = math.radians(wire.get_curve())
-    p1= shapes.Point(wire.get_x1(),wire.get_y1())
-    p2= shapes.Point(wire.get_x2(),wire.get_y2())
     if p2.x == p1.x:
         leveling_angle = math.radians(90)
     else:
@@ -67,7 +62,7 @@ def getFacetsForWire(wire):
     c = affinity.rotate(cp, -leveling_angle, origin=p1, use_radians=True)  # unrotate the circle to get the center of the original circle.
 
     # how man line segments to use to approximate the curve.  Bound the angle between consecutive segments to 5 degrees. ALways have at least 10 segments.
-    facets = max(10, int(math.ceil(abs(wire.get_curve())/5)))
+    facets = max(10, int(math.ceil(abs(curve)/5)))
     
     points = []
     t = p1
@@ -77,6 +72,16 @@ def getFacetsForWire(wire):
         t = affinity.rotate(t, curve/facets, origin=c, use_radians=True)
 
     return points
+
+def getFacetsForWire(wire):
+    if wire.get_curve() == 0:
+        return [shapes.Point(wire.get_x1(), wire.get_y1()), shapes.Point(wire.get_x2(), wire.get_y2())]
+    
+    curve = math.radians(wire.get_curve())
+    p1= shapes.Point(wire.get_x1(),wire.get_y1())
+    p2= shapes.Point(wire.get_x2(),wire.get_y2())
+    return getFacets(p1,p2,curve)
+
 
 def facetizeWire(wire):
 

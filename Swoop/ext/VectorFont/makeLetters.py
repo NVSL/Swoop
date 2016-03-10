@@ -4,7 +4,7 @@ import Swoop
 brd = Swoop.EagleFile.open("template.brd")
 
 
-for c in range(33, 127):
+for c in range(32, 127):
     t = brd.clone();
     print "{} {}".format(c, chr(c))
     s = chr(c)

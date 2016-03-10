@@ -364,8 +364,8 @@ def unparseByType(efp, attrType, default, v):
     return r
 
 def typeCheck(type, v, cannotBeNone):
-    if v is None and not cannotBeNone:
-        return False
+    if v is None:
+        return not cannotBeNone
     
     if type == "None_is_default_string":
         return isinstance(v,str) or v is None

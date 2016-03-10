@@ -15,9 +15,11 @@ def main():
         #yrange = [100000,-100000]
 
         lines = []
+        foundart = False
         for l in f.readlines():
             m = re.match("X(-?)0*(\d+)Y(-?)0*(\d+)D(0.)", l)
             if m is not None:
+                foundart = True
                 if m.group(5) == "02":
                     lines.append([])
 
@@ -30,13 +32,16 @@ def main():
                 xrange = [min(xrange[0], x),max(xrange[1], x)]
                 #yrange = [min(yrange[0], y),max(yrange[0], y)]
 
-
                 lines[-1].append((x,y))
 
                 #    print lines
                 #print fname, xrange[1]-xrange[0]
-                _vectorFont.glyphs[chr(int(fname[:-4]))] = Glyph(xrange[1]-xrange[0], lines)
-
+        if foundart:
+            _vectorFont.glyphs[chr(int(fname[:-4]))] = Glyph(xrange[1]-xrange[0], lines)
+        else:
+            # This is just for ' '
+            _vectorFont.glyphs[chr(int(fname[:-4]))] = Glyph(_vectorFont.base_width, [])
+            
     f = open("VectorFontData.py", "w")
     f.write("""from VectorFontTypes import *
 vectorFont = {}""".format(_vectorFont))

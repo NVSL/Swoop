@@ -453,7 +453,10 @@ class Text(ShapelyEagleFilePart):
             text = shapes.LineString()
             for character in l:
                 glyph_data = vectorFont.glyphs[character]
-                xscale = ((glyph_data.width - stroke_width/2)/glyph_data.width + glyph_data.width)/2  # emperical formula
+                if glyph_data.width == 0:
+                    xscale = 1
+                else:
+                    xscale = ((glyph_data.width - stroke_width/2)/glyph_data.width + glyph_data.width)/2  # emperical formula
                 glyph = shapes.MultiLineString(glyph_data.lines)
                 glyph = affinity.scale(glyph,# the width of the lines we use for drawing must fit within the line height.
                                        yfact=yscale,

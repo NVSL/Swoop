@@ -1,6 +1,7 @@
 from Swoop import EagleFile
 import Swoop
 import logging as log
+from Swoop.tools.CleanupEagle import *
 
 class ScanLayersVisitor(Swoop.EagleFilePartVisitor):
     """A visitor to scan the file for all :class:`EagleFilePart` objects a
@@ -290,4 +291,98 @@ def updateLibrary(eagleFile, library):
         Swoop.From(l).get_library().get_devicesets().detach()
 
     eagleFile.add_library(l)
+
+
+def consolidate_libraries_in_schematic(schematic, new_lib_name, lib_names, cleanup=False):
+    """Create a new library called :code:`new_lib_name` in :code:`schematic` that the
+    information for all the parts from libraries listed in :code:`lib_names`.
+
+    Update the parts to refer to the new libray.  If :code:`remove_libs` is
+    :code:`True`, then remove the old libraries from the schematic.
+
+    :param schematic: A :class:`SchematicFile` object to operate on.
+    :param new_lib_name: The name of the new library.
+    :param lib_names: An array of library names to remove.
+    :param remove_libs: Should we remove the libraries in :code:`lib_names` after consolidation?
+    :returns:  The new :code:`Library` object in :code:`schematic'
+
+    """
+
+    part_names = Swoop.From(schematic).get_parts().filtered_by(lambda x: x.get_library() in lib_names).get_name().unique()
+    lib = consolidate_parts_in_schematic(schematic, new_lib_name, part_names)
+
+    if cleanup:
+        removeDeadEFPs(schematic)
+
+    return lib
+
+                                                        
+
+def copy_deviceset(deviceset, to_lib):
+    """Copy :code:`deviceset` and all associated packages and symbols to :code:`to_lib`.  Fail if there are any name conflicts.
+
+    """
+
+    for p in Swoop.From(deviceset).get_devices().find_package():
+        to_lib.add_package(p.clone());
+    for s in Swoop.From(deviceset).get_gates().find_symbol():
+        to_lib.add_symbol(s.clone());
+    to_lib.add_deviceset(deviceset.clone())
+    
+
+def consolidate_parts_in_schematic(schematic, lib_name, part_names):
+    """Create a new library called :code:`lib_name` in :code:`schematic` that the
+    information for the parts listed in :code:`part_names`.  Check for
+    conflicting names.
+
+    Update the parts to refer to the new libray. 
+
+    :param schematic: A :class:`SchematicFile` object to operate on.
+    :param lib_name: The name of the new library.
+    :param part_names: An array of part names (i.e., reference designators)
+    :returns:  Nothing.
+    """
+
+    if schematic.get_library(lib_name) is None:
+        lib = Swoop.Library().set_name(lib_name)
+        schematic.add_library(lib)
+    else:
+        lib = schematic.get_library(lib_name)
+
+    src_lib = {}
+
+    def check_for_conflicts(name, lib):
+        if name in src_lib:
+            assert src_lib[name] == lib, "Name '{}' in both {} and {}".format(name, lib, src_lib[name])
+        else:
+            src_lib[name] = lib
         
+    for p in Swoop.From(schematic).get_parts().filtered_by(lambda x: x.get_name() in part_names):
+        print p
+        package = p.find_device().find_package()
+        if package is not None:
+            check_for_conflicts(package.get_name(), p.get_library())
+        
+        for s in Swoop.From(p).find_deviceset().get_gates().find_symbol():
+            check_for_conflicts(s.get_name(), p.get_library())
+
+        check_for_conflicts(p.find_deviceset().get_name(), p.get_library())
+
+        copy_deviceset(p.find_deviceset(), lib)
+
+        p.set_library(lib_name)
+        
+    return lib
+
+
+def quick_bom(schematic):
+    parts={}
+
+    for p in Swoop.From(schematic).get_parts():
+        attrs = p.get_all_attributes()
+        attrs["refdes"] = p.get_name()
+        attrs["device"] = p.get_deviceset()
+        attrs["variant"] = p.get_device()
+        parts[p.get_name()] = attrs
+    return parts
+

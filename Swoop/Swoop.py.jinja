@@ -2575,13 +2575,34 @@ class Part (Base_Part):
         return package
     
 
+    def get_all_attributes(self):
+        """Return a map of attribute names to values.  These include attributes
+        defined in the library as well as those defined for this part.
+        Modifying the map has no effect on the :code:`Part`.
+
+        """
+        r = {x.get_name(): x.get_value() for x in self.find_technology().get_attributes()}
+        r.update({x.get_name(): x.get_value() for x in self.get_attributes()})
+        return r
+        
     def set_attribute(self,name, value):
-        if name in self.attributes:
-            self.attributes[name].set_value(value)
+        """Set an attribute on a part, creating it if necessary.
+
+        If the attribute exists in the library, and is marked as constant, then raise a :code:`SwoopError`.
+        """
+
+        tech_attribute = self.find_technology().get_attribute(name)
+
+        if tech_attribute is None or (tech_attribute is not None and not tech_attribute.get_constant()):
+            if name in self.attributes:
+                self.attributes[name].set_value(value)
+            else:
+                self.add_attribute(Attribute().
+                                   set_name(name).
+                                   set_value(value))
         else:
-            self.add_attribute(Attribute().
-                               set_name(name).
-                               set_value(value))
+            raise SwoopError("Setting attribute value on part {}, but attribute '{}' is marked constant in library ({}:{}:{}:{}).".format(tech_attribute, tech_attribute.get_constant(), self.get_name(), name, self.get_library(), self.get_deviceset(), self.get_device(), self.get_technology()))
+
         return self
 
 
@@ -2589,6 +2610,7 @@ EagleFile.class_map["part"] = Part
 
 
 class Attribute (Base_Attribute):
+
     """Extra functionality for Attributes.  Attributes are used in many places in
     eagle files and they require different attributes in some cases.
 

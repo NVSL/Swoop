@@ -330,16 +330,19 @@ def copy_deviceset(deviceset, to_lib):
     to_lib.add_deviceset(deviceset.clone())
     
 
-def consolidate_parts_in_schematic(schematic, lib_name, part_names):
-    """Create a new library called :code:`lib_name` in :code:`schematic` that the
+def consolidate_parts_in_schematic(schematic, lib_name, part_names=None):
+    """
+    Create a new library called :code:`lib_name` in :code:`schematic` that the
     information for the parts listed in :code:`part_names`.  Check for
     conflicting names.
 
     Update the parts to refer to the new libray. 
 
+    Warning:  This will make the schematic inconsistent with the board (if one exists).
+
     :param schematic: A :class:`SchematicFile` object to operate on.
     :param lib_name: The name of the new library.
-    :param part_names: An array of part names (i.e., reference designators)
+    :param part_names: An array of part names (i.e., reference designators).  If :code:`None` then do all the parts.  Defaults to :code:`None`.
     :returns:  Nothing.
     """
 
@@ -357,7 +360,7 @@ def consolidate_parts_in_schematic(schematic, lib_name, part_names):
         else:
             src_lib[name] = lib
         
-    for p in Swoop.From(schematic).get_parts().filtered_by(lambda x: x.get_name() in part_names):
+    for p in Swoop.From(schematic).get_parts().filtered_by(lambda x: part_names is None or x.get_name() in part_names):
         print p
         package = p.find_device().find_package()
         if package is not None:

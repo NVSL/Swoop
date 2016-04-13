@@ -330,7 +330,7 @@ def copy_deviceset(deviceset, to_lib):
     to_lib.add_deviceset(deviceset.clone())
     
 
-def consolidate_parts_in_schematic(schematic, lib_name, part_names=None):
+def consolidate_parts_in_schematic(schematic, lib_name, part_names=None, ignore_conflicts=False):
     """
     Create a new library called :code:`lib_name` in :code:`schematic` that the
     information for the parts listed in :code:`part_names`.  Check for
@@ -361,15 +361,17 @@ def consolidate_parts_in_schematic(schematic, lib_name, part_names=None):
             src_lib[name] = lib
         
     for p in Swoop.From(schematic).get_parts().filtered_by(lambda x: part_names is None or x.get_name() in part_names):
-        print p
         package = p.find_device().find_package()
         if package is not None:
-            check_for_conflicts(package.get_name(), p.get_library())
+            if not ignore_conflicts:
+                check_for_conflicts(package.get_name(), p.get_library())
         
         for s in Swoop.From(p).find_deviceset().get_gates().find_symbol():
-            check_for_conflicts(s.get_name(), p.get_library())
+            if not ignore_conflicts:
+                check_for_conflicts(s.get_name(), p.get_library())
 
-        check_for_conflicts(p.find_deviceset().get_name(), p.get_library())
+        if not ignore_conflicts:
+            check_for_conflicts(p.find_deviceset().get_name(), p.get_library())
 
         copy_deviceset(p.find_deviceset(), lib)
 
@@ -379,6 +381,15 @@ def consolidate_parts_in_schematic(schematic, lib_name, part_names=None):
 
 
 def quick_bom(schematic):
+    """
+    Create a dictionary that maps part names to a dictionary contain all the part's attributes in addition to the following extra attributes:
+
+    * :code:`"refdes"`:  The reference designator for the part.
+    * :code:`"device"`:  The device name for the part.
+    * :code:`"variant"`: The variant name for the part.
+    
+    :param schematic: The :class:`SchematicFile` to process.
+    """
     parts={}
 
     for p in Swoop.From(schematic).get_parts():
@@ -389,3 +400,49 @@ def quick_bom(schematic):
         parts[p.get_name()] = attrs
     return parts
 
+def rename_part(old, new, schematic=None, board=None):
+    """
+    Rename a part in a schematic and the corresponding board, if provided. 
+    
+    :param schematic: The :class:`SchematicFile` in which to do the renaming
+    :param board: The :class:`BoardFile` in which to do the renaming (optional)
+    :param old: Old part name.
+    :param new: New part name.
+    """
+    
+    if schematic is not None:
+        old_part = schematic.get_part(old)
+        old_part.set_name(new)
+        
+        for i in Swoop.From(schematic).get_sheets().get_instances():
+            if i.get_part().upper() == old.upper():
+                i.set_part(new.upper())
+                
+        for pinref in Swoop.From(schematic).get_sheets().get_nets().get_segments().get_pinrefs():
+            if pinref.get_part().upper() == old.upper():
+                pinref.set_part(new.upper())
+                        
+    if board is not None:
+        for e in Swoop.From(board).get_elements():
+            if e.get_name().upper() == old.upper():
+                e.set_name(new.upper())
+
+        for contact_ref in Swoop.From(board).get_signals().get_contactrefs():
+            if contact_ref.get_element().upper() == old.upper():
+                contact_ref.set_element(new.upper())
+
+def rationalize_refdes(schematic=None, board=None):
+    """
+    Reset all reference designators based on prefixes specified in the libraries.
+    
+    :param schematic: :class:`SchematicFile` to process
+    :param board: :class:`BoardFile` to process
+    """
+    prefix_counts = {}
+    for p in Swoop.From(schematic).get_parts():
+        prefix = p.find_deviceset().get_prefix()
+        if prefix is None:
+            prefix = "U"
+        rename_part(p.get_name(), "{}{}".format(prefix,prefix_counts.setdefault(prefix,1)), board=board,schematic=schematic)
+        prefix_counts[prefix] += 1
+    

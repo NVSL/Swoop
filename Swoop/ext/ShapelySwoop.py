@@ -759,15 +759,20 @@ def polygon_as_svg(shapely_polygon, svgclass=None, style=None):
     return r
 
 def hash_geometry(geo):
-    """
-    Hash a shapley geometry object by converting it to string, rounding all the floats it contains and taking a hash of the resulting string.  
+    """Hash a shapley geometry object.  The algorithm is a little ad hoc: We
+    converting it to string, rounding all the floats found in the string, and
+    sort the contents of the string character-wise, and take a hash of the
+    result.  This handles allows for matches even when the answers differ very
+    slightly due to floating point problems and the unfortunate fact that
+    Shapely doesn't always return objects in the same order.
     
-    The rounding prevents false failures due to floating point errors.
+
     """
     def trim(match):
         return str(round(float(match.group(0)), 5))
     v = re.sub("-?\d+(\.\d+)?", trim, str(geo))
-    return hash(v)
+    
+    return hash("".join(sorted(v)))
 
 
 

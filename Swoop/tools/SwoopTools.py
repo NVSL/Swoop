@@ -315,7 +315,6 @@ def consolidate_libraries_in_schematic(schematic, new_lib_name, lib_names, clean
         removeDeadEFPs(schematic)
 
     return lib
-
                                                         
 
 def copy_deviceset(deviceset, to_lib):

@@ -400,13 +400,14 @@ def quick_bom(schematic):
     return parts
 
 def rename_part(old, new, schematic=None, board=None):
-    """
-    Rename a part in a schematic and the corresponding board, if provided. 
+    """Rename a part in a schematic and the corresponding board, if provided.
+    Change the name of the part and update all references to it.
     
     :param schematic: The :class:`SchematicFile` in which to do the renaming
     :param board: The :class:`BoardFile` in which to do the renaming (optional)
     :param old: Old part name.
     :param new: New part name.
+
     """
     
     if schematic is not None:
@@ -432,7 +433,7 @@ def rename_part(old, new, schematic=None, board=None):
 
 def rationalize_refdes(schematic=None, board=None):
     """
-    Reset all reference designators based on prefixes specified in the libraries.
+    Reset (and re-number) all reference designators based on prefixes specified in the libraries.  If the library doesn't provide a prefix, use 'U'.
     
     :param schematic: :class:`SchematicFile` to process
     :param board: :class:`BoardFile` to process

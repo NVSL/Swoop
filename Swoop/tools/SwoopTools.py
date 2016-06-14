@@ -300,6 +300,8 @@ def consolidate_libraries_in_schematic(schematic, new_lib_name, lib_names, clean
     Update the parts to refer to the new libray.  If :code:`remove_libs` is
     :code:`True`, then remove the old libraries from the schematic.
 
+    Warning:  This will make the schematic inconsistent with the board (if one exists).
+
     :param schematic: A :class:`SchematicFile` object to operate on.
     :param new_lib_name: The name of the new library.
     :param lib_names: An array of library names to remove.
@@ -445,4 +447,41 @@ def rationalize_refdes(schematic=None, board=None):
             prefix = "U"
         rename_part(p.get_name(), "{}{}".format(prefix,prefix_counts.setdefault(prefix,1)), board=board,schematic=schematic)
         prefix_counts[prefix] += 1
+
+
+def create_empty_library_file(template):
+    """
+    Create an empty :class:`LibraryFile` object with the layers from template.
+    """
+
+    lbr = Swoop.LibraryFile()
+    for l in template.get_layers():
+        lbr.add_layer(l.clone())
+    lbr.set_version(template.get_version())
+
+    return lbr
+
+def create_empty_schematic_file(template):
+    """
+    Create an empty :class:`SchematicFile` object with the layers from template.
+    """
+
+    sch = Swoop.SchematicFile()
+    for l in template.get_layers():
+        sch.add_layer(l.clone())
+    sch.set_version(template.get_version())
+
+    return sch
+
+def create_empty_board_file(template):
+    """
+    Create an empty :class:`BoardFile` object with the layers from template.
+    """
+
+    brd = Swoop.BoardFile()
+    for l in template.get_layers():
+        brd.add_layer(l.clone())
+    brd.set_version(template.get_version())
+
+    return brd
     

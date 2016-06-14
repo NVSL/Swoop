@@ -7,7 +7,7 @@ build:
 
 .PHONY: test
 test: 
-	python -m unittest discover test
+	python -m unittest discover -v test
 
 .PHONY: doc
 doc: build $(wildcard doc/*.rst)
@@ -23,7 +23,7 @@ diff:
 
 .PHONY: release
 release: clean
-	svn commit -m "Commit before release $$(cat VERSION.txt)"
+	git commit -m "Commit before release $$(cat VERSION.txt)" -a
 	python setup.py sdist upload
 	$(MAKE) doczip
 

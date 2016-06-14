@@ -15,8 +15,8 @@ class TestSimpleGeometry(unittest.TestCase):
 
     def test_geo(self):
         ef = From(EagleFile.from_file(self.me + "/inputs/geo_test.sch"))
-        part = ef.get_nth_sheet(0).get_nth_instance(0)[0]
-        rotpart = ef.get_nth_sheet(0).get_nth_instance(1)[0]
+        part = ef.get_nth_sheet(0).get_nth_instance(1)[0]
+        rotpart = ef.get_nth_sheet(0).get_nth_instance(0)[0]
         circle = ef.get_nth_sheet(0).get_plain_elements().with_type(Circle)[0]
         measure = ef.get_nth_sheet(0).get_plain_elements().with_type(Dimension)[0]
         wire = ef.get_nth_sheet(0).get_nets().get_segments().get_wires()[0]
@@ -28,10 +28,10 @@ class TestSimpleGeometry(unittest.TestCase):
         self.assertEqual(rotpart.get_rotation(), 90)
         self.assertEqual(rotpart.get_mirrored(), True)
         self.assertEqual(rotpart.get_spin(), False)
-        self.assertEqual(wire.get_geometry(), [58,38, 84,39])
+        self.assertEqual(wire.get_points(), [58,38, 84,39])
         self.assertEqual(circle.get_radius(), 4)
         self.assertEqual(circle.get_diameter(), 8)
-        self.assertEqual(rect.get_geometry(), [68, 50,73,55])
+        self.assertEqual(rect.get_corners(), [68, 50,73,55])
         self.assertEqual(measure.get_align(), [93.03448125,53.913790625])
         self.assertEqual(module.get_size(), [30,20])
         
@@ -41,8 +41,8 @@ class TestSimpleGeometry(unittest.TestCase):
         From([part, circle, measure, wire, rect]).translate(1,-1)
 
         self.assertEqual(part.get_location(), [69,45])
-        self.assertEqual(wire.get_geometry(), [59,37, 85,38])
-        self.assertEqual(rect.get_geometry(), [69, 49,74,54])
+        self.assertEqual(wire.get_points(), [59,37, 85,38])
+        self.assertEqual(rect.get_corners(), [69, 49,74,54])
         self.assertEqual(measure.get_align(), [94.03448125,52.913790625])
 
         module.set_size(68,46)

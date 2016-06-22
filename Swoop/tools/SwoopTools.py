@@ -439,14 +439,25 @@ def rationalize_refdes(schematic=None, board=None):
     
     :param schematic: :class:`SchematicFile` to process
     :param board: :class:`BoardFile` to process
+    :returns: A map from old part names to new part names.
     """
     prefix_counts = {}
+    rename_map = {}
     for p in Swoop.From(schematic).get_parts():
         prefix = p.find_deviceset().get_prefix()
         if prefix is None:
             prefix = "U"
-        rename_part(p.get_name(), "{}{}".format(prefix,prefix_counts.setdefault(prefix,1)), board=board,schematic=schematic)
+
+        before = p.get_name()
+        after = "{}{}".format(prefix,prefix_counts.setdefault(prefix,1))
+        
+        rename_map[before] = after
+        rename_part(before,
+                    after,
+                    board=board,schematic=schematic)
         prefix_counts[prefix] += 1
+    return rename_map
+
 
 
 def create_empty_library_file(template):

@@ -1009,7 +1009,7 @@ class EagleFile(EagleFilePart):
             else:
                 raise SwoopError("Swoop structure is not valid.")
         else:
-            if type(file) is str:
+            if type(file) is str or type(file) is unicode:
                 f = open(file, "w")
                 filename = file
             else:

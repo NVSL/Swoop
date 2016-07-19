@@ -22,7 +22,7 @@ def get_inp(filename):
 def eagle_code(vert_list):
     return "poly " + " ".join(["({0} {1})".format(v[0],v[1]) for v in vert_list])
 
-# @unittest.skipUnless(HAVE_DEPENDENCIES, "Need numpy, CGAL python bindings, and Dingo's rectangle to run this")
+@unittest.skipUnless(HAVE_DEPENDENCIES, "Need numpy, CGAL python bindings, and Dingo's rectangle to run this")
 class TestBoundingBoxes(unittest.TestCase):
 
     def test_correct_shape(self):
@@ -141,6 +141,7 @@ class TestBoundingBoxes(unittest.TestCase):
 
 
 
+@unittest.skipUnless(HAVE_DEPENDENCIES, "Need numpy, CGAL python bindings, and Dingo's rectangle to run this")
 class TestFilteredBoundingBoxes(unittest.TestCase):
     def test_equality(self):
         r1 = RotatedRectangle(Rectangle((1,2), (3,4)), 120)
@@ -172,6 +173,7 @@ class TestFilteredBoundingBoxes(unittest.TestCase):
 
         # print bbox.eagle_code()
 
+@unittest.skipUnless(HAVE_DEPENDENCIES, "Need numpy, CGAL python bindings, and Dingo's rectangle to run this")
 class TestShapeQueries(unittest.TestCase):
     def test_segments(self):
         l1 = LineSegment(np.array([0,0]), np.array([2,2]))

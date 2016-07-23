@@ -28,7 +28,7 @@ release: clean
 	git push
 	git checkout release
 	git merge --no-ff master
-	git tag -a $$(cat VERSION.txt) -m "Tag version $$(cat VERSION.txt"
+	git tag -a $$(cat VERSION.txt) -m "Tag version $$(cat VERSION.txt)"
 	git push --follow-tags
 	python setup.py sdist upload
 	$(MAKE) doczip

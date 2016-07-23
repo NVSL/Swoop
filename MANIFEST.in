@@ -1,0 +1,4 @@
+include	DESCRIPTION.rst
+include LICENSE.txt README.txt VERSION.txt
+
+	

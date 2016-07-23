@@ -113,7 +113,7 @@ class ShapelyEagleFilePart():
         else:
             aw = True
 
-            #print "aw = {} for {}".format(aw, shape)
+        #print "aw = {} for {}".format(aw, shape)
         if width is None:
             width = self.get_width()
             
@@ -160,6 +160,10 @@ class ShapelyEagleFilePart():
             return query == self.get_file().layer_name_to_number(layer_name)
         elif  isinstance(query, Swoop.Layer):
             return query == query.get_name()
+        elif isinstance(query, list):
+            return layer_name in query
+        elif hasattr(query, '__call__'):
+            return query(layer_name)
         else:
             raise Swoop.SwoopError("illegal layer query: {}".format(query))
     
@@ -729,7 +733,7 @@ def dump_geometry(geometry, title, filename, color="#888888"):
     dump.add_geometry(geometry, facecolor=color,alpha=1)
     dump.dump()
 
-def polygon_as_svg(shapely_polygon, svgclass=None, style=None):
+def polygon_as_svg(shapely_polygon, svgclass=None, style=None, close_paths=True):
     if svgclass is None:
         svgclass = ""
     else:
@@ -740,23 +744,29 @@ def polygon_as_svg(shapely_polygon, svgclass=None, style=None):
     else:
         style = "style='{}'".format(style)
 
-    if isinstance(shapely_polygon, shapely.geometry.polygon.Polygon):
+    if isinstance(shapely_polygon, shapely.geometry.polygon.Polygon) or isinstance(shapely_polygon, shapes.LineString) :
         l = [shapely_polygon]
     else:
         l = shapely_polygon.geoms
 
     r = ""
-    # Fixme:  Really, this should be a <path> and we should render the interior points to create holes.
+
+    if close_paths:
+        closer = " Z"
+    else:
+        closer = ""
+        
     for i in l:
         if isinstance(i, shapes.LineString):
             data = "M{} {}".format(i.coords[0][0],i.coords[0][1]) + " ".join(map(lambda x: "L{} {}".format(x[0],x[1]), i.coords[1:]))
         else:
-            data = "M{} {} ".format(i.exterior.coords[0][0],i.exterior.coords[0][1]) + " ".join(map(lambda x: "L{} {}".format(x[0],x[1]), i.exterior.coords[1:])) + " Z"
+            data = "M{} {} ".format(i.exterior.coords[0][0],i.exterior.coords[0][1]) + " ".join(map(lambda x: "L{} {}".format(x[0],x[1]), i.exterior.coords[1:])) + closer
             for k in i.interiors:
-                data = data + "M{} {} ".format(k.coords[0][0],k.coords[0][1]) + " ".join(map(lambda x: "L{} {}".format(x[0],x[1]), k.coords[1:])) + " Z"
+                data = data + "M{} {} ".format(k.coords[0][0],k.coords[0][1]) + " ".join(map(lambda x: "L{} {}".format(x[0],x[1]), k.coords[1:])) + closer
         
         r = r + ("<path {} {} d='{}'/>".format(svgclass, style, data))
     return r
+
 
 def hash_geometry(geo):
     """Hash a shapley geometry object.  The algorithm is a little ad hoc: We

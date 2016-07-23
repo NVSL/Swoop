@@ -887,6 +887,60 @@ class EagleFile(EagleFilePart):
         if issubclass(cls, LibraryFile):
             raise NotImplementedError("Can't create library from raw etree.  What's the librarie's name?")
         return cls._from_et(et.getroot(), None)
+
+    @classmethod
+    def from_stream (cls, fileClass, stream, bestEffort = True, DRUFile=None, pickle=True, filename=None):
+        """
+        Load an Eagle file from a stream.   You need to pass the the class you would like it parsed as.
+
+        :param fileClass: We will return an instance of this class.  Necessary because we may not have a filename.  Good choices are :class:`SchematicFile`, :class:`LibraryFile`, or :class:`BoardFile`.
+        :param stream: stream to load. 
+        :param bestEffort: If :code:`True`, load the file even if it doesn't conform to the DTD.        
+        :returns: A new :class:`BoardFile`, :class:`LibraryFile`, or :class:`SchematicFile` object
+        """
+        try:
+            root = ET.fromstring(stream.read())
+        except ET.XMLSyntaxError as e:
+            raise EagleFormatError("Eagle file '" + str(filename) +"' doesn't look like XML eagle file.  Try resaving with a newer version of eagle.")
+        
+
+        if EagleFile.DTD is not None:
+            v = EagleFile.DTD.validate(root)
+        else:
+            log.warning("Can't validate input file.  DTD is missing.")
+            v = True;
+
+        if not v:
+            if bestEffort:
+                log.warning("Eagle file opened as '" + str(filename) +"' is invalid on disk: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
+            else:
+                raise EagleFormatError("Eagle file opened as '" + str(filename) +"' is invalid on disk: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
+
+
+        if issubclass(fileClass, LibraryFile):
+            ef = fileClass._from_et(root, None, filename)
+        else:
+            ef = fileClass._from_et(root, None)
+            
+        ef.filename = filename
+        
+        if ef.get_version() not in supportedVersions:
+            if bestEffort:
+                log.warning("Eagle file opened as '" + str(filename) +"' is not one of " + str(supportedVersions) + ".  Doing our best.")
+            else:
+                raise EagleFormatError("Eagle file opened as '" + str(filename) +"' is not one of " + str(supportedVersions) + ".  Chickening out.")
+
+        if DRUFile is None:
+            DRUFilename = get_data("default.dru")
+
+        ef.DRUFile = DRU.DRUFile(DRUFilename)
+            
+        ef.check_sanity()
+        if cls.isRawSwoop and EagleFile.enablePickle:
+            cPickle.dump(ef, open(filename + ".pickle", "w"), cPickle.HIGHEST_PROTOCOL)
+
+        return ef
+
     
     @classmethod
     def from_file (cls, filename, bestEffort = True, DRUFile=None, pickle=True):
@@ -911,53 +965,18 @@ class EagleFile(EagleFilePart):
             if usePickle and EagleFile.enablePickle:
                 ef = cPickle.load(open(filename + ".pickle"))
                 return ef
-        
-        try:
-            tree = ET.parse(filename)
-        except ET.XMLSyntaxError as e:
-            raise EagleFormatError("Eagle file '" + str(filename) +"' doesn't look like XML eagle file.  Try resaving with a newer version of eagle.")
-        
-        root = tree.getroot()
 
-        if EagleFile.DTD is not None:
-            v = EagleFile.DTD.validate(root)
-        else:
-            log.warning("Can't validate input file.  DTD is missing.")
-            v = True;
-
-        if not v:
-            if bestEffort:
-                log.warning("Eagle file opened as '" + str(filename) +"' is invalid on disk: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
-            else:
-                raise EagleFormatError("Eagle file opened as '" + str(filename) +"' is invalid on disk: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
-                
+        f = open(filename);
+        
         if filename[-4:] == ".sch":
-            ef = cls.get_schematic_file_type()._from_et(root, None)
+            return cls.from_stream(cls.get_schematic_file_type(), f, bestEffort, DRUFile, pickle)
         elif filename[-4:] == ".brd":
-            ef = cls.get_board_file_type()._from_et(root, None)
+            return cls.from_stream(cls.get_board_file_type(), f, bestEffort, DRUFile, pickle)
         elif filename[-4:] == ".lbr":
-            ef = cls.get_library_file_type()._from_et(root, None, filename)
+            return cls.from_stream(cls.get_library_file_type(), f, bestEffort, DRUFile, pickle, filename=filename)
         else:
             raise SwoopError("Unknown file suffix: '" + filename[-4:] + "'")
-        ef.filename = filename
-        #ef.root = root
-        #ef.tree = tree
 
-        if ef.get_version() not in supportedVersions:
-            if bestEffort:
-                log.warning("Eagle file opened as '" + str(filename) +"' is not one of " + str(supportedVersions) + ".  Doing our best.")
-            else:
-                raise EagleFormatError("Eagle file opened as '" + str(filename) +"' is not one of " + str(supportedVersions) + ".  Chickening out.")
-
-        if DRUFile is None:
-            DRUFilename = get_data("default.dru")
-
-        ef.DRUFile = DRU.DRUFile(DRUFilename)
-            
-        ef.check_sanity()
-        if cls.isRawSwoop and EagleFile.enablePickle:
-            cPickle.dump(ef, open(filename + ".pickle", "w"), cPickle.HIGHEST_PROTOCOL)
-        return ef
 
     @staticmethod
     def from_file_by_type(filename, ftype):
@@ -990,7 +1009,7 @@ class EagleFile(EagleFilePart):
             else:
                 raise SwoopError("Swoop structure is not valid.")
         else:
-            if type(file) is str:
+            if type(file) is str or type(file) is unicode:
                 f = open(file, "w")
                 filename = file
             else:

@@ -22,7 +22,6 @@ class BuildSwoop(build_py):
         dtd.write('"""')
         dtd.close()
         Swoop.GenerateSwoop.main("Swoop/Swoop.py")
-        #Swoop.GenerateSwoop.main("Swoop/Swoop.pyx")
         build_py.run(self)
 
 here = os.path.abspath(os.path.dirname(__file__))

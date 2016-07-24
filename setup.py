@@ -66,7 +66,7 @@ setup(name='Swoop',
       
       #ext_modules = cythonize([Extension("*", ["Swoop/Swoop.pyx"], extra_compile_args=["-O4"])]),
       install_requires=["lxml>=3.4.2",  "Sphinx>=1.3.1", "numpy","Jinja2>=2.7.3", "shapely>=1.5.13"],
-      setup_requires=["Jinja2>=2.7.3"],
+      setup_requires=["Jinja2>=2.7.3", "lxml>=3.4.2"],
       include_package_data=True,
       entry_points={
         'console_scripts': [

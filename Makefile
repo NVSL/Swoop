@@ -30,8 +30,22 @@ release: clean
 	git merge --no-ff master
 	git tag -a $$(cat VERSION.txt) -m "Tag version $$(cat VERSION.txt)"
 	git push --follow-tags
+	$(MAKE) test_dist
 	python setup.py sdist upload
 	$(MAKE) doczip
+
+.PHONY: test_dist
+test_dist:
+	@echo Building source distribution
+	@python setup.py sdist > sdist.log 2>&1 || (tail -10 sdist.log; echo FAILED; false)
+	rm -rf test_dist
+	mkdir test_dist
+	virtualenv test_dist/venv
+	@echo Installing distribution in clean venv.  This will take a while...
+	@(. test_dist/venv/bin/activate; pip install dist/Swoop-$$(cat VERSION.txt).tar.gz ); grep -q 'Failed.*Swoop' < build_test.log || (tail -10 build_test.log; echo FAILED; false)
+	@echo SUCCESS!
+	@echo Running tests
+	@(cd test_dist; python -m unittest discover -v ../test)	
 
 clean:
 	rm -rf Swoop/eagleDTD.py

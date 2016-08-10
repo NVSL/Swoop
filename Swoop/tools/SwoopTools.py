@@ -1,4 +1,4 @@
-from Swoop import EagleFile
+from Swoop.Swoop import EagleFile
 import Swoop
 import logging as log
 from Swoop.tools.CleanupEagle import *

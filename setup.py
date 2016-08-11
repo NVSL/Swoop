@@ -55,7 +55,7 @@ setup(name='Swoop',
       author_email="swanson@cs.ucsd.edu",
       url="http://nvsl.ucsd.edu/Swoop/",
       test_suite="test",
-      packages = ["Swoop", "Swoop.ext", "Swoop.tools"],
+      packages = ["Swoop", "Swoop.ext", "Swoop.tools", "Swoop.ext.VectorFont"],
       package_dir={
           'Swoop' : 'Swoop',
       },

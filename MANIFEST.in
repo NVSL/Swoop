@@ -1,5 +1,4 @@
 include	DESCRIPTION.rst
 include LICENSE.txt README.txt VERSION.txt
 include Swoop/eagle.dtd.diff
-
-	
+include Swoop/default.dru	

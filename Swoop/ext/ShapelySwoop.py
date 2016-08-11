@@ -44,6 +44,8 @@ try:
     from descartes import PolygonPatch
 except RuntimeError as e:
     dumping_geometry_works = False
+except ImportError as e:
+    dumping_geometry_works = False
 
 def getFacets(p1,p2, curve):
     

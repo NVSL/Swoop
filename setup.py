@@ -14,14 +14,14 @@ import sys
 class BuildSwoop(build_py):
 
     def run(self):
-        import Swoop.GenerateSwoop
+        import GenerateSwoop
         dtd = open("Swoop/eagleDTD.py", "w")
         os.system("patch Swoop/eagle-7.2.0.dtd Swoop/eagle.dtd.diff -o Swoop/eagle-swoop.dtd")
         dtd.write('DTD="""')
         dtd.write(open("Swoop/eagle-swoop.dtd").read())
         dtd.write('"""')
         dtd.close()
-        Swoop.GenerateSwoop.main("Swoop/Swoop.py")
+        GenerateSwoop.main("Swoop/Swoop.py")
         build_py.run(self)
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -60,13 +60,12 @@ setup(name='Swoop',
           'Swoop' : 'Swoop',
       },
       package_data={
-          "" : ["*.rst"],
-          "Swoop" : ["Swoop/Swoop.py.jinja", "Swoop/eagle.dtd.diff", "Swoop/eagle.dtd"]
+          "" : ["*.rst","*.dru"],
+          "Swoop" : ["Swoop/Swoop.py.jinja", "Swoop/eagle.dtd.diff", "Swoop/eagle.dtd", "Swoop/default.dru"]
       },
-      
       #ext_modules = cythonize([Extension("*", ["Swoop/Swoop.pyx"], extra_compile_args=["-O4"])]),
       install_requires=["lxml>=3.4.2",  "Sphinx>=1.3.1","Jinja2>=2.7.3", "shapely>=1.5.13"],
-      setup_requires=["Jinja2>=2.7.3", "lxml>=3.4.2"],
+      setup_requires=["Jinja2>=2.7.3"],#, "lxml>=3.4.2"],
       include_package_data=True,
       entry_points={
         'console_scripts': [

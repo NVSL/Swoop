@@ -263,8 +263,11 @@ class Circle(ShapelyEagleFilePart):
 
     def get_geometry(self, layer_query=None, **options):
         if self._layer_matches(layer_query, self.get_layer()):
-            circle = shapes.LinearRing(shapes.Point(self.get_x(), self.get_y()).buffer(self.get_radius()).exterior)
-            return self._apply_width(circle, **options)
+            circle = shapes.Point(self.get_x(), self.get_y()).buffer(self.get_radius())
+            if "fill_circles" in options and options['fill_circles']:
+                return circle
+            else:
+                return shapes.LinearRing(circle.exterior)
         else:
             return shapes.LineString()
     

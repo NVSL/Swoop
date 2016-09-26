@@ -814,6 +814,12 @@ class EagleFile(EagleFilePart):
         self.layers = {}
         self.layersByName = {}
 
+    def get_filename(self):
+        return self.filename
+    def set_filename(self, name):
+        self.filename = name
+        return self
+
     @classmethod
     def get_schematic_file_type(cls):
         if cls.schematicFileType is None:
@@ -969,14 +975,16 @@ class EagleFile(EagleFilePart):
         f = open(filename);
         
         if filename[-4:] == ".sch":
-            return cls.from_stream(cls.get_schematic_file_type(), f, bestEffort, DRUFile, pickle)
+            n = cls.from_stream(cls.get_schematic_file_type(), f, bestEffort, DRUFile, pickle)
         elif filename[-4:] == ".brd":
-            return cls.from_stream(cls.get_board_file_type(), f, bestEffort, DRUFile, pickle)
+            n = cls.from_stream(cls.get_board_file_type(), f, bestEffort, DRUFile, pickle)
         elif filename[-4:] == ".lbr":
-            return cls.from_stream(cls.get_library_file_type(), f, bestEffort, DRUFile, pickle, filename=filename)
+            n = cls.from_stream(cls.get_library_file_type(), f, bestEffort, DRUFile, pickle, filename=filename)
         else:
             raise SwoopError("Unknown file suffix: '" + filename[-4:] + "'")
 
+        n.set_filename(filename)
+        return n
 
     @staticmethod
     def from_file_by_type(filename, ftype):

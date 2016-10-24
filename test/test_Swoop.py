@@ -220,6 +220,15 @@ class TestSwoop(unittest.TestCase):
         a.set_constant(False)
         self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>')
 
+        brd = self.brd.clone()
+        c1a = brd.get_element("C1A")
+        c1b = brd.get_element("C1B")
+        c1 = brd.get_element("C1")
+
+        self.assertEqual(c1a.get_locked(), True)
+        self.assertEqual(c1b.get_locked(), False)
+        self.assertEqual(c1.get_locked(), False)
+        
     def test_Swoop_openfile(self):
         a = Swoop.EagleFile.from_file(os.path.join(self.me, "inputs/Quadcopter.koala.sch"))
 

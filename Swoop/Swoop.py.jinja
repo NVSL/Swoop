@@ -281,6 +281,8 @@ def parseByType(efp, attrType, default, s):
             else:
                 r = int(s)
             assert isinstance(r, int)
+        elif attrType == "locked_bool":
+            r = (s == "yes")
         elif s is not None:
             if attrType == "str":
                 r = s
@@ -329,11 +331,16 @@ def unparseByType(efp, attrType, default, v):
     elif attrType == "None_is_default_int":
         assert default is not None
         assert default != "None"
-        assert isinstance(v, int), "{}".format(v)
+        assert isinstance(v, int)
         if v == default:
             r = None
         else:
             r = str(v)
+    elif attrType == "locked_bool":
+        if v == False:
+            r = None;
+        else:
+            r = "yes"
     else:
         if attrType == "str":  # Doing nothing to strings lets us handle weird
                                # unicode characters.
@@ -373,6 +380,8 @@ def typeCheck(type, v, cannotBeNone):
         return isinstance(v,float) or isinstance(v,int) or v is None
     elif type == "None_is_default_int":
         return isinstance(v,int) or v is None
+    elif type == "locked_bool":
+        return v == "yes" or v is None
     elif type == "str" or type == "layer_string": 
         return isinstance(v, str)
     elif type == "int":

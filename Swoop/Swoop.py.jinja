@@ -381,7 +381,7 @@ def typeCheck(type, v, cannotBeNone):
     elif type == "None_is_default_int":
         return isinstance(v,int) or v is None
     elif type == "locked_bool":
-        return v == "yes" or v is None
+        return isinstance(v,bool)
     elif type == "str" or type == "layer_string": 
         return isinstance(v, str)
     elif type == "int":

@@ -2044,11 +2044,11 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         :rtype: :class:`EagelFilePart` or :code:`None`
 
         """
-
+        
         if type(v) in [str, int, float, bool]:
-            return self if self.{{a.name}} == v else None
+            return self if self.{{a.name}} != v else None
         elif callable(v):
-            return self if v(self.{{a.name}}) else None
+            return self if not v(self.{{a.name}}) else None
         else:
             raise SwoopError("Illegal type passed to without_{{a.accessorName}}")
 

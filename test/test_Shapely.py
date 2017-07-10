@@ -11,7 +11,7 @@ from Swoop.ext.ShapelySwoop import hash_geometry as hash_geo
 
 def dump(test, geo, title, c, color):
     hash = hash_geo(geo)
-    print """("{}", {}, "{}"),""".format(test[0], hash, test[2])
+    print("""("{}", {}, "{}"),""".format(test[0], hash, test[2]))
     #Swoop.ext.ShapelySwoop.dump_geometry(geo, "{} ({})".format(title,hash) , "{0:03d}.pdf".format(c), color)
 
 

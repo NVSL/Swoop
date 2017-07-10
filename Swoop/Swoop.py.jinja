@@ -1019,7 +1019,8 @@ class EagleFile(EagleFilePart):
         if dtd_validate and not self.validate():
             if self.filename is not None:
                 f = open(self.filename + ".broken.xml", "w")
-                f.write(header + ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True))
+                to_write = header + ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True)
+                f.write(to_write.decode("utf8"))
 
             if len(EagleFile.DTD.error_log.filter_from_errors()) > 0:
                 raise SwoopError("Swoop structure does not validate" + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
@@ -1032,7 +1033,8 @@ class EagleFile(EagleFilePart):
             else:
                 f = file
                 filename = None
-            f.write(header+ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True))
+            to_write = header+ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True)
+            f.write(to_write.decode("utf8"))
 
     def add_layer (self, layer):
         """

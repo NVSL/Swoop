@@ -56,12 +56,12 @@ class DRUFile():
             m = re.match("(\w+)(\[(\w+)\])?", key);
             assert m is not None, "Unknown key format in '{}': {}".format(filename,key)
             key = m.group(1);
-            
+
             if len(values) == 1:
                 value = values[0]
             else:
                 value = values
-                
+
             if dictkey is not None:
                 self.values.setdefault(key, {})[dictkey] = value
             else:
@@ -69,7 +69,9 @@ class DRUFile():
 
         for k in self.values:
             setattr(self, k, self.values[k])
-                
+
+        file.close()
+
     def get_value(self, key):
         """
         Get a value by its key.

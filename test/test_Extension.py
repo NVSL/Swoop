@@ -33,11 +33,11 @@ class TestExtension(unittest.TestCase):
         self.lbr = NewEagleFile.from_file(self.me + "/inputs/Components.lbr")
 
         NewEagleFileMod = Swoop.Mixin(testExt, "Mod")
-        #print NewEagleFile.__name__
+        #print(NewEagleFile.__name__)
         self.lbr2 = NewEagleFileMod.from_file(self.me + "/inputs/Components.lbr")
 
         AreaEagleFile = Swoop.Mixin(Area, "Area")
-        #print NewEagleFile.__name__
+        #print(NewEagleFile.__name__)
         self.lbr_area = AreaEagleFile.from_file(self.me + "/inputs/Components.lbr")
 
     def test_Mixin(self):
@@ -52,7 +52,7 @@ class TestExtension(unittest.TestCase):
                                     get_symbols()[0],
                                     Swoop.Symbol), True, "Mixin Inheritance error")
 
-        #print "here " + str(type(self.lbr.get_library().get_packages()[0]))
+        #print("here " + str(type(self.lbr.get_library().get_packages()[0])))
         self.assertEqual(self.lbr.get_library().get_packages()[0].get_my_name(),"DO-1N4148", "Mixin error")
 
         self.assertEqual(self.lbr.get_library().get_packages()[0].get_my_type_name(),"TyperPackage", "Mixin typename error")

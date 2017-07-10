@@ -1,6 +1,6 @@
 import sys
 import re
-from VectorFontTypes import *
+from .VectorFontTypes import *
 
 def main():
     
@@ -50,4 +50,4 @@ vectorFont = {}""".format(_vectorFont))
 if __name__ == "__main__":
     main()
     
-from VectorFontData import vectorFont
+from .VectorFontData import vectorFont

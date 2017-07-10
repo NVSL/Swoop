@@ -175,7 +175,7 @@ class GeometryMixin(object):
         """
         Just get all the points
         """
-        for i in xrange(self.num_points()):
+        for i in range(self.num_points()):
             yield self.get_point(i)
 
     def get_transform(self):
@@ -252,7 +252,7 @@ class GeometryMixin(object):
                 rmat = Rectangle.rotation_matrix(angle)
                 for i,v in enumerate(verts):
                     verts[i] = np.dot(v - origin, rmat) + origin
-            return Polygon_2(map(np2cgal, verts))
+            return Polygon_2(list(map(np2cgal, verts)))
 
         elif isinstance(self, Swoop.Wire):
             p1 = self.get_point(0)
@@ -348,7 +348,7 @@ class GeometryMixin(object):
                     center[0] += diameter/2.0   # Center is offset to the left, correct it
                 rect = Rectangle(center - radius, center + radius)
                 verts = list(rect.vertices())
-                verts = map(lambda v: rotate_matrix.dot(v - center) + center, verts)
+                verts = [rotate_matrix.dot(v - center) + center for v in verts]
                 left_cap = arc_bounding_box(verts[0], verts[3], pi)
                 right_cap = arc_bounding_box(verts[2], verts[1], pi)
 
@@ -361,7 +361,7 @@ class GeometryMixin(object):
                 vertex = rotate_matrix.dot(vertex)
                 vertices = []
                 rot = Rectangle.rotation_matrix(2*pi/8)
-                for i in xrange(8):
+                for i in range(8):
                     vertices.append(vertex.copy() + center)
                     vertex = rot.dot(vertex)
                 return Rectangle.from_vertices(vertices, check=True)
@@ -415,7 +415,7 @@ class GeometryMixin(object):
         """
         Offset the position of this by a numpy vector
         """
-        for i in xrange(self.num_points()):
+        for i in range(self.num_points()):
             self.set_point(self.get_point(i) + move_vector, i)
 
     def rotate(self, degrees):
@@ -430,7 +430,7 @@ class GeometryMixin(object):
             new_origin = rot_mtx.dot(origin)
             self.move(new_origin - origin)
         else:
-            for i in xrange(self.num_points()):
+            for i in range(self.num_points()):
                 self.set_point( rot_mtx.dot(self.get_point(i)), i)
         if hasattr(self, "get_rot"):
             rot = self.get_rot() or "R0"
@@ -442,7 +442,7 @@ class GeometryMixin(object):
         """
         Flip this object around the Y axis and set any mirrored attributes
         """
-        for i in xrange(self.num_points()):
+        for i in range(self.num_points()):
             v = self.get_point(i)
             v[0] *= -1
             self.set_point(v, i)
@@ -502,7 +502,7 @@ class GeoElem(object):
                     if do_intersect(edge, iso_rect_query):
                         return True
                 # Check rectangle vertices inside the polygon
-                for i in xrange(4):
+                for i in range(4):
                     b = self.cgal_elem.bounded_side(iso_rect_query.vertex(i))
                     if b==ON_BOUNDED_SIDE or b==ON_BOUNDARY:
                         return True

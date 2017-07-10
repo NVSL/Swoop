@@ -214,11 +214,11 @@ class TestSwoop(unittest.TestCase):
 
         a = Swoop.From(sch).get_libraries().get_devicesets().get_devices().get_technologies().get_attributes()[0]
 
-        self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>')
+        self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>'.encode('utf8'))
         a.set_constant(True)
-        self.assertEqual(a.get_xml(), '<attribute name="CASE" value=""/>')
+        self.assertEqual(a.get_xml(), '<attribute name="CASE" value=""/>'.encode('utf8'))
         a.set_constant(False)
-        self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>')
+        self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>'.encode('utf8'))
 
         brd = self.brd.clone()
         c1a = brd.get_element("C1A")

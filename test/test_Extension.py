@@ -52,10 +52,14 @@ class TestExtension(unittest.TestCase):
                                     get_symbols()[0],
                                     Swoop.Symbol), True, "Mixin Inheritance error")
 
-        #print("here " + str(type(self.lbr.get_library().get_packages()[0])))
-        self.assertEqual(self.lbr.get_library().get_packages()[0].get_my_name(),"DO-1N4148", "Mixin error")
-
         self.assertEqual(self.lbr.get_library().get_packages()[0].get_my_type_name(),"TyperPackage", "Mixin typename error")
+
+        from_mixin = "DO-1N4148"
+        for package in self.lbr.get_library().get_packages():
+            if package.get_my_name() == from_mixin:
+                break
+        else:
+            self.fail("Mixin error - did not find package from mixed in library")
 
     class Jumper(object):
         def do_it(self):

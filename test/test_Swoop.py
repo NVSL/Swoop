@@ -23,7 +23,7 @@ class TestSwoop(unittest.TestCase):
         self.lbr = Swoop.EagleFile.from_file(self.lbr_file)
 
     def test_Search(self):
-        self.assertEqual(len([ x for x in self.brd.get_library("KoalaBuild").get_packages()[0].get_drawing_elements() if x.layer=="tDocu"]), 4, "Search failure")
+        self.assertEqual(len([ x for x in self.brd.get_library("KoalaBuild").get_package("CAPPRD250W50D600H1000_HS").get_drawing_elements() if x.layer=="tDocu"]), 4, "Search failure")
         self.assertEqual(len(self.brd.get_libraries()), len(self.brd.get_libraries()), "Search by type error")
         #print self.brd.get_library("KoalaBuild").get_package("CAPC1608X90_HS").get_drawing_elements(type=Swoop.Wire)
         self.assertEqual(len([x for x in self.brd.get_library("KoalaBuild").get_package("CAPC1608X90_HS").get_drawing_elements() if isinstance(x,Swoop.Wire)]), 12, "Search failure")

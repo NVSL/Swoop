@@ -38,4 +38,4 @@ for fname in sys.argv[1:]:
             #print fname, xrange[1]-xrange[0]
             vectorFont.glyphs[chr(int(fname[:-4]))] = Glyph(xrange[1]-xrange[0], lines)
 
-print "vector_font = {}".format(vectorFont)
+print("vector_font = {}".format(vectorFont))

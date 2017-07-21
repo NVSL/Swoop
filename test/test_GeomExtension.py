@@ -12,7 +12,7 @@ try:
     import Swoop.ext.Geometry as SwoopGeom
     from Swoop.ext.Shapes import Rectangle, LineSegment, RotatedRectangle
 except ImportError as e:
-    print e
+    print(e)
     HAVE_DEPENDENCIES = False
 
 
@@ -28,7 +28,7 @@ class TestBoundingBoxes(unittest.TestCase):
     def test_correct_shape(self):
         board = SwoopGeom.from_file(get_inp("test_saving.brd"))
         polygon = board.get_element_shape("ARDUINO")
-        vertices = map(SwoopGeom.cgal2np, polygon.vertices())
+        vertices = list(map(SwoopGeom.cgal2np, polygon.vertices()))
         should_be = [np.array([ 82.89493007,  15.0384369 ]),
                      np.array([ 65.25997764,  18.14795481]),
                      np.array([ 73.81652632,  66.67455381]),

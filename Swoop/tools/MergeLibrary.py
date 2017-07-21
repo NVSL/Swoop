@@ -60,13 +60,13 @@ def main():
     else:
         raise SwoopError("Unknown type returned from EagleFile.from_file()")
 
-    for i in srcLib.symbols.values():
+    for i in list(srcLib.symbols.values()):
         dstLib.add_symbol(i.clone())
 
-    for i in srcLib.packages.values():
+    for i in list(srcLib.packages.values()):
         dstLib.add_package(i.clone())
 
-    for i in srcLib.devicesets.values():
+    for i in list(srcLib.devicesets.values()):
         dstLib.add_deviceset(i.clone())
 
     

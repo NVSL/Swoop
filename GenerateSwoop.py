@@ -413,10 +413,10 @@ tags["note"] = TagClass("note",
 tags["library"] = TagClass("library",
                            baseclass = "EagleFilePart",
                            attrs=[Attr("name", required=False)],
-                           sections=[Singleton("description", "./description", requireTag=True),
-                                     Map("packages", "./packages/package", requireTag=True),
-                                     Map("symbols", "./symbols/symbol" , requireTag=True),
-                                     Map("devicesets", "./devicesets/deviceset", requireTag=True)])
+                           sections=[Singleton("description", "./description", requireTag=False),
+                                     Map("packages", "./packages/package", requireTag=False),
+                                     Map("symbols", "./symbols/symbol" , requireTag=False),
+                                     Map("devicesets", "./devicesets/deviceset", requireTag=False)])
 
 tags["schematic"] = TagClass("schematic",
                              baseclass = "EagleFilePart",

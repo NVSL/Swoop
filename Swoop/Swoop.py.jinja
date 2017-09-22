@@ -2142,6 +2142,10 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
             raise SwoopError("Argument to {{classname}}.add_{{l.accessorName}}() should be of type {{l.get_contained_type_list_string()}}.  Got " + str(type(s).__name__) + ".")
         
         self.{{l.name}}.append(s)
+
+        if s.parent is not None and s.parent is not self:
+            s.parent.remove_{{l.accessorName}}(s)
+
         s.parent = self
         return self
 
@@ -2194,7 +2198,9 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         :rtype: :code:`self`
         """
         self.{{l.name}} = [x for x in self.{{l.name}} if x != efp]
-        efp.parent = None
+
+        if efp.parent is self:
+            efp.parent = None
         return self
 
     #{%else%}
@@ -2288,6 +2294,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         
 
         self.{{m.name}}[s.get_{{m.mapkey}}()] = s
+
         s.parent = self
         return self
 

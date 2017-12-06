@@ -4,6 +4,18 @@ import Swoop.tools
 import os
 import re
 import math
+<<<<<<< Updated upstream
+=======
+try:
+    from . import testExt
+except ValueError:
+    import testExt
+
+try:
+    from . import areaExt as Area
+except ValueError:
+    import areaExt as Area
+>>>>>>> Stashed changes
 
 from Swoop import *
 

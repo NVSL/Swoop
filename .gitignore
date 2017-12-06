@@ -8,4 +8,5 @@
 *gtron.txt
 *gtron.log
 .\#*
-.egg-info
+*.egg-info
+.eggs

@@ -4,8 +4,8 @@ import Swoop.tools
 import os
 import re
 import math
-import testExt
-import areaExt as Area
+from . import testExt
+from . import areaExt as Area
 
 from Swoop import *
 
@@ -14,9 +14,9 @@ class TestExtension(unittest.TestCase):
     class MyMixin(object):
 
         def print_my_type(self):
-            print type(self)
+            print(type(self))
         def print_my_name(self):
-            print self.get_name()
+            print(self.get_name())
         def get_my_type_name(self):
             return type(self).__name__
         def get_my_name(self):
@@ -33,11 +33,11 @@ class TestExtension(unittest.TestCase):
         self.lbr = NewEagleFile.from_file(self.me + "/inputs/Components.lbr")
 
         NewEagleFileMod = Swoop.Mixin(testExt, "Mod")
-        #print NewEagleFile.__name__
+        #print(NewEagleFile.__name__)
         self.lbr2 = NewEagleFileMod.from_file(self.me + "/inputs/Components.lbr")
 
         AreaEagleFile = Swoop.Mixin(Area, "Area")
-        #print NewEagleFile.__name__
+        #print(NewEagleFile.__name__)
         self.lbr_area = AreaEagleFile.from_file(self.me + "/inputs/Components.lbr")
 
     def test_Mixin(self):
@@ -52,10 +52,14 @@ class TestExtension(unittest.TestCase):
                                     get_symbols()[0],
                                     Swoop.Symbol), True, "Mixin Inheritance error")
 
-        #print "here " + str(type(self.lbr.get_library().get_packages()[0]))
-        self.assertEqual(self.lbr.get_library().get_packages()[0].get_my_name(),"DO-1N4148", "Mixin error")
-
         self.assertEqual(self.lbr.get_library().get_packages()[0].get_my_type_name(),"TyperPackage", "Mixin typename error")
+
+        from_mixin = "DO-1N4148"
+        for package in self.lbr.get_library().get_packages():
+            if package.get_my_name() == from_mixin:
+                break
+        else:
+            self.fail("Mixin error - did not find package from mixed in library")
 
     class Jumper(object):
         def do_it(self):

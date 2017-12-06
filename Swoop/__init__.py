@@ -1,3 +1,3 @@
-from Swoop import *
-from DRU import *
+from .Swoop import *
+from .DRU import *
 

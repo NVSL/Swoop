@@ -23,7 +23,7 @@ class TestSwoop(unittest.TestCase):
         self.lbr = Swoop.EagleFile.from_file(self.lbr_file)
 
     def test_Search(self):
-        self.assertEqual(len([ x for x in self.brd.get_library("KoalaBuild").get_packages()[0].get_drawing_elements() if x.layer=="tDocu"]), 4, "Search failure")
+        self.assertEqual(len([ x for x in self.brd.get_library("KoalaBuild").get_package("CAPPRD250W50D600H1000_HS").get_drawing_elements() if x.layer=="tDocu"]), 4, "Search failure")
         self.assertEqual(len(self.brd.get_libraries()), len(self.brd.get_libraries()), "Search by type error")
         #print self.brd.get_library("KoalaBuild").get_package("CAPC1608X90_HS").get_drawing_elements(type=Swoop.Wire)
         self.assertEqual(len([x for x in self.brd.get_library("KoalaBuild").get_package("CAPC1608X90_HS").get_drawing_elements() if isinstance(x,Swoop.Wire)]), 12, "Search failure")
@@ -186,8 +186,8 @@ class TestSwoop(unittest.TestCase):
         self.assertTrue(threw, "not implemented failed")
 
     def test_Write(self):
-        import StringIO
-        output = StringIO.StringIO()
+        import io
+        output = io.StringIO()
         self.sch.write(output)
         try:
             self.sch.write(output)
@@ -199,7 +199,7 @@ class TestSwoop(unittest.TestCase):
     def test_TypeCheck(self):
         sch = self.sch.clone()
 
-        l =sch.get_layers()[0]
+        l = sch.get_layers()[0]
         with self.assertRaises(Swoop.SwoopError):
             l.set_name(10);
         with self.assertRaises(Swoop.SwoopError):
@@ -214,12 +214,21 @@ class TestSwoop(unittest.TestCase):
 
         a = Swoop.From(sch).get_libraries().get_devicesets().get_devices().get_technologies().get_attributes()[0]
 
-        self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>')
+        self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>'.encode('utf8'))
         a.set_constant(True)
-        self.assertEqual(a.get_xml(), '<attribute name="CASE" value=""/>')
+        self.assertEqual(a.get_xml(), '<attribute name="CASE" value=""/>'.encode('utf8'))
         a.set_constant(False)
-        self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>')
+        self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>'.encode('utf8'))
 
+        brd = self.brd.clone()
+        c1a = brd.get_element("C1A")
+        c1b = brd.get_element("C1B")
+        c1 = brd.get_element("C1")
+
+        self.assertEqual(c1a.get_locked(), True)
+        self.assertEqual(c1b.get_locked(), False)
+        self.assertEqual(c1.get_locked(), False)
+        
     def test_Swoop_openfile(self):
         a = Swoop.EagleFile.from_file(os.path.join(self.me, "inputs/Quadcopter.koala.sch"))
 
@@ -257,3 +266,24 @@ class TestSwoop(unittest.TestCase):
         #Swoop.LibraryFile.from_etree(tree)
 
         
+    def test_mirror_layers(self):
+        self.assertEqual(self.sch.get_mirrored_layer("Top"), "Bottom", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer("Bottom"), "Top", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer("tPlace"), "bPlace", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer("bPlace"), "tPlace", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer("Dimension"), "Dimension", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer("tFaceplateCover"), "tFaceplateCover", "Layer mirroring error")
+
+        self.assertEqual(self.sch.get_mirrored_layer(self.sch.get_layer("Top")).get_name(), "Bottom", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(self.sch.get_layer("Bottom")).get_name(), "Top", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(self.sch.get_layer("tPlace")).get_name(), "bPlace", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(self.sch.get_layer("bPlace")).get_name(), "tPlace", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(self.sch.get_layer("Dimension")).get_name(), "Dimension", "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(self.sch.get_layer("tFaceplateCover")).get_name(), "tFaceplateCover", "Layer mirroring error")
+
+        self.assertEqual(self.sch.get_mirrored_layer(1), 16, "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(16), 1, "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(21), 22, "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(22), 21, "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(20), 20, "Layer mirroring error")
+        self.assertEqual(self.sch.get_mirrored_layer(100), 100, "Layer mirroring error")

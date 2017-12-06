@@ -14,15 +14,14 @@ import sys
 class BuildSwoop(build_py):
 
     def run(self):
-        import Swoop.GenerateSwoop
+        import GenerateSwoop
         dtd = open("Swoop/eagleDTD.py", "w")
         os.system("patch Swoop/eagle-7.2.0.dtd Swoop/eagle.dtd.diff -o Swoop/eagle-swoop.dtd")
-        dtd.write('DTD="""')
+        dtd.write('DTD=u"""')
         dtd.write(open("Swoop/eagle-swoop.dtd").read())
         dtd.write('"""')
         dtd.close()
-        Swoop.GenerateSwoop.main("Swoop/Swoop.py")
-        #Swoop.GenerateSwoop.main("Swoop/Swoop.pyx")
+        GenerateSwoop.main("Swoop/Swoop.py")
         build_py.run(self)
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -47,6 +46,8 @@ setup(name='Swoop',
           "Programming Language :: Python",
           "Programming Language :: Python :: 2",
           "Programming Language :: Python :: 2.7",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.6",
           "Topic :: Scientific/Engineering",
           "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
           "Topic :: System",
@@ -56,18 +57,17 @@ setup(name='Swoop',
       author_email="swanson@cs.ucsd.edu",
       url="http://nvsl.ucsd.edu/Swoop/",
       test_suite="test",
-      packages = ["Swoop", "Swoop.ext", "Swoop.tools"],
+      packages = ["Swoop", "Swoop.ext", "Swoop.tools", "Swoop.ext.VectorFont"],
       package_dir={
           'Swoop' : 'Swoop',
       },
       package_data={
-          "" : ["*.rst"],
-          "Swoop" : ["Swoop/Swoop.py.jinja", "Swoop/eagle.dtd.diff", "Swoop/eagle.dtd"]
+          "" : ["*.rst","*.dru"],
+          "Swoop" : ["Swoop/Swoop.py.jinja", "Swoop/eagle.dtd.diff", "Swoop/eagle.dtd", "Swoop/default.dru"]
       },
-      
       #ext_modules = cythonize([Extension("*", ["Swoop/Swoop.pyx"], extra_compile_args=["-O4"])]),
-      install_requires=["lxml>=3.4.2",  "Sphinx>=1.3.1", "numpy","Jinja2>=2.7.3"],
-      setup_requires=["Jinja2>=2.7.3"],
+      install_requires=["lxml==3.6.2",  "Sphinx>=1.3.1","Jinja2>=2.7.3", "shapely>=1.5.13"],
+      setup_requires=["Jinja2>=2.7.3"],#, "lxml>=3.4.2"],
       include_package_data=True,
       entry_points={
         'console_scripts': [
@@ -75,7 +75,8 @@ setup(name='Swoop',
             'checkEagle = Swoop.tools.CheckEagle:main',
             'mergeLibrary = Swoop.tools.MergeLibrary:main',
             'fixEagle = Swoop.tools.FixEagle:main',
-            'snapSchematic = Swoop.tools.SnapToGrid:main'
+            'snapSchematic = Swoop.tools.SnapToGrid:main',
+            'relayerEagle =  Swoop.tools.Relayer:main'
             ]
         },
       keywords = "PCB Eagle CAD printed circuit boards schematic electronics CadSoft",

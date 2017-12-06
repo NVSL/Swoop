@@ -1,13 +1,9 @@
-default: build
+REQUIRED_GTRON_TOOLS=.
+include ../Gadgetron/dev.make
 
-.PHONY:build
-build: 
-	  python ./setup.py build develop
-
-
-.PHONY: test
+.PHONY:test
 test: 
-	python -m unittest discover test
+	python -m unittest discover -v test
 
 .PHONY: doc
 doc: build $(wildcard doc/*.rst)
@@ -23,7 +19,14 @@ diff:
 
 .PHONY: release
 release: clean
-	svn commit -m "Commit before release $$(cat VERSION.txt)"
+	touch VERSION.txt
+	git commit -m "Commit before release $$(cat VERSION.txt)" -a
+	git push
+	git checkout release
+	git merge --no-ff master
+	git tag -a $$(cat VERSION.txt) -m "Tag version $$(cat VERSION.txt)"
+	git push --follow-tags
+	$(MAKE) test_dist
 	python setup.py sdist upload
 	$(MAKE) doczip
 

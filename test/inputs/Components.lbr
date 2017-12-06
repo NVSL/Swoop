@@ -8,95 +8,35 @@
     </settings>
     <grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.025" altunitdist="inch" altunit="inch"/>
     <layers>
-      <layer number="100" name="tFaceplateCover" color="3" fill="1" visible="yes" active="yes"/>
-      <layer number="101" name="Patch_Top" color="12" fill="4" visible="no" active="no"/>
-      <layer number="102" name="Vscore" color="7" fill="1" visible="no" active="no"/>
-      <layer number="103" name="fp3" color="7" fill="1" visible="no" active="no"/>
-      <layer number="104" name="Name" color="7" fill="1" visible="no" active="no"/>
-      <layer number="105" name="Beschreib" color="9" fill="1" visible="no" active="no"/>
-      <layer number="106" name="BGA-Top" color="4" fill="1" visible="no" active="no"/>
-      <layer number="107" name="BD-Top" color="5" fill="1" visible="no" active="no"/>
-      <layer number="108" name="fp8" color="7" fill="1" visible="no" active="no"/>
-      <layer number="109" name="fp9" color="7" fill="1" visible="no" active="no"/>
+      <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
+      <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
+      <layer number="3" name="Route3" color="4" fill="3" visible="no" active="no"/>
+      <layer number="4" name="Route4" color="1" fill="4" visible="no" active="no"/>
+      <layer number="5" name="Route5" color="4" fill="4" visible="no" active="no"/>
+      <layer number="6" name="Route6" color="1" fill="8" visible="no" active="no"/>
+      <layer number="7" name="Route7" color="4" fill="8" visible="no" active="no"/>
+      <layer number="8" name="Route8" color="1" fill="2" visible="no" active="no"/>
+      <layer number="9" name="Route9" color="4" fill="2" visible="no" active="no"/>
       <layer number="10" name="Route10" color="1" fill="7" visible="no" active="no"/>
-      <layer number="110" name="fp0" color="7" fill="1" visible="no" active="no"/>
-      <layer number="111" name="LPC17xx" color="7" fill="1" visible="no" active="no"/>
-      <layer number="112" name="tSilk" color="7" fill="1" visible="no" active="no"/>
-      <layer number="113" name="ReferenceLS" color="7" fill="1" visible="no" active="no"/>
-      <layer number="116" name="Patch_BOT" color="9" fill="4" visible="no" active="no"/>
-      <layer number="118" name="Rect_Pads" color="7" fill="1" visible="no" active="no"/>
       <layer number="11" name="Route11" color="4" fill="7" visible="no" active="no"/>
-      <layer number="121" name="_tsilk" color="7" fill="1" visible="no" active="no"/>
-      <layer number="122" name="_bsilk" color="7" fill="1" visible="no" active="no"/>
-      <layer number="123" name="tTestmark" color="7" fill="1" visible="no" active="no"/>
-      <layer number="124" name="bTestmark" color="7" fill="1" visible="no" active="no"/>
-      <layer number="125" name="_tNames" color="7" fill="1" visible="no" active="no"/>
-      <layer number="126" name="_bNames" color="7" fill="1" visible="no" active="no"/>
-      <layer number="127" name="_tValues" color="7" fill="1" visible="no" active="no"/>
-      <layer number="128" name="_bValues" color="7" fill="1" visible="no" active="no"/>
       <layer number="12" name="Route12" color="1" fill="5" visible="no" active="no"/>
-      <layer number="131" name="tAdjust" color="7" fill="1" visible="no" active="no"/>
-      <layer number="132" name="bAdjust" color="7" fill="1" visible="no" active="no"/>
       <layer number="13" name="Route13" color="4" fill="5" visible="no" active="no"/>
-      <layer number="144" name="Drill_legend" color="7" fill="1" visible="no" active="no"/>
       <layer number="14" name="Route14" color="1" fill="6" visible="no" active="no"/>
-      <layer number="150" name="tFaceplate" color="11" fill="1" visible="yes" active="yes"/>
-      <layer number="151" name="bFaceplate" color="12" fill="1" visible="yes" active="yes"/>
-      <layer number="152" name="_bDocu" color="7" fill="1" visible="no" active="no"/>
-      <layer number="153" name="FabDoc1" color="6" fill="1" visible="no" active="no"/>
-      <layer number="154" name="FabDoc2" color="2" fill="1" visible="no" active="no"/>
-      <layer number="155" name="FabDoc3" color="7" fill="15" visible="no" active="no"/>
       <layer number="15" name="Route15" color="4" fill="6" visible="no" active="no"/>
       <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
       <layer number="17" name="Pads" color="2" fill="1" visible="yes" active="yes"/>
       <layer number="18" name="Vias" color="2" fill="1" visible="yes" active="yes"/>
-      <layer number="199" name="Contour" color="7" fill="1" visible="no" active="no"/>
       <layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="yes"/>
-      <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
-      <layer number="200" name="200bmp" color="1" fill="10" visible="no" active="no"/>
-      <layer number="201" name="201bmp" color="2" fill="1" visible="no" active="no"/>
-      <layer number="202" name="202bmp" color="3" fill="1" visible="no" active="no"/>
-      <layer number="203" name="203bmp" color="4" fill="10" visible="no" active="no"/>
-      <layer number="204" name="204bmp" color="5" fill="10" visible="no" active="no"/>
-      <layer number="205" name="205bmp" color="6" fill="10" visible="no" active="no"/>
-      <layer number="206" name="206bmp" color="7" fill="10" visible="no" active="no"/>
-      <layer number="207" name="207bmp" color="8" fill="10" visible="no" active="no"/>
-      <layer number="208" name="208bmp" color="9" fill="10" visible="no" active="no"/>
-      <layer number="209" name="209bmp" color="7" fill="1" visible="no" active="no"/>
       <layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="yes"/>
-      <layer number="210" name="210bmp" color="7" fill="1" visible="no" active="no"/>
-      <layer number="211" name="211bmp" color="7" fill="1" visible="no" active="no"/>
-      <layer number="212" name="212bmp" color="7" fill="1" visible="no" active="no"/>
-      <layer number="213" name="213bmp" color="7" fill="1" visible="no" active="no"/>
-      <layer number="214" name="214bmp" color="7" fill="1" visible="no" active="no"/>
-      <layer number="215" name="215bmp" color="7" fill="1" visible="no" active="no"/>
-      <layer number="216" name="216bmp" color="7" fill="1" visible="no" active="no"/>
-      <layer number="217" name="217bmp" color="18" fill="1" visible="no" active="no"/>
-      <layer number="218" name="218bmp" color="19" fill="1" visible="no" active="no"/>
-      <layer number="219" name="219bmp" color="20" fill="1" visible="no" active="no"/>
       <layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="yes"/>
-      <layer number="220" name="220bmp" color="21" fill="1" visible="no" active="no"/>
-      <layer number="221" name="221bmp" color="22" fill="1" visible="no" active="no"/>
-      <layer number="222" name="222bmp" color="23" fill="1" visible="no" active="no"/>
-      <layer number="223" name="223bmp" color="24" fill="1" visible="no" active="no"/>
-      <layer number="224" name="224bmp" color="25" fill="1" visible="no" active="no"/>
       <layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="yes"/>
-      <layer number="231" name="Eagle3D_PG1" color="7" fill="1" visible="no" active="no"/>
-      <layer number="232" name="Eagle3D_PG2" color="7" fill="1" visible="no" active="no"/>
-      <layer number="233" name="Eagle3D_PG3" color="7" fill="1" visible="no" active="no"/>
       <layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="yes"/>
-      <layer number="248" name="Housing" color="7" fill="1" visible="no" active="no"/>
-      <layer number="249" name="Edge" color="7" fill="1" visible="no" active="no"/>
       <layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="yes"/>
-      <layer number="250" name="Descript" color="7" fill="1" visible="no" active="no"/>
-      <layer number="251" name="SMDround" color="7" fill="1" visible="no" active="no"/>
-      <layer number="254" name="cooling" color="7" fill="1" visible="no" active="no"/>
       <layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
       <layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
       <layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
       <layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes"/>
       <layer number="29" name="tStop" color="3" fill="9" visible="yes" active="yes"/>
-      <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
       <layer number="30" name="bStop" color="7" fill="6" visible="yes" active="yes"/>
       <layer number="31" name="tCream" color="11" fill="1" visible="yes" active="yes"/>
       <layer number="32" name="bCream" color="7" fill="5" visible="yes" active="yes"/>
@@ -107,7 +47,6 @@
       <layer number="37" name="tTest" color="7" fill="1" visible="yes" active="yes"/>
       <layer number="38" name="bTest" color="7" fill="1" visible="yes" active="yes"/>
       <layer number="39" name="tKeepout" color="13" fill="1" visible="yes" active="yes"/>
-      <layer number="3" name="Route3" color="4" fill="3" visible="no" active="no"/>
       <layer number="40" name="bKeepout" color="5" fill="1" visible="yes" active="yes"/>
       <layer number="41" name="tRestrict" color="4" fill="10" visible="yes" active="yes"/>
       <layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
@@ -118,7 +57,6 @@
       <layer number="47" name="Measures" color="7" fill="1" visible="yes" active="yes"/>
       <layer number="48" name="Document" color="7" fill="1" visible="yes" active="yes"/>
       <layer number="49" name="Reference" color="7" fill="1" visible="yes" active="yes"/>
-      <layer number="4" name="Route4" color="1" fill="4" visible="no" active="no"/>
       <layer number="50" name="dxf" color="7" fill="1" visible="yes" active="yes"/>
       <layer number="51" name="tDocu" color="6" fill="1" visible="yes" active="yes"/>
       <layer number="52" name="bDocu" color="6" fill="1" visible="yes" active="yes"/>
@@ -126,10 +64,8 @@
       <layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
       <layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
       <layer number="57" name="tCAD" color="7" fill="1" visible="no" active="no"/>
-      <layer number="5" name="Route5" color="4" fill="4" visible="no" active="no"/>
-      <layer number="6" name="Route6" color="1" fill="8" visible="no" active="no"/>
-      <layer number="7" name="Route7" color="4" fill="8" visible="no" active="no"/>
-      <layer number="8" name="Route8" color="1" fill="2" visible="no" active="no"/>
+      <layer number="59" name="tFaceplate" color="11" fill="1" visible="yes" active="yes"/>
+      <layer number="60" name="bFaceplate" color="12" fill="1" visible="yes" active="yes"/>
       <layer number="90" name="Modules" color="5" fill="1" visible="yes" active="yes"/>
       <layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
       <layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
@@ -140,7 +76,71 @@
       <layer number="97" name="Info" color="7" fill="1" visible="yes" active="yes"/>
       <layer number="98" name="Guide" color="6" fill="1" visible="yes" active="yes"/>
       <layer number="99" name="SpiceOrder" color="7" fill="1" visible="no" active="no"/>
-      <layer number="9" name="Route9" color="4" fill="2" visible="no" active="no"/>
+      <layer number="100" name="tFaceplateCover" color="3" fill="1" visible="yes" active="yes"/>
+      <layer number="101" name="Patch_Top" color="12" fill="4" visible="no" active="no"/>
+      <layer number="102" name="Vscore" color="7" fill="1" visible="no" active="no"/>
+      <layer number="103" name="fp3" color="7" fill="1" visible="no" active="no"/>
+      <layer number="104" name="Name" color="7" fill="1" visible="no" active="no"/>
+      <layer number="105" name="Beschreib" color="9" fill="1" visible="no" active="no"/>
+      <layer number="106" name="BGA-Top" color="4" fill="1" visible="no" active="no"/>
+      <layer number="107" name="BD-Top" color="5" fill="1" visible="no" active="no"/>
+      <layer number="108" name="fp8" color="7" fill="1" visible="no" active="no"/>
+      <layer number="109" name="fp9" color="7" fill="1" visible="no" active="no"/>
+      <layer number="110" name="fp0" color="7" fill="1" visible="no" active="no"/>
+      <layer number="111" name="LPC17xx" color="7" fill="1" visible="no" active="no"/>
+      <layer number="112" name="tSilk" color="7" fill="1" visible="no" active="no"/>
+      <layer number="113" name="ReferenceLS" color="7" fill="1" visible="no" active="no"/>
+      <layer number="116" name="Patch_BOT" color="9" fill="4" visible="no" active="no"/>
+      <layer number="118" name="Rect_Pads" color="7" fill="1" visible="no" active="no"/>
+      <layer number="121" name="_tsilk" color="7" fill="1" visible="no" active="no"/>
+      <layer number="122" name="_bsilk" color="7" fill="1" visible="no" active="no"/>
+      <layer number="123" name="tTestmark" color="7" fill="1" visible="no" active="no"/>
+      <layer number="124" name="bTestmark" color="7" fill="1" visible="no" active="no"/>
+      <layer number="125" name="_tNames" color="7" fill="1" visible="no" active="no"/>
+      <layer number="126" name="_bNames" color="7" fill="1" visible="no" active="no"/>
+      <layer number="127" name="_tValues" color="7" fill="1" visible="no" active="no"/>
+      <layer number="128" name="_bValues" color="7" fill="1" visible="no" active="no"/>
+      <layer number="131" name="tAdjust" color="7" fill="1" visible="no" active="no"/>
+      <layer number="132" name="bAdjust" color="7" fill="1" visible="no" active="no"/>
+      <layer number="144" name="Drill_legend" color="7" fill="1" visible="no" active="no"/>
+      <layer number="152" name="_bDocu" color="7" fill="1" visible="no" active="no"/>
+      <layer number="153" name="FabDoc1" color="6" fill="1" visible="no" active="no"/>
+      <layer number="154" name="FabDoc2" color="2" fill="1" visible="no" active="no"/>
+      <layer number="155" name="FabDoc3" color="7" fill="15" visible="no" active="no"/>
+      <layer number="199" name="Contour" color="7" fill="1" visible="no" active="no"/>
+      <layer number="200" name="200bmp" color="1" fill="10" visible="no" active="no"/>
+      <layer number="201" name="201bmp" color="2" fill="1" visible="no" active="no"/>
+      <layer number="202" name="202bmp" color="3" fill="1" visible="no" active="no"/>
+      <layer number="203" name="203bmp" color="4" fill="10" visible="no" active="no"/>
+      <layer number="204" name="204bmp" color="5" fill="10" visible="no" active="no"/>
+      <layer number="205" name="205bmp" color="6" fill="10" visible="no" active="no"/>
+      <layer number="206" name="206bmp" color="7" fill="10" visible="no" active="no"/>
+      <layer number="207" name="207bmp" color="8" fill="10" visible="no" active="no"/>
+      <layer number="208" name="208bmp" color="9" fill="10" visible="no" active="no"/>
+      <layer number="209" name="209bmp" color="7" fill="1" visible="no" active="no"/>
+      <layer number="210" name="210bmp" color="7" fill="1" visible="no" active="no"/>
+      <layer number="211" name="211bmp" color="7" fill="1" visible="no" active="no"/>
+      <layer number="212" name="212bmp" color="7" fill="1" visible="no" active="no"/>
+      <layer number="213" name="213bmp" color="7" fill="1" visible="no" active="no"/>
+      <layer number="214" name="214bmp" color="7" fill="1" visible="no" active="no"/>
+      <layer number="215" name="215bmp" color="7" fill="1" visible="no" active="no"/>
+      <layer number="216" name="216bmp" color="7" fill="1" visible="no" active="no"/>
+      <layer number="217" name="217bmp" color="18" fill="1" visible="no" active="no"/>
+      <layer number="218" name="218bmp" color="19" fill="1" visible="no" active="no"/>
+      <layer number="219" name="219bmp" color="20" fill="1" visible="no" active="no"/>
+      <layer number="220" name="220bmp" color="21" fill="1" visible="no" active="no"/>
+      <layer number="221" name="221bmp" color="22" fill="1" visible="no" active="no"/>
+      <layer number="222" name="222bmp" color="23" fill="1" visible="no" active="no"/>
+      <layer number="223" name="223bmp" color="24" fill="1" visible="no" active="no"/>
+      <layer number="224" name="224bmp" color="25" fill="1" visible="no" active="no"/>
+      <layer number="231" name="Eagle3D_PG1" color="7" fill="1" visible="no" active="no"/>
+      <layer number="232" name="Eagle3D_PG2" color="7" fill="1" visible="no" active="no"/>
+      <layer number="233" name="Eagle3D_PG3" color="7" fill="1" visible="no" active="no"/>
+      <layer number="248" name="Housing" color="7" fill="1" visible="no" active="no"/>
+      <layer number="249" name="Edge" color="7" fill="1" visible="no" active="no"/>
+      <layer number="250" name="Descript" color="7" fill="1" visible="no" active="no"/>
+      <layer number="251" name="SMDround" color="7" fill="1" visible="no" active="no"/>
+      <layer number="254" name="cooling" color="7" fill="1" visible="no" active="no"/>
     </layers>
     <library name="Components">
       <description>Gadgetron Components&lt;br/&gt;
@@ -381,7 +381,7 @@ Manually-created devices used by Gadgetron components.</description>
 The radius of the faceplate opening is 0.5mm larger than it "should" be to allow for small misalignments between the faceplace and board.</description>
           <rectangle x1="-7.5" y1="-7.0" x2="7.5" y2="7.0" layer="39"/>
           <hole x="0.0" y="-4.5" drill="1.4"/>
-          <circle x="0.0" y="0.0" radius="6.25" width="0.127" layer="150"/>
+          <circle x="0.0" y="0.0" radius="6.25" width="0.127" layer="59"/>
           <circle x="0.0" y="0.0" radius="6.5" width="0.127" layer="21"/>
           <hole x="0.0" y="4.5" drill="1.4"/>
           <pad name="P" x="-6.0" y="2.5" drill="1.3" shape="square"/>
@@ -396,7 +396,7 @@ The radius of the faceplate opening is 0.5mm larger than it "should" be to allow
 The size of the faceplate opening is 0.5mm larger than it "should" be to allow for small misalignments between the faceplace and board.</description>
           <wire x1="-5.0" y1="-5.0" x2="-5.0" y2="5.0" width="0.127" layer="21"/>
           <wire x1="-5.0" y1="5.0" x2="5.0" y2="5.0" width="0.127" layer="21"/>
-          <rectangle x1="-5.25" y1="-5.25" x2="5.25" y2="5.25" layer="150"/>
+          <rectangle x1="-5.25" y1="-5.25" x2="5.25" y2="5.25" layer="59"/>
           <rectangle x1="-7.5" y1="-7.0" x2="7.5" y2="7.0" layer="39"/>
           <hole x="0.0" y="-4.5" drill="1.4"/>
           <hole x="0.0" y="4.5" drill="1.4"/>
@@ -439,7 +439,7 @@ The size of the faceplate opening is 0.5mm larger than it "should" be to allow f
           <text x="-4.572" y="-2.794" size="1.27" layer="51" ratio="10">3</text>
           <circle x="0.0" y="0.0" radius="0.254" width="0.1524" layer="21"/>
           <circle x="0.0" y="0.0" radius="0.635" width="0.0508" layer="51"/>
-          <circle x="0.0" y="0.0" radius="1.6" width="0.1524" layer="150"/>
+          <circle x="0.0" y="0.0" radius="1.6" width="0.1524" layer="59"/>
           <circle x="0.0" y="0.0" radius="1.778" width="0.1524" layer="21"/>
           <wire x1="1.143" y1="-2.794" x2="-1.27" y2="-2.794" width="0.0508" layer="21"/>
           <wire x1="1.143" y1="-2.794" x2="1.143" y2="-3.048" width="0.0508" layer="21"/>
@@ -683,8 +683,8 @@ Source: http://www.osram.convergy.de/ ... LG_LY N971.pdf</description>
         </package>
         <package name="FACEPLATE_MOUNTINGHOLE_M2.5_PLATED">
           <text x="-0.87" y="-2.74" size="0.8128" layer="48">2,0</text>
-          <circle x="0.0" y="0.0" radius="1.3" width="0.127" layer="151"/>
-          <circle x="0.0" y="0.0" radius="1.3" width="0.127" layer="150"/>
+          <circle x="0.0" y="0.0" radius="1.3" width="0.127" layer="60"/>
+          <circle x="0.0" y="0.0" radius="1.3" width="0.127" layer="59"/>
           <circle x="0.0" y="0.0" radius="1.35" width="2.032" layer="40"/>
           <circle x="0.0" y="0.0" radius="1.35" width="2.032" layer="42"/>
           <circle x="0.0" y="0.0" radius="1.35" width="2.032" layer="39"/>
@@ -695,8 +695,8 @@ Source: http://www.osram.convergy.de/ ... LG_LY N971.pdf</description>
         </package>
         <package name="FACEPLATE_MOUNTINGHOLE_M2.5_UNPLATED">
           <text x="-0.87" y="-2.74" size="0.8128" layer="48">2,0</text>
-          <circle x="0.0" y="0.0" radius="1.3" width="0.127" layer="151"/>
-          <circle x="0.0" y="0.0" radius="1.3" width="0.127" layer="150"/>
+          <circle x="0.0" y="0.0" radius="1.3" width="0.127" layer="60"/>
+          <circle x="0.0" y="0.0" radius="1.3" width="0.127" layer="59"/>
           <circle x="0.0" y="0.0" radius="1.35" width="2.032" layer="40"/>
           <circle x="0.0" y="0.0" radius="1.35" width="2.032" layer="42"/>
           <circle x="0.0" y="0.0" radius="1.35" width="2.032" layer="39"/>
@@ -768,7 +768,7 @@ IR transmitter Siemens</description>
           <wire x1="0.0" y1="-2.7305" x2="2.7305" y2="0.0" width="0.1524" layer="51" curve="90.0" cap="flat"/>
           <wire x1="0.0" y1="-3.1115" x2="3.1115" y2="0.0" width="0.1524" layer="51" curve="90.0" cap="flat"/>
           <circle x="0.0" y="0.0" radius="3.5" width="0.1524" layer="21"/>
-          <circle x="0.0" y="0.0" radius="5.0" width="0.127" layer="150"/>
+          <circle x="0.0" y="0.0" radius="5.0" width="0.127" layer="59"/>
           <text x="3.175" y="0.5334" size="1.27" layer="25" ratio="10">&gt;NAME</text>
           <text x="3.2004" y="-1.8034" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
           <wire x1="4.7625" y1="-3.4925" x2="4.7625" y2="3.4925" width="0.2032" layer="21"/>
@@ -823,7 +823,7 @@ IR transmitter Siemens</description>
           <wire x1="0.0" y1="-1.016" x2="1.016" y2="0.0" width="0.1524" layer="51" curve="90.0" cap="flat"/>
           <wire x1="0.0" y1="-1.524" x2="1.203" y2="-0.9356" width="0.1524" layer="21" curve="52.126876" cap="flat"/>
           <wire x1="0.0" y1="-2.032" x2="1.5512" y2="-1.3126" width="0.254" layer="21" curve="49.763022" cap="flat"/>
-          <circle x="0.0" y="0.0" radius="1.6" width="0.127" layer="150"/>
+          <circle x="0.0" y="0.0" radius="1.6" width="0.127" layer="59"/>
           <wire x1="0.0" y1="1.524" x2="1.2401" y2="0.8858" width="0.1524" layer="21" curve="-54.461337" cap="flat"/>
           <wire x1="0.0" y1="2.032" x2="1.561" y2="1.3009" width="0.254" layer="21" curve="-50.193108" cap="flat"/>
           <wire x1="1.1571" y1="0.9918" x2="1.524" y2="0.0" width="0.1524" layer="51" curve="-40.601165" cap="flat"/>
@@ -844,7 +844,7 @@ IR transmitter Siemens</description>
           <wire x1="0.0" y1="-1.651" x2="1.651" y2="0.0" width="0.1524" layer="51" curve="90.0" cap="flat"/>
           <wire x1="0.0" y1="-2.159" x2="2.159" y2="0.0" width="0.1524" layer="51" curve="90.0" cap="flat"/>
           <circle x="0.0" y="0.0" radius="2.54" width="0.1524" layer="21"/>
-          <circle x="0.0" y="0.0" radius="2.7" width="0.127" layer="150"/>
+          <circle x="0.0" y="0.0" radius="2.7" width="0.127" layer="59"/>
           <wire x1="2.54" y1="-1.905" x2="2.54" y2="1.905" width="0.2032" layer="21"/>
           <wire x1="2.54" y1="-1.905" x2="2.54" y2="1.905" width="0.254" layer="21" curve="-286.260205" cap="flat"/>
           <text x="3.175" y="0.5334" size="1.27" layer="25" ratio="10">&gt;NAME</text>
@@ -1263,7 +1263,7 @@ Source: http://www.osram.convergy.de/ ... LA_LO_LA_LY E67B.pdf</description>
           <smd name="C@4" x="2.0" y="-3.15" dx="3.3" dy="4.8" layer="1" stop="no" cream="no"/>
         </package>
         <package name="PIR-SENSOR">
-          <rectangle x1="-0.635" y1="-24.765" x2="33.655" y2="0.635" layer="150"/>
+          <rectangle x1="-0.635" y1="-24.765" x2="33.655" y2="0.635" layer="59"/>
           <wire x1="0.0" y1="-24.13" x2="0.0" y2="0.0" width="0.127" layer="21"/>
           <wire x1="0.0" y1="0.0" x2="33.02" y2="0.0" width="0.127" layer="21"/>
           <text x="13.97" y="-19.685" size="1.27" layer="21" rot="R90">GND</text>
@@ -1308,7 +1308,7 @@ Source: http://www.osram.convergy.de/ ... LA_LO_LA_LY E67B.pdf</description>
         <package name="PJ-102A">
           <wire x1="-14.55824375" y1="-0.052128125" x2="-14.57559375" y2="-9.07015" width="0.127" layer="21"/>
           <wire x1="-14.56" y1="-0.045" x2="0.04" y2="-0.045" width="0.127" layer="21"/>
-          <rectangle x1="-14.61150625" y1="-9.103553125" x2="0.09075625" y2="0.036340625" layer="150"/>
+          <rectangle x1="-14.61150625" y1="-9.103553125" x2="0.09075625" y2="0.036340625" layer="59"/>
           <wire x1="0.04" y1="-0.045" x2="0.04" y2="-9.045" width="0.127" layer="21"/>
           <wire x1="0.04" y1="-9.045" x2="-14.56" y2="-9.045" width="0.127" layer="21"/>
           <pad name="RING" x="-6.77" y="-4.345" drill="2.0" diameter="3.5" rot="R270"/>
@@ -1662,7 +1662,7 @@ Siemens</description>
         </package>
         <package name="ROTARY-ENCODER-W/BUTTON-ADAFRUIT377">
           <hole x="-5.7" y="0.0" drill="2.6"/>
-          <circle x="0.0" y="0.0" radius="3.5" width="0.1" layer="150"/>
+          <circle x="0.0" y="0.0" radius="3.5" width="0.1" layer="59"/>
           <circle x="0.0" y="0.0" radius="8.0" width="0.1" layer="100"/>
           <hole x="5.7" y="0.0" drill="2.6"/>
           <pad name="A" x="-2.5" y="-7.5" drill="1.1"/>
@@ -1834,7 +1834,7 @@ Source: http://www.osram.convergy.de/ ... LO_LS_LY L89K.pdf</description>
           <smd name="K" x="-2.1" y="0.0" dx="1.35" dy="1.74" layer="1" rot="R180"/>
         </package>
         <package name="SNOWGLOBE">
-          <circle x="0.0" y="0.0" radius="36.25" width="0.127" layer="150"/>
+          <circle x="0.0" y="0.0" radius="36.25" width="0.127" layer="59"/>
         </package>
         <package name="SOD-123">
           <description>&lt;b&gt;SOD-123&lt;/b&gt;
@@ -1904,15 +1904,15 @@ Source: http://www.osram.convergy.de/ ... LO_LS_LY L89K.pdf</description>
           <smd name="K" x="0.0" y="0.75" dx="0.8" dy="0.6" layer="1"/>
         </package>
         <package name="SOLARBOTICS_G2">
-          <rectangle x1="-15.0" y1="-35.0" x2="0.0" y2="35.0" layer="151"/>
+          <rectangle x1="-15.0" y1="-35.0" x2="0.0" y2="35.0" layer="60"/>
           <wire x1="-15.0" y1="-40.0" x2="-15.0" y2="40.0" width="0.127" layer="20"/>
           <wire x1="-15.0" y1="-40.0" x2="-15.0" y2="40.0" width="0.127" layer="21"/>
-          <rectangle x1="-15.0" y1="-40.0" x2="0.0" y2="40.0" layer="150"/>
+          <rectangle x1="-15.0" y1="-40.0" x2="0.0" y2="40.0" layer="59"/>
           <wire x1="-15.0" y1="40.0" x2="0.0" y2="40.0" width="0.127" layer="20"/>
           <wire x1="-15.0" y1="40.0" x2="0.0" y2="40.0" width="0.127" layer="21"/>
           <wire x1="0.0" y1="-40.0" x2="-15.0" y2="-40.0" width="0.127" layer="20"/>
           <wire x1="0.0" y1="-40.0" x2="-15.0" y2="-40.0" width="0.127" layer="21"/>
-          <rectangle x1="0.0" y1="-40.0" x2="30.0" y2="15.0" layer="150"/>
+          <rectangle x1="0.0" y1="-40.0" x2="30.0" y2="15.0" layer="59"/>
           <wire x1="0.0" y1="-5.0" x2="0.0" y2="-40.0" width="0.127" layer="21"/>
           <wire x1="0.0" y1="40.0" x2="0.0" y2="-40.0" width="0.127" layer="20"/>
           <wire x1="0.0" y1="40.0" x2="0.0" y2="5.0" width="0.127" layer="21"/>
@@ -1921,7 +1921,7 @@ Source: http://www.osram.convergy.de/ ... LO_LS_LY L89K.pdf</description>
           <text x="10.0" y="-30.0" size="3.0" layer="21">GM2</text>
           <wire x1="15.0" y1="-35.0" x2="5.0" y2="-35.0" width="0.127" layer="21"/>
           <wire x1="15.0" y1="-40.0" x2="15.0" y2="-35.0" width="0.127" layer="21"/>
-          <rectangle x1="15.0" y1="-45.0" x2="30.0" y2="-40.0" layer="150"/>
+          <rectangle x1="15.0" y1="-45.0" x2="30.0" y2="-40.0" layer="59"/>
           <wire x1="20.0" y1="-10.0" x2="25.0" y2="-10.0" width="0.127" layer="21"/>
           <wire x1="20.0" y1="-5.0" x2="20.0" y2="-10.0" width="0.127" layer="21"/>
           <wire x1="20.0" y1="10.0" x2="20.0" y2="5.0" width="0.127" layer="21"/>
@@ -1932,7 +1932,7 @@ Source: http://www.osram.convergy.de/ ... LO_LS_LY L89K.pdf</description>
           <wire x1="25.0" y1="-40.0" x2="15.0" y2="-40.0" width="0.127" layer="21"/>
           <wire x1="25.0" y1="-5.0" x2="20.0" y2="-5.0" width="0.127" layer="21"/>
           <wire x1="25.0" y1="5.0" x2="25.0" y2="-5.0" width="0.127" layer="21"/>
-          <rectangle x1="30.0" y1="-40.0" x2="55.0" y2="-10.0" layer="150"/>
+          <rectangle x1="30.0" y1="-40.0" x2="55.0" y2="-10.0" layer="59"/>
           <text x="42.0878" y="-48.26" size="2.54" layer="21">+</text>
           <hole x="43.18" y="-38.1" drill="1.27"/>
           <wire x1="45.0" y1="-15.0" x2="45.0" y2="-20.0" width="0.127" layer="21"/>

@@ -3,7 +3,7 @@ import numpy as np
 import math
 from math import sin,cos
 import random
-from itertools import izip
+
 from numpy.linalg import det
 import itertools
 
@@ -11,12 +11,13 @@ import itertools
 class LineSegment(object):
     """
     Simple line segment
-    Left endpoint comes first
+    Lower-Left endpoint comes first
     """
 
     def __init__(self, p1, p2):
         assert isinstance(p1, np.ndarray)
         assert isinstance(p2, np.ndarray)
+        # Make p1 the lower-left endpoint
         if p1[0] > p2[0]:
             p1,p2 = p2,p1   # Left greater than right, swap
         elif p1[0] == p2[0] and p1[1] > p2[1]:
@@ -46,6 +47,11 @@ class LineSegment(object):
         yield self.p2
 
     @property
+    def vertices(self):
+        yield self.p1
+        yield self.p2
+
+    @property
     def length(self):
         return np.linalg.norm(self.p2 - self.p1)
 
@@ -57,12 +63,30 @@ class LineSegment(object):
         return Rectangle(np.minimum.reduce([self.p1, self.p2]),
                          np.maximum.reduce([self.p1, self.p2]))
 
+    def copy(self):
+        return LineSegment(self.p1.copy(), self.p2.copy())
+
+    def rotate(self, angle_degrees):
+        rmatrix = Rectangle.rotation_matrix(math.radians(angle_degrees))
+        self.p1 = rmatrix.dot(self.p1)
+        self.p2 = rmatrix.dot(self.p2)
+        if self.p1[0] > self.p2[0]:
+            self.p1, self.p2 = self.p2, self.p1
+        elif self.p1[0]==self.p2[0] and self.p1[1] > self.p2[1]:
+            self.p1, self.p2 = self.p2, self.p1
+        return self
+
 
     def overlaps(self, other):
         """
         If there is a common point between self and other, return true
         """
+
+        # The implementations should be in [more complicated] overlaps [less complicated]
         if isinstance(other, Rectangle):
+            return other.overlaps(self)
+
+        if isinstance(other, RotatedRectangle):
             return other.overlaps(self)
 
         if not isinstance(other, LineSegment):
@@ -115,10 +139,16 @@ class RotatedRectangle(object):
     def __eq__(self, other):
         return self.angle == other.angle and self._rect == other._rect
 
+    def __repr__(self):
+        return "RotatedRectangle({0}, {1}, {2})".format(self._rect.__repr__(), self._angle, False)
+
     def overlaps(self, other):
         if isinstance(other, Rectangle):
             for edge in self.edges():
-                if edge.overlaps(other):
+                if other.overlaps(edge):
+                    return True
+            for edge in other.edges():
+                if self.overlaps(edge):
                     return True
             return False
         elif isinstance(other, RotatedRectangle):
@@ -127,13 +157,18 @@ class RotatedRectangle(object):
             rotated = other.copy().rotate(-self.angle)
             assert abs(rectilinear.angle) < 0.00001
             return rectilinear.bounding_box().overlaps(rotated)
+        elif isinstance(other, LineSegment):
+            rectilinear = self.copy().rotate(-self.angle)
+            rotated_segment = other.copy().rotate(-self.angle)
+            assert abs(rectilinear.angle) < 0.00001
+            return rectilinear.bounding_box().overlaps(rotated_segment)
         else:
             raise TypeError("Cannot test overlap between {0} and {1}".format(self.__class__,other.__class__))
 
     def edges(self):
         c = self._rect.center()
-        verts = list(map(lambda v: self._rmatrix.dot(v-c)+c, self._rect.vertices()))
-        for i in xrange(4):
+        verts = list([self._rmatrix.dot(v-c)+c for v in self._rect.vertices()])
+        for i in range(4):
             yield LineSegment(verts[i], verts[(i+1) % 4])
 
     def eagle_code(self):
@@ -314,7 +349,7 @@ class Rectangle(object):
             c = np.array([0.0,0.0])
         else:
             c = self.center()
-        new = list(map(lambda v: rmatrix.dot(v-c)+c, self.vertices()))
+        new = list([rmatrix.dot(v-c)+c for v in self.vertices()])
         self.bounds[0] = np.minimum.reduce(new)
         self.bounds[1] = np.maximum.reduce(new)
         return self
@@ -448,7 +483,7 @@ class Rectangle(object):
                     return True
             return False
         elif isinstance(other, Rectangle):
-            for axis in xrange(2):
+            for axis in range(2):
                 if not (self.low(axis) < other.high(axis) - Rectangle.EPSILON and
                                 self.high(axis) > other.low(axis) + Rectangle.EPSILON):
                     return False
@@ -529,7 +564,7 @@ class Rectangle(object):
         :return:
         """
         verts = list(self.vertices())
-        for i in xrange(4):
+        for i in range(4):
             yield LineSegment(verts[i], verts[(i+1)%4])
 
 
@@ -561,7 +596,7 @@ class Rectangle(object):
 
     #By this definition a rectangle encloses itself
     def encloses(self,rect):
-        for axis in xrange(2):
+        for axis in range(2):
             if not (self.low(axis) - Rectangle.EPSILON <= rect.low(axis) and
                             self.high(axis) + Rectangle.EPSILON >= rect.high(axis)):
                 return False
@@ -595,7 +630,7 @@ class Rectangle(object):
         if len(enclosed)==0:
             splits = [0]    #start with the edge that we have
             #Figure out the split axis
-            for axis in xrange(2):
+            for axis in range(2):
                 if len(splits) > 1: break   #Can only split on one axis
                 split_axis = axis
                 if self.axis_encloses(other.low(axis),axis):
@@ -613,7 +648,7 @@ class Rectangle(object):
             size = [0,0]
             size[1 - split_axis] = not_split_size   #This stays the same            
             origin = self.bounds[0].copy()
-            for i in xrange(len(splits)-1):
+            for i in range(len(splits)-1):
                 new_dim = splits[i+1] - splits[i]
                 size[split_axis] = new_dim
                 if i != skip_idx:      #If we didn't skip this we'd duplicate the rectangle doing the splitting
@@ -626,7 +661,7 @@ class Rectangle(object):
             v_in = enclosed[0]     #inside vertex
 
             direction_to_corner = [1,1]
-            for i in xrange(2):
+            for i in range(2):
                 if v_in[i] > other.low(i):
                     direction_to_corner[i] = 0
             v_in_corner = self.chord_vertex(v_in,0,direction_to_corner[0])    #Draw x
@@ -688,12 +723,12 @@ class Rectangle(object):
             all_possible = [None]*8
             center = other.center()
             other_vs = list(other.vertices())
-            for i,(o,v) in enumerate(izip(self.vertices(),other.vertices())):
+            for i,(o,v) in enumerate(zip(self.vertices(),other.vertices())):
                 all_possible[i*2] = Rectangle(o,v)
                 c = self.chord_away_from(center, other_vs[(i+1)%4], (i+1)%2)
                 all_possible[2*i+1] = Rectangle(v,c)
 
-            for i in xrange(4):
+            for i in range(4):
                 if split_axis is None:
                     join_to = (random.choice([-1,1]) + 2*i + 8)%8
                 else:
@@ -701,7 +736,7 @@ class Rectangle(object):
                 new = all_possible[i*2].join(all_possible[join_to])
                 all_possible[i*2] = new
                 all_possible[join_to] = new
-            for i in xrange(4):
+            for i in range(4):
                 yield all_possible[2*i+1]
 
 

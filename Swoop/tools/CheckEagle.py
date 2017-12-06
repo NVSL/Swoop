@@ -49,11 +49,11 @@ def compareEagleElementTrees(orig, new):
     if mismatches != 0:
         for i in origTags:
             if int(newTags[i]) - int(origTags[i]) != 0:
-                print i + ": " + str(newTags[i]) + " " + str(origTags[i]) + " " + str(int(newTags[i]) - int(origTags[i]))
+                print(i + ": " + str(newTags[i]) + " " + str(origTags[i]) + " " + str(int(newTags[i]) - int(origTags[i])))
         
         for i in origAttrs:
             if int(newAttrs[i]) - int(origAttrs[i]) != 0:
-                print i + ": " + str(newAttrs[i]) + " " + str(origAttrs[i]) + " " + str(int(newAttrs[i]) - int(origAttrs[i]))
+                print(i + ": " + str(newAttrs[i]) + " " + str(origAttrs[i]) + " " + str(int(newAttrs[i]) - int(origAttrs[i])))
         
                 
     return mismatches
@@ -84,7 +84,7 @@ def main():
     for i in args.file:
 
         if not args.quiet:
-            print "Validating " + i + "...",
+            print("Validating " + i + "...", end=' ')
 
         try:
             # for the internal check, we compare the input and output.  With
@@ -116,7 +116,7 @@ def main():
         except HE.EagleFormatError as e:
             corruptInput += 1
             print("corrupt.")
-            print e
+            print(e)
         except Exception as e:
             internalError += 1
             if args.crashOnError:
@@ -124,16 +124,16 @@ def main():
                 traceback.print_tb(tb)
                 raise e
             if not args.quiet:
-                print "Swoop error: " + str(e)
+                print("Swoop error: " + str(e))
                 
         if args.stopOnError and failed + internalError != 0:
             break
         
     if not args.quiet:
-        print "Valid: " + str(success)
-        print "Corrupt Input: " + str(corruptInput)
-        print "Invalid: " + str(failed) 
-        print "Error: " + str(internalError)
+        print("Valid: " + str(success))
+        print("Corrupt Input: " + str(corruptInput))
+        print("Invalid: " + str(failed)) 
+        print("Error: " + str(internalError))
             
     if failed + internalError == 0:
         sys.exit(0)

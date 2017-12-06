@@ -70,8 +70,11 @@ def removeDeadEFPs(ef):
                 devices.discard(p.find_device())
                 # print p.get_name()
                 # print p.get_library()
+                # print lib.get_name()
                 # print p.get_deviceset()
+                # print Swoop.From(lib.get_devicesets()).get_name()
                 # print p.find_deviceset().get_name()
+                # print
                 for g in Swoop.From(p.find_deviceset()).get_gates().get_symbol():
                     symbols.discard(lib.get_symbol(g))
 
@@ -114,4 +117,5 @@ def main(argv = None):
     removeDeadEFPs(ef)
 
     ef.write(args.out[0])
+
 

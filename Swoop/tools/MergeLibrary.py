@@ -9,10 +9,10 @@ import shutil
 def main():
     parser = argparse.ArgumentParser(description="Merge library into an eagle file")
     parser.add_argument("--src", required=True,  type=str, nargs=1, dest='src', help="libraries to merge into the other file")
-    parser.add_argument("--dst", required=True,  type=str, nargs=1, dest='dst', help="the other file (sch, lbr, or pcb)")
+    parser.add_argument("--dst", required=True,  type=str, nargs=1, dest='dst', help="the other file (sch, lbr, or brd)")
     args = parser.parse_args()
 
-    m = re.match("(.*\.(lbr|sch|pcb))(:(.+))?", args.src[0])
+    m = re.match("(.*\.(lbr|sch|brd))(:(.+))?", args.src[0])
     if m is None:
         raise SwoopError("Unparsable file name: '" + args.src[0] + "'")
 
@@ -33,7 +33,7 @@ def main():
 
     ####################################################################
 
-    m = re.match("(.*\.(lbr|sch|pcb))(:(.+))?", args.dst[0])
+    m = re.match("(.*\.(lbr|sch|brd))(:(.+))?", args.dst[0])
 
     if m is None:
         raise SwoopError("Unparsable file name: '" + args.dst[0] + "'")
@@ -60,13 +60,13 @@ def main():
     else:
         raise SwoopError("Unknown type returned from EagleFile.from_file()")
 
-    for i in srcLib.symbols.values():
+    for i in list(srcLib.symbols.values()):
         dstLib.add_symbol(i.clone())
 
-    for i in srcLib.packages.values():
+    for i in list(srcLib.packages.values()):
         dstLib.add_package(i.clone())
 
-    for i in srcLib.devicesets.values():
+    for i in list(srcLib.devicesets.values()):
         dstLib.add_deviceset(i.clone())
 
     

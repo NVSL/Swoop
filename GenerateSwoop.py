@@ -87,7 +87,7 @@ class Attr:
     Class representing an attribute.
     
     """
-    def __init__(self, name, required=False, parse=None, unparse=None,vtype=None,accessorName=None,xmlName=None, lookupEFP=None, isKey=False):
+    def __init__(self, name, default=None, required=False, parse=None, unparse=None,vtype=None,accessorName=None,xmlName=None, lookupEFP=None, isKey=False):
         """Create a class describing an attribute.
         
         :param name: The attribute's name.  This is the name used for the member of the :class:`EagleFilePart` object.  For example :code:`foo.netclass` (since :code:`class` clashes with a the Python :code:`class` reserved word.
@@ -106,6 +106,25 @@ class Attr:
         else:
             self.xmlName = xmlName
             
+        # if default is None:
+        #     if type == "None_is_empty_string":
+        #         self.default = ""
+        #     elif type == "None_is_float_zero":
+        #         self.default = 0.0
+        #     elif type == "None_is_int_zero":
+        #         self.default = 0
+        #     elif type == "str":
+        #         self.default = ""
+        #     elif type == "layer_string": 
+        #         self.default = "Top"
+        #     elif type == "int":
+        #         self.default = 0
+        #     elif type == "float":
+        #         self.default = 0.0
+        #     elif type == "bool" or type == "constant_bool":
+        #         self.default = True
+        self.default = default
+        
             #assert self.xmlName is not None
             #        print "Is " + str(self.name) + " == " + str(self.xmlName) +"?"
 
@@ -137,7 +156,9 @@ class Attr:
             assert  False
             self.parse = parse
 
-
+    def get_literal_default(self):
+        return repr(self.default)
+    
 def initialCap(a):
         t = a[0].upper() + a[1:]
         return t
@@ -243,6 +264,7 @@ class AttrList(Collection):
 
     def get_contained_type_list(self):
         assert False
+
 
 class Singleton(Collection):
     """
@@ -391,10 +413,10 @@ tags["note"] = TagClass("note",
 tags["library"] = TagClass("library",
                            baseclass = "EagleFilePart",
                            attrs=[Attr("name", required=False)],
-                           sections=[Singleton("description", "./description", requireTag=True),
-                                     Map("packages", "./packages/package", requireTag=True),
-                                     Map("symbols", "./symbols/symbol" , requireTag=True),
-                                     Map("devicesets", "./devicesets/deviceset", requireTag=True)])
+                           sections=[Singleton("description", "./description", requireTag=False),
+                                     Map("packages", "./packages/package", requireTag=False),
+                                     Map("symbols", "./symbols/symbol" , requireTag=False),
+                                     Map("devicesets", "./devicesets/deviceset", requireTag=False)])
 
 tags["schematic"] = TagClass("schematic",
                              baseclass = "EagleFilePart",
@@ -451,7 +473,7 @@ tags["device"] = TagClass("device",
                                       vtype="str"),
                                  Attr("package",
                                       required=False,
-                                      #vtype="None_is_empty_string",
+                                      #vtype="None_is_default_string",
                                       lookupEFP=("Package", "lambda efp, key: efp.get_parent().get_parent().get_package(key)"))],
                           sections=[List("connects", "./connects/connect"),
                                     Map("technologies", "./technologies/technology")])
@@ -560,7 +582,8 @@ tags["wire"] = TagClass("wire",
                                Attr("extent", required=False),
                                Attr("style", required=False),
                                Attr("curve", 
-                                    vtype="float",
+                                    vtype="None_is_default_float",
+                                    default=0.0,
                                     required=False),
                                Attr("cap", required=False)])
 
@@ -597,20 +620,28 @@ tags["dimension"] = TagClass("dimension",
 
 tags["text"] = TagClass("text",
                         baseclass = "EagleFilePart",
-                          mixins=["OnePointGeometry"],
+                          mixins=["OnePointGeometry","RotationGeometry"],
                         preserveTextAs = "text",
                         attrs=[dimensionAttr("x",True),
                                dimensionAttr("y",True),
                                sizeAttr(required=True),
                                layerAttr(required=True),
-                               Attr("font", required=False),
+                               Attr("font",
+                                    required=False,
+                                    vtype="None_is_default_string",
+                                    default="proportional"),
                                Attr("ratio", 
-                                    vtype="int",
+                                    vtype="None_is_default_int",
+                                    default=8,
                                     required=False),
                                rotAttr,
-                               Attr("align", required=False),
+                               Attr("align",
+                                    vtype="None_is_default_string",
+                                    default="bottom-left",
+                                    required=False),
                                Attr("distance", 
-                                    vtype="int",
+                                    vtype="None_is_default_int",
+                                    default=50,
                                     required=False)])
 
 
@@ -628,7 +659,7 @@ tags["circle"] = TagClass("circle",
 
 tags["rectangle"] = TagClass("rectangle",
                              baseclass = "EagleFilePart",
-                          mixins=["RectGeometry", "RotationGeometry"],
+                             mixins=["RectGeometry", "RotationGeometry"],
                              attrs=[dimensionAttr("x1", required=True),
                                     dimensionAttr("y1", required=True),
                                     dimensionAttr("x2", required=True),
@@ -747,7 +778,7 @@ tags["element"] = TagClass("element",
                                   dimensionAttr("x",True),
                                   dimensionAttr("y",True),
                                   Attr("locked",
-                                       vtype="bool",
+                                       vtype="locked_bool",
                                        required=False),
                                   Attr("populate", 
                                        vtype="bool",
@@ -844,7 +875,8 @@ tags["part"] = TagClass("part",
                                Attr("technology",
                                     lookupEFP=("Technology","lambda efp, key: efp.find_device().get_technology(key)"),
                                     required=False,
-                                    vtype="None_is_empty_string"),
+                                    vtype="None_is_default_string",
+                                    default=""),
                                Attr("value",
                                     required=False)],
                         sections=[Map("attributes", "./attribute", requireTag=True),
@@ -868,10 +900,10 @@ tags["instance"] = TagClass("instance",
                             baseclass = "EagleFilePart",
                             mixins=["OnePointGeometry", "RotationGeometry"],
                             attrs=[Attr("part",
-                                        lookupEFP=("Part","lambda efp, key: NotImplemented('Lookup of part from instance not implemented.')"),
+                                        lookupEFP=("Part","lambda efp, key: efp.get_parent().get_parent().get_part(key)"),
                                         required=True),
                                    Attr("gate",
-                                        lookupEFP=("Gate","lambda efp, key: NotImplemented('Lookup of gate from instance not implemented.')"),
+                                        lookupEFP=("Gate", "lambda efp, key: NotImplemented('Lookup of gate from instance not implemented.')"),
                                         required=True),
                                    dimensionAttr("x",True),
                                    dimensionAttr("y",True),

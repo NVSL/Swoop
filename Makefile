@@ -64,7 +64,7 @@ diff:
 .PHONY: release
 release: clean
 	touch VERSION.txt
-	git commit -m "Commit before release $$(cat VERSION.txt)" -a
+	-git commit -m "Commit before release $$(cat VERSION.txt)" -a
 	git push
 	git checkout release
 	git merge --no-ff master

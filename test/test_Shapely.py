@@ -3,6 +3,7 @@ import Swoop
 import Swoop.ext.ShapelySwoop
 from Swoop.ext.ShapelySwoop import ShapelyEagleFilePart as SEFP
 import os
+import sys
 import shapely
 import re
 from Swoop.ext.ShapelySwoop import GeometryDump as GeoDump
@@ -11,7 +12,7 @@ from Swoop.ext.ShapelySwoop import hash_geometry as hash_geo
 
 def dump(test, geo, title, c, color):
     hash = hash_geo(geo)
-    print """("{}", {}, "{}"),""".format(test[0], hash, test[2])
+    print("""("{}", {}, "{}"),""".format(test[0], hash, test[2]))
     #Swoop.ext.ShapelySwoop.dump_geometry(geo, "{} ({})".format(title,hash) , "{0:03d}.pdf".format(c), color)
 
 
@@ -27,6 +28,8 @@ class TestShapely(unittest.TestCase):
         self.boardtest = ShapelySwoop.open(self.me + "/inputs/test_saving.brd")
         self.curvetest = ShapelySwoop.open(self.me + "/inputs/curve_test.brd")
         self.textTest =  ShapelySwoop.open(self.me + "/inputs/ShapelyTextTest.brd")
+
+    @unittest.skipIf(sys.version_info >= (3,0), "hashes changed in Py3k")
     def test_element(self):
         tests = [
 ("self.testbrd5.get_element('U1_8_DISPLAY_2').get_geometry(layer_query='Top')", 6132383853822173047, "#ff0000"),
@@ -60,8 +63,7 @@ class TestShapely(unittest.TestCase):
         for i in tests:
             geo = eval(i[0])
             #dump(i, geo, i[0], c, i[2])
-            #print geo
+            #print(geo)
             self.assertEqual(hash_geo(geo), i[1], "Geometry failure on test {}".format(c))
             c = c + 1
 
-        

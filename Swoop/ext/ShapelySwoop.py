@@ -481,7 +481,7 @@ class Text(ShapelyEagleFilePart):
             width = cursor - vectorFont.base_kerning
             rendered_lines.append(RenderedLine(width, text))
 
-        max_width = max(map(lambda x:x.width, rendered_lines))
+        max_width = max([x.width for x in rendered_lines])
 
         baseline_skip = vectorFont.base_height + self.get_distance()/100.0*vectorFont.base_height;
 
@@ -721,8 +721,8 @@ class GeometryDump:
         self.subfig.set_ylim(*yrange)
         self.subfig.set_aspect(1)
 
-        self.subfig.xaxis.set_ticks(range(int(math.floor(float(bounds[0]))), int(math.ceil(float(bounds[2])))))
-        self.subfig.yaxis.set_ticks(range(int(math.floor(float(bounds[1]))), int(math.ceil(float(bounds[3])))))
+        self.subfig.xaxis.set_ticks(list(range(int(math.floor(float(bounds[0]))), int(math.ceil(float(bounds[2]))))))
+        self.subfig.yaxis.set_ticks(list(range(int(math.floor(float(bounds[1]))), int(math.ceil(float(bounds[3]))))))
         self.subfig.grid(True)        
         plt.title(self.title)
     
@@ -763,11 +763,11 @@ def polygon_as_svg(shapely_polygon, svgclass=None, style=None, close_paths=True)
         
     for i in l:
         if isinstance(i, shapes.LineString):
-            data = "M{} {}".format(i.coords[0][0],i.coords[0][1]) + " ".join(map(lambda x: "L{} {}".format(x[0],x[1]), i.coords[1:]))
+            data = "M{} {}".format(i.coords[0][0],i.coords[0][1]) + " ".join(["L{} {}".format(x[0],x[1]) for x in i.coords[1:]])
         else:
-            data = "M{} {} ".format(i.exterior.coords[0][0],i.exterior.coords[0][1]) + " ".join(map(lambda x: "L{} {}".format(x[0],x[1]), i.exterior.coords[1:])) + closer
+            data = "M{} {} ".format(i.exterior.coords[0][0],i.exterior.coords[0][1]) + " ".join(["L{} {}".format(x[0],x[1]) for x in i.exterior.coords[1:]]) + closer
             for k in i.interiors:
-                data = data + "M{} {} ".format(k.coords[0][0],k.coords[0][1]) + " ".join(map(lambda x: "L{} {}".format(x[0],x[1]), k.coords[1:])) + closer
+                data = data + "M{} {} ".format(k.coords[0][0],k.coords[0][1]) + " ".join(["L{} {}".format(x[0],x[1]) for x in k.coords[1:]]) + closer
         
         r = r + ("<path {} {} d='{}'/>".format(svgclass, style, data))
     return r

@@ -23,7 +23,7 @@ class TestSwoop(unittest.TestCase):
         self.lbr = Swoop.EagleFile.from_file(self.lbr_file)
 
     def test_Search(self):
-        self.assertEqual(len([ x for x in self.brd.get_library("KoalaBuild").get_packages()[0].get_drawing_elements() if x.layer=="tDocu"]), 4, "Search failure")
+        self.assertEqual(len([ x for x in self.brd.get_library("KoalaBuild").get_package("CAPPRD250W50D600H1000_HS").get_drawing_elements() if x.layer=="tDocu"]), 4, "Search failure")
         self.assertEqual(len(self.brd.get_libraries()), len(self.brd.get_libraries()), "Search by type error")
         #print self.brd.get_library("KoalaBuild").get_package("CAPC1608X90_HS").get_drawing_elements(type=Swoop.Wire)
         self.assertEqual(len([x for x in self.brd.get_library("KoalaBuild").get_package("CAPC1608X90_HS").get_drawing_elements() if isinstance(x,Swoop.Wire)]), 12, "Search failure")
@@ -186,8 +186,8 @@ class TestSwoop(unittest.TestCase):
         self.assertTrue(threw, "not implemented failed")
 
     def test_Write(self):
-        import StringIO
-        output = StringIO.StringIO()
+        import io
+        output = io.StringIO()
         self.sch.write(output)
         try:
             self.sch.write(output)
@@ -214,11 +214,11 @@ class TestSwoop(unittest.TestCase):
 
         a = Swoop.From(sch).get_libraries().get_devicesets().get_devices().get_technologies().get_attributes()[0]
 
-        self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>')
+        self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>'.encode('utf8'))
         a.set_constant(True)
-        self.assertEqual(a.get_xml(), '<attribute name="CASE" value=""/>')
+        self.assertEqual(a.get_xml(), '<attribute name="CASE" value=""/>'.encode('utf8'))
         a.set_constant(False)
-        self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>')
+        self.assertEqual(a.get_xml(), '<attribute name="CASE" value="" constant="no"/>'.encode('utf8'))
 
         brd = self.brd.clone()
         c1a = brd.get_element("C1A")

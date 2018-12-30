@@ -17,7 +17,7 @@ class BuildSwoop(build_py):
         import GenerateSwoop
         dtd = open("Swoop/eagleDTD.py", "w")
         os.system("patch Swoop/eagle-7.2.0.dtd Swoop/eagle.dtd.diff -o Swoop/eagle-swoop.dtd")
-        dtd.write('DTD="""')
+        dtd.write('DTD=u"""')
         dtd.write(open("Swoop/eagle-swoop.dtd").read())
         dtd.write('"""')
         dtd.close()
@@ -46,6 +46,8 @@ setup(name='Swoop',
           "Programming Language :: Python",
           "Programming Language :: Python :: 2",
           "Programming Language :: Python :: 2.7",
+          "Programming Language :: Python :: 3",
+          "Programming Language :: Python :: 3.6",
           "Topic :: Scientific/Engineering",
           "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
           "Topic :: System",

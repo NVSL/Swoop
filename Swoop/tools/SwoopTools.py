@@ -91,10 +91,10 @@ class DumpVisitor(Swoop.EagleFilePartVisitor):
         Swoop.EagleFilePartVisitor.__init__(self,efp)
 
     def default_pre(self, efp):
-        print "pre " + type(efp).__name__
+        print("pre " + type(efp).__name__)
 
     def default_post(self, efp):
-        print "pre " + type(efp).__name__
+        print("pre " + type(efp).__name__)
 
 def mergeLayers(src, dst, force=False):
     """

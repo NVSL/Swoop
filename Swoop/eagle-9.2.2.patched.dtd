@@ -60,7 +60,6 @@
 <!ELEMENT eagle (compatibility?, drawing, compatibility?)>
 <!ATTLIST eagle
           version       %Real;         #REQUIRED
-          minversion    %String;       ""
           >
           <!-- version: The EAGLE program version that generated this file, in the form V.RR -->
 

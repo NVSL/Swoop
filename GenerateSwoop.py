@@ -292,7 +292,8 @@ class TagClass:
                  attrs=None,
                  sections=None,
                  sortattr=None,
-                 dontsort=False
+                 dontsort=False,
+                 keep_empty_list=False
     ):
         """
         :param tag: The name of the tag this class is for.
@@ -322,6 +323,7 @@ class TagClass:
         self.maps = []
         self.attrLists= []
         self.baseclass = baseclass
+        self.keep_empty_list = keep_empty_list
         if classname is None:
             self.classname = self.get_tag_initial_cap()
         else:
@@ -412,6 +414,7 @@ tags["note"] = TagClass("note",
 
 tags["library"] = TagClass("library",
                            baseclass = "EagleFilePart",
+                           keep_empty_list=True,
                            attrs=[Attr("name", required=False)],
                            sections=[Singleton("description", "./description", requireTag=False),
                                      Map("packages", "./packages/package", requireTag=False),
@@ -1029,7 +1032,11 @@ tags["setting"] = TagClass("setting",
                            attrs=[Attr("alwaysvectorfont", 
                                        vtype="bool",
                                        required=False),
-                                  Attr("verticaltext", required=False)])
+                                  Attr("keepoldvectorfont",
+                                       vtype="bool",
+                                       required=False),
+                                  Attr("verticaltext",
+                                       required=False)])
 
 
 
@@ -1192,9 +1199,15 @@ tags["eagleBoard"] = TagClass("eagle",
                                         Map("autorouter_passes", "./drawing/board/autorouter/pass"),
                                         Map("elements", "./drawing/board/elements/element", requireTag=True),
                                         Map("signals", "./drawing/board/signals/signal", requireTag=True),
+                                        List("mfgpreviewcolors", "./drawing/board/mfgpreviewcolors/mfgpreviewcolor", requireTag=False),
                                         List("approved_errors", "./drawing/board/errors/approved"),
                                         Singleton("compatibility", "./compatibility")])
 
+tags["mfgpreviewcolor"] = TagClass("mfgpreviewcolor",
+                                    baseclass="EagleFilePart",
+                                    attrs=[nameAttr(),
+                                           Attr("color", required=True)],
+                                    sections=[])
 
 tags["eagleSchematic"] = TagClass("eagle",
                                   classname="SchematicFile",

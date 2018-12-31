@@ -46,6 +46,7 @@ import argparse
 import inspect
 from . import DRU
 import collections
+import math
 from functools import reduce
 
 PY2 = sys.version_info < (3,0)
@@ -317,6 +318,12 @@ def parseByType(efp, attrType, default, s):
 
     return r
 
+def num_to_str(f): # render integers without the '.0' e.g., 1.0 should be "1"
+    if f - math.ceil(f) == 0:
+        return str(int(f))
+    else:
+        return str(f)
+    
 def unparseByType(efp, attrType, default, v):
     if v is None:
         return v
@@ -332,7 +339,7 @@ def unparseByType(efp, attrType, default, v):
         if v == default:
             r = None
         else:
-            r = str(v)
+            r = num_to_str(v)
     elif attrType == "None_is_default_int":
         assert default is not None
         assert default != "None"
@@ -351,7 +358,7 @@ def unparseByType(efp, attrType, default, v):
                                # unicode characters.
             r = v 
         elif attrType in ["int", "float"]:
-            r = str(v)
+            r = num_to_str(v)
         elif attrType == "bool":
             if v:
                 return "yes"
@@ -1915,7 +1922,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
 
             ## add a map.
 
-            if len(self.{{l.name}}) is not 0:
+            if len(self.{{l.name}}) is not 0 or {{tag.keep_empty_list}}:
                 target = smartAddSubTags(r, "{{l.xpath}}")
                 # add them in sorted order.  This gives us a simple canonicalization that makes it feasible to use diff to compare files.
                 target.extend([i.get_et() for i in sorted(list(self.{{l.name}}.values()),key=lambda x: x.sortkey())])
@@ -2762,8 +2769,9 @@ class LibraryFile(Base_LibraryFile):
         """
         r = cls()
         r._init_from_et(et, parent)
-        if r.get_library().name is None:
-            r.get_library().set_name(os.path.basename(filename)[:-4])
+        # Commenting this out because according to the DTD, only libraries in brd and sch files should have this attribute
+        # if r.get_library().name is None: 
+        #    r.get_library().set_name(os.path.basename(filename)[:-4])
         return r
 
     # def get_library_copy(self):

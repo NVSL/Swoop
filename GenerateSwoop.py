@@ -793,7 +793,7 @@ tags["element"] = TagClass("element",
                            # has two instances of the same attributes. But
                            # what I generate boards like that myself, Eagle
                            # throws an error.  So it's a map for now.
-                           sections = [Map("attributes", "./attribute", requireTag=True)])
+                           sections = [List("attributes", "./attribute", requireTag=True)])
 
 
 

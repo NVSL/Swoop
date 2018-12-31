@@ -15,12 +15,6 @@ class BuildSwoop(build_py):
 
     def run(self):
         import GenerateSwoop
-        dtd = open("Swoop/eagleDTD.py", "w")
-        os.system("patch Swoop/eagle-7.2.0.dtd Swoop/eagle.dtd.diff -o Swoop/eagle-swoop.dtd")
-        dtd.write('DTD=u"""')
-        dtd.write(open("Swoop/eagle-swoop.dtd").read())
-        dtd.write('"""')
-        dtd.close()
         GenerateSwoop.main("Swoop/Swoop.py")
         build_py.run(self)
 

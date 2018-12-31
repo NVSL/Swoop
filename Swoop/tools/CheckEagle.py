@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import Swoop as HE
 import argparse
 import shutil
@@ -59,7 +60,7 @@ def compareEagleElementTrees(orig, new):
     return mismatches
 
 
-def main():
+def main(cmdline_args=None):
     parser = argparse.ArgumentParser(description="Check whether eagle files are dtd conforming")
     parser.add_argument("--file", required=True,  type=str, nargs='+', dest='file', help="files to process")
     parser.add_argument("--scrubbed-suffix", required=False,  type=str, nargs=1, dest='scrubSuffix', help="Suffix for scrubbed output files.  The empty string to overwrite input.")
@@ -69,7 +70,10 @@ def main():
     parser.add_argument("--stop-on-error", required=False, action='store_true', dest='stopOnError', help="Stop on first error.")
     parser.add_argument("--crash-on-error", required=False, action='store_true', dest='crashOnError', help="Don't catch exceptions.")
 
-    args = parser.parse_args()
+    if cmdline_args is None:
+        cmdline_args = sys.argv[1:]
+        
+    args = parser.parse_args(cmdline_args)
     
     if args.verbose:
         log.basicConfig(format="%(levelname)s: %(message)s", level=log.DEBUG)
@@ -136,6 +140,6 @@ def main():
         print("Error: " + str(internalError))
             
     if failed + internalError == 0:
-        sys.exit(0)
+        return 0
     else:
-        sys.exit(1)
+        return 1

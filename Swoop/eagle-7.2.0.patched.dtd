@@ -15,7 +15,6 @@
   Gadgetron: We've made two changes: The name on the <library> in a library file
   is optional because many libraries lack it, and we added minversion
   to <note> because many files have it.
-
 -->
 
 <!-- ### Entity definitions ############################################### -->
@@ -64,9 +63,9 @@
 
 <!ELEMENT note (#PCDATA)>
 <!ATTLIST note
-          minversion       %Real;         #REQUIRED
           version       %Real;         #REQUIRED
           severity      %Severity;     #REQUIRED
+	  minversion    %String;      ""
           >
           <!-- version: The EAGLE program version that introduced this compatibility note -->
 
@@ -74,10 +73,10 @@
 
 <!ELEMENT library (description?, packages?, symbols?, devicesets?)>
 <!ATTLIST library
-          name          %String;       "" 
+          name          %String;       ""
           >
           <!-- name: Only in libraries used inside boards or schematics -->
-	  <!--#REQUIRED-->
+
 <!ELEMENT schematic (description?, libraries?, attributes?, variantdefs?, classes?, modules?, parts?, sheets?, errors?)>
 <!ATTLIST schematic
           xreflabel     %String;       #IMPLIED
@@ -86,12 +85,12 @@
 
 <!ELEMENT module (description?, ports?, variantdefs?, parts?, sheets?)>
 <!ATTLIST module
-          name          %String;       #REQUIRED
+          name          %String;       "" 
           prefix        %String;       ""
           dx            %Coord;        #REQUIRED
           dy            %Coord;        #REQUIRED
           >
-
+	  <!--#REQUIRED-->
 <!ELEMENT board (description?, plain?, libraries?, attributes?, variantdefs?, classes?, designrules?, autorouter?, elements?, signals?, errors?)>
 
 <!-- ### High level objects ############################################### -->
@@ -208,7 +207,7 @@
           y3            %Coord;        #REQUIRED
           layer         %Layer;        #REQUIRED
           dtype         %DimensionType; "parallel"
-          width         %Dimension;    "0.13"
+          width         %Dimension;    #REQUIRED
           extwidth      %Dimension;    "0"
           extlength     %Dimension;    "0"
           extoffset     %Dimension;    "0"
@@ -218,7 +217,6 @@
           precision     %Int;          "2"
           visible       %Bool;         "no"
           >
-	  <!-- SS:  made 'width' not required since eagle doesn't always include it.  The default is 0.13mm (at least in version -->
 
 <!ELEMENT text (#PCDATA)>
 <!ATTLIST text
@@ -238,7 +236,7 @@
           x             %Coord;        #REQUIRED
           y             %Coord;        #REQUIRED
           radius        %Coord;        #REQUIRED
-          width         %Dimension;    #REQUIRED
+          width         %Dimension;    "0.13"
           layer         %Layer;        #REQUIRED
           >
 
@@ -251,6 +249,7 @@
           layer         %Layer;        #REQUIRED
           rot           %Rotation;     "R0"
           >
+	  <!-- SS:  made 'width' not required since eagle doesn't always include it.  The default is 0.13mm (at least in version -->
 
 <!ELEMENT frame EMPTY>
 <!ATTLIST frame
@@ -316,6 +315,7 @@
           populate      %Bool;         "yes"
           smashed       %Bool;         "no"
           rot           %Rotation;     "R0"
+	  align         %Align;        "bottom-left"
           >
 
 <!ELEMENT via EMPTY>
@@ -442,11 +442,9 @@
           rot           %Rotation;     "R0"
           display       %AttributeDisplay; "value"
           constant      %Bool;         "no"
-	  align         %Align;        "center-left"
           >
           <!-- display: Only in <element> or <instance> context -->
           <!-- constant:Only in <device> context -->
-          <!-- SS: Added align because Eagle does that sometimes.  Default is a guess-->
 
 <!ELEMENT pinref EMPTY>
 <!ATTLIST pinref

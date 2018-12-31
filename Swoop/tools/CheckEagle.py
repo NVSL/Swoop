@@ -114,7 +114,8 @@ def main(cmdline_args=None):
                     
                 if suffix is not None:
                     parts = i.split(".")
-                    f.write('{}.{}.{}'.format(".".join(parts[0:-1]), suffix, parts[-1]))
+                    name='{}.{}.{}'.format(".".join(parts[0:-1]), suffix, parts[-1])
+                    f.write(name, dtd_validate=False) # we already validated
                 
             else:
                 failed += 1

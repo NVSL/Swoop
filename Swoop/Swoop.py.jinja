@@ -566,6 +566,9 @@ class LineGeometry:
         self.set_y2(self.get_y2() + dy)
         return self
 
+    def get_length(self):
+        return math.sqrt((self.x1-self.x2)**2 + (self.y1-self.y2)**2)
+    
 class MeasureGeometry(LineGeometry):
     def __init__(self):
         pass

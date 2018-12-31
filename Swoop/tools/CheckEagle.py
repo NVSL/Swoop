@@ -105,7 +105,6 @@ def main(cmdline_args=None):
                     if compareEagleElementTrees(f.root, f.get_et()) > 0:
                         goodSoFar = False
 
-                        
                 if goodSoFar:
                     suffix=args.scrubSuffix
                     success += 1

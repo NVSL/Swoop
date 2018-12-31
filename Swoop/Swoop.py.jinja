@@ -1892,7 +1892,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
             v = {{a.unparse}}(self, "{{a.vtype}}", {{a.get_literal_default()}},  self.{{a.name}})
 
             ## For required attributes None becomes "".  For optional attributes, we just leave the attribute out.
-            if not (isinstance(self.get_parent(), LibraryFile) and not {{"supress_in_lib_file" in a.quirks}}):  # special case for the name of library.
+            if not (isinstance(self.get_parent(), LibraryFile) and {{"supress_in_lib_file" in a.quirks}}):  # special case for the name of library.
                 if v is not None:
                     r.set("{{a.xmlName}}", v)
             #{%if a.required %}
@@ -2776,9 +2776,8 @@ class LibraryFile(Base_LibraryFile):
         """
         r = cls()
         r._init_from_et(et, parent)
-        # Commenting this out because according to the DTD, only libraries in brd and sch files should have this attribute
-        # if r.get_library().name is None: 
-        #    r.get_library().set_name(os.path.basename(filename)[:-4])
+        if r.get_library().name is None: 
+            r.get_library().set_name(os.path.basename(filename)[:-4])
         return r
 
     # def get_library_copy(self):

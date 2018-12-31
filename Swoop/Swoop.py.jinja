@@ -1052,7 +1052,10 @@ class EagleFile(EagleFilePart):
         et = self.get_et()
         if dtd_validate:
             (v, dtd) =  self.validate()
-            
+        else:
+            v = True
+            dtd = None
+   
         if not v:
             if self.filename is not None:
                 f = open(self.filename + ".broken.xml", "w")

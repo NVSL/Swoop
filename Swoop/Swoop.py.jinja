@@ -1889,11 +1889,12 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
             v = {{a.unparse}}(self, "{{a.vtype}}", {{a.get_literal_default()}},  self.{{a.name}})
 
             ## For required attributes None becomes "".  For optional attributes, we just leave the attribute out.
-            if v is not None:
-                r.set("{{a.xmlName}}", v)
+            if not (isinstance(self.get_parent(), LibraryFile) and not {{"supress_in_lib_file" in a.quirks}}):  # special case for the name of library.
+                if v is not None:
+                    r.set("{{a.xmlName}}", v)
             #{%if a.required %}
-            else:
-                r.set("{{a.xmlName}}", "")
+                else:
+                    r.set("{{a.xmlName}}", "")
             #{%endif%}
 
             #{%endfor%}

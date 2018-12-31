@@ -89,7 +89,7 @@ def main(cmdline_args=None):
     for i in args.file:
 
         if not args.quiet:
-            print("Validating " + i + "...", end=' ')
+            print("Validating " + i + "...")
 
         try:
             # for the internal check, we compare the input and output.  With

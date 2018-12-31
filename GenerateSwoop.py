@@ -87,7 +87,17 @@ class Attr:
     Class representing an attribute.
     
     """
-    def __init__(self, name, default=None, required=False, parse=None, unparse=None,vtype=None,accessorName=None,xmlName=None, lookupEFP=None, isKey=False):
+    def __init__(self, name,
+                 default=None,
+                 required=False,
+                 parse=None,
+                 unparse=None,
+                 vtype=None,
+                 accessorName=None,
+                 xmlName=None,
+                 lookupEFP=None,
+                 isKey=False,
+                 **quirks):
         """Create a class describing an attribute.
         
         :param name: The attribute's name.  This is the name used for the member of the :class:`EagleFilePart` object.  For example :code:`foo.netclass` (since :code:`class` clashes with a the Python :code:`class` reserved word.
@@ -156,6 +166,8 @@ class Attr:
             assert  False
             self.parse = parse
 
+        self.quirks = quirks
+        
     def get_literal_default(self):
         return repr(self.default)
     
@@ -415,7 +427,7 @@ tags["note"] = TagClass("note",
 tags["library"] = TagClass("library",
                            baseclass = "EagleFilePart",
                            keep_empty_list=True,
-                           attrs=[Attr("name", required=False)],
+                           attrs=[Attr("name", required=False, supress_in_lib_file=True)],
                            sections=[Singleton("description", "./description", requireTag=False),
                                      Map("packages", "./packages/package", requireTag=False),
                                      Map("symbols", "./symbols/symbol" , requireTag=False),

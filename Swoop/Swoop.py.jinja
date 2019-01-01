@@ -863,7 +863,9 @@ class EagleFile(EagleFilePart):
     @classmethod
     def get_DTD(cls, root):
         version = parse_version(root.get('version'))
-        with open(get_data(supportedVersions[version])) as dtd:
+        filename=get_data(supportedVersions[version])
+        log.info("Using DTD: {}".format(filename))
+        with open(filename) as dtd:
             return ET.DTD(dtd)
     
     @classmethod
@@ -1929,7 +1931,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
 
             ## add a map.
 
-            if len(self.{{l.name}}) is not 0 or {{tag.keep_empty_list}}:
+            if len(self.{{l.name}}) is not 0:
                 target = smartAddSubTags(r, "{{l.xpath}}")
                 # add them in sorted order.  This gives us a simple canonicalization that makes it feasible to use diff to compare files.
                 target.extend([i.get_et() for i in sorted(list(self.{{l.name}}.values()),key=lambda x: x.sortkey())])
@@ -2717,6 +2719,8 @@ class Attribute (Base_Attribute):
         elif isinstance(self.get_parent(), Element):
             return False
         elif isinstance(self.get_parent(), EagleFile):
+            return False
+        elif isinstance(self.get_parent(), Moduleinst):
             return False
         else:
             raise SwoopError("Unexpectedly found attribute with parent of type '{}'".format(type(self.get_parent())))

@@ -304,8 +304,7 @@ class TagClass:
                  attrs=None,
                  sections=None,
                  sortattr=None,
-                 dontsort=False,
-                 keep_empty_list=False
+                 dontsort=False
     ):
         """
         :param tag: The name of the tag this class is for.
@@ -335,7 +334,6 @@ class TagClass:
         self.maps = []
         self.attrLists= []
         self.baseclass = baseclass
-        self.keep_empty_list = keep_empty_list
         if classname is None:
             self.classname = self.get_tag_initial_cap()
         else:
@@ -437,16 +435,15 @@ tags["note"] = TagClass("note",
 
 tags["library"] = TagClass("library",
                            baseclass = "EagleFilePart",
-                           keep_empty_list=True,
                            attrs=[
                                Attr("name", required=False, supress_in_lib_file=True),
                                urnAttr(),
                            ],
                            sections=[Singleton("description", "./description", requireTag=False),
-                                     Map("packages", "./packages/package", requireTag=False),
+                                     Map("packages", "./packages/package", requireTag=True),
                                      Map("packages3d", "./packages3d/package3d", requireTag=False),
-                                     Map("symbols", "./symbols/symbol" , requireTag=False),
-                                     Map("devicesets", "./devicesets/deviceset", requireTag=False)])
+                                     Map("symbols", "./symbols/symbol" , requireTag=True),
+                                     Map("devicesets", "./devicesets/deviceset", requireTag=True)])
 
 tags["schematic"] = TagClass("schematic",
                              baseclass = "EagleFilePart",
@@ -461,7 +458,7 @@ tags["module"] = TagClass("module",
                                  dimensionAttr("dx",True),
                                  dimensionAttr("dy",True)],
                           sections=[Singleton("description", "./description", requireTag=True),
-                                    Map("ports", "./ports/port"),
+                                    Map("ports", "./ports/port", requireTag=True),
                                     Map("variantdefs", "./variantdefs/variantdef", requireTag=True),
                                     Map("parts", "./parts/part", requireTag=True),
                                     List("sheets", "./sheets/sheet")])
@@ -598,7 +595,10 @@ tags["moduleinst"] = TagClass("moduleinst",
                                           vtype="int",
                                           required=False),
                                      smashedAttr,
-                                     rotAttr])
+                                     rotAttr],
+                              sections=[
+                                  Map("attributes", "./attribute")
+                              ])
 
 
 

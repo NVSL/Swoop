@@ -122,10 +122,12 @@
           urn              %Urn;       #REQUIRED
           type   %Package3dType;       #REQUIRED
           library_version  %Int;       ""
+	  locally_modified %Bool;      "no"
           library_locally_modified %Bool; "no"
           >
           <!-- library_version and library_locally_modified: Only in managed libraries inside boards or schematics -->
-
+	  <!-- SS added locally_modified because eagle adds it sometimes -->
+	  
 <!ELEMENT symbol (description?, (polygon | wire | text | dimension | pin | circle | rectangle | frame)*)>
 <!ATTLIST symbol
           name          %String;       #REQUIRED

@@ -403,6 +403,16 @@ def spacingAttr(required):
 def isolateAttr(required):
     return dimensionAttr("isolate", required)
 
+
+def locally_modifiedAttr():
+    return Attr("locally_modified", required=False, default="no", vtype="bool")
+def library_locally_modifiedAttr():
+    return Attr("library_locally_modified", required=False, default="no", vtype="bool")
+def library_versionAttr():
+    return Attr("library_version", required=False, vtype="int")
+def urnAttr(s="urn"):
+    return Attr(s, vtype="str", required=False)
+
 rotAttr = Attr("rot",
                vtype="str",
                required=False)
@@ -412,6 +422,7 @@ def nameAttr(isKey=True):
                 vtype="str",
                 required=True,
                 isKey=isKey)
+
 
 smashedAttr = Attr("smashed", required=False)
 
@@ -427,9 +438,13 @@ tags["note"] = TagClass("note",
 tags["library"] = TagClass("library",
                            baseclass = "EagleFilePart",
                            keep_empty_list=True,
-                           attrs=[Attr("name", required=False, supress_in_lib_file=True)],
+                           attrs=[
+                               Attr("name", required=False, supress_in_lib_file=True),
+                               urnAttr(),
+                           ],
                            sections=[Singleton("description", "./description", requireTag=False),
                                      Map("packages", "./packages/package", requireTag=False),
+                                     Map("packages3d", "./packages3d/package3d", requireTag=False),
                                      Map("symbols", "./symbols/symbol" , requireTag=False),
                                      Map("devicesets", "./devicesets/deviceset", requireTag=False)])
 
@@ -453,7 +468,13 @@ tags["module"] = TagClass("module",
 
 tags["package"] = TagClass("package",
                            baseclass = "EagleFilePart",
-                           attrs=[nameAttr()],
+                           attrs=[
+                               nameAttr(),
+                               urnAttr(),
+                               locally_modifiedAttr(),
+                               library_versionAttr(),
+                               library_locally_modifiedAttr()
+                           ],
                            sections=[Singleton("description", "./description", requireTag=True),
                                      List("drawing_elements","./polygon|./wire|./text|./dimension|./circle|./rectangle|./hole|./frame",
                                           containedTypes=["polygon","wire","text","dimension","circle","rectangle","hole", "frame"],
@@ -461,9 +482,37 @@ tags["package"] = TagClass("package",
                                      Map("pads", "./pad"),
                                      Map("smds", "./smd")])
 
+tags["package3d"] = TagClass("package3d",
+                           baseclass = "EagleFilePart",
+                           attrs=[
+                               nameAttr(),
+                               urnAttr(),
+                               Attr("type", vtype="str", required=True),
+                               locally_modifiedAttr(),
+                               library_versionAttr(),
+                               library_locally_modifiedAttr()
+                           ],
+                           sections=[
+                               Singleton("description", "./description", requireTag=True),
+                               List("packageinstances", "./packageinstances/packageinstance", requireTag=False)
+                           ])
+
+tags["packageinstance"] = TagClass("packageinstance",
+                                    baseclass = "EagleFilePart",
+                                    attrs=[nameAttr()])
+
+tags["package3dinstance"] = TagClass("package3dinstance",
+                                    baseclass = "EagleFilePart",
+                                    attrs=[urnAttr("package3d_urn")])
+
 tags["symbol"] = TagClass("symbol",
                           baseclass = "EagleFilePart",
-                          attrs=[nameAttr()],
+                          attrs=[nameAttr(),
+                                 urnAttr(),
+                                 locally_modifiedAttr(),
+                                 library_versionAttr(),
+                                 library_locally_modifiedAttr()
+                          ],
                           sections=[Singleton("description", "./description", requireTag=True),
                                     List("drawing_elements","./polygon|./wire|./text|./dimension|./circle|./rectangle|./frame|./hole",
                                          containedTypes=["polygon","wire","text","dimension","circle","rectangle","hole","frame"],
@@ -476,7 +525,12 @@ tags["deviceset"] = TagClass("deviceset",
                                     Attr("prefix", required=False),
                                     Attr("uservalue",
                                          vtype="bool",
-                                         required=False)],
+                                         required=False),
+                                    urnAttr(),
+                                    locally_modifiedAttr(),
+                                    library_versionAttr(),
+                                    library_locally_modifiedAttr()
+                             ],
                              sections=[Singleton("description", "./description", requireTag=True),
                                        Map("gates", "./gates/gate", requireTag=True),
                                        Map("devices", "./devices/device", requireTag=True)])
@@ -491,6 +545,7 @@ tags["device"] = TagClass("device",
                                       #vtype="None_is_default_string",
                                       lookupEFP=("Package", "lambda efp, key: efp.get_parent().get_parent().get_package(key)"))],
                           sections=[List("connects", "./connects/connect"),
+                                    List("package3dinstances", "./package3dinstances/package3dinstance"),
                                     Map("technologies", "./technologies/technology")])
 
 tags["bus"] = TagClass("bus",
@@ -785,9 +840,11 @@ tags["element"] = TagClass("element",
                                   Attr("library",
                                        required=True,
                                        lookupEFP=("Library", "lambda efp, key: efp.get_parent().get_library(key)")),
+                                  urnAttr("library_urn"),
                                   Attr("package",
                                        required=True,
                                        lookupEFP=("Package", "lambda efp, key: efp.find_library().get_package(key)")),
+                                  urnAttr("package3d_urn"),
                                   Attr("value",
                                        required=True),
                                   dimensionAttr("x",True),
@@ -881,12 +938,14 @@ tags["part"] = TagClass("part",
                                Attr("library",
                                     lookupEFP=("Library", "lambda efp, key: efp.get_parent().get_library(key)"),
                                     required=True),
+                               urnAttr("library_urn"),
                                Attr("deviceset",
                                     lookupEFP=("Deviceset", "lambda efp, key: efp.find_library().get_deviceset(key)"),
                                     required=True),
                                Attr("device",
                                     lookupEFP=("Device", "lambda efp, key: efp.find_deviceset().get_device(key)"),
                                     required=True),
+                               urnAttr("package3d_urn"),
                                Attr("technology",
                                     lookupEFP=("Technology","lambda efp, key: efp.find_device().get_technology(key)"),
                                     required=False,

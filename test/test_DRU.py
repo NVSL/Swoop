@@ -11,7 +11,8 @@ class TestDRU(unittest.TestCase):
         self.me = os.path.dirname(os.path.realpath(__file__))
         
     def test_Parsing(self):
-        dru = Swoop.DRUFile(self.me + "/inputs/default.dru")
+        with open(self.me + "/inputs/default.dru") as f:
+            dru = Swoop.DRUFile(f)
 
         # wierdness with eval is to get the \n's match properly
         self.assertEqual(eval("\"{}\"".format(dru.get_value("description")["de"])), """<b>EAGLE Design Rules</b>\n<p>\nDie Standard-Design-Rules sind so gewählt, dass siefür \ndie meisten Anwendungen passen. Sollte ihre Platine \nbesondere Anforderungen haben, treffen Sie die erforderlichen\nEinstellungen hier und speichern die Design Rules unter \neinem neuen Namen ab.""")

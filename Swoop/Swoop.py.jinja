@@ -48,6 +48,7 @@ from . import DRU
 import collections
 import math
 from functools import reduce
+import pkg_resources
 
 PY2 = sys.version_info < (3,0)
 
@@ -87,9 +88,6 @@ class SwoopError (Exception):
     def __str__(self):
         return self.text
 
-_ROOT = os.path.abspath(os.path.dirname(__file__))
-def get_data(path):
-    return os.path.join(_ROOT, path)
 
 class EagleFilePart(object):
 
@@ -863,9 +861,9 @@ class EagleFile(EagleFilePart):
     @classmethod
     def get_DTD(cls, root):
         version = parse_version(root.get('version'))
-        filename=get_data(supportedVersions[version])
+        filename = supportedVersions[version]
         log.info("Using DTD: {}".format(filename))
-        with open(filename) as dtd:
+        with pkg_resources.resource_stream(__name__, filename) as dtd:
             return ET.DTD(dtd)
     
     @classmethod
@@ -981,9 +979,11 @@ class EagleFile(EagleFilePart):
                 raise EagleFormatError("Eagle file opened as '" + str(filename) +"' is not one of " + str(supportedVersions) + ".  Chickening out.")
 
         if DRUFile is None:
-            DRUFilename = get_data("default.dru")
+            DRUFile = "default.dru"
+            
+        with pkg_resources.resource_stream(__name__, DRUFile) as s:
 
-        ef.DRUFile = DRU.DRUFile(DRUFilename)
+            ef.DRUFile = DRU.DRUFile(s)
             
         ef.check_sanity()
         if cls.isRawSwoop and EagleFile.enablePickle:

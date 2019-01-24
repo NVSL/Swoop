@@ -2,7 +2,7 @@
 .PHONY: build
 build:
 	python setup.py build
-	#pip install $(GTRON_PIP_OPTIONS) -e .
+	pip install $(GTRON_PIP_OPTIONS) -e .
 
 .PHONY: venv
 venv:

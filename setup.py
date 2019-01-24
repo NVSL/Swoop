@@ -57,7 +57,7 @@ setup(name='Swoop',
       },
       package_data={
           "" : ["*.rst","*.dru"],
-          "Swoop" : ["Swoop/Swoop.py.jinja", "Swoop/eagle.dtd.diff", "Swoop/eagle.dtd", "Swoop/default.dru"]
+          "Swoop" : ["Swoop/Swoop.py.jinja", "Swoop/eagle.dtd.diff", "Swoop/*.dtd", "Swoop/default.dru"]
       },
       #ext_modules = cythonize([Extension("*", ["Swoop/Swoop.pyx"], extra_compile_args=["-O4"])]),
       install_requires=["lxml==3.6.2",  "Sphinx>=1.3.1","Jinja2>=2.7.3", "shapely>=1.5.13"],

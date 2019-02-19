@@ -1,21 +1,16 @@
 <!--
-  EAGLE version 7.2.0 DTD
-  Copyright (c) 2014 CadSoft Computer GmbH
-  http://www.cadsoft.de
+  EAGLE version $__VersionNumber__ DTD
+  Copyright (c) $__ThisYear__ Autodesk
+  http://www.autodesk.com
 
-  This file describes the XML file format used by EAGLE version 7.2.0,
+  This file describes the XML file format used by EAGLE version $__VersionNumber__,
   hereafter referred to as the "EAGLE File Format".
   It is made available under the creative commons "CC BY-ND 3.0" license
   (see http://creativecommons.org/licenses/by-nd/3.0).
   You may use this file to implement a program that reads and/or writes files
   in the EAGLE File Format. If your program writes files in the EAGLE File
-  Format, these files must be readable by EAGLE version 7.2.0
+  Format, these files must be readable by EAGLE version $__VersionNumber__
   without any error messages or warnings.
-
-  Gadgetron: We've made two changes: The name on the <library> in a library file
-  is optional because many libraries lack it, and we added minversion
-  to <note> because many files have it.
-
 -->
 
 <!-- ### Entity definitions ############################################### -->
@@ -48,9 +43,17 @@
 <!ENTITY % GateAddLevel      "(must | can | next | request | always)">
 <!ENTITY % ContactRoute      "(all | any)">
 <!ENTITY % DimensionType     "(parallel | horizontal | vertical | radius | diameter | leader)">
+<!ENTITY % Package3dType     "(model | box)">
 <!ENTITY % Severity          "(info | warning | error)">
 <!ENTITY % Align             "(bottom-left | bottom-center | bottom-right | center-left | center | center-right | top-left | top-center | top-right)">
 <!ENTITY % VerticalText      "(up | down)">
+<!ENTITY % Urn               "%String;"> <!-- of the form "urn:adsk.eagle:<ASSET_TYPE>:<ASSET_ID>/<VERSION>", where:
+                                              - <ASSET_TYPE> is "symbol", "footprint", "package", "component", or "library"
+                                              - <ASSET_ID> is an integer
+                                              - <VERSION> is an integer
+                                              The "/<VERSION>" is omitted when referencing the asset without specifying a particular version.
+                                              For example, "urn:adsk.eagle:component:60986/2" references version 2 of component 60986 and
+                                              "urn:adsk.eagle:library:60968" references library 60986 without specifying a version. -->
 
 <!-- ### Drawing definitions ############################################## -->
 
@@ -64,7 +67,6 @@
 
 <!ELEMENT note (#PCDATA)>
 <!ATTLIST note
-          minversion       %Real;         #REQUIRED
           version       %Real;         #REQUIRED
           severity      %Severity;     #REQUIRED
           >
@@ -72,12 +74,14 @@
 
 <!ELEMENT drawing (settings?, grid?, layers, (library | schematic | board))>
 
-<!ELEMENT library (description?, packages?, symbols?, devicesets?)>
+<!ELEMENT library (description?, packages?, packages3d?, symbols?, devicesets?)>
 <!ATTLIST library
-          name          %String;       "" 
+          name          %String;       #REQUIRED
+          urn           %Urn;          ""
           >
           <!-- name: Only in libraries used inside boards or schematics -->
-	  <!--#REQUIRED-->
+          <!-- urn: Only in online libraries used inside boards or schematics -->
+
 <!ELEMENT schematic (description?, libraries?, attributes?, variantdefs?, classes?, modules?, parts?, sheets?, errors?)>
 <!ATTLIST schematic
           xreflabel     %String;       #IMPLIED
@@ -92,7 +96,10 @@
           dy            %Coord;        #REQUIRED
           >
 
-<!ELEMENT board (description?, plain?, libraries?, attributes?, variantdefs?, classes?, designrules?, autorouter?, elements?, signals?, errors?)>
+<!ELEMENT board (description?, fusionsync?, plain?, libraries?, attributes?, variantdefs?, classes?, designrules?, autorouter?, elements?, signals?, mfgpreviewcolors?, errors?)>
+<!ATTLIST board
+          limitedwidth  %Dimension;    #IMPLIED
+          >
 
 <!-- ### High level objects ############################################### -->
 
@@ -101,21 +108,46 @@
 <!ELEMENT package (description?, (polygon | wire | text | dimension | circle | rectangle | frame | hole | pad | smd)*)>
 <!ATTLIST package
           name          %String;       #REQUIRED
+          urn              %Urn;       ""
+          locally_modified %Bool;      "no"
+          library_version  %Int;       ""
+          library_locally_modified %Bool; "no"
           >
+          <!-- library_version and library_locally_modified: Only in managed libraries inside boards or schematics -->
+
+<!ELEMENT package3d (description?, packageinstances?)>
+<!ATTLIST package3d
+          name          %String;       ""
+          urn              %Urn;       #REQUIRED
+          type   %Package3dType;       #REQUIRED
+          library_version  %Int;       ""
+          library_locally_modified %Bool; "no"
+          >
+          <!-- library_version and library_locally_modified: Only in managed libraries inside boards or schematics -->
 
 <!ELEMENT symbol (description?, (polygon | wire | text | dimension | pin | circle | rectangle | frame)*)>
 <!ATTLIST symbol
           name          %String;       #REQUIRED
+          urn              %Urn;       ""
+          locally_modified %Bool;      "no"
+          library_version  %Int;       ""
+          library_locally_modified %Bool; "no"
           >
+          <!-- library_version and library_locally_modified: Only in managed libraries inside boards or schematics -->
 
-<!ELEMENT deviceset (description?, gates, devices)>
+<!ELEMENT deviceset (description?, gates, devices, spice?)>
 <!ATTLIST deviceset
           name          %String;       #REQUIRED
+          urn              %Urn;       ""
+          locally_modified %Bool;      "no"
           prefix        %String;       ""
           uservalue     %Bool;         "no"
+          library_version  %Int;       ""
+          library_locally_modified %Bool; "no"
           >
+          <!-- library_version and library_locally_modified: Only in managed libraries inside boards or schematics -->
 
-<!ELEMENT device (connects?, technologies?)>
+<!ELEMENT device (connects?, package3dinstances?, technologies?)>
 <!ATTLIST device
           name          %String;       ""
           package       %String;       #IMPLIED
@@ -132,7 +164,7 @@
           class         %Class;        "0"
           >
 
-<!ELEMENT segment (pinref | portref | wire | junction | label)*>
+<!ELEMENT segment (pinref | portref | wire | junction | label | probe)*>
           <!-- 'pinref' and 'junction' are only valid in a <net> context -->
 
 <!ELEMENT signal (contactref | polygon | wire | via)*>
@@ -140,6 +172,11 @@
           name          %String;       #REQUIRED
           class         %Class;        "0"
           airwireshidden %Bool;        "no"
+          >
+<!ELEMENT mfgpreviewcolor EMPTY>
+<!ATTLIST mfgpreviewcolor
+          name          %String;       #REQUIRED
+          color         %String;       #REQUIRED
           >
 
 <!-- ### Basic objects #################################################### -->
@@ -156,6 +193,27 @@
           rot           %Rotation;     "R0"
           >
           <!-- rot: Only 0, 90, 180 or 270 -->
+
+<!ELEMENT spice (pinmapping, model)>
+
+<!ELEMENT pinmapping (pinmap+)>
+<!ATTLIST pinmapping
+          isusermap     %Bool;         "no"
+          iddevicewide  %Bool;         "yes"
+          spiceprefix   %String;       ""
+          >
+
+<!ELEMENT pinmap EMPTY>
+<!ATTLIST pinmap
+          gate          %String;       #REQUIRED
+          pin           %String;       #REQUIRED
+          pinorder      %String;       #REQUIRED
+          >
+
+<!ELEMENT model (#PCDATA)>
+<!ATTLIST model
+          name          %String;       #REQUIRED
+          >
 
 <!ELEMENT variantdef EMPTY>
 <!ATTLIST variantdef
@@ -218,7 +276,6 @@
           precision     %Int;          "2"
           visible       %Bool;         "no"
           >
-	  <!-- SS:  made 'width' not required since eagle doesn't always include it.  The default is 0.13mm (at least in version -->
 
 <!ELEMENT text (#PCDATA)>
 <!ATTLIST text
@@ -308,7 +365,9 @@
 <!ATTLIST element
           name          %String;       #REQUIRED
           library       %String;       #REQUIRED
+          library_urn   %Urn;          ""
           package       %String;       #REQUIRED
+          package3d_urn %Urn;          ""
           value         %String;       #REQUIRED
           x             %Coord;        #REQUIRED
           y             %Coord;        #REQUIRED
@@ -317,6 +376,7 @@
           smashed       %Bool;         "no"
           rot           %Rotation;     "R0"
           >
+          <!-- library_urn: Only in parts from online libraries -->
 
 <!ELEMENT via EMPTY>
 <!ATTLIST via
@@ -367,15 +427,18 @@
           rot           %Rotation;     "R0"
           >
 
-<!ELEMENT part (attribute*, variant*)>
+<!ELEMENT part (attribute*, variant*, spice?)>
 <!ATTLIST part
           name          %String;       #REQUIRED
           library       %String;       #REQUIRED
+          library_urn   %Urn;          ""
           deviceset     %String;       #REQUIRED
           device        %String;       #REQUIRED
+          package3d_urn %Urn;          ""
           technology    %String;       ""
           value         %String;       #IMPLIED
           >
+          <!-- library_urn: Only in parts from online libraries -->
 
 <!ELEMENT port EMPTY>
 <!ATTLIST port
@@ -406,9 +469,24 @@
           ratio         %Int;          "8"
           rot           %Rotation;     "R0"
           xref          %Bool;         "no"
+          align         %Align;        "bottom-left"
           >
           <!-- rot:  Only 0, 90, 180 or 270 -->
           <!-- xref: Only in <net> context -->
+
+<!ELEMENT probe EMPTY>
+<!ATTLIST probe
+        x             %Coord;        #REQUIRED
+        y             %Coord;        #REQUIRED
+        size          %Dimension;    #REQUIRED
+        layer         %Layer;        #REQUIRED
+        font          %TextFont;     "proportional"
+        ratio         %Int;          "8"
+        rot           %Rotation;     "R0"
+        xref          %Bool;         "no"
+        >
+        <!-- rot:  Only 0, 90, 180 or 270 -->
+        <!-- xref: Only in <net> context -->
 
 <!ELEMENT junction EMPTY>
 <!ATTLIST junction
@@ -422,6 +500,16 @@
           pin           %String;       #REQUIRED
           pad           %String;       #REQUIRED
           route         %ContactRoute; "all"
+          >
+
+<!ELEMENT packageinstance EMPTY>
+<!ATTLIST packageinstance
+          name          %String;       #REQUIRED
+          >
+
+<!ELEMENT package3dinstance EMPTY>
+<!ATTLIST package3dinstance
+          package3d_urn %Urn;          #REQUIRED
           >
 
 <!ELEMENT technology (attribute)*>
@@ -442,11 +530,10 @@
           rot           %Rotation;     "R0"
           display       %AttributeDisplay; "value"
           constant      %Bool;         "no"
-	  align         %Align;        "center-left"
+          align         %Align;        "bottom-left"
           >
           <!-- display: Only in <element> or <instance> context -->
           <!-- constant:Only in <device> context -->
-          <!-- SS: Added align because Eagle does that sometimes.  Default is a guess-->
 
 <!ELEMENT pinref EMPTY>
 <!ATTLIST pinref
@@ -479,12 +566,15 @@
 <!ELEMENT sheets (sheet)*>
 <!ELEMENT layers (layer)*>
 <!ELEMENT packages (package)*>
+<!ELEMENT packages3d (package3d)*>
 <!ELEMENT symbols (symbol)*>
 <!ELEMENT devicesets (deviceset)*>
 <!ELEMENT gates (gate)*>
 <!ELEMENT devices (device)*>
 <!ELEMENT libraries (library)*>
 <!ELEMENT connects (connect)*>
+<!ELEMENT packageinstances (packageinstance)*>
+<!ELEMENT package3dinstances (package3dinstance)*>
 <!ELEMENT technologies (technology)*>
 <!ELEMENT attributes (attribute)*>
 <!ELEMENT classes (class)*>
@@ -495,6 +585,7 @@
 <!ELEMENT autorouter (pass)*>
 <!ELEMENT elements (element)*>
 <!ELEMENT signals (signal)*>
+<!ELEMENT mfgpreviewcolors (mfgpreviewcolor)*>
 <!ELEMENT busses (bus)*>
 <!ELEMENT nets (net)*>
 
@@ -504,6 +595,7 @@
 <!ATTLIST setting
           alwaysvectorfont %Bool;         #IMPLIED
           verticaltext     %VerticalText; "up"
+          keepoldvectorfont %Bool;        "no"          
           >
 
 <!ELEMENT designrules (description*, param*)>
@@ -569,4 +661,14 @@
 <!ELEMENT approved EMPTY>
 <!ATTLIST approved
           hash          %String;       #REQUIRED
+          >
+
+<!ELEMENT fusionsync EMPTY>
+<!ATTLIST fusionsync
+          huburn               %String;       #REQUIRED
+          projecturn           %String;       #REQUIRED
+          f3durn               %String;       #REQUIRED
+          pcbguid              %String;       #REQUIRED
+          lastsyncedchangeguid %String;       #REQUIRED
+          lastpulledtime       %String;       #REQUIRED
           >

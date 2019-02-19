@@ -18201,7 +18201,7 @@ design rules under a new name.
           <attribute name="VOLTS_QUERY" value="35V" layer="48" display="off"/>
           <attribute name="WV" value="" layer="48" display="off"/>
         </element>
-        <element name="C1B" library="KoalaBuild" package="CAPC2012X140_HS" value="3.3uF" x="0.0" y="0.0" locked="no">
+        <element name="C1B" library="KoalaBuild" package="CAPC2012X140_HS" value="3.3uF" x="0.0" y="0.0">
           <attribute name="CASE" value="" layer="48" display="off"/>
           <attribute name="DESC" value="" layer="48" display="off"/>
           <attribute name="DIST1" value="" layer="48" display="off"/>

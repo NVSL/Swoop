@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import Swoop as HE
 import argparse
 import shutil
@@ -39,37 +40,41 @@ def compareEagleElementTrees(orig, new):
                 
     for i in origAttrs:
         if newAttrs[i] != origAttrs[i]:
-            log.warning("Attribute count mismatch for '" + i + "': orig=" + str(origAttrs[i]) + "; new=" + str(newAttrs[i]))
+            log.warning("Attribute count mismatch for '{}': orig={}; new={}; delta={}".format(i,origAttrs[i],newAttrs[i], newAttrs[i] - origAttrs[i]))
             mismatches = mismatches + 1
     for i in origTags:
         if newTags[i] != origTags[i]:
-            log.warning("Tag count mismatch for '" + i + "': orig=" + str(origTags[i]) + "; new=" + str(newTags[i]))
+            log.warning("Tag count mismatch for '{}': orig={}; new={}; delta={}".format(i, origTags[i], newTags[i], newTags[i] - origTags[i]))
             mismatches = mismatches + 1
 
-    if mismatches != 0:
-        for i in origTags:
-            if int(newTags[i]) - int(origTags[i]) != 0:
-                print(i + ": " + str(newTags[i]) + " " + str(origTags[i]) + " " + str(int(newTags[i]) - int(origTags[i])))
+    # if mismatches != 0:
+    #     for i in origTags:
+    #         if int(newTags[i]) - int(origTags[i]) != 0:
+    #             print(i + ": " + str(newTags[i]) + " " + str(origTags[i]) + " " + str(int(newTags[i]) - int(origTags[i])))
         
-        for i in origAttrs:
-            if int(newAttrs[i]) - int(origAttrs[i]) != 0:
-                print(i + ": " + str(newAttrs[i]) + " " + str(origAttrs[i]) + " " + str(int(newAttrs[i]) - int(origAttrs[i])))
+    #     for i in origAttrs:
+    #         if int(newAttrs[i]) - int(origAttrs[i]) != 0:
+    #             print(i + ": " + str(newAttrs[i]) + " " + str(origAttrs[i]) + " " + str(int(newAttrs[i]) - int(origAttrs[i])))
         
-                
     return mismatches
 
 
-def main():
+def main(cmdline_args=None):
     parser = argparse.ArgumentParser(description="Check whether eagle files are dtd conforming")
     parser.add_argument("--file", required=True,  type=str, nargs='+', dest='file', help="files to process")
-    parser.add_argument("--scrubbed-suffix", required=False,  type=str, nargs=1, dest='scrubSuffix', help="Suffix for scrubbed output files.  The empty string to overwrite input.")
+    parser.add_argument("--scrubbed-suffix", required=False,
+                        type=str, nargs=1, dest='scrubSuffix',
+                        help="Suffix for scrubbed output files.  The empty string to overwrite input.")
     parser.add_argument("-v", required=False, action='store_true', dest='verbose', help="Be verbose")
     parser.add_argument("-q", required=False, action='store_true', dest='quiet', help="Be silent")
     parser.add_argument("--internal-check", required=False, action='store_true', dest='internalCheck', help="Do checks on Swoop internals")
     parser.add_argument("--stop-on-error", required=False, action='store_true', dest='stopOnError', help="Stop on first error.")
     parser.add_argument("--crash-on-error", required=False, action='store_true', dest='crashOnError', help="Don't catch exceptions.")
 
-    args = parser.parse_args()
+    if cmdline_args is None:
+        cmdline_args = sys.argv[1:]
+        
+    args = parser.parse_args(cmdline_args)
     
     if args.verbose:
         log.basicConfig(format="%(levelname)s: %(message)s", level=log.DEBUG)
@@ -100,14 +105,17 @@ def main():
                     if compareEagleElementTrees(f.root, f.get_et()) > 0:
                         goodSoFar = False
 
+                        
                 if goodSoFar:
+                    suffix=args.scrubSuffix
                     success += 1
-                    if args.scrubSuffix is not None:
-                        parts = i.split(".")
-                        n = ".".join(parts[0:-1]+args.scrubSuffix + [parts[-1]])
-                        f.write(n)
                 else:
+                    suffix = "broken"
                     failed += 1
+                    
+                if suffix is not None:
+                    parts = i.split(".")
+                    f.write('{}.{}.{}'.format(".".join(parts[0:-1]), suffix, parts[-1]))
                 
             else:
                 failed += 1
@@ -136,6 +144,6 @@ def main():
         print("Error: " + str(internalError))
             
     if failed + internalError == 0:
-        sys.exit(0)
+        return 0
     else:
-        sys.exit(1)
+        return 1

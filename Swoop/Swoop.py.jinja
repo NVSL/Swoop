@@ -35,7 +35,6 @@ Swoop was created by the `NVSL <http://nvsl.ucsd.edu/>`_ at  `UCSD <http://www.u
 from __future__ import print_function
 
 from lxml import etree as ET
-from . import eagleDTD
 import io
 import logging as log
 import copy
@@ -52,7 +51,6 @@ from functools import reduce
 
 PY2 = sys.version_info < (3,0)
 
-supportedVersions = ["6.5.0", "6.6.0", "7.0.0", "7.1.0", "7.2.0", "7.3.0", "7.4.0", "7.5.0"]
 
 class EagleFormatError(Exception):
     """
@@ -65,6 +63,9 @@ class EagleFormatError(Exception):
 
 def NotImplemented(s):
     raise NotImplementedError(s)
+
+def parse_version(v):
+    return tuple(map(int, v.split(".")))
 
 class SetNoPickleAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
@@ -89,8 +90,6 @@ class SwoopError (Exception):
 _ROOT = os.path.abspath(os.path.dirname(__file__))
 def get_data(path):
     return os.path.join(_ROOT, path)
-
-
 
 class EagleFilePart(object):
 
@@ -319,6 +318,12 @@ def parseByType(efp, attrType, default, s):
 
     return r
 
+def num_to_str(f): # render integers without the '.0' e.g., 1.0 should be "1"
+    if f - math.ceil(f) == 0:
+        return str(int(f))
+    else:
+        return str(f)
+    
 def unparseByType(efp, attrType, default, v):
     if v is None:
         return v
@@ -334,7 +339,7 @@ def unparseByType(efp, attrType, default, v):
         if v == default:
             r = None
         else:
-            r = str(v)
+            r = num_to_str(v)
     elif attrType == "None_is_default_int":
         assert default is not None
         assert default != "None"
@@ -353,7 +358,7 @@ def unparseByType(efp, attrType, default, v):
                                # unicode characters.
             r = v 
         elif attrType in ["int", "float"]:
-            r = str(v)
+            r = num_to_str(v)
         elif attrType == "bool":
             if v:
                 return "yes"
@@ -795,6 +800,24 @@ class RotationGeometry:
         :rtype: :code:`float`
         """
         return self._parseRot()[2]
+
+supportedVersions = { 
+            (6,5,0):"eagle-7.2.0.patched.dtd",
+            (6,6,0):"eagle-7.2.0.patched.dtd",
+            (7,0,0):"eagle-7.2.0.patched.dtd",
+            (7,1,0):"eagle-7.2.0.patched.dtd",
+            (7,2,0):"eagle-7.2.0.patched.dtd",
+            (7,3,0):"eagle-7.2.0.patched.dtd",
+            (7,4,0):"eagle-7.2.0.patched.dtd",
+            (7,5,0):"eagle-7.2.0.patched.dtd",
+            (7,6,0):"eagle-7.2.0.patched.dtd",
+            (7,7,0):"eagle-7.2.0.patched.dtd",
+            (9,1,0):"eagle-9.2.2.patched.dtd",
+            (9,2,0):"eagle-9.2.2.patched.dtd",
+            (9,2,1):"eagle-9.2.2.patched.dtd",
+            (9,2,2):"eagle-9.2.2.patched.dtd"
+        }
+        
     
 class EagleFile(EagleFilePart):
     """
@@ -807,16 +830,13 @@ class EagleFile(EagleFilePart):
 
     """
 
-    # A validator for element tree representations of eagle files.
-    DTD = None if eagleDTD.DTD is None else ET.DTD(io.StringIO(eagleDTD.DTD))
-
     class_map = {}
     boardFileType = None
     schematicFileType = None
     libraryFileType = None
     isRawSwoop = True
     enablePickle = False # disable this because it shows no performance benefit.
-    
+
     #{% for tag in tags %}
     def new_{{tag.classname}}(self):
         return type(self).class_map["{{tag.tag}}"]()
@@ -828,17 +848,24 @@ class EagleFile(EagleFilePart):
         """
         EagleFilePart.__init__(self)
         self.filename= None
-        #self.root = None
+        self.root = None
         #self.tree = None
         self.layers = {}
         self.layersByName = {}
-
+        self.version = None
+        
     def get_filename(self):
         return self.filename
     def set_filename(self, name):
         self.filename = name
         return self
 
+    @classmethod
+    def get_DTD(cls, root):
+        version = parse_version(root.get('version'))
+        with open(get_data(supportedVersions[version])) as dtd:
+            return ET.DTD(dtd)
+    
     @classmethod
     def get_schematic_file_type(cls):
         if cls.schematicFileType is None:
@@ -860,7 +887,6 @@ class EagleFile(EagleFilePart):
         else:
             return cls.libraryFileType
         
-        
     def validate(self):
         """
         Check that this file conforms to the eagle DTD. Return True, if it does, False otherwise.
@@ -868,14 +894,15 @@ class EagleFile(EagleFilePart):
         :rtype: Bool
         """
         et = self.get_et()
-        if EagleFile.DTD is not None:
-            v = EagleFile.DTD.validate(et)
+        dtd = EagleFile.get_DTD(et)
+        if dtd is not None:
+            v = dtd.validate(et)
         else:
             log.warning("Can't validate Swoop tree.  DTD is missing.")
             v = True;
         
         if not v:
-            log.error("Eagle file opened as '" + str(self.filename) +"' is invalid: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
+            log.error("Eagle file opened as '" + str(self.filename) +"' is invalid: " + str(dtd.error_log.filter_from_errors()[0]))
         else:
             log.info("Eagle file opened as '" + str(self.filename) +"' parsed to valid Eagle data.")
 
@@ -885,7 +912,7 @@ class EagleFile(EagleFilePart):
                     log.warning("Eagle file opened as '" + str(self.filename) +"' has 'None' attribute value")
                     return False
         
-        return v
+        return (v, dtd)
 
     @classmethod
     def open(cls,filename, bestEffort = True, DRUFile=None):
@@ -906,8 +933,9 @@ class EagleFile(EagleFilePart):
 
         :param et: Element tree data structure (e.g., returned by :code:`ElementTree.parse(filename)`)
         """
-        if EagleFile.DTD is not None:
-            if not EagleFile.DTD.validate(et.getroot()):
+        dtd = EagleFile.get_DTD(et.getroot())
+        if dtd:
+            if not dtd.validate(et.getroot()):
                 raise SwoopError("Tried to load from invalid eTree")
         if issubclass(cls, LibraryFile):
             raise NotImplementedError("Can't create library from raw etree.  What's the librarie's name?")
@@ -928,18 +956,13 @@ class EagleFile(EagleFilePart):
         except ET.XMLSyntaxError as e:
             raise EagleFormatError("Eagle file '" + str(filename) +"' doesn't look like XML eagle file.  Try resaving with a newer version of eagle.")
         
-
-        if EagleFile.DTD is not None:
-            v = EagleFile.DTD.validate(root)
-        else:
-            log.warning("Can't validate input file.  DTD is missing.")
-            v = True;
-
+        dtd = EagleFile.get_DTD(root)
+        v = dtd.validate(root)
         if not v:
             if bestEffort:
-                log.warning("Eagle file opened as '" + str(filename) +"' is invalid on disk: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
+                log.warning("Eagle file opened as '" + str(filename) +"' is invalid on disk: " + str(dtd.error_log.filter_from_errors()[0]))
             else:
-                raise EagleFormatError("Eagle file opened as '" + str(filename) +"' is invalid on disk: " + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
+                raise EagleFormatError("Eagle file opened as '" + str(filename) +"' is invalid on disk: " + str(dtd.error_log.filter_from_errors()[0]))
 
 
         if issubclass(fileClass, LibraryFile):
@@ -948,8 +971,8 @@ class EagleFile(EagleFilePart):
             ef = fileClass._from_et(root, None)
             
         ef.filename = filename
-        
-        if ef.get_version() not in supportedVersions:
+
+        if parse_version(ef.get_version()) not in supportedVersions:
             if bestEffort:
                 log.warning("Eagle file opened as '" + str(filename) +"' is not one of " + str(supportedVersions) + ".  Doing our best.")
             else:
@@ -1026,14 +1049,18 @@ class EagleFile(EagleFilePart):
 """.encode("utf8")
         if check_sanity:
             self.check_sanity()
-        if dtd_validate and not self.validate():
+        et = self.get_et()
+        if dtd_validate:
+            (v, dtd) =  self.validate()
+            
+        if not v:
             if self.filename is not None:
                 f = open(self.filename + ".broken.xml", "w")
-                to_write = header + ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True)
+                to_write = header + ET.tostring(ET.ElementTree(et),pretty_print=True)
                 f.write(to_write.decode("utf8"))
 
-            if len(EagleFile.DTD.error_log.filter_from_errors()) > 0:
-                raise SwoopError("Swoop structure does not validate" + str(EagleFile.DTD.error_log.filter_from_errors()[0]))
+            if len(dtd.error_log.filter_from_errors()) > 0:
+                raise SwoopError("Swoop structure does not validate" + str(dtd.error_log.filter_from_errors()[0]))
             else:
                 raise SwoopError("Swoop structure is not valid.")
         else:
@@ -1043,7 +1070,7 @@ class EagleFile(EagleFilePart):
             else:
                 f = open(file, "w")
                 filename = file
-            to_write = header+ET.tostring(ET.ElementTree(self.get_et()),pretty_print=True)
+            to_write = header+ET.tostring(ET.ElementTree(et),pretty_print=True)
             f.write(to_write.decode("utf8"))
 
     def add_layer (self, layer):
@@ -1762,7 +1789,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         """
         ## Call the constructor
         n = cls()
-        n. _init_from_et(root,parent)
+        n._init_from_et(root,parent)
         return n
 
     def _get_error_name(self):
@@ -1780,6 +1807,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         :rtype: :class:`{{tag.classname}}`
         """
         try:
+            self.root = root
             
             if root.tag != "{{tag.tag}}":
                 raise EagleFormatError("Tried to create {{tag.tag}} from " + root.tag)
@@ -1897,7 +1925,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
 
             ## add a map.
 
-            if len(self.{{l.name}}) is not 0:
+            if len(self.{{l.name}}) is not 0 or {{tag.keep_empty_list}}:
                 target = smartAddSubTags(r, "{{l.xpath}}")
                 # add them in sorted order.  This gives us a simple canonicalization that makes it feasible to use diff to compare files.
                 target.extend([i.get_et() for i in sorted(list(self.{{l.name}}.values()),key=lambda x: x.sortkey())])
@@ -2744,8 +2772,9 @@ class LibraryFile(Base_LibraryFile):
         """
         r = cls()
         r._init_from_et(et, parent)
-        if r.get_library().name is None:
-            r.get_library().set_name(os.path.basename(filename)[:-4])
+        # Commenting this out because according to the DTD, only libraries in brd and sch files should have this attribute
+        # if r.get_library().name is None: 
+        #    r.get_library().set_name(os.path.basename(filename)[:-4])
         return r
 
     # def get_library_copy(self):

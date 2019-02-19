@@ -1,21 +1,16 @@
 <!--
-  EAGLE version 7.2.0 DTD
-  Copyright (c) 2014 CadSoft Computer GmbH
+  EAGLE version 7.4.0 DTD
+  Copyright (c) 2015 CadSoft Computer GmbH
   http://www.cadsoft.de
 
-  This file describes the XML file format used by EAGLE version 7.2.0,
+  This file describes the XML file format used by EAGLE version 7.4.0,
   hereafter referred to as the "EAGLE File Format".
   It is made available under the creative commons "CC BY-ND 3.0" license
   (see http://creativecommons.org/licenses/by-nd/3.0).
   You may use this file to implement a program that reads and/or writes files
   in the EAGLE File Format. If your program writes files in the EAGLE File
-  Format, these files must be readable by EAGLE version 7.2.0
+  Format, these files must be readable by EAGLE version 7.4.0
   without any error messages or warnings.
-
-  Gadgetron: We've made two changes: The name on the <library> in a library file
-  is optional because many libraries lack it, and we added minversion
-  to <note> because many files have it.
-
 -->
 
 <!-- ### Entity definitions ############################################### -->
@@ -64,7 +59,6 @@
 
 <!ELEMENT note (#PCDATA)>
 <!ATTLIST note
-          minversion       %Real;         #REQUIRED
           version       %Real;         #REQUIRED
           severity      %Severity;     #REQUIRED
           >
@@ -74,10 +68,10 @@
 
 <!ELEMENT library (description?, packages?, symbols?, devicesets?)>
 <!ATTLIST library
-          name          %String;       "" 
+          name          %String;       #REQUIRED
           >
           <!-- name: Only in libraries used inside boards or schematics -->
-	  <!--#REQUIRED-->
+
 <!ELEMENT schematic (description?, libraries?, attributes?, variantdefs?, classes?, modules?, parts?, sheets?, errors?)>
 <!ATTLIST schematic
           xreflabel     %String;       #IMPLIED
@@ -93,6 +87,9 @@
           >
 
 <!ELEMENT board (description?, plain?, libraries?, attributes?, variantdefs?, classes?, designrules?, autorouter?, elements?, signals?, errors?)>
+<!ATTLIST board
+          limitedwidth  %Dimension;    #IMPLIED
+          >
 
 <!-- ### High level objects ############################################### -->
 
@@ -208,7 +205,7 @@
           y3            %Coord;        #REQUIRED
           layer         %Layer;        #REQUIRED
           dtype         %DimensionType; "parallel"
-          width         %Dimension;    "0.13"
+          width         %Dimension;    #REQUIRED
           extwidth      %Dimension;    "0"
           extlength     %Dimension;    "0"
           extoffset     %Dimension;    "0"
@@ -218,7 +215,6 @@
           precision     %Int;          "2"
           visible       %Bool;         "no"
           >
-	  <!-- SS:  made 'width' not required since eagle doesn't always include it.  The default is 0.13mm (at least in version -->
 
 <!ELEMENT text (#PCDATA)>
 <!ATTLIST text
@@ -442,11 +438,9 @@
           rot           %Rotation;     "R0"
           display       %AttributeDisplay; "value"
           constant      %Bool;         "no"
-	  align         %Align;        "center-left"
           >
           <!-- display: Only in <element> or <instance> context -->
           <!-- constant:Only in <device> context -->
-          <!-- SS: Added align because Eagle does that sometimes.  Default is a guess-->
 
 <!ELEMENT pinref EMPTY>
 <!ATTLIST pinref

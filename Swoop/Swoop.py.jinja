@@ -287,6 +287,8 @@ def parseByType(efp, attrType, default, s):
             assert isinstance(r, int)
         elif attrType == "locked_bool":
             r = (s == "yes")
+        elif attrType == "display_bool":
+            r = (s != "off")
         elif s is not None:
             if attrType == "str":
                 r = s
@@ -346,6 +348,11 @@ def unparseByType(efp, attrType, default, v):
             r = None
         else:
             r = str(v)
+    elif attrType == "display_bool":
+        if v == True:
+            r = None;
+        else:
+            r = "off"
     elif attrType == "locked_bool":
         if v == False:
             r = None;
@@ -800,6 +807,7 @@ class RotationGeometry:
         return self._parseRot()[2]
 
 supportedVersions = { 
+            (6,0):"eagle-7.2.0.patched.dtd",
             (6,5,0):"eagle-7.2.0.patched.dtd",
             (6,6,0):"eagle-7.2.0.patched.dtd",
             (7,0,0):"eagle-7.2.0.patched.dtd",
@@ -810,8 +818,10 @@ supportedVersions = {
             (7,5,0):"eagle-7.2.0.patched.dtd",
             (7,6,0):"eagle-7.2.0.patched.dtd",
             (7,7,0):"eagle-7.2.0.patched.dtd",
-            (8,0,2):"eagle-7.2.0.patched.dtd",
-            (8,7,1):"eagle-7.2.0.patched.dtd",
+            (8,0,2):"eagle-9.2.2.patched.dtd",
+            (8,1,0):"eagle-9.2.2.patched.dtd",
+            (8,7,0):"eagle-9.2.2.patched.dtd",
+            (8,7,1):"eagle-9.2.2.patched.dtd",
             (9,1,0):"eagle-9.2.2.patched.dtd",
             (9,2,0):"eagle-9.2.2.patched.dtd",
             (9,2,1):"eagle-9.2.2.patched.dtd",

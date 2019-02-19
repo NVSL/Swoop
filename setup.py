@@ -56,7 +56,7 @@ setup(name='Swoop',
           'Swoop' : 'Swoop',
       },
       package_data={
-          "" : ["*.rst","*.dru"],
+          "" : ["*.rst","*.dru", "*.dtd"],
           "Swoop" : ["Swoop/Swoop.py.jinja", "Swoop/eagle.dtd.diff", "Swoop/*.dtd", "Swoop/default.dru"]
       },
       #ext_modules = cythonize([Extension("*", ["Swoop/Swoop.pyx"], extra_compile_args=["-O4"])]),

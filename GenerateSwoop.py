@@ -821,14 +821,14 @@ tags["smd"] = TagClass("smd",
                                    required=False),
                               rotAttr,
                               Attr("stop",
-                                   vtype="bool",
-                                    required=False),
+                                   vtype="constant_bool",
+                                   required=False),
                               Attr("thermals",
-                                   vtype="bool",
-                                    required=False),
+                                   vtype="constant_bool",
+                                   required=False),
                               Attr("cream",
-                                   vtype="bool",
-                                    required=False)])
+                                   vtype="constant_bool",
+                                   required=False)])
 
 
 

@@ -289,6 +289,8 @@ def parseByType(efp, attrType, default, s):
             r = (s == "yes")
         elif attrType == "display_bool":
             r = (s != "off")
+        elif attrType == "constant_bool":
+            r = (s != "no")
         elif s is not None:
             if attrType == "str":
                 r = s
@@ -304,8 +306,6 @@ def parseByType(efp, attrType, default, s):
                     r = False
                 else:
                     raise SwoopError("Invalid eagle bool value '" + s +"' in child of " + str(efp))
-            elif attrType == "constant_bool":
-                r = (s != "no")
             elif attrType == "layer_string":
                 r = efp.get_file().layer_number_to_name(int(s))
             else:

@@ -46,7 +46,7 @@ distclean: core_distclean
 
 
 .PHONY:test
-test: build 
+test: # build 
 	python -m unittest discover -v test
 
 .PHONY: doc

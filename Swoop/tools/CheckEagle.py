@@ -89,7 +89,7 @@ def main(cmdline_args=None):
     for i in args.file:
 
         if not args.quiet:
-            print("Validating " + i + "...", end=' ')
+            print("Validating " + i + "...")
 
         try:
             # for the internal check, we compare the input and output.  With
@@ -105,7 +105,6 @@ def main(cmdline_args=None):
                     if compareEagleElementTrees(f.root, f.get_et()) > 0:
                         goodSoFar = False
 
-                        
                 if goodSoFar:
                     suffix=args.scrubSuffix
                     success += 1
@@ -115,7 +114,8 @@ def main(cmdline_args=None):
                     
                 if suffix is not None:
                     parts = i.split(".")
-                    f.write('{}.{}.{}'.format(".".join(parts[0:-1]), suffix, parts[-1]))
+                    name='{}.{}.{}'.format(".".join(parts[0:-1]), suffix, parts[-1])
+                    f.write(name, dtd_validate=False) # we already validated
                 
             else:
                 failed += 1

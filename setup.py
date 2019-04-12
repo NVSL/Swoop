@@ -5,17 +5,11 @@ import os
 from codecs import open
 import sys
 
-#from Cython.Build import *
-
-#import argparse
-#parser = argparse.ArgumentParser(description="Fix eagle files to make them dtd conforming")
-#parser.add_argument("--dtd", required=True,  type=str, nargs=1, dest='dtd', help="Eagle dtd to use.")
-
 class BuildSwoop(build_py):
 
     def run(self):
-        import GenerateSwoop
-        GenerateSwoop.main("Swoop/Swoop.py")
+        import Swoop.GenerateSwoop
+        Swoop.GenerateSwoop.main("Swoop/Swoop.py")
         build_py.run(self)
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -56,12 +50,12 @@ setup(name='Swoop',
           'Swoop' : 'Swoop',
       },
       package_data={
-          "" : ["*.rst","*.dru"],
-          "Swoop" : ["Swoop/Swoop.py.jinja", "Swoop/eagle.dtd.diff", "Swoop/eagle.dtd", "Swoop/default.dru"]
+          "" : ["*.rst"],
+          "Swoop" : ["Swoop.py.jinja", "eagle.dtd.diff", "*.dtd", "default.dru"]
       },
       #ext_modules = cythonize([Extension("*", ["Swoop/Swoop.pyx"], extra_compile_args=["-O4"])]),
       install_requires=["lxml==3.6.2",  "Sphinx>=1.3.1","Jinja2>=2.7.3", "shapely>=1.5.13"],
-      setup_requires=["Jinja2>=2.7.3"],#, "lxml>=3.4.2"],
+      setup_requires=["Jinja2>=2.7.3", "lxml>=3.4.2"],
       include_package_data=True,
       entry_points={
         'console_scripts': [

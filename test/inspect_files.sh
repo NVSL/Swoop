@@ -3,7 +3,9 @@
 i=$1
 
 (broken=$(echo $i | perl -ne '/(.*)(\....)/; print "$1.broken$2"')
-checkEagle --file $i  --crash-on-error --internal-check
+echo $broken
+echo $i
+checkEagle --file $i  --crash-on-error --internal-check -v
 xmllint --format $i -o $i.clean
 xmllint --format $broken -o $broken.clean
 

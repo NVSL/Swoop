@@ -48,6 +48,7 @@ from . import DRU
 import collections
 import math
 from functools import reduce
+import pkg_resources
 
 PY2 = sys.version_info < (3,0)
 
@@ -87,9 +88,6 @@ class SwoopError (Exception):
     def __str__(self):
         return self.text
 
-_ROOT = os.path.abspath(os.path.dirname(__file__))
-def get_data(path):
-    return os.path.join(_ROOT, path)
 
 class EagleFilePart(object):
 
@@ -289,6 +287,10 @@ def parseByType(efp, attrType, default, s):
             assert isinstance(r, int)
         elif attrType == "locked_bool":
             r = (s == "yes")
+        elif attrType == "display_bool":
+            r = (s != "off")
+        elif attrType == "constant_bool":
+            r = (s != "no")
         elif s is not None:
             if attrType == "str":
                 r = s
@@ -304,8 +306,6 @@ def parseByType(efp, attrType, default, s):
                     r = False
                 else:
                     raise SwoopError("Invalid eagle bool value '" + s +"' in child of " + str(efp))
-            elif attrType == "constant_bool":
-                r = (s != "no")
             elif attrType == "layer_string":
                 r = efp.get_file().layer_number_to_name(int(s))
             else:
@@ -348,6 +348,11 @@ def unparseByType(efp, attrType, default, v):
             r = None
         else:
             r = str(v)
+    elif attrType == "display_bool":
+        if v == True:
+            r = None;
+        else:
+            r = "off"
     elif attrType == "locked_bool":
         if v == False:
             r = None;
@@ -404,11 +409,26 @@ def typeCheck(type, v, cannotBeNone):
         return isinstance(v,bool)
     else:
         raise SwoopError("Unknown type '" + type + "'")
+
+class PolygonGeometry:
+    def __init__(self):
+        pass
     
+    def get_bounds_points(self):
+        return reduce(lambda a,b: a+b, map(lambda x: x.get_bounds_points(), self.get_vertices()), [])
+
 class OnePointGeometry:
     def __init__(self):
         pass
     
+    def get_bounds_points(self):
+        """
+        Get the location of this :class:`EagleFilePart`.
+        
+        :returns: :code:`[(x, y)]'
+        """
+        return [(self.get_x(), self.get_y())]
+
     def set_location(self,x,y):
         """
         Set the location of this :class:`EagleFilePart`.
@@ -505,6 +525,16 @@ class DimensionGeometry:
 class LineGeometry:
     def __init__(self):
         pass
+
+    def get_bounds_points(self):
+        """
+        Get the start and end points for this :class:`EagleFilePart`.
+        
+        :returns: :code:`[start_x, start_y, end_x, end_y]`
+        """
+        return [(self.get_x1(), self.get_y1()),
+                (self.get_x2(), self.get_y2())]
+                
     def set_start(self,x,y):
         """
         Set the location of the start point of this :class:`EagleFilePart`.
@@ -529,6 +559,15 @@ class LineGeometry:
         self.set_y2(y);
         return self;
 
+    def get_points(self):
+        """
+        Get the start and end points for this :class:`EagleFilePart`.
+        
+        :returns: :code:`[start_x, start_y, end_x, end_y]`
+        """
+        return [self.get_x1(), self.get_y1(),
+                self.get_x2(), self.get_y2()]
+
     def set_points(self, x1,y1,x2,y2):
         """
         Set the start and end points for this :class:`EagleFilePart`.
@@ -545,13 +584,6 @@ class LineGeometry:
         self.set_y2(y2);
         return self;
 
-    def get_points(self):
-        """
-        Get the start and end points for this :class:`EagleFilePart`.
-        
-        :returns: :code:`[start_x, start_y, end_x, end_y]`
-        """
-        return [self.get_x1(), self.get_y1(), self.get_x2(), self.get_y2()]
     
     def translate(self,dx,dy):
         """
@@ -608,6 +640,15 @@ class MeasureGeometry(LineGeometry):
 class RectGeometry:
     def __init__(self):
         pass
+    def get_bounds_points(self):
+        """
+        Get the start and end points for this :class:`EagleFilePart`.
+        
+        :returns: :code:`[start_x, start_y, end_x, end_y]`
+        """
+        return [(self.get_x1(), self.get_y1()),
+                (self.get_x2(), self.get_y2())]
+                
     def set_lefttop(self,left,top):
         """
         Set the location of the top-left corner of this :class:`EagleFilePart`.
@@ -668,10 +709,28 @@ class RectGeometry:
         self.set_x2(self.get_x2() + dx)
         self.set_y2(self.get_y2() + dy)
         return self
+    
+    def get_height(self):
+        return abs(self.get_y1() - self.get_y2())
+
+    def get_width(self):
+        return abs(self.get_x1() - self.get_x2())
+
+    def get_area(self):
+        return self.get_height() * self.get_width()
 
 class CircleRadiusGeometry:
     def __init__(self):
         pass
+
+    def get_bounds_points(self):
+        """
+        Get the start and end points for this :class:`EagleFilePart`.
+
+        """
+        return [(self.get_x() - self.get_diameter()/2, self.get_y() - self.get_diameter()/2),
+                (self.get_x() + self.get_diameter()/2, self.get_y() + self.get_diameter()/2)]
+                
 
     def set_diameter(self,d):
         """
@@ -695,6 +754,14 @@ class CircleRadiusGeometry:
 class CircleDiameterGeometry:
     def __init__(self):
         pass
+
+    def get_bounds_points(self):
+        """
+        Get the start and end points for this :class:`EagleFilePart`.
+
+        """
+        return [(self.get_x() - self.get_diameter()/2, self.get_y() - self.get_diameter()/2),
+                (self.get_x() + self.get_diameter()/2, self.get_y() + self.get_diameter()/2)]
     
     def set_radius(self,r):
         """
@@ -802,6 +869,7 @@ class RotationGeometry:
         return self._parseRot()[2]
 
 supportedVersions = { 
+            (6,0):"eagle-7.2.0.patched.dtd",
             (6,5,0):"eagle-7.2.0.patched.dtd",
             (6,6,0):"eagle-7.2.0.patched.dtd",
             (7,0,0):"eagle-7.2.0.patched.dtd",
@@ -812,10 +880,22 @@ supportedVersions = {
             (7,5,0):"eagle-7.2.0.patched.dtd",
             (7,6,0):"eagle-7.2.0.patched.dtd",
             (7,7,0):"eagle-7.2.0.patched.dtd",
+            (8,0,2):"eagle-9.2.2.patched.dtd",
+            (8,1,0):"eagle-9.2.2.patched.dtd",
+            (8,7,0):"eagle-9.2.2.patched.dtd",
+            (8,7,1):"eagle-9.2.2.patched.dtd",
             (9,1,0):"eagle-9.2.2.patched.dtd",
             (9,2,0):"eagle-9.2.2.patched.dtd",
             (9,2,1):"eagle-9.2.2.patched.dtd",
-            (9,2,2):"eagle-9.2.2.patched.dtd"
+            (9,2,2):"eagle-9.2.2.patched.dtd",
+            (9,3,0):"eagle-9.2.2.patched.dtd",
+            (9,3,1):"eagle-9.2.2.patched.dtd",
+            (9,3,2):"eagle-9.2.2.patched.dtd",
+            (9,3,3):"eagle-9.2.2.patched.dtd",
+            (9,3,4):"eagle-9.2.2.patched.dtd",
+            (9,3,5):"eagle-9.2.2.patched.dtd",
+            (9,3,6):"eagle-9.2.2.patched.dtd",
+            (9,3,7):"eagle-9.2.2.patched.dtd",
         }
         
     
@@ -863,7 +943,9 @@ class EagleFile(EagleFilePart):
     @classmethod
     def get_DTD(cls, root):
         version = parse_version(root.get('version'))
-        with open(get_data(supportedVersions[version])) as dtd:
+        filename = supportedVersions[version]
+        log.info("Using DTD: {}".format(filename))
+        with pkg_resources.resource_stream(__name__, filename) as dtd:
             return ET.DTD(dtd)
     
     @classmethod
@@ -979,9 +1061,11 @@ class EagleFile(EagleFilePart):
                 raise EagleFormatError("Eagle file opened as '" + str(filename) +"' is not one of " + str(supportedVersions) + ".  Chickening out.")
 
         if DRUFile is None:
-            DRUFilename = get_data("default.dru")
+            DRUFile = "default.dru"
+            
+        with pkg_resources.resource_stream(__name__, DRUFile) as s:
 
-        ef.DRUFile = DRU.DRUFile(DRUFilename)
+            ef.DRUFile = DRU.DRUFile(s)
             
         ef.check_sanity()
         if cls.isRawSwoop and EagleFile.enablePickle:
@@ -1052,7 +1136,10 @@ class EagleFile(EagleFilePart):
         et = self.get_et()
         if dtd_validate:
             (v, dtd) =  self.validate()
-            
+        else:
+            v = True
+            dtd = None
+   
         if not v:
             if self.filename is not None:
                 f = open(self.filename + ".broken.xml", "w")
@@ -1850,7 +1937,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
             ### And, finally, if the objects wants the text from the tag.
 
             #{%if tag.preserveTextAs != "" %}
-            self.{{tag.preserveTextAs}} = root.text
+            self.{{tag.preserveTextAs}} = root.text or "" # If root.text is None, we still need a string.
             #{% endif %}
         except SwoopError as e:
             e.text = "{}:{}".format(self._get_error_name(), e.text)
@@ -1889,11 +1976,12 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
             v = {{a.unparse}}(self, "{{a.vtype}}", {{a.get_literal_default()}},  self.{{a.name}})
 
             ## For required attributes None becomes "".  For optional attributes, we just leave the attribute out.
-            if v is not None:
-                r.set("{{a.xmlName}}", v)
+            if not (isinstance(self.get_parent(), LibraryFile) and {{"supress_in_lib_file" in a.quirks}}):  # special case for the name of library.
+                if v is not None:
+                    r.set("{{a.xmlName}}", v)
             #{%if a.required %}
-            else:
-                r.set("{{a.xmlName}}", "")
+                else:
+                    r.set("{{a.xmlName}}", "")
             #{%endif%}
 
             #{%endfor%}
@@ -1925,7 +2013,7 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
 
             ## add a map.
 
-            if len(self.{{l.name}}) is not 0 or {{tag.keep_empty_list}}:
+            if len(self.{{l.name}}) is not 0:
                 target = smartAddSubTags(r, "{{l.xpath}}")
                 # add them in sorted order.  This gives us a simple canonicalization that makes it feasible to use diff to compare files.
                 target.extend([i.get_et() for i in sorted(list(self.{{l.name}}.values()),key=lambda x: x.sortkey())])
@@ -2714,6 +2802,8 @@ class Attribute (Base_Attribute):
             return False
         elif isinstance(self.get_parent(), EagleFile):
             return False
+        elif isinstance(self.get_parent(), Moduleinst):
+            return False
         else:
             raise SwoopError("Unexpectedly found attribute with parent of type '{}'".format(type(self.get_parent())))
 
@@ -2772,9 +2862,8 @@ class LibraryFile(Base_LibraryFile):
         """
         r = cls()
         r._init_from_et(et, parent)
-        # Commenting this out because according to the DTD, only libraries in brd and sch files should have this attribute
-        # if r.get_library().name is None: 
-        #    r.get_library().set_name(os.path.basename(filename)[:-4])
+        if r.get_library().name is None: 
+            r.get_library().set_name(os.path.basename(filename)[:-4])
         return r
 
     # def get_library_copy(self):

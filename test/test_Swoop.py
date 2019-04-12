@@ -236,6 +236,10 @@ class TestSwoop(unittest.TestCase):
         a = Swoop.EagleFile.from_file(os.path.join(self.me, "inputs/Trinket_Pro_default_SMD_parts_power_breakout.koala.sch"))
         a.write(os.path.join(self.tmpdir, "a.sch"))
 
+    def test_LibraryName(self):
+        name = self.lbr.get_library().get_name()
+        self.assertNotEqual(name, None)
+        
     def test_Clone(self):
         a = Swoop.EagleFile.from_file(os.path.join(self.me, "inputs/Trinket_Pro_default_SMD_parts_power_breakout.koala.sch"))
         a.clone()

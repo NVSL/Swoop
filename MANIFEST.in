@@ -1,4 +1,6 @@
 include	DESCRIPTION.rst
 include LICENSE.txt README.txt VERSION.txt
-include Swoop/eagle.dtd.diff
-include Swoop/default.dru
+include Swoop/*.dtd
+include Swoop/*.dru
+include Swoop/Swoop.py.jinja
+"Swoop.py.jinja", "eagle.dtd.diff", "*.dtd", "default.dru"]

@@ -9,25 +9,24 @@ class DRUFile():
     It converts all values with units provided in the file into millimeters.
     """
 
-    def __init__(self, filename):
+    def __init__(self, stream, filename=None):
         """
         Open a DRU file and load its contents.
         
-        :param filename: File to load.
+        :param stream: File-like object to load.
         """
-        
-        self.values = collections.OrderedDict()
-        self.open(filename);
-        
-    def open(self, filename):
-        """
-        Open a DRU file and load its contents.
-        
-        :param filename: File to load.
-        """
-        file = open(filename);
 
-        for l in file.readlines():
+        self.values = collections.OrderedDict()
+        self.open(stream, filename=filename);
+        
+    def open(self, stream, filename=None):
+        """
+        Open a DRU file and load its contents.
+        
+        :param stream: File-like object to load.
+        """
+
+        for l in stream.readlines():
             m = re.match("^(\w+)(\[(\w+)\])? = (.*)$", l);
             assert m is not None, "Unexpected line format in '{}': {}".format(filename,l)
             key = m.group(1)
@@ -70,7 +69,7 @@ class DRUFile():
         for k in self.values:
             setattr(self, k, self.values[k])
 
-        file.close()
+
 
     def get_value(self, key):
         """

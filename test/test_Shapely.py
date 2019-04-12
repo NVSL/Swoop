@@ -37,6 +37,7 @@ class TestShapely(unittest.TestCase):
 ("self.testbrd1.get_element('U$1').get_geometry()", -3905289220812110970, "#000000"),
 ("self.testbrd1.get_element('U$2').get_geometry()", 7149781817599939921, "#000000"),
 ("self.testbrd1.get_element('U$2').get_geometry(layer_query='Top')", -592898454734508401, "#ff0000"),
+
 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd1).get_elements().get_geometry(layer_query='Top'))", 8175878824730081580, "#ff0000"),
 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry())", 5269961155734272488, "#000000"),
 ("shapely.ops.cascaded_union(Swoop.From(self.testbrd2).get_elements().get_geometry(layer_query='tPlace'))", 1859631802219965328, "#000000"),

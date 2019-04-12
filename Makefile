@@ -76,7 +76,7 @@ release: clean
 
 .PHONY: do-deploy
 do-deploy:
-	twine upload --repository-url https://test.pypi.org/legacy/ dist/*$$(cat VERSION.txt)*
+	twine upload --repository-url https://pypi.org/legacy/ dist/*$$(cat VERSION.txt)*
 
 .PHONY: test-deployed
 test-deployed:

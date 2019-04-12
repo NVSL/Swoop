@@ -20,7 +20,7 @@ test_dep:
 .PHONY: sdist
 sdist:
 	@echo Building source distribution
-	python setup.py build sdist
+	python setup.py build sdist bdist_wheel
 
 .PHONY: test_sdist
 test_sdist:
@@ -71,8 +71,16 @@ release: clean
 	git tag -a $$(cat VERSION.txt) -m "Tag version $$(cat VERSION.txt)"
 	git push --follow-tags
 	$(MAKE) test_sdist
-	python setup.py sdist upload
+	$(MAKE) do-deploy
 	$(MAKE) doczip
+
+.PHONY: do-deploy
+do-deploy:
+	twine upload --repository-url https://test.pypi.org/legacy/ dist/*$$(cat VERSION.txt)*
+
+.PHONY: test-deployed
+test-deployed:
+	(mkdir _test; cd _test; virtualenv venv; . venv/bin/activate; pip install  --index-url https://test.pypi.org/simple/  --extra-index-url https://pypi.org/simple  Swoop)
 
 clean:
 	rm -rf Swoop/eagleDTD.py

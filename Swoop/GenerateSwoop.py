@@ -81,6 +81,7 @@ import argparse
 import logging as log
 import copy
 import re
+import os
 
 class Attr:
     """
@@ -883,6 +884,7 @@ tags["via"] = TagClass("via",
 
 tags["polygon"] = TagClass("polygon",
                            baseclass = "EagleFilePart",
+                           mixins=["PolygonGeometry"],
                            attrs=[widthAttr( required=True),
                                   layerAttr(required=True),
                                   spacingAttr(required=False),
@@ -1317,8 +1319,8 @@ def main(filename):
     log.basicConfig(format="%(levelname)s: %(message)s", level=log.DEBUG)
     log.info("Verbose output.")
 
-    env = J2.Environment(loader=J2.FileSystemLoader('.'))
-    template = env.get_template('Swoop/Swoop.py.jinja')
+    env = J2.Environment(loader=J2.FileSystemLoader(os.path.abspath(os.path.dirname(__file__))))
+    template = env.get_template('Swoop.py.jinja')
 
     f = open(filename, "w")
 

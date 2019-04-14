@@ -1,8 +1,7 @@
 
 .PHONY: build
 build:
-	python setup.py build
-	pip install $(GTRON_PIP_OPTIONS) -e .
+	pip install -e .
 
 .PHONY: venv
 venv:
@@ -14,7 +13,7 @@ venv:
 .PHONY: test_dep
 test_dep:
 	$(MAKE) venv
-	(. test_venv/bin/activate; GTRON_PIP_OPTIONS="--no-deps" gtron --force build $(REQUIRED_GTRON_TOOLS) ; $(MAKE);)
+	(. test_venv/bin/activate; pip install .)
 	(. test_venv/bin/activate; $(MAKE) test;)
 
 .PHONY: sdist
@@ -47,7 +46,7 @@ distclean: core_distclean
 
 .PHONY:test
 test: # build 
-	python -m unittest discover -v test
+	cd test && python -m unittest discover -v .
 
 .PHONY: doc
 doc: build $(wildcard doc/*.rst)

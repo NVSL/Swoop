@@ -3,4 +3,8 @@ Sphinx>=1.3.1
 Jinja2>=2.7.3
 shapely>=1.5.13
 Jinja2>=2.7.3
+<<<<<<< HEAD
 
+=======
+lxml>=3.4.2
+>>>>>>> master

@@ -80,7 +80,7 @@ do-deploy:
 .PHONY: test-deployed
 test-deployed:
 #	(mkdir _test; cd _test; virtualenv venv; . venv/bin/activate; pip install  --index-url https://test.pypi.org/simple/  --extra-index-url https://pypi.org/simple  Swoop)
-	(mkdir _test; cd _test; virtualenv venv; . venv/bin/activate; pip install Swoop)
+	(rm -rf _test; virtualenv _test/venv; . _test/venv/bin/activate; pip install Swoop; make test)
 
 clean:
 	rm -rf Swoop/eagleDTD.py

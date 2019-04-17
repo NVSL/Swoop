@@ -75,11 +75,12 @@ release: clean
 
 .PHONY: do-deploy
 do-deploy:
-	twine upload --repository-url https://pypi.org/legacy/ dist/*$$(cat VERSION.txt)*
+	twine upload  dist/*$$(cat VERSION.txt)*
 
 .PHONY: test-deployed
 test-deployed:
-	(mkdir _test; cd _test; virtualenv venv; . venv/bin/activate; pip install  --index-url https://test.pypi.org/simple/  --extra-index-url https://pypi.org/simple  Swoop)
+#	(mkdir _test; cd _test; virtualenv venv; . venv/bin/activate; pip install  --index-url https://test.pypi.org/simple/  --extra-index-url https://pypi.org/simple  Swoop)
+	(mkdir _test; cd _test; virtualenv venv; . venv/bin/activate; pip install Swoop)
 
 clean:
 	rm -rf Swoop/eagleDTD.py

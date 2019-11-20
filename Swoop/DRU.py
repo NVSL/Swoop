@@ -27,7 +27,13 @@ class DRUFile():
         """
 
         for l in stream.readlines():
-            m = re.match("^(\w+)(\[(\w+)\])? = (.*)$", l);
+            try:
+                m = re.match("^(\w+)(\[(\w+)\])? = (.*)$", l);
+            except TypeError:
+                l = l.decode('utf8')
+                m = re.match("^(\w+)(\[(\w+)\])? = (.*)$", l);
+            except:
+                raise
             assert m is not None, "Unexpected line format in '{}': {}".format(filename,l)
             key = m.group(1)
             dictkey = m.group(3)
@@ -39,7 +45,7 @@ class DRUFile():
             else:
                 values = value.split(" ")
                 for i in range(0, len(values)):
-                    m = re.match("^(-?\d+(\.\d+)?)(\w+)?$", values[i]);
+                    m = re.match("^(-?\d+(\.\d+)?)(\w+)?\r?$", values[i]);
                     assert m is not None, "Unknown value format in '{}': {}".format(filename,values[i])
                     n = m.group(1)
                     units = m.group(3)

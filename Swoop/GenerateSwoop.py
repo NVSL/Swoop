@@ -927,6 +927,16 @@ tags["polygon"] = TagClass("polygon",
                                   grouprefsAttr()],
                            sections = [List("vertices", "./vertex")])
 
+tags["spline"] = TagClass("spline",
+                          baseclass = "EagleFilePart",
+                          attrs=[widthAttr(required=True),
+                                 Attr("locked",
+                                      vtype="bool",
+                                      required=True),
+                                 layerAttr()
+                          ],
+                          sections = [List("vertices", "./vertex")])
+
 
 
 tags["vertex"] = TagClass("vertex",
@@ -1298,8 +1308,8 @@ tags["eagleBoard"] = TagClass("eagle",
                                         Map("layers", "./drawing/layers/layer",suppressAccessors=True, mapkey="number"),
                                         Singleton("description", "./drawing/board/description", requireTag=True),
                                         # We keep all the drawing elements in one container
-                                        List("plain_elements", "./drawing/board/plain/polygon|./drawing/board/plain/wire|./drawing/board/plain/text|./drawing/board/plain/dimension|./drawing/board/plain/circle|./drawing/board/plain/rectangle|./drawing/board/plain/frame|./drawing/board/plain/hole",
-                                             containedTypes=["polygon","wire","text","dimension","circle","rectangle","frame","hole"],
+                                        List("plain_elements", "./drawing/board/plain/polygon|./drawing/board/plain/wire|./drawing/board/plain/text|./drawing/board/plain/dimension|./drawing/board/plain/circle|./drawing/board/plain/rectangle|./drawing/board/plain/frame|./drawing/board/plain/hole|./drawing/board/plain/spline",
+                                             containedTypes=["polygon","wire","text","dimension","circle","rectangle","frame","hole","spline"],
                                              accessorName="plain_element",
                                              requireTag=True),
                                         Map("libraries", "./drawing/board/libraries/library", requireTag=True),                              

@@ -64,7 +64,6 @@
 
 <!ELEMENT eagle (compatibility?, drawing, compatibility?)>
 <!ATTLIST eagle
-          minversion       %Real;         #IMPLIED
           version       %Real;         #REQUIRED
           >
           <!-- version: The EAGLE program version that generated this file, in the form V.RR -->
@@ -73,6 +72,7 @@
 
 <!ELEMENT note (#PCDATA)>
 <!ATTLIST note
+          minversion       %Real;     #IMPLIED
           version       %Real;         #REQUIRED
           severity      %Severity;     #REQUIRED
           >
@@ -321,6 +321,8 @@
 <!-- Four simple (non-curve) vertices define the control points of a degree-3 spline curve -->
 <!ATTLIST spline
           width          %Dimension;    #REQUIRED
+          layer         %Layer;        #REQUIRED
+          locked        %Bool;         "yes"
           >
 
 <!ELEMENT rectangle EMPTY>
@@ -493,17 +495,17 @@
 
 <!ELEMENT instance (attribute)*>
 <!ATTLIST instance
-	  align         %Align;        "center-left"
           part          %String;       #REQUIRED
           gate          %String;       #REQUIRED
           x             %Coord;        #REQUIRED
-          <!-- SS: Added align because Eagle does that sometimes.  Default is a guess-->
           y             %Coord;        #REQUIRED
           smashed       %Bool;         "no"
           rot           %Rotation;     "R0"
+	  align         %Align;        "center-left"
           grouprefs     IDREFS         #IMPLIED
           >
           <!-- rot: Only 0, 90, 180 or 270 -->
+          <!-- SS: Added align because Eagle does that sometimes.  Default is a guess-->
 
 <!ELEMENT label EMPTY>
 <!ATTLIST label

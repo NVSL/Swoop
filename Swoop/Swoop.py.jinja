@@ -991,6 +991,7 @@ class EagleFile(EagleFilePart):
         dtd = EagleFile.get_DTD(et)
         if dtd is not None:
             v = dtd.validate(et)
+            log.debug("DTD validation result: " + str(v))
         else:
             log.warning("Can't validate Swoop tree.  DTD is missing.")
             v = True;

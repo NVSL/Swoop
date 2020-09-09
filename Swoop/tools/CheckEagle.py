@@ -63,7 +63,7 @@ def main(cmdline_args=None):
     parser = argparse.ArgumentParser(description="Check whether eagle files are dtd conforming")
     parser.add_argument("--file", required=True,  type=str, nargs='+', dest='file', help="files to process")
     parser.add_argument("--scrubbed-suffix", required=False,
-                        type=str, nargs=1, dest='scrubSuffix',
+                        type=str, dest='scrubSuffix',
                         help="Suffix for scrubbed output files.  The empty string to overwrite input.")
     parser.add_argument("-v", required=False, action='store_true', dest='verbose', help="Be verbose")
     parser.add_argument("-q", required=False, action='store_true', dest='quiet', help="Be silent")
@@ -97,30 +97,32 @@ def main(cmdline_args=None):
             # since we always produce legal output, they won't match.
             f = HE.EagleFile.from_file(i, bestEffort=(not args.internalCheck))
             #f.write(i+".xml")
-            if f.validate():
+            dtd_success, _ = f.validate()
+            if dtd_success:
+                if not args.quiet:
+                    log.info("DTD Valid.")
                 goodSoFar = True
-                if not args.quiet:
-                    print("valid.")
-                if args.internalCheck:
-                    if compareEagleElementTrees(f.root, f.get_et()) > 0:
-                        goodSoFar = False
-
-                if goodSoFar:
-                    suffix=args.scrubSuffix
-                    success += 1
+            if args.internalCheck:
+                if compareEagleElementTrees(f.root, f.get_et()) > 0:
+                    swoop_success = False
                 else:
-                    suffix = "broken"
-                    failed += 1
-                    
-                if suffix is not None:
-                    parts = i.split(".")
-                    name='{}.{}.{}'.format(".".join(parts[0:-1]), suffix, parts[-1])
-                    f.write(name, dtd_validate=False) # we already validated
-                
+                    swoop_success = True
+
+            if swoop_success and dtd_success:
+                suffix=args.scrubSuffix
+                success += 1
             else:
+                suffix = "broken"
                 failed += 1
-                if not args.quiet:
-                    print("invalid.")
+
+            parts = i.split(".")
+            name='{}.{}.{}'.format(".".join(parts[0:-1]), suffix, parts[-1])
+            
+            if not (swoop_success and dtd_success):
+                log.error("File "  + i + " is not valid.  Invalid file written to '" + name + "'");
+            
+            f.write(name, dtd_validate=False) # we already validated
+            
         except HE.EagleFormatError as e:
             corruptInput += 1
             print("corrupt.")

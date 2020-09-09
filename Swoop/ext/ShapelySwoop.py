@@ -442,6 +442,12 @@ class Text(ShapelyEagleFilePart):
         if not self._layer_matches(layer_query, self.get_layer()):
             return shapes.LineString()
 
+        if "attr_map" in options:
+            attr_map = options['attr_map']
+        else:
+            attr_map = dict()
+
+
         if self.get_align() == "center":
             h_align = "center"
             v_align = "center"
@@ -450,7 +456,12 @@ class Text(ShapelyEagleFilePart):
             v_align = m.group(1)
             h_align = m.group(2)
 
-        lines = self.get_text().split("\n")
+
+        attr_map = {k.upper(): v for k,v in attr_map.items()}
+        raw_text = self.get_text()
+        for k, v in attr_map.items():
+            raw_text = raw_text.replace(">{}".format(k), v)
+        lines = raw_text.split("\n")
 
         stroke_width = self.get_ratio()/100.0
         yscale = (vectorFont.base_height - stroke_width)/vectorFont.base_height
@@ -470,11 +481,11 @@ class Text(ShapelyEagleFilePart):
                 glyph = affinity.scale(glyph,# the width of the lines we use for drawing must fit within the line height.
                                        yfact=yscale,
                                        xfact=xscale,
-                                       origin=(0,0)) 
+                                       origin=(0,0))
                 # Put the character at the cursor and move it down to accomodate the stroke thickness.  emprical value
                 glyph = affinity.translate(glyph,
                                            cursor + stroke_width/2,
-                                           -stroke_width/2); 
+                                           -stroke_width/2);
                 text = text.union(glyph)
                 effective_width = glyph_data.width
                 cursor = cursor + effective_width + vectorFont.base_kerning
@@ -504,7 +515,7 @@ class Text(ShapelyEagleFilePart):
 
         if v_align == "top":
             dy = 0
-        elif v_align == "center": 
+        elif v_align == "center":
             dy = height/2
         elif v_align == "bottom":
             dy = height
@@ -518,10 +529,21 @@ class Text(ShapelyEagleFilePart):
         text = self._apply_transform(text, rotation_origin=(self.get_x(), self.get_y()), scale_origin=(self.get_x(), self.get_y()))
         text = self._apply_width(text, width=stroke_width*self.get_size(),**options)
         return text
-        
+
+class Attribute(Text):
+    def __init__(self):
+        Text.__init__(self)
+        log.info("Attribute constructor called")
+
+    def get_text(self):
+        return ">{}".format(self.get_name())
+
+    def get_distance(self):
+        return 50
+
 class Frame(ShapelyEagleFilePart):
     def __init__(self):
-        ShapelyEagleFilePart.__init__(self);
+        ShapelyEagleFilePart.__init__(self)
 
 def scaleAndBound(value, maxv, minv, percent):
     extra = percent * value
@@ -535,7 +557,7 @@ def computeStopMaskExtra(radius, DRU):
 class Hole(ShapelyEagleFilePart):
     # Fixme : Generate tStop and bStop
     def __init__(self):
-        ShapelyEagleFilePart.__init__(self);
+        ShapelyEagleFilePart.__init__(self)
 
     def get_geometry(self, layer_query=None, **options):
         DRU = self.get_DRU();
@@ -763,13 +785,20 @@ def polygon_as_svg(shapely_polygon, svgclass=None, style=None, close_paths=True)
         
     for i in l:
         if isinstance(i, shapes.LineString):
-            data = "M{} {}".format(i.coords[0][0],i.coords[0][1]) + " ".join(["L{} {}".format(x[0],x[1]) for x in i.coords[1:]])
+            if len(i.coords):
+                data = "M{} {}".format(i.coords[0][0],i.coords[0][1]) + " ".join(["L{} {}".format(x[0],x[1]) for x in i.coords[1:]])
+            else:
+                data = None
         else:
-            data = "M{} {} ".format(i.exterior.coords[0][0],i.exterior.coords[0][1]) + " ".join(["L{} {}".format(x[0],x[1]) for x in i.exterior.coords[1:]]) + closer
+            if i.exterior:
+                data = "M{} {} ".format(i.exterior.coords[0][0],i.exterior.coords[0][1]) + " ".join(["L{} {}".format(x[0],x[1]) for x in i.exterior.coords[1:]]) + closer
+            else:
+                data = ""
             for k in i.interiors:
                 data = data + "M{} {} ".format(k.coords[0][0],k.coords[0][1]) + " ".join(["L{} {}".format(x[0],x[1]) for x in k.coords[1:]]) + closer
-        
-        r = r + ("<path {} {} d='{}'/>".format(svgclass, style, data))
+
+        if data:
+            r = r + ("<path {} {} d='{}'/>".format(svgclass, style, data))
     return r
 
 

@@ -27,7 +27,8 @@ class DRUFile():
         """
 
         for l in stream.readlines():
-            m = re.match("^(\w+)(\[(\w+)\])? = (.*)$", l);
+            #l = l.decode();
+            m = re.match("^([^\W]+)(\[([^\W]+)\])? = (.*)$", l);
             assert m is not None, "Unexpected line format in '{}': {}".format(filename,l)
             key = m.group(1)
             dictkey = m.group(3)

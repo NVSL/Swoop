@@ -5,6 +5,7 @@ import Swoop.tools
 import argparse
 import shutil
 import sys
+import logging as log
 
 def removeDeadEFPs(ef):
     """
@@ -110,12 +111,18 @@ def main(argv = None):
     parser = argparse.ArgumentParser(description="Remove unused library items from a schematic or board.")
     parser.add_argument("--file", required=True,  type=str, nargs=1, dest='file', help="files to process")
     parser.add_argument("--out", required=True,  type=str, nargs=1, dest='out', help="output file")
+    parser.add_argument("-v", required=False, action='store_true', dest='verbose', help="Be verbose")
+    parser.add_argument("--relax", action='store_true', default=False, help="Produce output even if it's corrupt")
     args = parser.parse_args(argv)
+
+    if args.verbose:
+        log.basicConfig(format="%(levelname)s: %(message)s", level=log.DEBUG)
+        log.info("Verbose output.")
+    else:
+        log.basicConfig(format="%(levelname)s: %(message)s")
     
     ef = Swoop.EagleFile.from_file(args.file[0])
 
     removeDeadEFPs(ef)
 
-    ef.write(args.out[0])
-
-
+    ef.write(args.out[0], check_sanity=False, dtd_validate=True)

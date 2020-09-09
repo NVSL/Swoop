@@ -1,4 +1,3 @@
-
 .PHONY: build
 build:
 	pip install -e .
@@ -75,12 +74,21 @@ release: clean
 
 .PHONY: do-deploy
 do-deploy:
-	twine upload  dist/*$$(cat VERSION.txt)*
+	twine upload $(TWINE_OPTIONS) dist/*$$(cat VERSION.txt)*
 
-.PHONY: test-deployed
-test-deployed:
-#	(mkdir _test; cd _test; virtualenv venv; . venv/bin/activate; pip install  --index-url https://test.pypi.org/simple/  --extra-index-url https://pypi.org/simple  Swoop)
-	(rm -rf _test; virtualenv _test/venv; . _test/venv/bin/activate; pip install Swoop; make test)
+
+.PHONY: test-pip
+test-pip:
+	(rm -rf .test-pip2; virtualenv .test-pip2/venv; . .test-pip2/venv/bin/activate; pip install $(PIP_OPTIONS) Swoop; make test)
+	(rm -rf .test-pip3; virtualenv .test-pip3/venv -p python3; . .test-pip3/venv/bin/activate; pip install ($PIP_OPTIONS) Swoop; make test)
+
+.PHONY: deploy-dry-run
+deploy-dry-run: TWINE_OPTIONS=--repository-url https://test.pypi.org/legacy/
+deploy-dry-run: PIP_OPTIONS=--index-url https://test.pypi.org/simple/  --extra-index-url https://pypi.org/simple
+deploy-dry-run:
+	$(MAKE) sdist
+	$(MAKE) do-deploy
+	$(MAKE) test-pip
 
 clean:
 	rm -rf Swoop/eagleDTD.py
@@ -92,3 +100,4 @@ clean:
 	rm -rf Swoop.egg-info
 	rm -rf build 
 	find . -name '*.pyc' | xargs rm -rf
+	rm -rf dist

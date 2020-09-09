@@ -869,35 +869,46 @@ class RotationGeometry:
         return self._parseRot()[2]
 
 supportedVersions = { 
-            (6,0):"eagle-7.2.0.patched.dtd",
-            (6,5,0):"eagle-7.2.0.patched.dtd",
-            (6,6,0):"eagle-7.2.0.patched.dtd",
-            (7,0,0):"eagle-7.2.0.patched.dtd",
-            (7,1,0):"eagle-7.2.0.patched.dtd",
-            (7,2,0):"eagle-7.2.0.patched.dtd",
-            (7,3,0):"eagle-7.2.0.patched.dtd",
-            (7,4,0):"eagle-7.2.0.patched.dtd",
-            (7,5,0):"eagle-7.2.0.patched.dtd",
-            (7,6,0):"eagle-7.2.0.patched.dtd",
-            (7,7,0):"eagle-7.2.0.patched.dtd",
-            (8,0,2):"eagle-9.2.2.patched.dtd",
-            (8,1,0):"eagle-9.2.2.patched.dtd",
-            (8,7,0):"eagle-9.2.2.patched.dtd",
-            (8,7,1):"eagle-9.2.2.patched.dtd",
-            (9,1,0):"eagle-9.2.2.patched.dtd",
-            (9,2,0):"eagle-9.2.2.patched.dtd",
-            (9,2,1):"eagle-9.2.2.patched.dtd",
-            (9,2,2):"eagle-9.2.2.patched.dtd",
-            (9,3,0):"eagle-9.2.2.patched.dtd",
-            (9,3,1):"eagle-9.2.2.patched.dtd",
-            (9,3,2):"eagle-9.2.2.patched.dtd",
-            (9,3,3):"eagle-9.2.2.patched.dtd",
-            (9,3,4):"eagle-9.2.2.patched.dtd",
-            (9,3,5):"eagle-9.2.2.patched.dtd",
-            (9,3,6):"eagle-9.2.2.patched.dtd",
-            (9,3,7):"eagle-9.2.2.patched.dtd",
-        }
-        
+    (6,0):"eagle-7.2.0.patched.dtd",
+    (6,5,0):"eagle-7.2.0.patched.dtd",
+    (6,6,0):"eagle-7.2.0.patched.dtd",
+    (7,0,0):"eagle-7.2.0.patched.dtd",
+    (7,1,0):"eagle-7.2.0.patched.dtd",
+    (7,2,0):"eagle-7.2.0.patched.dtd",
+    (7,3,0):"eagle-7.2.0.patched.dtd",
+    (7,4,0):"eagle-7.2.0.patched.dtd",
+    (7,5,0):"eagle-7.2.0.patched.dtd",
+    (7,6,0):"eagle-7.2.0.patched.dtd",
+    (7,7,0):"eagle-7.2.0.patched.dtd",
+    (8,0,2):"eagle-9.2.2.patched.dtd",
+    (8,1,0):"eagle-9.2.2.patched.dtd",
+    (8,7,0):"eagle-9.2.2.patched.dtd",
+    (8,7,1):"eagle-9.2.2.patched.dtd",
+    (9,1,0):"eagle-9.2.2.patched.dtd",
+    (9,2,0):"eagle-9.2.2.patched.dtd",
+    (9,2,1):"eagle-9.2.2.patched.dtd",
+    (9,2,2):"eagle-9.2.2.patched.dtd",
+    (9,3,0):"eagle-9.2.2.patched.dtd",
+    (9,3,1):"eagle-9.2.2.patched.dtd",
+    (9,3,2):"eagle-9.2.2.patched.dtd",
+    (9,3,3):"eagle-9.2.2.patched.dtd",
+    (9,3,4):"eagle-9.2.2.patched.dtd",
+    (9,3,5):"eagle-9.2.2.patched.dtd",
+    (9,3,6):"eagle-9.2.2.patched.dtd",
+    (9,3,7):"eagle-9.2.2.patched.dtd",
+    (9,4,0):"eagle-9.2.2.patched.dtd",
+    (9,4,1):"eagle-9.2.2.patched.dtd",
+    (9,4,2):"eagle-9.2.2.patched.dtd",
+    (9,4,3):"eagle-9.2.2.patched.dtd",
+    (9,4,4):"eagle-9.2.2.patched.dtd",
+    (9,5,0):"eagle-9.5.2.patched.dtd",
+    (9,5,1):"eagle-9.5.2.patched.dtd",
+    (9,5,2):"eagle-9.5.2.patched.dtd",
+    (9,6,0):"eagle-9.6.2.patched.dtd",
+    (9,6,1):"eagle-9.6.2.patched.dtd",
+    (9,6,2):"eagle-9.6.2.patched.dtd",
+}
+
     
 class EagleFile(EagleFilePart):
     """
@@ -975,6 +986,7 @@ class EagleFile(EagleFilePart):
 
         :rtype: Bool
         """
+            
         et = self.get_et()
         dtd = EagleFile.get_DTD(et)
         if dtd is not None:
@@ -989,11 +1001,10 @@ class EagleFile(EagleFilePart):
             log.info("Eagle file opened as '" + str(self.filename) +"' parsed to valid Eagle data.")
 
         for t in et.findall(".//*"):
-            for a in list(t.attrib.values()):
-                if a == str(None):
-                    log.warning("Eagle file opened as '" + str(self.filename) +"' has 'None' attribute value")
+            for a,val in list(t.attrib.items()):
+                if val == str(None):
+                    log.warning("Eagle file opened as '" + str(self.filename) +"' has attribute '" + a + "' equal to '" + val + "' in tag '" + str(t.tag) + "'")
                     return False
-        
         return (v, dtd)
 
     @classmethod
@@ -1098,20 +1109,20 @@ class EagleFile(EagleFilePart):
                 ef = pickle.load(open(filename + ".pickle"))
                 return ef
 
-        f = open(filename, "rb");
-        
-        if filename[-4:] == ".sch":
-            n = cls.from_stream(cls.get_schematic_file_type(), f, bestEffort, DRUFile, pickle)
-        elif filename[-4:] == ".brd":
-            n = cls.from_stream(cls.get_board_file_type(), f, bestEffort, DRUFile, pickle)
-        elif filename[-4:] == ".lbr":
-            n = cls.from_stream(cls.get_library_file_type(), f, bestEffort, DRUFile, pickle, filename=filename)
-        else:
-            raise SwoopError("Unknown file suffix: '" + filename[-4:] + "'")
+        with open(filename, "rb") as f:
+            
+            if filename[-4:] == ".sch":
+                n = cls.from_stream(cls.get_schematic_file_type(), f, bestEffort, DRUFile, pickle)
+            elif filename[-4:] == ".brd":
+                n = cls.from_stream(cls.get_board_file_type(), f, bestEffort, DRUFile, pickle)
+            elif filename[-4:] == ".lbr":
+                n = cls.from_stream(cls.get_library_file_type(), f, bestEffort, DRUFile, pickle, filename=filename)
+            else:
+                raise SwoopError("Unknown file suffix: '" + filename[-4:] + "'")
 
-        n.set_filename(filename)
-        return n
-
+            n.set_filename(filename)
+            return n
+    
     @staticmethod
     def from_file_by_type(filename, ftype):
         n = EagleFile.from_file(filename)
@@ -1139,7 +1150,7 @@ class EagleFile(EagleFilePart):
         else:
             v = True
             dtd = None
-   
+
         if not v:
             if self.filename is not None:
                 f = open(self.filename + ".broken.xml", "w")
@@ -1154,12 +1165,16 @@ class EagleFile(EagleFilePart):
             if hasattr(file, 'read') and hasattr(file, 'write'):
                 f = file
                 filename = None
+                opened_file = False
             else:
                 f = open(file, "w")
                 filename = file
-            to_write = header+ET.tostring(ET.ElementTree(et),pretty_print=True)
+                opened_file = True
+            to_write = header + ET.tostring(ET.ElementTree(et),pretty_print=True)
             f.write(to_write.decode("utf8"))
-
+            if opened_file:
+                f.close()
+                
     def add_layer (self, layer):
         """
         Add a layer to this file.
@@ -1751,7 +1766,6 @@ class EagleFilePartVisitor(object):
         """
         return True
 
-
     def default_pre(self,e):
         """Default pre-order visitor function.
 
@@ -1793,6 +1807,7 @@ class EagleFilePartVisitor(object):
             context = efp.accept_postorder_visitor(self, context)
 
         return self
+
 
 
 #{% for tag in tags %}
@@ -2080,17 +2095,15 @@ class {{classname}}({{tag.get_all_base_classes_as_str()}}):
         return n
 
     def accept_preorder_visitor(self, visitor):
-        try:
-            pre = getattr(visitor, "{{tag.classname}}_pre")
-            return pre(self)
-        except AttributeError:
+        if hasattr(visitor, "{{tag.classname}}_pre"):
+            return getattr(visitor, "{{tag.classname}}_pre")(self)
+        else:
             return visitor.default_pre(self)
         
     def accept_postorder_visitor(self, visitor, context):
-        try:
-            post = getattr(visitor, "{{tag.classname}}_post")
-            post(self,context)
-        except AttributeError:
+        if hasattr(visitor, "{{tag.classname}}_post"):
+            getattr(visitor, "{{tag.classname}}_post")(self, context)
+        else:
             visitor.default_post(self,context)
 
     def is_equal(self, other):
@@ -2809,7 +2822,7 @@ class Attribute (Base_Attribute):
 
     @classmethod
     def _from_et (cls, attribute_root, parent):
-        n = Attribute()
+        n = cls()
         n. _init_from_et(attribute_root, parent)
         
         return n

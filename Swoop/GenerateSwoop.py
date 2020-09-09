@@ -385,6 +385,7 @@ def widthAttr(required):
 def drillAttr(required):
     return dimensionAttr("drill", required)
 
+
 def extwidthAttr(required):
     return dimensionAttr("extwidth", required)
 def extlengthAttr(required):
@@ -402,6 +403,16 @@ def spacingAttr(required):
 def isolateAttr(required):
     return dimensionAttr("isolate", required)
 
+def displayAttr():
+    return Attr("display",
+                vtype="None_is_default_string",
+                default="on",
+                required=False)
+
+def grouprefsAttr():
+    return Attr("grouprefs",
+                vtype="str",
+                required=False)
 
 def locally_modifiedAttr():
     return Attr("locally_modified", required=False, default="no", vtype="bool")
@@ -429,7 +440,7 @@ tags["note"] = TagClass("note",
                         baseclass = "EagleFilePart",
                         preserveTextAs = "text",
                         attrs=[Attr("minversion", 
-                                    required=True),
+                                    required=False),
                                Attr("version",
                                     required=True),
                                Attr("severity", required=True)])
@@ -656,7 +667,8 @@ tags["wire"] = TagClass("wire",
                                     vtype="None_is_default_float",
                                     default=0.0,
                                     required=False),
-                               Attr("cap", required=False)])
+                               Attr("cap", required=False),
+                               grouprefsAttr()])
 
 
 
@@ -685,7 +697,8 @@ tags["dimension"] = TagClass("dimension",
                                          required=False),
                                     Attr("visible", 
                                          vtype="bool",
-                                         required=False)])
+                                         required=False),
+                                    grouprefsAttr()])
 
 
 
@@ -713,7 +726,8 @@ tags["text"] = TagClass("text",
                                Attr("distance", 
                                     vtype="None_is_default_int",
                                     default=50,
-                                    required=False)])
+                                    required=False),
+                               grouprefsAttr()])
 
 
 
@@ -724,7 +738,8 @@ tags["circle"] = TagClass("circle",
                                  dimensionAttr("y",required=True),
                                  dimensionAttr("radius", required=True),
                                  widthAttr( required=True),
-                                 layerAttr()])
+                                 layerAttr(),
+                               grouprefsAttr()])
 
 
 
@@ -736,7 +751,8 @@ tags["rectangle"] = TagClass("rectangle",
                                     dimensionAttr("x2", required=True),
                                     dimensionAttr("y2", required=True),
                                     layerAttr(required=True),
-                                    rotAttr])
+                                    rotAttr,
+                               grouprefsAttr()])
 
 
 
@@ -773,7 +789,8 @@ tags["frame"] = TagClass("frame",
                                      accessorName="border_bottom",
                                      xmlName="border-bottom",
                                      vtype="bool",
-                                     required=False)])
+                                     required=False),
+                               grouprefsAttr()])
 
 
 
@@ -782,7 +799,8 @@ tags["hole"] = TagClass("hole",
                           mixins=["OnePointGeometry"],
                         attrs=[dimensionAttr("x",True),
                                dimensionAttr("y",True),
-                               drillAttr( required=True)])
+                               drillAttr( required=True),
+                               grouprefsAttr()])
 
 
 
@@ -804,7 +822,8 @@ tags["pad"] = TagClass("pad",
                                    required=False),
                               Attr("first",
                                    vtype="bool",
-                                   required=False)])
+                                   required=False),
+                              grouprefsAttr()])
 
 
 
@@ -829,7 +848,8 @@ tags["smd"] = TagClass("smd",
                                    required=False),
                               Attr("cream",
                                    vtype="constant_bool",
-                                   required=False)])
+                                   required=False),
+                               grouprefsAttr()])
 
 
 
@@ -857,7 +877,8 @@ tags["element"] = TagClass("element",
                                        vtype="bool",
                                        required=False),
                                   smashedAttr,
-                                  rotAttr],
+                                  rotAttr,
+                                  grouprefsAttr()],
                            # I'm not sure if this should be a Map or a
                            # List. There's a board in our test suite that
                            # has two instances of the same attributes. But
@@ -878,7 +899,8 @@ tags["via"] = TagClass("via",
                               Attr("shape", required=False),
                               Attr("alwaysstop", 
                                    vtype="bool",
-                                   required=False)])
+                                   required=False),
+                              grouprefsAttr()])
 
 
 
@@ -889,7 +911,10 @@ tags["polygon"] = TagClass("polygon",
                                   layerAttr(required=True),
                                   spacingAttr(required=False),
                                   Attr("pour", required=False),
-                                  isolateAttr(required=False),
+                                  Attr("isolate",
+                                       vtype="None_is_default_float",
+                                       default=0.0,
+                                       required=False),
                                   Attr("orphans",
                                        vtype="bool",
                                        required=False),
@@ -898,7 +923,8 @@ tags["polygon"] = TagClass("polygon",
                                        required=False),
                                   Attr("rank", 
                                        vtype="int",
-                                       required=False)],
+                                       required=False),
+                                  grouprefsAttr()],
                            sections = [List("vertices", "./vertex")])
 
 
@@ -984,7 +1010,8 @@ tags["instance"] = TagClass("instance",
                                    dimensionAttr("x",True),
                                    dimensionAttr("y",True),
                                    smashedAttr,
-                                   rotAttr],
+                                   rotAttr,
+                                   grouprefsAttr()],
                             sections= [Map("attributes", "./attribute", requireTag=True)])
 
 
@@ -1003,7 +1030,8 @@ tags["label"] = TagClass("label",
                                 rotAttr,
                                 Attr("xref", 
                                      vtype="bool",
-                                     required=False)])
+                                     required=False),
+                               grouprefsAttr()])
 
 
 
@@ -1011,7 +1039,8 @@ tags["junction"] = TagClass("junction",
                             baseclass = "EagleFilePart",
                             mixins=["OnePointGeometry"],
                             attrs=[dimensionAttr("x",True),
-                                   dimensionAttr("y",True)])
+                                   dimensionAttr("y",True),
+                               grouprefsAttr()])
 
 
 
@@ -1043,24 +1072,31 @@ tags["technology"] = TagClass("technology",
 tags["attribute"] = TagClass("attribute",
                              baseclass = "EagleFilePart",
                              customchild = True,
+                             mixins=["OnePointGeometry", "RotationGeometry"],
                              attrs=[nameAttr(),
                                     Attr("value", required=False),
                                     dimensionAttr("x", required=False),
                                     dimensionAttr("y", required=False),
                                     sizeAttr(required=False),
                                     layerAttr(required=False),
-                                    Attr("font", required=False),
+                                    Attr("font",
+                                         required=False,
+                                         vtype="None_is_default_string",
+                                         default="proportional"),
                                     Attr("ratio",
-                                         vtype="int",
+                                         vtype="None_is_default_int",
+                                         default=8,
                                          required=False),
                                     rotAttr,
-                                    Attr("display",
-                                         vtype="display_bool",
+                                    displayAttr(),
+                                    Attr("align", # not in DTD
+                                         vtype="None_is_default_string",
+                                         default="bottom-left",
                                          required=False),
-                                    Attr("align", required=False), # SS: not in the standard DTD
                                     Attr("constant",
                                          vtype="constant_bool",
-                                         required=False)])
+                                         required=False),
+                               grouprefsAttr()])
 
 
 
@@ -1272,6 +1308,7 @@ tags["eagleBoard"] = TagClass("eagle",
                                         Map("classes", "./drawing/board/classes/class"),
                                         Singleton("designrules", "./drawing/board/designrules"),
                                         Map("autorouter_passes", "./drawing/board/autorouter/pass"),
+                                        Map("groups", "./drawing/board/groups/board_group"),
                                         Map("elements", "./drawing/board/elements/element", requireTag=True),
                                         Map("signals", "./drawing/board/signals/signal", requireTag=True),
                                         List("mfgpreviewcolors", "./drawing/board/mfgpreviewcolors/mfgpreviewcolor", requireTag=False),
@@ -1283,6 +1320,51 @@ tags["mfgpreviewcolor"] = TagClass("mfgpreviewcolor",
                                     attrs=[nameAttr(),
                                            Attr("color", required=True)],
                                     sections=[])
+
+tags["schematic_group"] = TagClass("schematic_group",
+                                   baseclass = "EagleFilePart",
+                                   attrs=[nameAttr(),
+                                          Attr("selectable",
+                                               vtype="bool",
+                                               required=False),
+                                          Attr("width",
+                                               required=False,
+                                               vtype="None_is_default_float",
+                                               default=0.2032),
+                                          displayAttr(),
+                                          Attr("titleSize",
+                                               vtype="None_is_default_float",
+                                               default=1.778,
+                                               required=False),
+                                          Attr("titleFont",
+                                               required=False,
+                                               vtype="None_is_default_string",
+                                               default="proportional"),
+                                          Attr("style",
+                                               vtype="None_is_default_string",
+                                               required=False,
+                                               default="shortdash"),
+                                          Attr("showAnnotations",
+                                               vtype="bool",
+                                               required=False),
+                                          Attr("layer",
+                                               vtype="None_is_default_int",
+                                               default=97),
+                                          grouprefsAttr()
+                                   ],
+                                   sections=[Singleton("description", "./description", requireTag=False),
+                                             Map("attributes", "./attribute")])
+
+tags["board_group"] = TagClass("board_group",
+                               baseclass = "EagleFilePart",
+                               attrs=[nameAttr(),
+                                      Attr("selectable",
+                                           vtype="bool",
+                                           required=False),
+                                      grouprefsAttr()],
+                               sections=[Singleton("description", "./description", requireTag=False),
+                                         Map("attributes", "./attribute")])
+
 
 tags["eagleSchematic"] = TagClass("eagle",
                                   classname="SchematicFile",
@@ -1299,6 +1381,7 @@ tags["eagleSchematic"] = TagClass("eagle",
                                             Map("variantdefs", "./drawing/schematic/variantdefs/variantdef", requireTag=True),
                                             Map("classes", "./drawing/schematic/classes/class"),
                                             Map("modules", "./drawing/schematic/modules/module"),
+                                            Map("groups", "./drawing/schematic/groups/schematic_group"),
                                             Map("parts", "./drawing/schematic/parts/part", requireTag=True),
                                             List("sheets", "./drawing/schematic/sheets/sheet"),
                                             List("approved_errors", "./drawing/schematic/errors/approved"),

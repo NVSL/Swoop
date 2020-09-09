@@ -291,3 +291,15 @@ class TestSwoop(unittest.TestCase):
         self.assertEqual(self.sch.get_mirrored_layer(22), 21, "Layer mirroring error")
         self.assertEqual(self.sch.get_mirrored_layer(20), 20, "Layer mirroring error")
         self.assertEqual(self.sch.get_mirrored_layer(100), 100, "Layer mirroring error")
+
+
+    def test_filters(self):
+        pass
+
+    def test_groups(self):
+        sch = Swoop.EagleFile.from_file(self.me + "/inputs/controller_board.sch")
+        brd = Swoop.EagleFile.from_file(self.me + "/inputs/controller_board.brd")
+
+        
+        
+    

@@ -207,7 +207,7 @@
           >
           <!-- rot: Only 0, 90, 180 or 270 -->
 
-<!ELEMENT spice (pinmapping, model)>
+<!ELEMENT spice (pinmapping, model?)>
 
 <!ELEMENT pinmapping (pinmap+)>
 <!ATTLIST pinmapping
@@ -315,6 +315,7 @@
           width         %Dimension;    #REQUIRED
           layer         %Layer;        #REQUIRED
           grouprefs     IDREFS         #IMPLIED
+          locked        %Bool;         "no"
           >
 
 <!ELEMENT rectangle EMPTY>
@@ -574,6 +575,7 @@
           display       %AttributeDisplay; "value"
           constant      %Bool;         "no"
           align         %Align;        "bottom-left"
+          locked        %Bool;         "no"
           grouprefs     IDREFS         #IMPLIED
           >
           <!-- display: Only in <element> or <instance> context -->

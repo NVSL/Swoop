@@ -197,7 +197,7 @@
           >
           <!-- rot: Only 0, 90, 180 or 270 -->
 
-<!ELEMENT spice (pinmapping, model)>
+<!ELEMENT spice (pinmapping, model?)>
 
 <!ELEMENT pinmapping (pinmap+)>
 <!ATTLIST pinmapping
@@ -299,7 +299,8 @@
           y             %Coord;        #REQUIRED
           radius        %Coord;        #REQUIRED
           width         %Dimension;    "0.13"
-          layer         %Layer;        #REQUIRED
+          layer         %Layer;        #REQUIRED 
+          locked        %Bool;         "no"
           >
 
 <!ELEMENT rectangle EMPTY>
@@ -534,6 +535,7 @@
           display       %AttributeDisplay; "value"
           constant      %Bool;         "no"
           align         %Align;        "bottom-left"
+          locked        %Bool;         "no"
           >
           <!-- display: Only in <element> or <instance> context -->
           <!-- constant:Only in <device> context -->

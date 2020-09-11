@@ -453,7 +453,7 @@ tags["library"] = TagClass("library",
                            ],
                            sections=[Singleton("description", "./description", requireTag=False),
                                      Map("packages", "./packages/package", requireTag=True),
-                                     Map("packages3d", "./packages3d/package3d", requireTag=False),
+                                     Map("packages3d", "./packages3d/package3d", mapkey="urn", requireTag=False),
                                      Map("symbols", "./symbols/symbol" , requireTag=True),
                                      Map("devicesets", "./devicesets/deviceset", requireTag=True)])
 
@@ -542,7 +542,39 @@ tags["deviceset"] = TagClass("deviceset",
                              ],
                              sections=[Singleton("description", "./description", requireTag=True),
                                        Map("gates", "./gates/gate", requireTag=True),
-                                       Map("devices", "./devices/device", requireTag=True)])
+                                       Map("devices", "./devices/device", requireTag=True),
+                                       Singleton("spice", "./spice", requireTag=False)])
+
+tags["spice"] = TagClass("spice",
+                         baseclass = "EagleFilePart",
+                         attrs=[],
+                         sections=[Singleton("pinmapping", "./pinmapping", requireTag=True),
+                                   Singleton("model", "./model", requireTag=False)]);
+
+tags["model"] = TagClass("model",
+                         baseclass = "EagleFilePart",
+                         preserveTextAs = "data",
+                         attrs=[nameAttr()])
+
+tags["pinmapping"] = TagClass("pinmapping",
+                              baseclass = "EagleFilePart",
+                              attrs=[Attr("isusermap",
+                                          vtype="bool"),
+                                     Attr("isdevicewide",
+                                          vtype="bool"),
+                                     Attr("spiceprefix",
+                                          vtype="None_is_default_string",
+                                          default="")],
+                              sections=[List("pinmaps", "./pinmap", requireTag=True)])
+
+
+tags["pinmap"] = TagClass("pinmap",
+                          baseclass = "EagleFilePart",
+                          attrs=[Attr("gate", vtype="str"),
+                                 Attr("pin", vtype="str"),
+                                 Attr("pinorder", vtype="str")])
+                                          
+                                          
 
 tags["device"] = TagClass("device",
                           baseclass = "EagleFilePart",
@@ -668,7 +700,9 @@ tags["wire"] = TagClass("wire",
                                     default=0.0,
                                     required=False),
                                Attr("cap", required=False),
-                               grouprefsAttr()])
+                               grouprefsAttr()
+                        ])
+#sections=[AttrList("epads", "pad", "pad")])
 
 
 
@@ -968,6 +1002,24 @@ tags["pin"] = TagClass("pin",
                               rotAttr])
 
 
+tags["fusionsync"] = TagClass("fusionsync",
+                              baseclass = "EagleFilePart",
+                              attrs=[
+                                  Attr("huburn",
+                                       required=True),
+                                  Attr("projecturn",
+                                       required=True),
+                                  Attr("f3durn",
+                                       required=True),
+                                  Attr("pcbguid",
+                                       required=True),
+                                  Attr("lastsyncedchangeguid",
+                                       required=True),
+                                  Attr("lastpulledtime",
+                                       required=True)]
+                              )
+                              
+                              
 
 tags["part"] = TagClass("part",
                         baseclass="EagleFilePart",
@@ -1022,7 +1074,7 @@ tags["instance"] = TagClass("instance",
                                    smashedAttr,
                                    rotAttr,
                                    grouprefsAttr()],
-                            sections= [Map("attributes", "./attribute", requireTag=True)])
+                            sections= [List("attributes", "./attribute", requireTag=True)])
 
 
 
@@ -1302,13 +1354,16 @@ tags["eagleBoard"] = TagClass("eagle",
                               baseclass="EagleFile",
                               attrs=[Attr("version",
                                           required=True)],
-                              sections=[List("settings", "./drawing/settings/setting",requireTag=True),
-                                        Singleton("grid", "./drawing/grid"),
-                                        # EagleFile implements layer accessors
-                                        Map("layers", "./drawing/layers/layer",suppressAccessors=True, mapkey="number"),
-                                        Singleton("description", "./drawing/board/description", requireTag=True),
-                                        # We keep all the drawing elements in one container
-                                        List("plain_elements", "./drawing/board/plain/polygon|./drawing/board/plain/wire|./drawing/board/plain/text|./drawing/board/plain/dimension|./drawing/board/plain/circle|./drawing/board/plain/rectangle|./drawing/board/plain/frame|./drawing/board/plain/hole|./drawing/board/plain/spline",
+                              sections=[
+                                  List("settings", "./drawing/settings/setting",requireTag=True),
+                                  Singleton("grid", "./drawing/grid"),
+                                  # EagleFile implements layer accessors
+                                  Map("layers", "./drawing/layers/layer",suppressAccessors=True, mapkey="number"),
+                                  Singleton("description", "./drawing/board/description", requireTag=True),
+                                  Singleton("fusionsync", "./drawing/board/fusionsync"),
+                                  # We keep all the drawing elements in one container
+                                  
+                                  List("plain_elements", "./drawing/board/plain/polygon|./drawing/board/plain/wire|./drawing/board/plain/text|./drawing/board/plain/dimension|./drawing/board/plain/circle|./drawing/board/plain/rectangle|./drawing/board/plain/frame|./drawing/board/plain/hole|./drawing/board/plain/spline",
                                              containedTypes=["polygon","wire","text","dimension","circle","rectangle","frame","hole","spline"],
                                              accessorName="plain_element",
                                              requireTag=True),

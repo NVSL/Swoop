@@ -882,9 +882,15 @@ supportedVersions = {
     (7,6,0):"eagle-7.2.0.patched.dtd",
     (7,7,0):"eagle-7.2.0.patched.dtd",
     (8,0,2):"eagle-9.2.2.patched.dtd",
+    (8,1,0):"eagle-9.2.2.patched.dtd",
+    (8,2,0):"eagle-9.2.2.patched.dtd",
+    (8,2,1):"eagle-9.2.2.patched.dtd",
     (8,2,2):"eagle-9.2.2.patched.dtd",
     (8,1,0):"eagle-9.2.2.patched.dtd",
-    (8,7,0):"eagle-9.2.2.patched.dtd",
+    (8,2,0):"eagle-9.2.2.patched.dtd",
+    (8,3,0):"eagle-9.2.2.patched.dtd",
+    (8,4,0):"eagle-9.2.2.patched.dtd",
+    (8,5,0):"eagle-9.2.2.patched.dtd",
     (8,6,0):"eagle-9.2.2.patched.dtd",
     (8,7,1):"eagle-9.2.2.patched.dtd",
     (9,0,1):"eagle-9.2.2.patched.dtd",
@@ -1009,7 +1015,7 @@ class EagleFile(EagleFilePart):
             for a,val in list(t.attrib.items()):
                 if val == str(None):
                     log.warning("Eagle file opened as '" + str(self.filename) +"' has attribute '" + a + "' equal to '" + val + "' in tag '" + str(t.tag) + "'")
-                    return False
+                    return False, dtd
         return (v, dtd)
 
     @classmethod

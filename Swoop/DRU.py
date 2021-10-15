@@ -26,7 +26,7 @@ class DRUFile():
         :param stream: File-like object to load.
         """
 
-        for l in stream.readlines():
+        for l in map(lambda lu: lu.decode('utf-8'), stream.readlines()):
             m = re.match("^(\w+)(\[(\w+)\])? = (.*)$", l);
             assert m is not None, "Unexpected line format in '{}': {}".format(filename,l)
             key = m.group(1)
